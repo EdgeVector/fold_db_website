@@ -8,7 +8,7 @@ function generateAsciiArt(text, fontSize) {
   ctx.font = fontStr;
   const metrics = ctx.measureText(text);
 
-  canvas.width = Math.ceil(metrics.width) + 4;
+  canvas.width = Math.ceil(metrics.width) + 8;
   canvas.height = Math.ceil(fontSize * 1.3);
 
   ctx.fillStyle = '#000';
@@ -16,7 +16,7 @@ function generateAsciiArt(text, fontSize) {
   ctx.font = fontStr;
   ctx.fillStyle = '#fff';
   ctx.textBaseline = 'top';
-  ctx.fillText(text, 2, Math.floor(fontSize * 0.1));
+  ctx.fillText(text, 4, Math.floor(fontSize * 0.1));
 
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
@@ -46,6 +46,18 @@ function generateAsciiArt(text, fontSize) {
   }
   for (let k = 0; k < lines.length; k++) {
     lines[k] = lines[k].substring(0, maxRight);
+  }
+
+  // Strip leading blank columns so the art is left-aligned
+  let minLeft = Infinity;
+  for (let k = 0; k < lines.length; k++) {
+    const match = lines[k].match(/\S/);
+    if (match && match.index < minLeft) minLeft = match.index;
+  }
+  if (minLeft > 0 && minLeft < Infinity) {
+    for (let k = 0; k < lines.length; k++) {
+      lines[k] = lines[k].substring(minLeft);
+    }
   }
 
   return lines.join('\n');
