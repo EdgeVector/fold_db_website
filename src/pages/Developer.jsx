@@ -10,9 +10,9 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - Fold DB</title>
-        <meta name="description" content="FoldDB developer documentation. REST API reference, CLI commands, code examples, and architecture overview." />
+        <meta name="description" content="FoldDB developer documentation. REST API reference, fold creation, trust distance, transforms, CLI commands, and architecture overview." />
         <meta property="og:title" content="Developer Guide - Fold DB" />
-        <meta property="og:description" content="FoldDB developer documentation. REST API, CLI, code examples, and architecture." />
+        <meta property="og:description" content="FoldDB developer documentation. REST API, folds, transforms, trust distance, and architecture." />
         <link rel="canonical" href="https://folddb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -26,7 +26,9 @@ export default function Developer() {
 
       <h1 className="tagline">Developer Guide</h1>
 
-      <p>FoldDB is a personal database that uses AI to automatically organize your data. Drop in files, JSON, or social media exports &mdash; FoldDB detects schemas, extracts searchable keywords, and lets you query with natural language.</p>
+      <p className="bold white">Fold DB has not launched yet. This guide describes the target developer experience. The project is in active development &mdash; contributions welcome.</p>
+
+      <p>FoldDB is a database where data is never accessed directly. Every query passes through a <span className="bold">fold</span> &mdash; a policy-enforcing interface that checks trust distance, verifies credentials, applies transforms, and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -78,6 +80,110 @@ export default function Developer() {
         </div>
       </Section>
 
+      {/* THE FOLD MODEL */}
+      <Section variant="sage">
+        <h2 id="folds"><span className="bold">THE FOLD MODEL</span> <span className="dim">Core abstraction</span></h2>
+
+        <p>A fold is a <span className="bold">policy-enforcing interface</span> over a set of fields. Each field carries a value, a security label, a trust-distance policy (Wn Rm), and optional capability constraints. Queries evaluate a fold under an access context C&nbsp;=&nbsp;(user, &tau;, keys).</p>
+
+        <pre className="compare-table">{`
+  Query arrives with access context C = (user, τ, keys)
+       |
+       v
+  Check trust distance: τ ≤ m for each field's Wn Rm policy
+       |
+       v
+  Check capabilities: caller holds required key, quota > 0
+       |
+       v
+  Check payment: P(user, fold) satisfied
+       |
+       v
+  Check security labels: ℓ_in ⊑ ℓ_out for all transforms
+       |
+       v
+  All pass? → Apply transforms → Return authorized projection
+  Any fail? → Return Nothing (no data, no error, no leakage)`}</pre>
+
+        <div className="grid-2">
+          <Card>
+            <p><Label color="green">TRUST DISTANCE POLICIES</Label></p>
+            <pre>{`// Each field has a Wn Rm policy
+// W = max write distance, R = max read distance
+{
+  "fields": {
+    "name":      { "policy": "W0 R1" },
+    "diagnosis": { "policy": "W1 R1" },
+    "lab_results": { "policy": "W1 R3" }
+  }
+}
+// τ=0: owner (read/write all)
+// τ=1: doctor (read/write all)
+// τ=3: researcher (read lab_results only)
+// τ=10: unauthorized (nothing)`}</pre>
+          </Card>
+
+          <Card>
+            <p><Label color="green">TRANSFORMS</Label></p>
+            <pre>{`// Reversible: read + write, inverse propagates
+// e.g., currency conversion (EUR ↔ USD)
+{
+  "transform": "currency_convert",
+  "reversible": true,
+  "source_fold": "raw_financials",
+  "source_field": "amount_usd"
+}
+
+// Irreversible: read-only, no recovery
+// e.g., hash for de-identification
+{
+  "transform": "sha256_hash",
+  "reversible": false,
+  "source_fold": "patient_record",
+  "source_field": "name"
+}`}</pre>
+          </Card>
+
+          <Card>
+            <p><Label color="green">CRYPTOGRAPHIC CAPABILITIES</Label></p>
+            <pre>{`// Bounded read/write quotas tied to public keys
+{
+  "capabilities": [
+    {
+      "type": "RX",
+      "public_key": "pk_researcher_abc",
+      "quota": 100
+    },
+    {
+      "type": "WX",
+      "public_key": "pk_doctor_xyz",
+      "quota": 50
+    }
+  ]
+}
+// Quota decrements per operation
+// Access revoked when quota reaches 0`}</pre>
+          </Card>
+
+          <Card>
+            <p><Label color="green">PAYMENT GATES</Label></p>
+            <pre>{`// Cost as a function of trust distance
+{
+  "payment": {
+    "cost_function": "linear",
+    "base": 0.01,
+    "per_distance": 0.005
+  }
+}
+// τ=1 (doctor): $0.015
+// τ=3 (researcher): $0.025
+// τ=10 (distant): $0.06
+// Monotonically non-decreasing:
+//   closer users pay no more than distant ones`}</pre>
+          </Card>
+        </div>
+      </Section>
+
       {/* HOW IT WORKS */}
       <Section variant="slate">
         <h2 id="architecture"><span className="bold">HOW IT WORKS</span> <span className="dim">The ingestion-to-query pipeline</span></h2>
@@ -89,13 +195,16 @@ Files / JSON / APIs
   AI Ingestion -----> Schema Service (detects or creates schema)
        |
        v
-  Mutation ----------> Storage (Sled local or DynamoDB cloud)
+  Fold Registration -> Registry (fold definition + policies)
+       |
+       v
+  Mutation ----------> Append-Only Store (encrypted, signed, immutable)
        |
        v
   Keyword Indexing --> AI extracts and normalizes searchable terms
        |
        v
-  Query -------------> Natural language or structured field queries`}</pre>
+  Query -------------> Execution Engine evaluates fold under access context`}</pre>
 
         <div className="grid-3">
           <Card><p><Label color="blue">INGEST</Label></p><p>
@@ -105,16 +214,16 @@ Files / JSON / APIs
             The global schema service at <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">schema.folddb.com</a> checks for existing compatible schemas or creates new ones.</p></Card>
 
           <Card><p><Label color="blue">STORE</Label></p><p>
-            Data is written as mutations with AES-256-GCM encryption at rest. Local keys or AWS KMS.</p></Card>
+            Data is written to the append-only store with AES-256-GCM encryption at rest. Every write is signed and immutable.</p></Card>
 
           <Card><p><Label color="blue">INDEX</Label></p><p>
             AI extracts keywords and normalizes terms (dates, names, etc.) for search.</p></Card>
 
-          <Card><p><Label color="blue">QUERY</Label></p><p>
-            Search with natural language or structured field queries. Schema-aware planning for efficient retrieval.</p></Card>
+          <Card><p><Label color="blue">EVALUATE</Label></p><p>
+            Queries pass through folds. The execution engine checks all four policy layers and applies transforms before returning results.</p></Card>
 
-          <Card><p><Label color="blue">PERMISSIONS</Label></p><p>
-            Trust-based access control at the field level. Multi-tenant isolation enforced at the storage layer.</p></Card>
+          <Card><p><Label color="blue">AUDIT</Label></p><p>
+            Every access &mdash; successful or failed &mdash; is recorded in the append-only audit log with user identity, timestamp, fold, and operation.</p></Card>
         </div>
       </Section>
 
@@ -396,8 +505,9 @@ npm run lint                           # ESLint`}</pre>
         <h2 id="docs"><span className="bold">DOCUMENTATION</span> <span className="dim">Deeper reading</span></h2>
 
         <div className="grid-2">
-          <Card><p><Label color="blue">API REFERENCE</Label></p><p>
-            Rust source code and API on <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer">GitHub</a></p></Card>
+          <Card><p><Label color="blue">THE PAPER</Label></p><p>
+            &ldquo;Fold DB: Compute Without Exposure&rdquo; &mdash; formal model, proofs, and architecture.<br />
+            <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer">fold_db_paper.pdf</a></p></Card>
 
           <Card><p><Label color="blue">INGESTION GUIDE</Label></p><p>
             AI-powered data ingestion &mdash; <a href="https://github.com/shiba4life/fold_db/blob/master/INGESTION_README.md" target="_blank" rel="noreferrer">INGESTION_README.md</a></p></Card>

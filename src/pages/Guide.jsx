@@ -9,9 +9,9 @@ export default function Guide() {
     <>
       <Helmet>
         <title>User Guide - Fold DB</title>
-        <meta name="description" content="Get FoldDB running on your machine in minutes. Installation, setup, and usage guide." />
+        <meta name="description" content="Get FoldDB running on your machine in minutes. Installation, setup, usage guide, and fold-based access control." />
         <meta property="og:title" content="User Guide - Fold DB" />
-        <meta property="og:description" content="Get FoldDB running on your machine in minutes. Installation, setup, and usage guide." />
+        <meta property="og:description" content="Get FoldDB running on your machine in minutes. Installation, setup, and fold-based data access." />
         <link rel="canonical" href="https://folddb.com/guide" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -25,7 +25,9 @@ export default function Guide() {
 
       <h1 className="tagline">User Guide</h1>
 
-      <p>Get FoldDB running on your machine in minutes. No developer tools required &mdash; just install, launch, and start organizing your data with AI.</p>
+      <p className="bold white">Fold DB has not launched yet. This guide describes the planned user experience. The project is in active development.</p>
+
+      <p>Get FoldDB running on your machine in minutes. No developer tools required &mdash; just install, launch, and start organizing your data with AI. Every query passes through <span className="bold">folds</span> that enforce access policies automatically.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -115,6 +117,10 @@ export default function Guide() {
           <Card><p><Label color="red">SMART FOLDERS</Label></p>
             <p>Point FoldDB at a directory on your machine. It scans for personal data files, processes them with AI, and ingests everything automatically.</p>
             <p className="dim">Great for importing documents, exports, and archives</p></Card>
+
+          <Card><p><Label color="red">ACCESS CONTROL</Label></p>
+            <p>Every query passes through <span className="bold">folds</span> &mdash; policy-enforcing interfaces that check trust distance, credentials, and payment before returning data. Set per-field policies to control who can read and write.</p>
+            <p className="dim">See <Link to="/developer#folds">Developer Guide</Link> for the full fold model</p></Card>
         </div>
       </Section>
 
