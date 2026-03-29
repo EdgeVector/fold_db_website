@@ -4,164 +4,245 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
-import TypingAnimation from '../components/TypingAnimation';
 
 export default function Home() {
   return (
     <>
       <Helmet>
-        <title>FoldDB - The Last Database</title>
-        <meta name="description" content="FoldDB is an experimental self-managing database designed to outlive applications. One permanent database for a person's data." />
-        <meta property="og:title" content="FoldDB - The Last Database" />
-        <meta property="og:description" content="A database designed to outlive applications. Your data lives in one permanent database under your control. Applications no longer store your data — they interact with it." />
+        <title>FoldDB - Your data. Your connections. Your terms.</title>
+        <meta name="description" content="FoldDB gives you a private, encrypted database on your device. Import your Apple data, back up to the cloud, and connect with people — all without giving up control." />
+        <meta property="og:title" content="FoldDB - Your data. Your connections. Your terms." />
+        <meta property="og:description" content="A personal database you own. Import Apple data, encrypted cloud backup, privacy-preserving discovery. Download for Mac." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://folddb.com" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="FoldDB - The Last Database" />
-        <meta name="twitter:description" content="A database designed to outlive applications. One permanent database for a person's data." />
+        <meta name="twitter:title" content="FoldDB - Your data. Your connections. Your terms." />
+        <meta name="twitter:description" content="A personal database you own. Import Apple data, encrypted cloud backup, privacy-preserving discovery." />
         <link rel="canonical" href="https://folddb.com" />
       </Helmet>
+
       <AsciiTitle />
-      <br />
-      <TypingAnimation />
+
+      {/* Hero */}
+      <div className="hero">
+        <h1 className="hero-headline">Your data. Your connections. Your terms.</h1>
+        <p className="hero-sub">
+          FoldDB is a personal database that lives on your device.
+          Import your data, encrypt everything, find your people &mdash;
+          without handing control to any platform.
+        </p>
+        <div className="hero-cta">
+          <a href="https://github.com/shiba4life/fold_db/releases/latest" target="_blank" rel="noreferrer" className="btn-primary">Download for Mac</a>
+          <span className="dim hero-or">or</span>
+          <code className="brew-cmd">brew install --cask folddb</code>
+        </div>
+      </div>
+
       <hr className="decorative-rule" aria-hidden="true" />
-      <h1 className="tagline">The Last Database.</h1>
-      <p className="dim">A database designed to outlive applications.</p>
-      <hr className="decorative-rule" aria-hidden="true" />
-      <br />
 
-      <p>Modern software forces people to scatter their data across hundreds of services. Every application creates its own database. Every database traps your information.</p>
-
-      <p><span className="bold white">FoldDB is an experiment in inverting this model.</span></p>
-
-      <p>Your data lives in one permanent database under your control. Applications no longer store your data &mdash; they interact with it.</p>
-
-      <Section variant="rose" id="problem">
-        <h2><span className="bold">THE PROBLEM</span></h2>
-
-        <pre className="compare-table">{
-`  App A        App B        App C        App D
-    |              |            |            |
-    v              v            v            v
- `}<span style={{color:'#fb4934'}}>Notes DB</span>{`    `}<span style={{color:'#fb4934'}}>Health DB</span>{`    `}<span style={{color:'#fb4934'}}>Msgs DB</span>{`    `}<span style={{color:'#fb4934'}}>Finance DB</span>{`
-  (silo)       (silo)       (silo)       (silo)`}
-        </pre>
-
-        <p>Every application rebuilds user accounts, storage, indexing, permissions, and sync. Each stores its own copy of your information. No single system understands the full picture.</p>
-
-        <p>Your data is <span className="bold white">fragmented, duplicated, and outside your control</span>.</p>
-      </Section>
-
-      <Section variant="sage" id="model">
-        <h2><span className="bold">THE FOLDDB MODEL</span></h2>
-
-        <pre className="compare-table">{
-`  App A     App B     App C     App D     App E
-    \\         |         |         |         /
-     \\        |         |         |        /
-      `}<span style={{color:'#fabd2f'}}>{`+----------------------------------------+`}</span>{`
-      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`          `}<span className="bold white">Your FoldDB Database</span>{`          `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`
-      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`     `}<span className="dim">{`encrypted / local / permanent`}</span>{`      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`
-      `}<span style={{color:'#fabd2f'}}>{`+----------------------------------------+`}</span>
-        </pre>
-
-        <p>Applications become <span className="bold white">clients of the user&rsquo;s database</span> rather than owners of the data. This simple inversion changes the foundation of software architecture.</p>
-      </Section>
-
-      <Section variant="slate" id="architecture">
-        <h2><span className="bold">ARCHITECTURE</span></h2>
-
-        <pre className="compare-table">{
-`  `}<span style={{color:'#b8bb26'}}>{`Applications`}</span>{`  Notes · Health · Finance · AI · Email
-        |
-        v
-  `}<span style={{color:'#83a598'}}>{`Shared Structures`}</span>{`    public interfaces, standardized
-        |
-        v
-  `}<span style={{color:'#d3869b'}}>{`Transforms`}</span>{`           local computation, deterministic
-        |
-        v
-  `}<span style={{color:'#fe8019'}}>{`Vector Embeddings`}</span>{`    semantic index across all data
-        |
-        v
-  `}<span style={{color:'#fb4934'}}>{`Encrypted Storage`}</span>{`    user-controlled, append-only`}
-        </pre>
-
-        <p>All computation happens locally. <span className="bold white">Raw data never leaves the user&rsquo;s control.</span></p>
-      </Section>
-
-      <Section variant="amber" id="principles">
-        <h2><span className="bold">CORE PRINCIPLES</span></h2>
-
-        <div className="grid-3">
-          <Card><p><Label color="yellow">NEVER TRUST THE CLOUD</Label></p><p>
-            All data remains <span className="bold white">end-to-end encrypted</span>. Cloud infrastructure may store or transport data, but it cannot read it.</p></Card>
-
-          <Card><p><Label color="yellow">REVEAL THE MINIMUM</Label></p><p>
-            Applications receive only the information required to perform their function. Transform results are stored in structures with access policies &mdash; <span className="bold white">nothing is visible without explicit permission</span>.</p></Card>
-
-          <Card><p><Label color="yellow">SELF-MAINTAINING</Label></p><p>
-            Users should not manage schemas, migrations, indexing, or cleanup. <span className="bold white">The system organizes itself.</span></p></Card>
+      {/* Demo Video */}
+      <Section variant="slate" id="demo">
+        <h2><span className="bold">SEE IT IN ACTION</span></h2>
+        <div className="video-embed">
+          <div className="video-placeholder">
+            <span className="dim">[Demo video coming soon]</span>
+          </div>
         </div>
       </Section>
 
-      <Section variant="sage" id="how-it-works">
-        <h2><span className="bold">HOW IT WORKS</span></h2>
+      {/* Section 1: Import Apple Data */}
+      <Section variant="sage" id="import">
+        <h2><span className="bold">IMPORT YOUR APPLE DATA</span></h2>
 
-        <h2 className="section-subheading"><span className="bold">Shared Structures</span></h2>
+        <div className="grid-2">
+          <div>
+            <p>Your iPhone already has years of data &mdash; contacts, messages, health records, photos, notes. FoldDB imports it all into a single, private database on your Mac.</p>
+            <p><span className="bold white">No cloud upload. No third-party access. Just your data, organized and searchable.</span></p>
+            <p>Supported sources:</p>
+            <pre className="compare-table">{
+`  `}<span style={{color:'#b8bb26'}}>Contacts</span>{`       address book, relationships
+  `}<span style={{color:'#b8bb26'}}>Messages</span>{`       iMessage + SMS history
+  `}<span style={{color:'#b8bb26'}}>Health</span>{`         workouts, vitals, sleep
+  `}<span style={{color:'#b8bb26'}}>Photos</span>{`         library with metadata
+  `}<span style={{color:'#b8bb26'}}>Notes</span>{`          all notebooks and folders
+  `}<span style={{color:'#b8bb26'}}>Calendar</span>{`       events and reminders`}
+            </pre>
+          </div>
+          <Card>
+            <pre className="compare-table">{
+`  `}<span style={{color:'#fe8019'}}>$</span>{` folddb import --apple
 
-        <p>FoldDB structures are <span className="bold white">public and standardized</span>. They define how data is organized, what queries are possible, and how derived results are generated. Because structures are shared, applications can interact with any user database without migrations or custom integrations.</p>
+  `}<span style={{color:'#83a598'}}>Scanning</span>{` Apple data sources...
 
-        <h2 className="section-subheading"><span className="bold">Transforms</span></h2>
+  `}<span style={{color:'#b8bb26'}}>Found:</span>{`
+    2,847 contacts
+    41,203 messages
+    1,294 health records
+    8,621 photos
+    347 notes
 
-        <p>Transforms are deterministic functions attached to structures. They define how applications retrieve computed results from the database. Transform results are written back to a structure &mdash; which means they are <span className="bold white">subject to the same access restrictions as any other data</span>. A third party cannot see transform results unless they have explicit access to the output structure.</p>
+  `}<span style={{color:'#fabd2f'}}>Importing</span>{` into local FoldDB...
+  `}<span style={{color:'#b8bb26'}}>Done.</span>{` All data encrypted at rest.`}
+            </pre>
+          </Card>
+        </div>
+      </Section>
+
+      {/* Section 2: Encrypted Cloud Backup */}
+      <Section variant="rose" id="backup">
+        <h2><span className="bold">ENCRYPTED CLOUD BACKUP</span></h2>
+
+        <div className="grid-2">
+          <Card>
+            <pre className="compare-table">{
+`  `}<span style={{color:'#fabd2f'}}>Your Device</span>{`
+      |
+      | encrypted write log
+      v
+  `}<span style={{color:'#83a598'}}>Cloud Storage</span>{` (Backblaze B2)
+      |
+      `}<span style={{color:'#fb4934'}}>Cannot read your data</span>{`
+      |
+      v
+  `}<span style={{color:'#fabd2f'}}>Your Other Devices</span>{`
+      |
+      | decrypt locally
+      v
+  `}<span style={{color:'#b8bb26'}}>Full sync</span>
+            </pre>
+          </Card>
+          <div>
+            <p>Your database syncs across devices through encrypted cloud backup. <span className="bold white">The cloud stores ciphertext &mdash; it cannot read, index, or monetize your data.</span></p>
+            <p>Every write is encrypted before it leaves your device. Every read is decrypted locally. The server is a dumb pipe.</p>
+
+            <div className="privacy-badge">
+              <Label color="green">ZERO-KNOWLEDGE</Label>
+              <span>Cloud infrastructure never sees plaintext</span>
+            </div>
+            <div className="privacy-badge">
+              <Label color="green">DEVICE-SIDE KEYS</Label>
+              <span>Encryption keys live on your hardware</span>
+            </div>
+            <div className="privacy-badge">
+              <Label color="green">APPEND-ONLY LOG</Label>
+              <span>Full audit trail of every change</span>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Section 3: Discovery */}
+      <Section variant="lavender" id="discovery">
+        <h2><span className="bold">FIND YOUR PEOPLE</span></h2>
+        <p className="section-subtitle dim">Privacy-preserving discovery</p>
+
+        <p>FoldDB lets you discover people with shared interests, skills, or experiences &mdash; <span className="bold white">without revealing who you are or what you know until you choose to.</span></p>
+
+        <div className="grid-3">
+          <Card>
+            <p><Label color="purple">BROADCAST</Label></p>
+            <p>Publish anonymized embeddings of your interests and expertise. Others can find semantic matches without seeing your raw data.</p>
+          </Card>
+          <Card>
+            <p><Label color="purple">MATCH</Label></p>
+            <p>Discover people whose data overlaps with yours. The system finds connections &mdash; you decide which ones to pursue.</p>
+          </Card>
+          <Card>
+            <p><Label color="purple">CONNECT</Label></p>
+            <p>When both parties opt in, establish an end-to-end encrypted channel. Share exactly what you want, nothing more.</p>
+          </Card>
+        </div>
 
         <pre className="compare-table">{
-`  Structure: `}<span className="bold white">{`Messages`}</span>{`
-
-    Fields    `}<span className="dim">{`id · sender · recipient · timestamp · body`}</span>{`
-
-    Transforms
-      `}<span style={{color:'#fe8019'}}>{`inbox`}</span><span className="dim">{`(user_id)`}</span>{`
-      `}<span style={{color:'#fe8019'}}>{`conversation`}</span><span className="dim">{`(user_a, user_b)`}</span>{`
-      `}<span style={{color:'#fe8019'}}>{`semantic_search`}</span><span className="dim">{`(query)`}</span>{`
-      `}<span style={{color:'#fe8019'}}>{`unread_count`}</span><span className="dim">{`(user_id)`}</span>
+`
+  `}<span style={{color:'#d3869b'}}>You</span>{`                                    `}<span style={{color:'#d3869b'}}>Them</span>{`
+   |                                       |
+   | anonymized embedding                  | anonymized embedding
+   v                                       v
+  `}<span style={{color:'#83a598'}}>{`+-------------------------------------------+`}</span>{`
+  `}<span style={{color:'#83a598'}}>{`|`}</span>{`          `}<span className="bold white">Discovery Network</span>{`                 `}<span style={{color:'#83a598'}}>{`|`}</span>{`
+  `}<span style={{color:'#83a598'}}>{`|`}</span>{`    `}<span className="dim">semantic matching, no raw data</span>{`        `}<span style={{color:'#83a598'}}>{`|`}</span>{`
+  `}<span style={{color:'#83a598'}}>{`+-------------------------------------------+`}</span>{`
+                      |
+                `}<span style={{color:'#b8bb26'}}>mutual opt-in</span>{`
+                      |
+              `}<span style={{color:'#fabd2f'}}>E2E encrypted channel</span>
         </pre>
 
-        <p>Transforms execute locally. Their outputs are stored in structures with their own access policies &mdash; <span className="bold white">no data is ever exposed without explicit permission</span>.</p>
-
-        <h2 className="section-subheading"><span className="bold">Semantic Index</span></h2>
-
-        <p>FoldDB maintains a <span className="bold white">unified semantic index</span> across all user data &mdash; documents, messages, photos, code, notes, structured records. Search becomes semantic rather than schema-bound. Applications can discover relevant data even when they were never designed to interact.</p>
-
-        <h2 className="section-subheading"><span className="bold">AI-Assisted Ingestion</span></h2>
-
-        <p>Incoming data is automatically normalized using opinionated ingestion pipelines. <span className="bold white">Users do not configure schemas or pipelines.</span> Data becomes usable immediately.</p>
+        <p><span className="bold white">No social graph is stored on any server.</span> Connections exist only on participant devices.</p>
       </Section>
 
-      <Section variant="lavender" id="discovery">
-        <h2><span className="bold">PRIVACY-PRESERVING DISCOVERY</span></h2>
+      {/* Section 4: Auto Social Features */}
+      <Section variant="amber" id="social">
+        <h2><span className="bold">SOCIAL FEATURES, BUILT IN</span></h2>
 
-        <p>FoldDB allows <span className="bold white">discovery without revealing raw data</span>. Anonymized vector embeddings allow systems to query for the existence of semantic information without exposing the data itself or its origin.</p>
+        <p>Once your data is in FoldDB and discovery is active, social features emerge automatically. No separate app required.</p>
 
-        <p>Everyone shares the same publicly available structures. Third-party apps can write code that fetches and writes to user&rsquo;s data locally. This enables new types of collaboration while preserving privacy.</p>
+        <div className="grid-2">
+          <Card>
+            <p><Label color="yellow">SHARED INTERESTS</Label></p>
+            <p>FoldDB surfaces people near you with overlapping interests, reading lists, music taste, or professional skills &mdash; all derived from your local data, never uploaded.</p>
+          </Card>
+          <Card>
+            <p><Label color="yellow">GROUP FORMATION</Label></p>
+            <p>When enough people share a semantic cluster, FoldDB suggests a group. Encrypted group channels form on-device. No server-side group management.</p>
+          </Card>
+          <Card>
+            <p><Label color="yellow">LOCAL EVENTS</Label></p>
+            <p>Discover nearby activities matching your interests. Event data is broadcast as anonymized embeddings &mdash; you see what is relevant without revealing your location to a platform.</p>
+          </Card>
+          <Card>
+            <p><Label color="yellow">DIRECT MESSAGING</Label></p>
+            <p>End-to-end encrypted messaging between connected users. Messages stored in your FoldDB, searchable alongside all your other data. No message server.</p>
+          </Card>
+        </div>
       </Section>
 
-      <Section variant="slate" id="status">
-        <h2><span className="bold">STATUS</span> <span className="dim">Experimental &mdash; in active development</span></h2>
+      {/* Privacy Promise */}
+      <Section variant="sage" id="privacy">
+        <h2><span className="bold">THE PRIVACY PROMISE</span></h2>
 
-        <p>FoldDB is an <span className="bold white">experimental system</span> under active development.</p>
+        <div className="grid-3">
+          <Card>
+            <p><Label color="green">YOUR DEVICE</Label></p>
+            <p>All data lives on your hardware. Computation happens locally. Your device is the database server.</p>
+          </Card>
+          <Card>
+            <p><Label color="green">YOUR KEYS</Label></p>
+            <p>Encryption keys never leave your device. No platform, including us, can read your data.</p>
+          </Card>
+          <Card>
+            <p><Label color="green">YOUR CHOICE</Label></p>
+            <p>Every piece of data shared with another person or app requires your explicit permission. Revoke access at any time.</p>
+          </Card>
+        </div>
+      </Section>
 
-        <p>FoldDB explores whether modern technology can support a new model of computing: <span className="bold white">one permanent database for every person</span>. A system where data is private, computation is local, and applications are temporary tools rather than permanent custodians.</p>
+      {/* Download CTA */}
+      <Section variant="slate" id="download">
+        <h2><span className="bold">GET STARTED</span></h2>
 
-        <p>Early releases focus on local encrypted storage, shared structures, transform execution, and semantic indexing.</p>
+        <div className="download-block">
+          <div className="download-option">
+            <p><Label color="blue">MAC APP</Label></p>
+            <a href="https://github.com/shiba4life/fold_db/releases/latest" target="_blank" rel="noreferrer" className="btn-primary">Download FoldDB.dmg</a>
+            <p className="dim">macOS 13+ &middot; Apple Silicon &amp; Intel</p>
+          </div>
+
+          <div className="download-divider dim">or</div>
+
+          <div className="download-option">
+            <p><Label color="blue">HOMEBREW</Label></p>
+            <pre className="compare-table brew-block">brew install --cask folddb</pre>
+          </div>
+        </div>
 
         <p>
           <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Read the Paper]</a>{'  '}
           <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5 Version]</a>{'  '}
           <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer" className="link-btn">[View on GitHub]</a>{'  '}
           <Link to="/developer" className="link-btn">[Developer Guide]</Link>{'  '}
-          <a href="https://schema.folddb.com" target="_blank" rel="noreferrer" className="link-btn">[Schema Registry]</a>
+          <Link to="/encryption" className="link-btn">[Encryption Details]</Link>
         </p>
       </Section>
 

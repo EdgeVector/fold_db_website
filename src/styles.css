@@ -69,6 +69,121 @@ a:hover { color: #b8bb26; }
   margin: 0.5em 0;
 }
 
+/* hero */
+.hero {
+  text-align: center;
+  padding: 1.5em 0 1em;
+}
+.hero-headline {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #fe8019;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+.hero-sub {
+  font-size: 1em;
+  color: #a89984;
+  max-width: 70ch;
+  margin: 0.5em auto;
+  line-height: 1.6;
+}
+.hero-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1.5em;
+  flex-wrap: wrap;
+}
+.hero-or {
+  font-size: 0.9em;
+}
+
+/* primary button */
+.btn-primary {
+  display: inline-block;
+  background: #fe8019;
+  color: #282828;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 24px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.btn-primary:hover {
+  background: #fabd2f;
+  color: #282828;
+}
+.btn-nav {
+  padding: 4px 14px;
+  font-size: 13px;
+}
+
+/* brew command inline */
+.brew-cmd {
+  background: #3c3836;
+  border: 1px solid #504945;
+  padding: 8px 16px;
+  color: #b8bb26;
+  font: inherit;
+}
+
+/* section subtitle */
+.section-subtitle {
+  margin-top: -0.3em;
+  margin-bottom: 0.8em;
+}
+
+/* privacy badges */
+.privacy-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0.5em 0;
+}
+
+/* video embed */
+.video-embed {
+  margin: 1em 0;
+}
+.video-placeholder {
+  background: #1d2021;
+  border: 1px solid #504945;
+  padding: 4em 2em;
+  text-align: center;
+  aspect-ratio: 16 / 9;
+  max-width: 80ch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* download block */
+.download-block {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  margin: 1.5em 0;
+  flex-wrap: wrap;
+}
+.download-option {
+  flex: 1;
+  min-width: 200px;
+}
+.download-divider {
+  font-size: 1em;
+}
+.brew-block {
+  background: #282828;
+  border: 1px solid #504945;
+  padding: 10px 16px;
+  color: #b8bb26;
+  display: inline-block;
+}
+
 /* navigation */
 .site-nav {
   display: flex;
@@ -143,12 +258,17 @@ a:hover { color: #b8bb26; }
 /* responsive */
 @media (max-width: 900px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .download-block { flex-direction: column; align-items: flex-start; gap: 1em; }
+  .download-divider { display: none; }
 }
 
 @media (max-width: 600px) {
   body { font-size: 13px; }
+  .hero-headline { font-size: 1.5em; }
+  .hero-sub { font-size: 0.95em; }
   .tagline { font-size: 1.5em; }
   .typing-line { font-size: 1.3em; }
+  .hero-cta { flex-direction: column; gap: 8px; }
 
   .nav-toggle { display: block; }
   .nav-links {

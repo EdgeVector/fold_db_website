@@ -33,6 +33,7 @@ export default function Nav() {
           <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>
         ))}
         <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer" className="link-btn">[GitHub]</a>
+        <a href="https://github.com/shiba4life/fold_db/releases/latest" target="_blank" rel="noreferrer" className="btn-primary btn-nav">Download</a>
       </div>
     </nav>
   );
