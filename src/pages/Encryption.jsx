@@ -392,15 +392,15 @@ const hits = await fetch(
         <div className="grid-3">
           <Card><p><Label color="yellow">DESIGN DOC</Label></p><p>
             Full encryption architecture, threat model, and implementation plan.<br />
-            <a href="https://github.com/shiba4life/fold_db/blob/master/docs/DESIGN_E2E_ENCRYPTION.md" target="_blank" rel="noreferrer">DESIGN_E2E_ENCRYPTION.md</a></p></Card>
+            <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/DESIGN_E2E_ENCRYPTION.md" target="_blank" rel="noreferrer">DESIGN_E2E_ENCRYPTION.md</a></p></Card>
 
           <Card><p><Label color="yellow">ARCHITECTURE</Label></p><p>
             Fold DB storage architecture, encryption layer, and local API design.<br />
-            <a href="https://github.com/shiba4life/fold_db/blob/master/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer">ARCHITECTURE.md</a></p></Card>
+            <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer">ARCHITECTURE.md</a></p></Card>
 
           <Card><p><Label color="yellow">SOURCE CODE</Label></p><p>
             FoldDB is open source. Browse the code, file issues, or contribute.<br />
-            <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer">github.com/shiba4life/fold_db</a></p></Card>
+            <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db</a></p></Card>
         </div>
       </Section>
 

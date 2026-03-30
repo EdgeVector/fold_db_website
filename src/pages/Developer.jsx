@@ -38,10 +38,10 @@ export default function Developer() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
-            <pre>curl -fsSL https://raw.githubusercontent.com/shiba4life/fold_db/master/install.sh | sh</pre>
+            <pre>curl -fsSL https://raw.githubusercontent.com/EdgeVector/fold_db/master/install.sh | sh</pre>
             <p className="dim">Auto-detects macOS (Apple Silicon / Intel) and Linux x86_64</p>
             <p>Or from source:</p>
-            <pre>cargo install --git https://github.com/shiba4life/fold_db.git --bin folddb</pre></Card>
+            <pre>cargo install --git https://github.com/EdgeVector/fold_db.git --bin folddb</pre></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
             <pre>export FOLD_OPENROUTER_API_KEY=&quot;sk-...&quot;</pre>
@@ -232,7 +232,7 @@ Files / JSON / APIs
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
         <p>Most integrations use the HTTP API at <span className="bold">localhost:9001</span>. All endpoints accept and return JSON.</p>
-        <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer">the source on GitHub</a>.</p>
+        <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">the source on GitHub</a>.</p>
 
         <div className="grid-2">
           <Card>
@@ -482,7 +482,7 @@ FOLD_UPLOAD_STORAGE_MODE         Upload storage ("s3" for cloud)`}</pre>
         <div className="grid-2">
           <Card>
             <p><Label color="green">LOCAL DEVELOPMENT</Label></p>
-            <pre>{`git clone https://github.com/shiba4life/fold_db
+            <pre>{`git clone https://github.com/EdgeVector/fold_db
 cd fold_db
 ./run.sh --local                       # Backend + React UI`}</pre>
             <p className="dim">Always use run.sh &mdash; never start services manually</p>
@@ -510,13 +510,13 @@ npm run lint                           # ESLint`}</pre>
             <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer">fold_db_paper.pdf</a></p></Card>
 
           <Card><p><Label color="blue">INGESTION GUIDE</Label></p><p>
-            AI-powered data ingestion &mdash; <a href="https://github.com/shiba4life/fold_db/blob/master/INGESTION_README.md" target="_blank" rel="noreferrer">INGESTION_README.md</a></p></Card>
+            AI-powered data ingestion &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/INGESTION_README.md" target="_blank" rel="noreferrer">INGESTION_README.md</a></p></Card>
 
           <Card><p><Label color="blue">AI QUERY GUIDE</Label></p><p>
-            Natural language queries &mdash; <a href="https://github.com/shiba4life/fold_db/blob/master/docs/AI_QUERY_USAGE_GUIDE.md" target="_blank" rel="noreferrer">AI_QUERY_USAGE_GUIDE.md</a></p></Card>
+            Natural language queries &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/AI_QUERY_USAGE_GUIDE.md" target="_blank" rel="noreferrer">AI_QUERY_USAGE_GUIDE.md</a></p></Card>
 
           <Card><p><Label color="blue">ARCHITECTURE</Label></p><p>
-            System design and patterns &mdash; <a href="https://github.com/shiba4life/fold_db/blob/master/docs/Unified_Architecture.md" target="_blank" rel="noreferrer">Unified_Architecture.md</a></p></Card>
+            System design and patterns &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/Unified_Architecture.md" target="_blank" rel="noreferrer">Unified_Architecture.md</a></p></Card>
         </div>
       </Section>
 

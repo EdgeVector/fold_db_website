@@ -38,15 +38,15 @@ export default function Guide() {
         <div className="grid-2">
           <Card><p><Label color="green">macOS APP</Label></p>
             <p>Download the <span className="bold">.dmg</span> from GitHub releases. Open the file and drag FoldDB to your Applications folder.</p>
-            <pre><a href="https://github.com/shiba4life/fold_db/releases" target="_blank" rel="noreferrer">github.com/shiba4life/fold_db/releases</a></pre>
+            <pre><a href="https://github.com/EdgeVector/fold_db/releases" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db/releases</a></pre>
             <p className="dim">Available for Apple Silicon and Intel Macs</p></Card>
 
           <Card><p><Label color="green">HOMEBREW</Label></p>
-            <pre>brew install shiba4life/tap/folddb</pre>
+            <pre>brew install EdgeVector/tap/folddb</pre>
             <p className="dim">Installs folddb and folddb_server binaries</p></Card>
 
           <Card><p><Label color="green">CURL INSTALL SCRIPT</Label></p>
-            <pre>curl -fsSL https://raw.githubusercontent.com/shiba4life/fold_db/master/install.sh | sh</pre>
+            <pre>curl -fsSL https://raw.githubusercontent.com/EdgeVector/fold_db/master/install.sh | sh</pre>
             <p className="dim">Auto-detects macOS (Apple Silicon / Intel) and Linux x86_64</p></Card>
 
           <Card><p><Label color="green">BUILD FROM SOURCE</Label></p>
