@@ -7,14 +7,14 @@ export default function Footer() {
       </p>
       <p>
         <span className="dim">PROJECT</span>{'  '}
-        <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer">GitHub</a>{'  '}
-        <a href="https://github.com/shiba4life/fold_db/blob/master/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a>
+        <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">GitHub</a>{'  '}
+        <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a>
       </p>
       <p>
         <span className="dim">LINKS</span>{'    '}
         <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">Schema Registry</a>{'  '}
-        <a href="https://github.com/shiba4life/fold_db/issues" target="_blank" rel="noreferrer">Issues</a>{'  '}
-        <a href="https://github.com/shiba4life/fold_db/discussions" target="_blank" rel="noreferrer">Discussions</a>
+        <a href="https://github.com/EdgeVector/fold_db/issues" target="_blank" rel="noreferrer">Issues</a>{'  '}
+        <a href="https://github.com/EdgeVector/fold_db/discussions" target="_blank" rel="noreferrer">Discussions</a>
       </p>
       <p className="dim">&copy; 2025-2026 Fold DB &mdash; Built in the open</p>
     </footer>

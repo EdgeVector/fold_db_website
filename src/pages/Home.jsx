@@ -159,7 +159,7 @@ export default function Home() {
         <p>
           <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Read the Paper]</a>{'  '}
           <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5 Version]</a>{'  '}
-          <a href="https://github.com/shiba4life/fold_db" target="_blank" rel="noreferrer" className="link-btn">[View on GitHub]</a>{'  '}
+          <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer" className="link-btn">[View on GitHub]</a>{'  '}
           <Link to="/developer" className="link-btn">[Developer Guide]</Link>{'  '}
           <a href="https://schema.folddb.com" target="_blank" rel="noreferrer" className="link-btn">[Schema Registry]</a>
         </p>
