@@ -1,0 +1,54 @@
+name: CI
+
+# PR-time validation for the fold_db_website Vite app.
+# Runs `npm ci` + `npm run build` to catch broken builds before merge.
+
+on:
+  pull_request:
+  merge_group:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Vite build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+  # Org-wide convention: every EdgeVector repo exposes a check named
+  # `ci-required` so the org ruleset can require a single uniform check
+  # across all repos.
+  ci-required:
+    name: ci-required
+    needs: [build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: All required jobs must succeed
+        env:
+          RESULTS: ${{ join(needs.*.result, ',') }}
+        run: |
+          echo "Required job results: $RESULTS"
+          for r in ${RESULTS//,/ }; do
+            if [ "$r" != "success" ]; then
+              echo "::error::A required job did not succeed (result: $r)"
+              exit 1
+            fi
+          done
+          echo "All required jobs passed."
