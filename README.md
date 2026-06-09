@@ -1,85 +1,67 @@
 # FoldDB Website
 
-The official marketing website for [FoldDB](https://github.com/EdgeVector/fold_db) — The Open Data Ownership Platform.
-
-![FoldDB](https://img.shields.io/badge/Built%20with-Rust-orange?logo=rust)
-![License](https://img.shields.io/badge/license-MIT%20%2F%20Apache--2.0-blue)
+The official marketing website for **FoldDB — The Last Database**, an
+experimental self-managing database designed to outlive applications.
+Live at **[folddb.com](https://folddb.com)**.
 
 ## 🌐 Overview
 
-This is a static marketing website showcasing FoldDB's features and capabilities to developers. It includes:
+A React + Vite single-page app deployed to Vercel. It explains the
+FoldDB model and points developers at the install path and docs. Pages:
 
-- **Hero Section** — Eye-catching introduction with terminal animation
-- **Features Grid** — 8 key capabilities (AI ingestion, NL queries, serverless, etc.)
-- **Code Examples** — Interactive tabs with Rust and TypeScript snippets
-- **Quick Start Guide** — 4-step installation process
-- **Architecture Diagram** — Visual overview of the system layers
-- **CTA & Footer** — Links to GitHub, docs, and resources
+- **Home** (`/`) — the pitch: one permanent database for a person's data
+- **Guide** (`/guide`) — install, run, and use FoldDB
+- **Developer** (`/developer`) — quick start, HTTP API, code examples, contributing
+- **Encryption** (`/encryption`) — the end-to-end encryption model
 
-## 🚀 Quick Start
-
-### Local Development
+## 🚀 Local development
 
 ```bash
-# Serve locally with Python
-python3 -m http.server 8080
-
-# Or with Node.js
-npx serve .
+npm install
+npm run dev        # Vite dev server on http://localhost:5175
 ```
 
-Then open [http://localhost:8080](http://localhost:8080)
+Build and preview the production bundle:
 
-### Deploy to GitHub Pages
+```bash
+npm run build      # outputs to dist/
+npm run preview
+```
 
-1. Go to repository Settings → Pages
-2. Set source to "Deploy from a branch"
-3. Select `main` branch and `/` (root)
-4. Save and wait for deployment
+## 📦 Deployment
 
-## 📁 Project Structure
+Hosted on **Vercel** (see `vercel.json`). Pushes to `main` deploy
+automatically; the custom domain `folddb.com` is set via `public/CNAME`.
+SPA routes are handled by the catch-all rewrite to `/index.html`.
+
+## 📁 Project structure
 
 ```
 fold_db_website/
-├── index.html      # Main HTML structure
-├── styles.css      # All styling (CSS variables, responsive)
-├── script.js       # Interactive features (tabs, copy, animations)
-├── .gitignore      # Git ignore rules
-└── README.md       # This file
+├── index.html              # Vite entry HTML
+├── vite.config.js          # Vite + React config (dev server on :5175)
+├── vercel.json             # Vercel build + SPA rewrite config
+├── src/
+│   ├── main.jsx            # React entry
+│   ├── App.jsx             # Router + layout
+│   ├── styles.css          # Global styles
+│   ├── components/         # Nav, Footer, Card, Mermaid, animations, ...
+│   └── pages/              # Home, Guide, Developer, Encryption, NotFound
+└── public/
+    ├── CNAME               # folddb.com
+    ├── papers/             # FoldDB paper PDFs (full + ELI5)
+    ├── robots.txt, sitemap.xml, favicon.png
 ```
 
-## ✨ Features
+## 🛠 Tech stack
 
-- **Premium Dark Theme** — Modern gradient orbs with glassmorphism effects
-- **Fully Responsive** — Mobile-first design with hamburger navigation
-- **Interactive Code Examples** — Tab switching with copy-to-clipboard
-- **Scroll Animations** — Intersection Observer for reveal effects
-- **Zero Dependencies** — Pure HTML, CSS, and vanilla JavaScript
+- **React 18** + **react-router-dom** (client-side routing)
+- **Vite 5** (dev server + build)
+- **react-helmet-async** (per-page `<title>`/meta for SEO)
+- **mermaid** (architecture diagrams)
 
-## 🎨 Design System
+## 🔗 Related
 
-### Colors
-
-| Variable             | Value     | Usage                    |
-| -------------------- | --------- | ------------------------ |
-| `--primary`          | `#6366f1` | Primary accent (indigo)  |
-| `--accent`           | `#22d3ee` | Secondary accent (cyan)  |
-| `--accent-secondary` | `#a855f7` | Tertiary accent (purple) |
-| `--bg-dark`          | `#0a0a0f` | Background               |
-| `--text-primary`     | `#f1f5f9` | Primary text             |
-
-### Typography
-
-- **Sans**: Inter (headings, body)
-- **Mono**: JetBrains Mono (code, terminal)
-
-## 📄 License
-
-This website is part of the FoldDB project and is dual-licensed under:
-
-- [MIT License](https://opensource.org/licenses/MIT)
-- [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
----
-
-Built with ❤️ for the FoldDB community
+- **Install FoldDB:** `brew install edgevector/folddb/folddb` ([Homebrew tap](https://github.com/EdgeVector/homebrew-folddb))
+- **Source:** [github.com/EdgeVector/fold_db](https://github.com/EdgeVector/fold_db) (the original public repo; development has since moved to the private `EdgeVector/fold` monorepo)
+- **Schema registry:** [schema.folddb.com](https://schema.folddb.com)

@@ -3,12 +3,12 @@ export default function Footer() {
     <footer className="site-footer">
       <p>
         <span className="bold white">folddb</span>{' '}
-        <span className="dim">v0.3.0  The Last Database. An experimental self-managing database for your data.</span>
+        <span className="dim">v0.9.2  The Last Database. An experimental self-managing database for your data.</span>
       </p>
       <p>
         <span className="dim">PROJECT</span>{'  '}
         <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">GitHub</a>{'  '}
-        <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a>
+        <a href="https://github.com/EdgeVector/fold_db/blob/main/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a>
       </p>
       <p>
         <span className="dim">LINKS</span>{'    '}
