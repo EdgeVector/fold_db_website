@@ -38,8 +38,8 @@ export default function Developer() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
-            <pre>curl -fsSL https://raw.githubusercontent.com/EdgeVector/fold_db/master/install.sh | sh</pre>
-            <p className="dim">Auto-detects macOS (Apple Silicon / Intel) and Linux x86_64</p>
+            <pre>brew install edgevector/folddb/folddb</pre>
+            <p className="dim">Installs the folddb and folddb_server binaries (macOS &amp; Linux)</p>
             <p>Or from source:</p>
             <pre>cargo install --git https://github.com/EdgeVector/fold_db.git --bin folddb</pre></Card>
 
@@ -509,14 +509,15 @@ npm run lint                           # ESLint`}</pre>
             &ldquo;Fold DB: Compute Without Exposure&rdquo; &mdash; formal model, proofs, and architecture.<br />
             <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer">fold_db_paper.pdf</a></p></Card>
 
-          <Card><p><Label color="blue">INGESTION GUIDE</Label></p><p>
-            AI-powered data ingestion &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/INGESTION_README.md" target="_blank" rel="noreferrer">INGESTION_README.md</a></p></Card>
+          <Card><p><Label color="blue">ELI5 PAPER</Label></p><p>
+            A plain-language walkthrough of the same ideas, no formal notation.<br />
+            <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer">fold_db_paper_eli5.pdf</a></p></Card>
 
-          <Card><p><Label color="blue">AI QUERY GUIDE</Label></p><p>
-            Natural language queries &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/AI_QUERY_USAGE_GUIDE.md" target="_blank" rel="noreferrer">AI_QUERY_USAGE_GUIDE.md</a></p></Card>
+          <Card><p><Label color="blue">PROJECT GOALS</Label></p><p>
+            What Fold DB is trying to be &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/main/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a></p></Card>
 
-          <Card><p><Label color="blue">ARCHITECTURE</Label></p><p>
-            System design and patterns &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/master/docs/Unified_Architecture.md" target="_blank" rel="noreferrer">Unified_Architecture.md</a></p></Card>
+          <Card><p><Label color="blue">SOURCE</Label></p><p>
+            Browse the code &mdash; <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db</a></p></Card>
         </div>
       </Section>
 

@@ -42,12 +42,12 @@ export default function Guide() {
             <p className="dim">Available for Apple Silicon and Intel Macs</p></Card>
 
           <Card><p><Label color="green">HOMEBREW</Label></p>
-            <pre>brew install EdgeVector/tap/folddb</pre>
-            <p className="dim">Installs folddb and folddb_server binaries</p></Card>
+            <pre>brew install edgevector/folddb/folddb</pre>
+            <p className="dim">Installs folddb and folddb_server binaries (macOS &amp; Linux)</p></Card>
 
-          <Card><p><Label color="green">CURL INSTALL SCRIPT</Label></p>
-            <pre>curl -fsSL https://raw.githubusercontent.com/EdgeVector/fold_db/master/install.sh | sh</pre>
-            <p className="dim">Auto-detects macOS (Apple Silicon / Intel) and Linux x86_64</p></Card>
+          <Card><p><Label color="green">UPGRADE</Label></p>
+            <pre>brew upgrade folddb</pre>
+            <p className="dim">Pulls the latest release from the Homebrew tap</p></Card>
 
           <Card><p><Label color="green">BUILD FROM SOURCE</Label></p>
             <p>Need full control? Clone the repo and build with Cargo.</p>
