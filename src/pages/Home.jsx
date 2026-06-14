@@ -30,6 +30,8 @@ export default function Home() {
       <hr className="decorative-rule" aria-hidden="true" />
       <br />
 
+      <p className="lead-statement"><span className="bold white">Your AI runs your database, and your database can talk directly to other people&rsquo;s databases.</span></p>
+
       <p>Modern software forces people to scatter their data across hundreds of services. Every application creates its own database. Every database traps your information.</p>
 
       <p><span className="bold white">FoldDB is an experiment in inverting this model.</span></p>

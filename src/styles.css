@@ -14,6 +14,7 @@ p { margin: 0.8em 0; }
 h2 { font-size: inherit; font-weight: 700; margin: 1em 0 0.5em; }
 .tagline { font-size: 2em; font-weight: 700; color: #fe8019; margin: 0.3em 0; }
 .typing-line { font-size: 1.8em; color: #fabd2f; margin: 0.2em 0; }
+.lead-statement { font-size: 1.2em; line-height: 1.5; margin: 0.8em 0 1.2em; }
 .cursor { animation: blink 0.7s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
