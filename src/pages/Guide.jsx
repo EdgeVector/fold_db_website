@@ -36,14 +36,17 @@ export default function Guide() {
         <h2 id="install"><span className="bold">INSTALL</span> <span className="dim">Choose your platform</span></h2>
 
         <div className="grid-2">
-          <Card><p><Label color="green">macOS APP</Label></p>
-            <p>Download the <span className="bold">.dmg</span> from GitHub releases. Open the file and drag FoldDB to your Applications folder.</p>
-            <pre><a href="https://github.com/EdgeVector/fold_db/releases" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db/releases</a></pre>
-            <p className="dim">Available for Apple Silicon and Intel Macs</p></Card>
-
-          <Card><p><Label color="green">HOMEBREW</Label></p>
+          <Card><p><Label color="green">HOMEBREW</Label> <span className="dim">recommended</span></p>
             <pre>brew install edgevector/folddb/folddb</pre>
-            <p className="dim">Installs folddb and folddb_server binaries (macOS &amp; Linux)</p></Card>
+            <p className="dim">Installs folddb and folddb_server binaries (macOS &amp; Linux). Auto-detects your chip; <span className="bold">brew upgrade folddb</span> keeps it current.</p></Card>
+
+          <Card><p><Label color="green">macOS APP</Label> <span className="dim">no Homebrew needed</span></p>
+            <p>Download the signed <span className="bold">.dmg</span>, open it, and drag FoldDB to your Applications folder.</p>
+            <p>
+              <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/FoldDB-aarch64.dmg">[Download for Mac &mdash; Apple Silicon]</a><br />
+              <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/FoldDB-x86_64.dmg">[Download &mdash; Intel Mac]</a>
+            </p>
+            <p className="dim">Signed &amp; notarized by Apple; always the latest release. Macs from ~2020 on are Apple Silicon.</p></Card>
 
           <Card><p><Label color="green">UPGRADE</Label></p>
             <pre>brew upgrade folddb</pre>
