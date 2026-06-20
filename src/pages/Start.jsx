@@ -31,7 +31,7 @@ export default function Start() {
       <Section variant="sage">
         <h2 id="humans"><span className="bold">FOR HUMANS</span> <span className="dim">How you&rsquo;ll actually work with it</span></h2>
 
-        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
+        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database that enforces access automatically on every read and write. The two apps are just two views into that one place:</p>
 
         <div className="grid-2">
           <Card><p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
