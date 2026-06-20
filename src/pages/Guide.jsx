@@ -8,10 +8,10 @@ export default function Guide() {
   return (
     <>
       <Helmet>
-        <title>User Guide - Fold DB</title>
-        <meta name="description" content="Get FoldDB running on your machine in minutes. Installation, setup, usage guide, and fold-based access control." />
-        <meta property="og:title" content="User Guide - Fold DB" />
-        <meta property="og:description" content="Get FoldDB running on your machine in minutes. Installation, setup, and fold-based data access." />
+        <title>User Guide - Last DB</title>
+        <meta name="description" content="Get LastDB running on your machine in minutes. Installation, setup, usage guide, and fold-based access control." />
+        <meta property="og:title" content="User Guide - Last DB" />
+        <meta property="og:description" content="Get LastDB running on your machine in minutes. Installation, setup, and fold-based data access." />
         <link rel="canonical" href="https://folddb.com/guide" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -25,9 +25,9 @@ export default function Guide() {
 
       <h1 className="tagline">User Guide</h1>
 
-      <p className="bold white">Fold DB has not launched yet. This guide describes the planned user experience. The project is in active development.</p>
+      <p className="bold white">Last DB has not launched yet. This guide describes the planned user experience. The project is in active development.</p>
 
-      <p>Get FoldDB running on your machine in minutes. No developer tools required &mdash; just install, launch, and start organizing your data with AI. Every query passes through <span className="bold">folds</span> that enforce access policies automatically.</p>
+      <p>Get LastDB running on your machine in minutes. No developer tools required &mdash; just install, launch, and start organizing your data with AI. Every query passes through <span className="bold">folds</span> that enforce access policies automatically.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -60,14 +60,14 @@ export default function Guide() {
 
       {/* RUN */}
       <Section variant="slate">
-        <h2 id="run"><span className="bold">RUN</span> <span className="dim">Launch FoldDB</span></h2>
+        <h2 id="run"><span className="bold">RUN</span> <span className="dim">Launch LastDB</span></h2>
 
         <Card style={{ maxWidth: '80ch' }}>
           <p><Label color="blue">START THE SERVER</Label></p>
           <pre>folddb_server</pre>
           <p>Then open your browser to:</p>
           <pre><a href="http://localhost:9001" target="_blank" rel="noreferrer">http://localhost:9001</a></pre>
-          <p>The FoldDB web UI loads automatically. No additional setup needed &mdash; the server is zero-config.</p>
+          <p>The LastDB web UI loads automatically. No additional setup needed &mdash; the server is zero-config.</p>
         </Card>
 
         <p className="dim">If you installed the macOS .dmg app, just open FoldDB from your Applications folder. The UI opens automatically.</p>
@@ -77,11 +77,11 @@ export default function Guide() {
       <Section variant="amber">
         <h2 id="setup"><span className="bold">SETUP WIZARD</span> <span className="dim">First-launch configuration</span></h2>
 
-        <p>The first time you open FoldDB, the onboarding wizard walks you through configuration.</p>
+        <p>The first time you open LastDB, the onboarding wizard walks you through configuration.</p>
 
         <div className="card-stack">
           <Card><p><Label color="yellow">STEP 1 &mdash; WELCOME</Label></p>
-            <p>Overview of what FoldDB does and how it organizes your data with AI.</p></Card>
+            <p>Overview of what LastDB does and how it organizes your data with AI.</p></Card>
 
           <Card><p><Label color="yellow">STEP 2 &mdash; CONFIGURE AI</Label></p>
             <p>Choose your AI provider:</p>
@@ -95,18 +95,18 @@ export default function Guide() {
               <span className="bold">Cloud</span> &mdash; AWS-backed storage with client-side encryption. Data is encrypted before leaving your device.</p></Card>
 
           <Card><p><Label color="yellow">STEP 4 &mdash; DONE</Label></p>
-            <p>Configuration saved. You&rsquo;re ready to start using FoldDB.</p>
+            <p>Configuration saved. You&rsquo;re ready to start using LastDB.</p>
             <p className="dim">You can change these settings anytime via the gear icon in the top-right corner of the UI.</p></Card>
         </div>
       </Section>
 
-      {/* USING FOLDDB */}
+      {/* USING LASTDB */}
       <Section variant="rose">
-        <h2 id="using"><span className="bold">USING FOLDDB</span> <span className="dim">What you can do</span></h2>
+        <h2 id="using"><span className="bold">USING LASTDB</span> <span className="dim">What you can do</span></h2>
 
         <div className="grid-2">
           <Card><p><Label color="red">INGEST DATA</Label></p>
-            <p>Upload files or paste JSON directly into FoldDB. AI automatically detects the structure, creates a schema, and extracts searchable keywords.</p>
+            <p>Upload files or paste JSON directly into LastDB. AI automatically detects the structure, creates a schema, and extracts searchable keywords.</p>
             <p className="dim">Supports JSON, CSV, text files, and more</p></Card>
 
           <Card><p><Label color="red">SEARCH</Label></p>
@@ -118,7 +118,7 @@ export default function Guide() {
             <p className="dim">Everything is organized automatically by schema</p></Card>
 
           <Card><p><Label color="red">SMART FOLDERS</Label></p>
-            <p>Point FoldDB at a directory on your machine. It scans for personal data files, processes them with AI, and ingests everything automatically.</p>
+            <p>Point LastDB at a directory on your machine. It scans for personal data files, processes them with AI, and ingests everything automatically.</p>
             <p className="dim">Great for importing documents, exports, and archives</p></Card>
 
           <Card><p><Label color="red">ACCESS CONTROL</Label></p>
@@ -149,7 +149,7 @@ export default function Guide() {
             <p>Check your API key in Settings (gear icon). Make sure you&rsquo;ve configured either OpenRouter or Ollama. For OpenRouter, verify your key at <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer">openrouter.ai/keys</a>. For Ollama, ensure it&rsquo;s running locally.</p></Card>
 
           <Card><p><Label color="blue">PORT ALREADY IN USE</Label></p>
-            <p>Another instance of FoldDB (or another application) is using port 9001. Stop the other process first:</p>
+            <p>Another instance of LastDB (or another application) is using port 9001. Stop the other process first:</p>
             <pre>{'lsof -i :9001    # Find what\'s using the port\nkill <PID>       # Stop it'}</pre></Card>
 
           <Card><p><Label color="blue">PERMISSION DENIED (macOS)</Label></p>

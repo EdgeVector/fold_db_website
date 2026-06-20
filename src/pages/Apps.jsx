@@ -8,17 +8,17 @@ export default function Apps() {
   return (
     <>
       <Helmet>
-        <title>Apps - Fold DB</title>
-        <meta name="description" content="fbrain and fkanban are open-source apps built on FoldDB. Each is a thin client over your own local FoldDB node — install FoldDB once, then add the apps. No account needed to use them." />
-        <meta property="og:title" content="Apps - Fold DB" />
-        <meta property="og:description" content="Install and use fbrain (a personal brain) and fkanban (a kanban board) on top of FoldDB." />
+        <title>Apps - Last DB</title>
+        <meta name="description" content="fbrain and fkanban are open-source apps built on LastDB. Each is a thin client over your own local LastDB node — install LastDB once, then add the apps. No account needed to use them." />
+        <meta property="og:title" content="Apps - Last DB" />
+        <meta property="og:description" content="Install and use fbrain (a personal brain) and fkanban (a kanban board) on top of LastDB." />
         <link rel="canonical" href="https://folddb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
-      <h1 className="tagline">Apps on FoldDB</h1>
+      <h1 className="tagline">Apps on LastDB</h1>
 
-      <p><span className="bold white">fbrain</span> and <span className="bold white">fkanban</span> are open-source apps (MIT) built on FoldDB. Each is a thin client over <span className="bold">your own local FoldDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install FoldDB once, then add an app in a couple of minutes.</p>
+      <p><span className="bold white">fbrain</span> and <span className="bold white">fkanban</span> are open-source apps (MIT) built on LastDB. Each is a thin client over <span className="bold">your own local LastDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install LastDB once, then add an app in a couple of minutes.</p>
 
       <p className="dim">Source: <a href="https://github.com/EdgeVector/fbrain" target="_blank" rel="noreferrer">github.com/EdgeVector/fbrain</a> &middot; <a href="https://github.com/EdgeVector/fkanban" target="_blank" rel="noreferrer">github.com/EdgeVector/fkanban</a></p>
 
@@ -29,8 +29,8 @@ export default function Apps() {
         <h2 id="prerequisites"><span className="bold">PREREQUISITES</span> <span className="dim">A node and a runtime</span></h2>
 
         <div className="grid-2">
-          <Card><p><Label color="green">1 &mdash; FOLDDB NODE</Label></p>
-            <p>The apps talk to a local FoldDB daemon. Install it from the Homebrew tap and start it:</p>
+          <Card><p><Label color="green">1 &mdash; LASTDB NODE</Label></p>
+            <p>The apps talk to a local LastDB daemon. Install it from the Homebrew tap and start it:</p>
             <pre>{`brew install edgevector/folddb/folddb
 brew services start folddb
 curl -s http://127.0.0.1:9001/api/health`}</pre>
@@ -47,7 +47,7 @@ curl -s http://127.0.0.1:9001/api/health`}</pre>
       <Section variant="slate">
         <h2 id="fbrain"><span className="bold">FBRAIN</span> <span className="dim">A personal brain</span></h2>
 
-        <p>A CLI knowledge base over FoldDB &mdash; eight record types (designs, tasks, concepts, preferences, references, agents, projects, spikes) with semantic search and an MCP server you can wire into any agent.</p>
+        <p>A CLI knowledge base over LastDB &mdash; eight record types (designs, tasks, concepts, preferences, references, agents, projects, spikes) with semantic search and an MCP server you can wire into any agent.</p>
 
         <div className="card-stack">
           <Card><p><Label color="blue">INSTALL</Label></p>
@@ -71,7 +71,7 @@ fbrain mcp                     # serve the MCP tools over stdio`}</pre>
       <Section variant="amber">
         <h2 id="fkanban"><span className="bold">FKANBAN</span> <span className="dim">A kanban board</span></h2>
 
-        <p>A kanban board over FoldDB. Cards move through columns (<span className="bold">backlog &rarr; todo &rarr; doing &rarr; review &rarr; done</span>) and every change persists in your node. Ships a CLI and an MCP server.</p>
+        <p>A kanban board over LastDB. Cards move through columns (<span className="bold">backlog &rarr; todo &rarr; doing &rarr; review &rarr; done</span>) and every change persists in your node. Ships a CLI and an MCP server.</p>
 
         <div className="card-stack">
           <Card><p><Label color="yellow">INSTALL</Label></p>
@@ -92,13 +92,13 @@ fkanban mcp                    # serve the MCP tools over stdio`}</pre>
 
       {/* HOW IT WORKS */}
       <Section variant="lavender">
-        <h2 id="how"><span className="bold">WHY NO ACCOUNT</span> <span className="dim">How apps work on FoldDB</span></h2>
+        <h2 id="how"><span className="bold">WHY NO ACCOUNT</span> <span className="dim">How apps work on LastDB</span></h2>
 
-        <p>Each app runs against <span className="bold">your own single-user node</span> &mdash; on FoldDB, the owner of the device is the owner of the data. An app is just a namespaced workspace over your local database, not a hosted service you log into.</p>
+        <p>Each app runs against <span className="bold">your own single-user node</span> &mdash; on LastDB, the owner of the device is the owner of the data. An app is just a namespaced workspace over your local database, not a hosted service you log into.</p>
 
         <p>The app&rsquo;s schemas are published <span className="bold">once</span> to the shared schema registry at <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">schema.folddb.com</a> by its author. When you run <span className="bold">init</span>, your node simply <span className="bold">resolves</span> those published schemas &mdash; a read-only lookup that needs no invite, key, or sign-up. Building and publishing a <span className="bold">new</span> app is the only path that requires a developer identity; see the <Link to="/developer">Developer Guide</Link>.</p>
 
-        <pre className="compare-table"><span className="dim">YOU WANT TO...                       WHAT YOU NEED</span>{'\n'}<span className="dim">{'─'.repeat(65)}</span>{'\n'}Run FoldDB + use fbrain / fkanban    Nothing &mdash; just install{'\n'}Build & publish your own app         A developer identity (see Developer)</pre>
+        <pre className="compare-table"><span className="dim">YOU WANT TO...                       WHAT YOU NEED</span>{'\n'}<span className="dim">{'─'.repeat(65)}</span>{'\n'}Run LastDB + use fbrain / fkanban    Nothing &mdash; just install{'\n'}Build & publish your own app         A developer identity (see Developer)</pre>
       </Section>
 
       <hr className="decorative-rule" aria-hidden="true" />

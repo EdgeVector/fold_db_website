@@ -10,14 +10,14 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>FoldDB - The Last Database</title>
-        <meta name="description" content="FoldDB is an experimental self-managing database designed to outlive applications. One permanent database for a person's data." />
-        <meta property="og:title" content="FoldDB - The Last Database" />
+        <title>LastDB - The Last Database</title>
+        <meta name="description" content="LastDB is an experimental self-managing database designed to outlive applications. One permanent database for a person's data." />
+        <meta property="og:title" content="LastDB - The Last Database" />
         <meta property="og:description" content="A database designed to outlive applications. Your data lives in one permanent database under your control. Applications no longer store your data — they interact with it." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://folddb.com" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="FoldDB - The Last Database" />
+        <meta name="twitter:title" content="LastDB - The Last Database" />
         <meta name="twitter:description" content="A database designed to outlive applications. One permanent database for a person's data." />
         <link rel="canonical" href="https://folddb.com" />
       </Helmet>
@@ -32,7 +32,7 @@ export default function Home() {
 
       <p>Modern software forces people to scatter their data across hundreds of services. Every application creates its own database. Every database traps your information.</p>
 
-      <p><span className="bold white">FoldDB is an experiment in inverting this model.</span></p>
+      <p><span className="bold white">LastDB is an experiment in inverting this model.</span></p>
 
       <p>Your data lives in one permanent database under your control. Applications no longer store your data &mdash; they interact with it.</p>
 
@@ -53,14 +53,14 @@ export default function Home() {
       </Section>
 
       <Section variant="sage" id="model">
-        <h2><span className="bold">THE FOLDDB MODEL</span></h2>
+        <h2><span className="bold">THE LASTDB MODEL</span></h2>
 
         <pre className="compare-table">{
 `  App A     App B     App C     App D     App E
     \\         |         |         |         /
      \\        |         |         |        /
       `}<span style={{color:'#fabd2f'}}>{`+----------------------------------------+`}</span>{`
-      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`          `}<span className="bold white">Your FoldDB Database</span>{`          `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`
+      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`          `}<span className="bold white">Your LastDB Database</span>{`          `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`
       `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`     `}<span className="dim">{`encrypted / local / permanent`}</span>{`      `}<span style={{color:'#fabd2f'}}>{`|`}</span>{`
       `}<span style={{color:'#fabd2f'}}>{`+----------------------------------------+`}</span>
         </pre>
@@ -110,7 +110,7 @@ export default function Home() {
 
         <h2 className="section-subheading"><span className="bold">Shared Structures</span></h2>
 
-        <p>FoldDB structures are <span className="bold white">public and standardized</span>. They define how data is organized, what queries are possible, and how derived results are generated. Because structures are shared, applications can interact with any user database without migrations or custom integrations.</p>
+        <p>LastDB structures are <span className="bold white">public and standardized</span>. They define how data is organized, what queries are possible, and how derived results are generated. Because structures are shared, applications can interact with any user database without migrations or custom integrations.</p>
 
         <h2 className="section-subheading"><span className="bold">Transforms</span></h2>
 
@@ -132,7 +132,7 @@ export default function Home() {
 
         <h2 className="section-subheading"><span className="bold">Semantic Index</span></h2>
 
-        <p>FoldDB maintains a <span className="bold white">unified semantic index</span> across all user data &mdash; documents, messages, photos, code, notes, structured records. Search becomes semantic rather than schema-bound. Applications can discover relevant data even when they were never designed to interact.</p>
+        <p>LastDB maintains a <span className="bold white">unified semantic index</span> across all user data &mdash; documents, messages, photos, code, notes, structured records. Search becomes semantic rather than schema-bound. Applications can discover relevant data even when they were never designed to interact.</p>
 
         <h2 className="section-subheading"><span className="bold">AI-Assisted Ingestion</span></h2>
 
@@ -142,7 +142,7 @@ export default function Home() {
       <Section variant="lavender" id="discovery">
         <h2><span className="bold">PRIVACY-PRESERVING DISCOVERY</span></h2>
 
-        <p>FoldDB allows <span className="bold white">discovery without revealing raw data</span>. Anonymized vector embeddings allow systems to query for the existence of semantic information without exposing the data itself or its origin.</p>
+        <p>LastDB allows <span className="bold white">discovery without revealing raw data</span>. Anonymized vector embeddings allow systems to query for the existence of semantic information without exposing the data itself or its origin.</p>
 
         <p>Everyone shares the same publicly available structures. Third-party apps can write code that fetches and writes to user&rsquo;s data locally. This enables new types of collaboration while preserving privacy.</p>
       </Section>
@@ -150,9 +150,9 @@ export default function Home() {
       <Section variant="slate" id="status">
         <h2><span className="bold">STATUS</span> <span className="dim">Experimental &mdash; in active development</span></h2>
 
-        <p>FoldDB is an <span className="bold white">experimental system</span> under active development.</p>
+        <p>LastDB is an <span className="bold white">experimental system</span> under active development.</p>
 
-        <p>FoldDB explores whether modern technology can support a new model of computing: <span className="bold white">one permanent database for every person</span>. A system where data is private, computation is local, and applications are temporary tools rather than permanent custodians.</p>
+        <p>LastDB explores whether modern technology can support a new model of computing: <span className="bold white">one permanent database for every person</span>. A system where data is private, computation is local, and applications are temporary tools rather than permanent custodians.</p>
 
         <p>Early releases focus on local encrypted storage, shared structures, transform execution, and semantic indexing.</p>
 
