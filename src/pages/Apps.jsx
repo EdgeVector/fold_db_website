@@ -9,16 +9,16 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - Fold DB</title>
-        <meta name="description" content="fbrain and fkanban are open-source apps built on FoldDB. Each is a thin client over your own local FoldDB node — install FoldDB once, then add the apps. No account needed to use them." />
+        <meta name="description" content="Brain and Kanban are open-source apps built on FoldDB. Each is a thin client over your own local FoldDB node — install FoldDB once, then add the apps. No account needed to use them." />
         <meta property="og:title" content="Apps - Fold DB" />
-        <meta property="og:description" content="Install and use fbrain (a personal brain) and fkanban (a kanban board) on top of FoldDB." />
+        <meta property="og:description" content="Install and use Brain (a personal brain) and Kanban (a kanban board) on top of FoldDB." />
         <link rel="canonical" href="https://folddb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">Apps on FoldDB</h1>
 
-      <p><span className="bold white">fbrain</span> and <span className="bold white">fkanban</span> are open-source apps (MIT) built on FoldDB. Each is a thin client over <span className="bold">your own local FoldDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install FoldDB once, then add an app in a couple of minutes.</p>
+      <p><span className="bold white">Brain</span> and <span className="bold white">Kanban</span> are open-source apps (MIT) built on FoldDB &mdash; the <span className="bold">fbrain</span> and <span className="bold">fkanban</span> command-line tools. Each is a thin client over <span className="bold">your own local FoldDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install FoldDB once, then add an app in a couple of minutes.</p>
 
       <p className="dim">Source: <a href="https://github.com/EdgeVector/fbrain" target="_blank" rel="noreferrer">github.com/EdgeVector/fbrain</a> &middot; <a href="https://github.com/EdgeVector/fkanban" target="_blank" rel="noreferrer">github.com/EdgeVector/fkanban</a></p>
 
@@ -43,9 +43,9 @@ curl -s http://127.0.0.1:9001/api/health`}</pre>
         </div>
       </Section>
 
-      {/* FBRAIN */}
+      {/* BRAIN */}
       <Section variant="slate">
-        <h2 id="fbrain"><span className="bold">FBRAIN</span> <span className="dim">A personal brain</span></h2>
+        <h2 id="fbrain"><span className="bold">BRAIN</span> <span className="dim">A personal brain &middot; the <span className="bold">fbrain</span> CLI</span></h2>
 
         <p>A CLI knowledge base over FoldDB &mdash; eight record types (designs, tasks, concepts, preferences, references, agents, projects, spikes) with semantic search and an MCP server you can wire into any agent.</p>
 
@@ -54,7 +54,7 @@ curl -s http://127.0.0.1:9001/api/health`}</pre>
             <pre>{`git clone https://github.com/EdgeVector/fbrain && cd fbrain
 bun install && bun link        # exposes a global \`fbrain\`
 fbrain init                    # bootstrap + resolve schemas`}</pre>
-            <p><span className="bold">init</span> resolves fbrain&rsquo;s published schemas from the cloud registry (no developer account or key required) and ends with a one-time consent prompt &mdash; press <span className="bold">y</span> to let fbrain read/write its own namespace on your node. Scripted install? Pass <span className="bold">fbrain init --grant-consent</span>.</p></Card>
+            <p><span className="bold">init</span> resolves Brain&rsquo;s published schemas from the cloud registry (no developer account or key required) and ends with a one-time consent prompt &mdash; press <span className="bold">y</span> to let Brain read/write its own namespace on your node. Scripted install? Pass <span className="bold">fbrain init --grant-consent</span>.</p></Card>
 
           <Card><p><Label color="blue">USE</Label></p>
             <pre>{`fbrain design new "Auth rework" --body "OAuth + passkeys"
@@ -67,9 +67,9 @@ fbrain mcp                     # serve the MCP tools over stdio`}</pre>
         </div>
       </Section>
 
-      {/* FKANBAN */}
+      {/* KANBAN */}
       <Section variant="amber">
-        <h2 id="fkanban"><span className="bold">FKANBAN</span> <span className="dim">A kanban board</span></h2>
+        <h2 id="fkanban"><span className="bold">KANBAN</span> <span className="dim">A kanban board &middot; the <span className="bold">fkanban</span> CLI</span></h2>
 
         <p>A kanban board over FoldDB. Cards move through columns (<span className="bold">backlog &rarr; todo &rarr; doing &rarr; review &rarr; done</span>) and every change persists in your node. Ships a CLI and an MCP server.</p>
 
@@ -78,7 +78,7 @@ fbrain mcp                     # serve the MCP tools over stdio`}</pre>
             <pre>{`git clone https://github.com/EdgeVector/fkanban && cd fkanban
 bun install && bun link        # exposes a global \`fkanban\`
 fkanban init                   # bootstrap + seed the default board`}</pre>
-            <p className="dim">No consent prompt &mdash; fkanban writes as the node owner. <span className="bold">init</span> resolves its published schemas and is idempotent.</p></Card>
+            <p className="dim">No consent prompt &mdash; Kanban writes as the node owner. <span className="bold">init</span> resolves its published schemas and is idempotent.</p></Card>
 
           <Card><p><Label color="yellow">USE</Label></p>
             <pre>{`fkanban add ship-login --title "Ship login flow" --tags auth,p1
@@ -98,7 +98,7 @@ fkanban mcp                    # serve the MCP tools over stdio`}</pre>
 
         <p>The app&rsquo;s schemas are published <span className="bold">once</span> to the shared schema registry at <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">schema.folddb.com</a> by its author. When you run <span className="bold">init</span>, your node simply <span className="bold">resolves</span> those published schemas &mdash; a read-only lookup that needs no invite, key, or sign-up. Building and publishing a <span className="bold">new</span> app is the only path that requires a developer identity; see the <Link to="/developer">Developer Guide</Link>.</p>
 
-        <pre className="compare-table"><span className="dim">YOU WANT TO...                       WHAT YOU NEED</span>{'\n'}<span className="dim">{'─'.repeat(65)}</span>{'\n'}Run FoldDB + use fbrain / fkanban    Nothing &mdash; just install{'\n'}Build & publish your own app         A developer identity (see Developer)</pre>
+        <pre className="compare-table"><span className="dim">YOU WANT TO...                       WHAT YOU NEED</span>{'\n'}<span className="dim">{'─'.repeat(65)}</span>{'\n'}Run FoldDB + use Brain / Kanban      Nothing &mdash; just install{'\n'}Build & publish your own app         A developer identity (see Developer)</pre>
       </Section>
 
       <hr className="decorative-rule" aria-hidden="true" />

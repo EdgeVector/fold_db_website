@@ -36,6 +36,11 @@ export default function Home() {
 
       <p>Your data lives in one permanent database under your control. Applications no longer store your data &mdash; they interact with it.</p>
 
+      <p>
+        <Link to="/start" className="link-btn">[Get Started &rarr;]</Link>{'  '}
+        <span className="dim">FoldDB is in alpha &mdash; run it on your machine today.</span>
+      </p>
+
       <Section variant="rose" id="problem">
         <h2><span className="bold">THE PROBLEM</span></h2>
 

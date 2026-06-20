@@ -46,7 +46,6 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 [class^="section-"] a:hover { color: #b8bb26; }
 .card { border: 1px solid #504945; padding: 12px; display: flex; flex-direction: column; min-width: 0; }
 .card pre { background: #282828; padding: 8px; margin: 0.5em 0; border: 1px solid #504945; }
-.agent-runbook { max-height: 28em; overflow: auto; }
 .label { padding: 1px 6px; font-weight: 700; color: #282828; }
 .label-red    { background: #fb4934; }
 .label-green  { background: #b8bb26; }
