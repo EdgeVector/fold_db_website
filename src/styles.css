@@ -61,6 +61,7 @@ a { color: #8ec07c; text-decoration: none; }
 a:hover { color: #b8bb26; }
 .link-btn { font-weight: 400; color: #fe8019; }
 .link-btn:hover { color: #fabd2f; }
+.link-btn.active { color: #fabd2f; cursor: default; }
 
 /* decorative rules */
 .decorative-rule {
