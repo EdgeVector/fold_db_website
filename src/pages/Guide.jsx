@@ -41,7 +41,7 @@ export default function Guide() {
             <p className="dim">Installs folddb and folddb_server binaries (macOS &amp; Linux). Auto-detects your chip; <span className="bold">brew upgrade folddb</span> keeps it current.</p></Card>
 
           <Card><p><Label color="green">macOS APP</Label> <span className="dim">no Homebrew needed</span></p>
-            <p>Download the signed <span className="bold">.dmg</span>, open it, and drag FoldDB to your Applications folder.</p>
+            <p>Download the signed <span className="bold">.dmg</span>, open it, and drag LastDB to your Applications folder.</p>
             <p>
               <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/FoldDB-aarch64.dmg">[Download for Mac &mdash; Apple Silicon]</a><br />
               <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/FoldDB-x86_64.dmg">[Download &mdash; Intel Mac]</a>
@@ -70,7 +70,7 @@ export default function Guide() {
           <p>The LastDB web UI loads automatically. No additional setup needed &mdash; the server is zero-config.</p>
         </Card>
 
-        <p className="dim">If you installed the macOS .dmg app, just open FoldDB from your Applications folder. The UI opens automatically.</p>
+        <p className="dim">If you installed the macOS .dmg app, just open LastDB from your Applications folder. The UI opens automatically.</p>
       </Section>
 
       {/* SETUP WIZARD */}
@@ -153,7 +153,7 @@ export default function Guide() {
             <pre>{'lsof -i :9001    # Find what\'s using the port\nkill <PID>       # Stop it'}</pre></Card>
 
           <Card><p><Label color="blue">PERMISSION DENIED (macOS)</Label></p>
-            <p>macOS may block apps from unidentified developers. Go to <span className="bold">System Settings &rarr; Privacy &amp; Security</span> and click &ldquo;Open Anyway&rdquo; next to the FoldDB warning.</p></Card>
+            <p>macOS may block apps from unidentified developers. Go to <span className="bold">System Settings &rarr; Privacy &amp; Security</span> and click &ldquo;Open Anyway&rdquo; next to the LastDB warning.</p></Card>
 
           <Card><p><Label color="blue">DATA NOT APPEARING</Label></p>
             <p>After ingesting data, it may take a moment for AI to process schemas and keywords. Check the progress indicator in the UI. If ingestion fails, verify your AI provider is configured and responding.</p></Card>
