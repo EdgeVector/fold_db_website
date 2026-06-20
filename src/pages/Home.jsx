@@ -14,11 +14,11 @@ export default function Home() {
         <meta property="og:title" content="LastDB - The last database you will need" />
         <meta property="og:description" content="A database designed to outlive applications. Your data lives in one permanent database under your control. Applications no longer store your data — they interact with it." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://folddb.com" />
+        <meta property="og:url" content="https://thelastdb.com" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="LastDB - The last database you will need" />
         <meta name="twitter:description" content="A database designed to outlive applications. One permanent database for a person's data." />
-        <link rel="canonical" href="https://folddb.com" />
+        <link rel="canonical" href="https://thelastdb.com" />
       </Helmet>
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />

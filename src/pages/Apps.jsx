@@ -12,7 +12,7 @@ export default function Apps() {
         <meta name="description" content="Brain and Kanban are open-source apps built on LastDB. Each is a thin client over your own local LastDB node — install LastDB once, then add the apps. No account needed to use them." />
         <meta property="og:title" content="Apps - Last DB" />
         <meta property="og:description" content="Install and use Brain (a personal brain) and Kanban (a kanban board) on top of LastDB." />
-        <link rel="canonical" href="https://folddb.com/apps" />
+        <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 

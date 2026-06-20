@@ -12,7 +12,7 @@ export default function Encryption() {
         <meta name="description" content="How Last DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
         <meta property="og:title" content="E2E Encryption - Last DB" />
         <meta property="og:description" content="How Last DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
-        <link rel="canonical" href="https://folddb.com/encryption" />
+        <link rel="canonical" href="https://thelastdb.com/encryption" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
