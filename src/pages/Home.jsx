@@ -4,7 +4,6 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
-import TypingAnimation from '../components/TypingAnimation';
 
 export default function Home() {
   return (
@@ -22,8 +21,6 @@ export default function Home() {
         <link rel="canonical" href="https://folddb.com" />
       </Helmet>
       <AsciiTitle />
-      <br />
-      <TypingAnimation />
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Own your data. For good.</h1>
       <p className="dim">The last database you&rsquo;ll ever need.</p>
