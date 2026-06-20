@@ -34,7 +34,7 @@ export default function Start() {
         <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
 
         <div className="grid-2">
-          <Card><p><Label color="green">FOLDDB</Label> <span className="dim">the foundation</span></p>
+          <Card><p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
             <p>Your encrypted, single-user database. The owner of the device is the owner of the data &mdash; nothing leaves your machine. Both apps are thin clients over <span className="bold">this same node</span>.</p></Card>
 
           <Card><p><Label color="green">BRAIN</Label> <span className="dim">your memory &mdash; the &ldquo;why&rdquo;</span></p>
