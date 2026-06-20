@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://folddb.com/sitemap.xml
+Sitemap: https://thelastdb.com/sitemap.xml

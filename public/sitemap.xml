@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://folddb.com/</loc>
+    <loc>https://thelastdb.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://folddb.com/start</loc>
+    <loc>https://thelastdb.com/start</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://folddb.com/apps</loc>
+    <loc>https://thelastdb.com/apps</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://folddb.com/developer</loc>
+    <loc>https://thelastdb.com/developer</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://folddb.com/encryption</loc>
+    <loc>https://thelastdb.com/encryption</loc>
     <priority>0.7</priority>
   </url>
 </urlset>

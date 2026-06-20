@@ -13,7 +13,7 @@ export default function Developer() {
         <meta name="description" content="LastDB developer documentation. REST API reference, fold creation, trust distance, transforms, CLI commands, and architecture overview." />
         <meta property="og:title" content="Developer Guide - Last DB" />
         <meta property="og:description" content="LastDB developer documentation. REST API, folds, transforms, trust distance, and architecture." />
-        <link rel="canonical" href="https://folddb.com/developer" />
+        <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
