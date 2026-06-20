@@ -73,7 +73,7 @@ export default function Start() {
       <Section variant="amber">
         <h2 id="agent"><span className="bold">FOR YOUR AGENT</span> <span className="dim">Point your agent at this page</span></h2>
 
-        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the apps, how to serve the MCP tools, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
+        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the apps, serve the MCP tools, install the agent skills, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
 
         <p className="section-subheading"><span className="bold">SET IT UP</span> <span className="dim">Install the node, the apps, and the tools</span></p>
 
@@ -106,6 +106,13 @@ cd ..`}</pre></Card>
             <pre>{`fbrain mcp     # memory tools over stdio
 fkanban mcp    # board tools over stdio`}</pre>
             <p className="dim">Point your MCP client at these two servers.</p></Card>
+
+          <Card><p><Label color="yellow">6 &mdash; INSTALL THE SKILLS</Label> <span className="dim">the agent playbook &middot; <span className="bold">The Last Stack</span></span></p>
+            <p>Install <a href="https://github.com/EdgeVector/last-stack">The Last Stack</a> &mdash; a small set of agent skills so your agent knows the whole loop: filing cards, driving one all the way to a merged PR, waiting on PRs robustly, and closing out finished work.</p>
+            <pre>{`git clone https://github.com/EdgeVector/last-stack
+mkdir -p ~/.claude/skills
+cp -R last-stack/skills/* ~/.claude/skills/`}</pre>
+            <p className="dim">Five skills for Brain + Kanban: fkanban, fkanban-agent, fkanban-setup, wait-merge, close-out. The agent invokes them by name.</p></Card>
         </div>
 
         <p className="section-subheading"><span className="bold">HOW WE WORK TOGETHER</span> <span className="dim">What the agent should expect from the human</span></p>
