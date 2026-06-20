@@ -8,10 +8,10 @@ export default function Using() {
   return (
     <>
       <Helmet>
-        <title>How to Use It - Fold DB</title>
-        <meta name="description" content="The best way to work with FoldDB and its apps: a local, private, agent-ready memory and task system. The mental model, the daily loop, and how to wire it into your AI agent." />
-        <meta property="og:title" content="How to Use It - Fold DB" />
-        <meta property="og:description" content="The mental model and daily workflow for FoldDB + fbrain + fkanban: local, private, and agent-ready." />
+        <title>How to Use It - Last DB</title>
+        <meta name="description" content="The best way to work with LastDB and its apps: a local, private, agent-ready memory and task system. The mental model, the daily loop, and how to wire it into your AI agent." />
+        <meta property="og:title" content="How to Use It - Last DB" />
+        <meta property="og:description" content="The mental model and daily workflow for LastDB + fbrain + fkanban: local, private, and agent-ready." />
         <link rel="canonical" href="https://folddb.com/using" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -25,7 +25,7 @@ export default function Using() {
 
       <h1 className="tagline">How to Use It</h1>
 
-      <p className="bold white">Fold DB has not launched yet. This describes the intended way of working. The project is in active development.</p>
+      <p className="bold white">Last DB has not launched yet. This describes the intended way of working. The project is in active development.</p>
 
       <p>Installing is the easy part &mdash; the <Link to="/guide">Guide</Link> gets a node running and the <Link to="/apps">Apps</Link> page adds fbrain and fkanban. This page is about <span className="bold">how to actually work with the system</span> once it&rsquo;s up: the mental model that makes three pieces feel like one, and the daily loop that keeps your thinking and your work in sync &mdash; all on your own machine, with no account.</p>
 
@@ -35,10 +35,10 @@ export default function Using() {
       <Section variant="sage">
         <h2 id="model"><span className="bold">THE MODEL</span> <span className="dim">One foundation, two views</span></h2>
 
-        <p>Everything sits on <span className="bold">one local FoldDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
+        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
 
         <div className="grid-2">
-          <Card><p><Label color="green">FOLDDB</Label> <span className="dim">the foundation</span></p>
+          <Card><p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
             <p>Your encrypted, single-user database. The owner of the device is the owner of the data &mdash; nothing leaves your machine. Both apps are thin clients over <span className="bold">this same node</span>.</p></Card>
 
           <Card><p><Label color="green">FBRAIN</Label> <span className="dim">your memory &mdash; the &ldquo;why&rdquo;</span></p>
@@ -108,13 +108,13 @@ curl -s http://127.0.0.1:9001/api/health   # is the node itself up?`}</pre>
         <h2 id="next"><span className="bold">WHERE TO GO NEXT</span></h2>
         <div className="grid-2">
           <Card><p><Label color="green">INSTALL THE NODE</Label></p>
-            <p>Get FoldDB running in a couple of minutes.</p>
+            <p>Get LastDB running in a couple of minutes.</p>
             <p><Link to="/guide" className="link-btn">[Guide &rarr;]</Link></p></Card>
           <Card><p><Label color="green">ADD THE APPS</Label></p>
             <p>Install fbrain and fkanban on your node.</p>
             <p><Link to="/apps" className="link-btn">[Apps &rarr;]</Link></p></Card>
           <Card><p><Label color="green">BUILD YOUR OWN</Label></p>
-            <p>Publish your own app on FoldDB.</p>
+            <p>Publish your own app on LastDB.</p>
             <p><Link to="/developer" className="link-btn">[Developer &rarr;]</Link></p></Card>
           <Card><p><Label color="green">HOW ENCRYPTION WORKS</Label></p>
             <p>What &ldquo;encrypted at rest&rdquo; actually means here.</p>

@@ -80,7 +80,7 @@ function getResponsiveFontSize(el) {
   const availableCols = Math.floor(containerWidth / charWidth);
 
   const refSize = 48;
-  const refArt = generateAsciiArt('FOLD DB', refSize);
+  const refArt = generateAsciiArt('LAST DB', refSize);
   const refLines = refArt.split('\n');
   let refMaxCols = 0;
   for (let i = 0; i < refLines.length; i++) {
@@ -92,7 +92,7 @@ function getResponsiveFontSize(el) {
   return Math.max(10, Math.min(64, scaledSize));
 }
 
-export default function AsciiTitle({ text = 'FOLD DB' }) {
+export default function AsciiTitle({ text = 'LAST DB' }) {
   const preRef = useRef(null);
 
   useEffect(() => {
