@@ -20,7 +20,7 @@ export default function NotFound() {
 
       <p>
         <Link to="/" className="link-btn">[Back to Home]</Link>{'  '}
-        <Link to="/guide" className="link-btn">[User Guide]</Link>{'  '}
+        <Link to="/start" className="link-btn">[Get Started]</Link>{'  '}
         <Link to="/developer" className="link-btn">[Developer Guide]</Link>
       </p>
     </>

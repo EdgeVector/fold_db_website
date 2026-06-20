@@ -33,6 +33,11 @@ export default function Home() {
 
       <p>Your data lives in one permanent database under your control. Applications no longer store your data &mdash; they interact with it.</p>
 
+      <p>
+        <Link to="/start" className="link-btn">[Get Started &rarr;]</Link>{'  '}
+        <span className="dim">LastDB is in alpha &mdash; run it on your machine today.</span>
+      </p>
+
       <Section variant="rose" id="problem">
         <h2><span className="bold">THE PROBLEM</span></h2>
 
@@ -154,7 +159,7 @@ export default function Home() {
         <p>Early releases focus on local encrypted storage, shared structures, transform execution, and semantic indexing.</p>
 
         <p>
-          <Link to="/guide#install" className="link-btn">[Download for Mac]</Link>{'  '}
+          <Link to="/start" className="link-btn">[Get Started]</Link>{'  '}
           <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Read the Paper]</a>{'  '}
           <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5 Version]</a>{'  '}
           <Link to="/developer" className="link-btn">[Developer Guide]</Link>{'  '}

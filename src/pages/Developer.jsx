@@ -26,7 +26,7 @@ export default function Developer() {
 
       <h1 className="tagline">Developer Guide</h1>
 
-      <p className="bold white">Last DB has not launched yet. This guide describes the target developer experience. The project is in active development &mdash; contributions welcome.</p>
+      <p className="bold white">LastDB is in alpha. This guide describes the developer experience as it comes together &mdash; the project is under active development, and contributions are welcome.</p>
 
       <p>LastDB is a database where data is never accessed directly. Every query passes through a <span className="bold">fold</span> &mdash; a policy-enforcing interface that checks trust distance, verifies credentials, applies transforms, and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
 
