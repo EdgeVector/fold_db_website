@@ -10,9 +10,9 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - Last DB</title>
-        <meta name="description" content="LastDB developer documentation. REST API reference, fold creation, trust distance, transforms, CLI commands, and architecture overview." />
+        <meta name="description" content="LastDB developer documentation. REST API reference, access policies, trust distance, transforms, CLI commands, and architecture overview." />
         <meta property="og:title" content="Developer Guide - Last DB" />
-        <meta property="og:description" content="LastDB developer documentation. REST API, folds, transforms, trust distance, and architecture." />
+        <meta property="og:description" content="LastDB developer documentation. REST API, access policies, transforms, trust distance, and architecture." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -28,7 +28,7 @@ export default function Developer() {
 
       <p className="bold white">LastDB is in alpha. This guide describes the developer experience as it comes together &mdash; the project is under active development, and contributions are welcome.</p>
 
-      <p>LastDB is a database where data is never accessed directly. Every query passes through a <span className="bold">fold</span> &mdash; a policy-enforcing interface that checks trust distance, verifies credentials, applies transforms, and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
+      <p>LastDB is a database where data is never accessed directly. Every query is checked against the access policies on the data it touches &mdash; trust distance, credentials, and transforms &mdash; and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -78,11 +78,11 @@ export default function Developer() {
         </div>
       </Section>
 
-      {/* THE FOLD MODEL */}
+      {/* ACCESS POLICIES */}
       <Section variant="sage">
-        <h2 id="folds"><span className="bold">THE FOLD MODEL</span> <span className="dim">Core abstraction</span></h2>
+        <h2 id="access-policies"><span className="bold">ACCESS POLICIES</span> <span className="dim">How access is enforced</span></h2>
 
-        <p>A fold is a <span className="bold">policy-enforcing interface</span> over a set of fields. Each field carries a value, a security label, a trust-distance policy (Wn Rm), and optional capability constraints. Queries evaluate a fold under an access context C&nbsp;=&nbsp;(user, &tau;, keys).</p>
+        <p>Each field carries a value, a security label, a trust-distance policy (Wn Rm), and optional capability constraints. Queries are evaluated against these policies under an access context C&nbsp;=&nbsp;(user, &tau;, keys).</p>
 
         <pre className="compare-table">{`
   Query arrives with access context C = (user, τ, keys)
@@ -94,7 +94,7 @@ export default function Developer() {
   Check capabilities: caller holds required key, quota > 0
        |
        v
-  Check payment: P(user, fold) satisfied
+  Check payment: P(user, field) satisfied
        |
        v
   Check security labels: ℓ_in ⊑ ℓ_out for all transforms
@@ -164,7 +164,7 @@ export default function Developer() {
           </Card>
 
           <Card>
-            <p><Label color="green">PAYMENT GATES</Label></p>
+            <p><Label color="green">PAYMENT POLICIES</Label></p>
             <pre>{`// Cost as a function of trust distance
 {
   "payment": {
@@ -193,7 +193,7 @@ Files / JSON / APIs
   AI Ingestion -----> Schema Service (detects or creates schema)
        |
        v
-  Fold Registration -> Registry (fold definition + policies)
+  Policy Registration -> Registry (policy definition + transforms)
        |
        v
   Mutation ----------> Append-Only Store (encrypted, signed, immutable)
@@ -202,7 +202,7 @@ Files / JSON / APIs
   Keyword Indexing --> AI extracts and normalizes searchable terms
        |
        v
-  Query -------------> Execution Engine evaluates fold under access context`}</pre>
+  Query -------------> Execution Engine evaluates policies under access context`}</pre>
 
         <div className="grid-3">
           <Card><p><Label color="blue">INGEST</Label></p><p>
@@ -218,10 +218,10 @@ Files / JSON / APIs
             AI extracts keywords and normalizes terms (dates, names, etc.) for search.</p></Card>
 
           <Card><p><Label color="blue">EVALUATE</Label></p><p>
-            Queries pass through folds. The execution engine checks all four policy layers and applies transforms before returning results.</p></Card>
+            The execution engine checks all four policy layers and applies transforms before returning results.</p></Card>
 
           <Card><p><Label color="blue">AUDIT</Label></p><p>
-            Every access &mdash; successful or failed &mdash; is recorded in the append-only audit log with user identity, timestamp, fold, and operation.</p></Card>
+            Every access &mdash; successful or failed &mdash; is recorded in the append-only audit log with user identity, timestamp, schema, and operation.</p></Card>
         </div>
       </Section>
 
