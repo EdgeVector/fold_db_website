@@ -38,8 +38,8 @@ export default function Developer() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
-            <pre>brew install edgevector/folddb/folddb</pre>
-            <p className="dim">Installs the folddb and folddb_server binaries (macOS &amp; Linux)</p></Card>
+            <pre>brew install edgevector/folddb/lastdb</pre>
+            <p className="dim">Installs the lastdb and lastdb_server binaries (macOS &amp; Linux). The old <span className="bold">folddb</span>/<span className="bold">folddb_server</span> command names keep working as aliases.</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
             <pre>export FOLD_OPENROUTER_API_KEY=&quot;sk-...&quot;</pre>
@@ -385,64 +385,64 @@ GET  /api/openapi.json               OpenAPI spec`}</pre>
 
       {/* CLI REFERENCE */}
       <Section variant="sage">
-        <h2 id="cli"><span className="bold">CLI REFERENCE</span> <span className="dim">folddb command line</span></h2>
+        <h2 id="cli"><span className="bold">CLI REFERENCE</span> <span className="dim">lastdb command line</span></h2>
 
         <div className="grid-2">
           <Card>
             <p><Label color="green">STATUS &amp; SCHEMAS</Label></p>
-            <pre>{`folddb status                          # Node health + config
-folddb schema list                     # List all schemas
-folddb schema get my_schema            # Inspect a schema
-folddb schema approve my_schema        # Approve pending
-folddb schema block my_schema          # Block a schema
-folddb schema load                     # Load from schema dirs`}</pre>
+            <pre>{`lastdb status                          # Node health + config
+lastdb schema list                     # List all schemas
+lastdb schema get my_schema            # Inspect a schema
+lastdb schema approve my_schema        # Approve pending
+lastdb schema block my_schema          # Block a schema
+lastdb schema load                     # Load from schema dirs`}</pre>
           </Card>
 
           <Card>
             <p><Label color="green">INGEST</Label></p>
-            <pre>{`folddb ingest file data.json           # Ingest a JSON file
-folddb ingest file < data.json         # Ingest from stdin
-folddb ingest smart-scan ~/Documents   # AI-classify files
-folddb ingest smart ~/Documents --all  # Scan + ingest all
-folddb ingest smart ~/Documents \\
+            <pre>{`lastdb ingest file data.json           # Ingest a JSON file
+lastdb ingest file < data.json         # Ingest from stdin
+lastdb ingest smart-scan ~/Documents   # AI-classify files
+lastdb ingest smart ~/Documents --all  # Scan + ingest all
+lastdb ingest smart ~/Documents \\
   --files a.json,b.csv                 # Ingest specific files`}</pre>
           </Card>
 
           <Card>
             <p><Label color="green">QUERY &amp; SEARCH</Label></p>
-            <pre>{`folddb query tweets --fields text,author
+            <pre>{`lastdb query tweets --fields text,author
                                        # Structured query
-folddb search "machine learning"       # Keyword search
-folddb ask "recent purchases over $50"
+lastdb search "machine learning"       # Keyword search
+lastdb ask "recent purchases over $50"
                                        # Natural language (AI)`}</pre>
           </Card>
 
           <Card>
             <p><Label color="green">MUTATE</Label></p>
-            <pre>{`folddb mutate run tweets \\
+            <pre>{`lastdb mutate run tweets \\
   --type create \\
   --fields '{"text":"hello"}'          # Single mutation
-folddb mutate batch mutations.json     # Batch from file`}</pre>
+lastdb mutate batch mutations.json     # Batch from file`}</pre>
           </Card>
 
           <Card>
             <p><Label color="green">SYSTEM</Label></p>
-            <pre>{`folddb config show                     # Show config
-folddb config path                     # Config file path
-folddb reset --confirm                 # Reset database
-folddb transform list                  # List transforms
-folddb backfill stats                  # Backfill stats
-folddb completions bash                # Shell completions`}</pre>
+            <pre>{`lastdb config show                     # Show config
+lastdb config path                     # Config file path
+lastdb reset --confirm                 # Reset database
+lastdb transform list                  # List transforms
+lastdb backfill stats                  # Backfill stats
+lastdb completions bash                # Shell completions`}</pre>
           </Card>
 
           <Card>
             <p><Label color="green">GLOBAL FLAGS</Label></p>
-            <pre>{`folddb --json <command>                # JSON output
-folddb -v <command>                    # Verbose output
-folddb --config path/to/config.toml <command>
-folddb --user-hash abc123 <command>
-folddb --data-path /tmp/mydb <command>
-folddb --schema-service-url http://... <command>`}</pre>
+            <pre>{`lastdb --json <command>                # JSON output
+lastdb -v <command>                    # Verbose output
+lastdb --config path/to/config.toml <command>
+lastdb --user-hash abc123 <command>
+lastdb --data-path /tmp/mydb <command>
+lastdb --schema-service-url http://... <command>`}</pre>
           </Card>
         </div>
       </Section>
