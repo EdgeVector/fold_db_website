@@ -9,10 +9,10 @@ export default function Start() {
   return (
     <>
       <Helmet>
-        <title>Get Started - Fold DB</title>
-        <meta name="description" content="Get started with FoldDB and its apps: the daily loop for humans, and a full setup runbook your AI agent can read straight off the page. Local, private, MCP-ready, in alpha today." />
-        <meta property="og:title" content="Get Started - Fold DB" />
-        <meta property="og:description" content="The human daily loop for FoldDB + Brain + Kanban, and an agent-readable setup runbook. Local, private, no account. Alpha — runs on your machine today." />
+        <title>Get Started - Last DB</title>
+        <meta name="description" content="Get started with LastDB and its apps: the daily loop for humans, and a full setup runbook your AI agent can read straight off the page. Local, private, MCP-ready, in alpha today." />
+        <meta property="og:title" content="Get Started - Last DB" />
+        <meta property="og:description" content="The human daily loop for LastDB + Brain + Kanban, and an agent-readable setup runbook. Local, private, no account. Alpha — runs on your machine today." />
         <link rel="canonical" href="https://folddb.com/start" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -21,9 +21,9 @@ export default function Start() {
 
       <h1 className="tagline">Get Started</h1>
 
-      <p className="bold white">FoldDB is in <span className="white">alpha</span> &mdash; and you can run it today. Download the macOS app, add Brain and Kanban, and the whole stack runs on your own machine.</p>
+      <p className="bold white">LastDB is in <span className="white">alpha</span> &mdash; and you can run it today. Download the macOS app, add Brain and Kanban, and the whole stack runs on your own machine.</p>
 
-      <p>FoldDB is one local, encrypted database with two apps on top &mdash; <span className="bold">Brain</span> (your memory, the <span className="bold">fbrain</span> CLI) and <span className="bold">Kanban</span> (your board, the <span className="bold">fkanban</span> CLI). Two ways in: follow the <span className="bold">daily loop</span> below to work with it yourself, or just <span className="bold">point your AI agent at this page</span> and let it set everything up and run the loop with you.</p>
+      <p>LastDB is one local, encrypted database with two apps on top &mdash; <span className="bold">Brain</span> (your memory, the <span className="bold">fbrain</span> CLI) and <span className="bold">Kanban</span> (your board, the <span className="bold">fkanban</span> CLI). Two ways in: follow the <span className="bold">daily loop</span> below to work with it yourself, or just <span className="bold">point your AI agent at this page</span> and let it set everything up and run the loop with you.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -31,7 +31,7 @@ export default function Start() {
       <Section variant="sage">
         <h2 id="humans"><span className="bold">FOR HUMANS</span> <span className="dim">How you&rsquo;ll actually work with it</span></h2>
 
-        <p>Everything sits on <span className="bold">one local FoldDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
+        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database where every read and write passes through a <span className="bold">fold</span> that enforces access automatically. The two apps are just two views into that one place:</p>
 
         <div className="grid-2">
           <Card><p><Label color="green">FOLDDB</Label> <span className="dim">the foundation</span></p>
@@ -73,13 +73,13 @@ export default function Start() {
       <Section variant="amber">
         <h2 id="agent"><span className="bold">FOR YOUR AGENT</span> <span className="dim">Point your agent at this page</span></h2>
 
-        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install FoldDB and the apps, how to serve the MCP tools, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
+        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the apps, how to serve the MCP tools, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
 
         <p className="section-subheading"><span className="bold">SET IT UP</span> <span className="dim">Install the node, the apps, and the tools</span></p>
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1 &mdash; INSTALL THE NODE</Label></p>
-            <p>FoldDB is a local, encrypted, single-user database. Install the daemon and start it:</p>
+            <p>LastDB is a local, encrypted, single-user database. Install the daemon and start it:</p>
             <pre>{`brew install edgevector/folddb/folddb
 brew services start folddb
 curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
@@ -134,7 +134,7 @@ fkanban doctor     # checks the board + schemas
 curl -s http://127.0.0.1:9001/api/health   # is the node itself up?`}</pre>
         <p className="dim">Most &ldquo;it stopped responding&rdquo; moments are just a node that isn&rsquo;t running &mdash; start it and re-check.</p>
 
-        <p className="dim">Just want the app details? See <Link to="/apps">Apps</Link>. Building your own app on FoldDB? See the <Link to="/developer">Developer Guide</Link>.</p>
+        <p className="dim">Just want the app details? See <Link to="/apps">Apps</Link>. Building your own app on LastDB? See the <Link to="/developer">Developer Guide</Link>.</p>
       </Section>
 
       <hr className="decorative-rule" aria-hidden="true" />

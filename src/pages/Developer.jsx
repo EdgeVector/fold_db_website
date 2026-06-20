@@ -9,10 +9,10 @@ export default function Developer() {
   return (
     <>
       <Helmet>
-        <title>Developer Guide - Fold DB</title>
-        <meta name="description" content="FoldDB developer documentation. REST API reference, fold creation, trust distance, transforms, CLI commands, and architecture overview." />
-        <meta property="og:title" content="Developer Guide - Fold DB" />
-        <meta property="og:description" content="FoldDB developer documentation. REST API, folds, transforms, trust distance, and architecture." />
+        <title>Developer Guide - Last DB</title>
+        <meta name="description" content="LastDB developer documentation. REST API reference, fold creation, trust distance, transforms, CLI commands, and architecture overview." />
+        <meta property="og:title" content="Developer Guide - Last DB" />
+        <meta property="og:description" content="LastDB developer documentation. REST API, folds, transforms, trust distance, and architecture." />
         <link rel="canonical" href="https://folddb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -26,9 +26,9 @@ export default function Developer() {
 
       <h1 className="tagline">Developer Guide</h1>
 
-      <p className="bold white">FoldDB is in alpha. This guide describes the developer experience as it comes together &mdash; the project is under active development, and contributions are welcome.</p>
+      <p className="bold white">LastDB is in alpha. This guide describes the developer experience as it comes together &mdash; the project is under active development, and contributions are welcome.</p>
 
-      <p>FoldDB is a database where data is never accessed directly. Every query passes through a <span className="bold">fold</span> &mdash; a policy-enforcing interface that checks trust distance, verifies credentials, applies transforms, and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
+      <p>LastDB is a database where data is never accessed directly. Every query passes through a <span className="bold">fold</span> &mdash; a policy-enforcing interface that checks trust distance, verifies credentials, applies transforms, and returns only the authorized projection. AI powers schema detection, keyword extraction, and natural language queries.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 

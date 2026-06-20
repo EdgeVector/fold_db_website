@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <>
       <Helmet>
-        <title>404 - Page Not Found - Fold DB</title>
+        <title>404 - Page Not Found - Last DB</title>
       </Helmet>
       <pre className="ascii">{`
 #   #  ###  #   #

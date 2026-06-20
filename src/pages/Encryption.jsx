@@ -8,10 +8,10 @@ export default function Encryption() {
   return (
     <>
       <Helmet>
-        <title>E2E Encryption - Fold DB</title>
-        <meta name="description" content="How Fold DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
-        <meta property="og:title" content="E2E Encryption - Fold DB" />
-        <meta property="og:description" content="How Fold DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
+        <title>E2E Encryption - Last DB</title>
+        <meta name="description" content="How Last DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
+        <meta property="og:title" content="E2E Encryption - Last DB" />
+        <meta property="og:description" content="How Last DB encrypts your data at rest. AES-256-GCM encryption with local key management and blinded search." />
         <link rel="canonical" href="https://folddb.com/encryption" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -25,7 +25,7 @@ export default function Encryption() {
 
       <h1 className="tagline">E2E Encryption</h1>
 
-      <p>Your data is encrypted at rest on your device. Fold DB uses AES-256-GCM encryption so that even if someone accesses your storage files, they see only ciphertext.</p>
+      <p>Your data is encrypted at rest on your device. Last DB uses AES-256-GCM encryption so that even if someone accesses your storage files, they see only ciphertext.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -33,7 +33,7 @@ export default function Encryption() {
       <Section variant="sage">
         <h2 id="promise"><span className="bold">THE PROMISE</span> <span className="dim">Zero-knowledge by design</span></h2>
 
-        <p>All data stored by Fold DB is encrypted at rest. Your encryption key lives on your machine &mdash; it is <span className="bold">never sent anywhere</span>. The database files on disk contain only ciphertext.</p>
+        <p>All data stored by Last DB is encrypted at rest. Your encryption key lives on your machine &mdash; it is <span className="bold">never sent anywhere</span>. The database files on disk contain only ciphertext.</p>
 
         <div className="grid-3">
           <Card><p><Label color="green">LOCAL ENCRYPTION</Label></p><p>
@@ -104,7 +104,7 @@ export default function Encryption() {
             Content is encrypted with AES-256-GCM before storage. Keywords are blinded with HMAC-SHA256. The database stores ciphertext and blind tokens &mdash; never plaintext.</p></Card>
 
           <Card><p><Label color="blue">READ</Label></p><p>
-            The database returns raw ciphertext from disk. Fold DB decrypts locally using your encryption key. Plaintext exists only in memory during your session.</p></Card>
+            The database returns raw ciphertext from disk. Last DB decrypts locally using your encryption key. Plaintext exists only in memory during your session.</p></Card>
 
           <Card><p><Label color="blue">SEARCH</Label></p><p>
             Search terms are blinded client-side before querying. The server matches blind tokens without knowing what you searched for. Results are decrypted locally.</p></Card>
@@ -130,13 +130,13 @@ export default function Encryption() {
 
         <div className="grid-2">
           <Card><p><Label color="yellow">FIRST-TIME SETUP</Label></p>
-            <p>1. Fold DB generates a cryptographically random 32-byte secret<br />
+            <p>1. Last DB generates a cryptographically random 32-byte secret<br />
               2. Secret is stored at <span className="bold">~/.fold_db/e2e.key</span> (chmod 600)<br />
               3. HKDF derives encryption key + index key<br />
               4. All data written to disk is encrypted from the start</p></Card>
 
           <Card><p><Label color="yellow">SUBSEQUENT LAUNCHES</Label></p>
-            <p>1. Fold DB reads secret from ~/.fold_db/e2e.key<br />
+            <p>1. Last DB reads secret from ~/.fold_db/e2e.key<br />
               2. HKDF derives the same encryption + index keys<br />
               3. All previously encrypted data is immediately accessible<br />
               4. Key file is the only thing you need to back up</p></Card>
@@ -178,7 +178,7 @@ export default function Encryption() {
       <Section variant="lavender">
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">Web Crypto API</span></h2>
 
-        <p>These examples illustrate the core cryptographic operations Fold DB performs internally.</p>
+        <p>These examples illustrate the core cryptographic operations Last DB performs internally.</p>
 
         <div className="grid-2">
           <Card>
@@ -308,13 +308,13 @@ const results = await fetch(
       <Section variant="sage">
         <h2 id="sdk"><span className="bold">API USAGE</span> <span className="dim">Transparent encryption via REST API</span></h2>
 
-        <p>Fold DB handles encryption transparently. You write normal ingest/query calls to the local REST API &mdash; encryption and decryption happen automatically.</p>
+        <p>Last DB handles encryption transparently. You write normal ingest/query calls to the local REST API &mdash; encryption and decryption happen automatically.</p>
 
         <div className="grid-2">
           <Card>
             <p><Label color="green">INGEST DATA</Label></p>
             <pre>{`// Ingest via local REST API
-// Fold DB encrypts before writing to disk
+// Last DB encrypts before writing to disk
 const response = await fetch(
   "http://localhost:9001/api/ingest", {
     method: "POST",
@@ -338,7 +338,7 @@ const response = await fetch(
           <Card>
             <p><Label color="green">QUERY DATA</Label></p>
             <pre>{`// Query via local REST API
-// Fold DB decrypts results in memory
+// Last DB decrypts results in memory
 const results = await fetch(
   "http://localhost:9001/api/query", {
     method: "POST",
@@ -363,7 +363,7 @@ const hits = await fetch(
           </Card>
         </div>
 
-        <p className="dim">Encryption is handled by Fold DB internally. The REST API accepts and returns plaintext &mdash; all crypto operations happen transparently in the local process.</p>
+        <p className="dim">Encryption is handled by Last DB internally. The REST API accepts and returns plaintext &mdash; all crypto operations happen transparently in the local process.</p>
       </Section>
 
       {/* LIMITATIONS */}

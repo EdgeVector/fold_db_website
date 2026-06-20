@@ -18,7 +18,7 @@ export default function Nav() {
     <nav className="site-nav" aria-label="Main navigation">
       <Link to="/" className="nav-brand">
         <AnimatedLogo size={64} />
-        <span className="nav-brand-text">FoldDB</span>
+        <span className="nav-brand-text">LastDB</span>
       </Link>
       <span className="nav-spacer" />
       <button
