@@ -80,8 +80,8 @@ export default function Start() {
         <div className="card-stack">
           <Card><p><Label color="yellow">1 &mdash; INSTALL THE NODE</Label></p>
             <p>LastDB is a local, encrypted, single-user database. Install the daemon and start it:</p>
-            <pre>{`brew install edgevector/folddb/folddb
-brew services start folddb
+            <pre>{`brew install edgevector/folddb/lastdb
+brew services start lastdb
 curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
             <p className="dim">No Homebrew? Download the signed macOS app instead (links in the Humans section above).</p></Card>
 
