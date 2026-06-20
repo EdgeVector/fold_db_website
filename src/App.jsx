@@ -6,6 +6,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 
 const Guide = lazy(() => import('./pages/Guide'));
+const Using = lazy(() => import('./pages/Using'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Encryption = lazy(() => import('./pages/Encryption'));
@@ -21,6 +22,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/guide" element={<Guide />} />
+              <Route path="/using" element={<Using />} />
               <Route path="/apps" element={<Apps />} />
               <Route path="/developer" element={<Developer />} />
               <Route path="/encryption" element={<Encryption />} />
