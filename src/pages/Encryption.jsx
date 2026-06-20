@@ -389,18 +389,14 @@ const hits = await fetch(
       <Section variant="amber">
         <h2 id="docs"><span className="bold">DOCUMENTATION</span> <span className="dim">Deeper reading</span></h2>
 
-        <div className="grid-3">
-          <Card><p><Label color="yellow">DESIGN DOC</Label></p><p>
-            Full encryption architecture, threat model, and implementation plan.<br />
-            <a href="https://github.com/EdgeVector/fold_db/blob/main/docs/DESIGN_E2E_ENCRYPTION.md" target="_blank" rel="noreferrer">DESIGN_E2E_ENCRYPTION.md</a></p></Card>
+        <div className="grid-2">
+          <Card><p><Label color="yellow">THE PAPER</Label></p><p>
+            Full encryption architecture, threat model, and the formal encryption-at-rest specification.<br />
+            <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer">fold_db_paper.pdf</a></p></Card>
 
-          <Card><p><Label color="yellow">LLM-MEDIATED E2E</Label></p><p>
-            The proposal for LLM-mediated end-to-end encryption.<br />
-            <a href="https://github.com/EdgeVector/fold_db/blob/main/docs/PROPOSAL_LLM_MEDIATED_E2E_ENCRYPTION.md" target="_blank" rel="noreferrer">PROPOSAL_LLM_MEDIATED_E2E_ENCRYPTION.md</a></p></Card>
-
-          <Card><p><Label color="yellow">SOURCE CODE</Label></p><p>
-            FoldDB is open source. Browse the code, file issues, or contribute.<br />
-            <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db</a></p></Card>
+          <Card><p><Label color="yellow">EDGEVECTOR ON GITHUB</Label></p><p>
+            Explore the open EdgeVector projects and tooling.<br />
+            <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">github.com/EdgeVector</a></p></Card>
         </div>
       </Section>
 
