@@ -13,7 +13,7 @@ export default function Footer() {
         <span className="dim">LINKS</span>{'    '}
         <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">Schema Registry</a>
       </p>
-      <p className="dim">&copy; 2025-2026 Fold DB &mdash; Built in the open</p>
+      <p className="dim">&copy; 2025-2026 Fold DB &mdash; Built by Edge Vector</p>
     </footer>
   );
 }
