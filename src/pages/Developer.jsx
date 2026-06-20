@@ -39,9 +39,7 @@ export default function Developer() {
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
             <pre>brew install edgevector/folddb/folddb</pre>
-            <p className="dim">Installs the folddb and folddb_server binaries (macOS &amp; Linux)</p>
-            <p>Or from source:</p>
-            <pre>cargo install --git https://github.com/EdgeVector/fold_db.git --bin folddb</pre></Card>
+            <p className="dim">Installs the folddb and folddb_server binaries (macOS &amp; Linux)</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
             <pre>export FOLD_OPENROUTER_API_KEY=&quot;sk-...&quot;</pre>
@@ -232,7 +230,7 @@ Files / JSON / APIs
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
         <p>Most integrations use the HTTP API at <span className="bold">localhost:9001</span>. All endpoints accept and return JSON.</p>
-        <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">the source on GitHub</a>.</p>
+        <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">EdgeVector on GitHub</a>.</p>
 
         <div className="grid-2">
           <Card>
@@ -475,31 +473,6 @@ FOLD_UPLOAD_STORAGE_MODE         Upload storage ("s3" for cloud)`}</pre>
         <SchemaRegistry />
       </Section>
 
-      {/* CONTRIBUTING / DEV SETUP */}
-      <Section variant="sage">
-        <h2 id="contributing"><span className="bold">CONTRIBUTING</span> <span className="dim">Developer setup</span></h2>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="green">LOCAL DEVELOPMENT</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/fold_db
-cd fold_db
-./run.sh --local                       # Backend + React UI`}</pre>
-            <p className="dim">Always use run.sh &mdash; never start services manually</p>
-          </Card>
-
-          <Card>
-            <p><Label color="green">TESTING</Label></p>
-            <pre>{`cargo test --lib                       # Rust unit tests
-cargo test --bin folddb                 # CLI integration tests
-cargo clippy                           # Lint (zero warnings)
-cd src/server/static-react
-npm test                               # Frontend tests
-npm run lint                           # ESLint`}</pre>
-          </Card>
-        </div>
-      </Section>
-
       {/* DOCUMENTATION LINKS */}
       <Section variant="slate">
         <h2 id="docs"><span className="bold">DOCUMENTATION</span> <span className="dim">Deeper reading</span></h2>
@@ -513,11 +486,8 @@ npm run lint                           # ESLint`}</pre>
             A plain-language walkthrough of the same ideas, no formal notation.<br />
             <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer">fold_db_paper_eli5.pdf</a></p></Card>
 
-          <Card><p><Label color="blue">PROJECT GOALS</Label></p><p>
-            What Fold DB is trying to be &mdash; <a href="https://github.com/EdgeVector/fold_db/blob/main/docs/GOAL.md" target="_blank" rel="noreferrer">GOAL.md</a></p></Card>
-
-          <Card><p><Label color="blue">SOURCE</Label></p><p>
-            Browse the code &mdash; <a href="https://github.com/EdgeVector/fold_db" target="_blank" rel="noreferrer">github.com/EdgeVector/fold_db</a></p></Card>
+          <Card><p><Label color="blue">EDGEVECTOR</Label></p><p>
+            Explore the projects &mdash; <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">github.com/EdgeVector</a></p></Card>
         </div>
       </Section>
 
