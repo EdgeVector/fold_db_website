@@ -10,14 +10,14 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>LastDB - The last database you&rsquo;ll ever need</title>
+        <title>LastDB - The last database you will need</title>
         <meta name="description" content="LastDB is an experimental self-managing database designed to outlive applications. One permanent database for a person's data." />
-        <meta property="og:title" content="LastDB - The last database you'll ever need" />
+        <meta property="og:title" content="LastDB - The last database you will need" />
         <meta property="og:description" content="A database designed to outlive applications. Your data lives in one permanent database under your control. Applications no longer store your data — they interact with it." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://folddb.com" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="LastDB - The last database you'll ever need" />
+        <meta name="twitter:title" content="LastDB - The last database you will need" />
         <meta name="twitter:description" content="A database designed to outlive applications. One permanent database for a person's data." />
         <link rel="canonical" href="https://folddb.com" />
       </Helmet>
@@ -26,7 +26,7 @@ export default function Home() {
       <TypingAnimation />
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Own your data. For good.</h1>
-      <p className="dim">The last database you&rsquo;ll ever need.</p>
+      <p className="dim">The last database you will need.</p>
       <hr className="decorative-rule" aria-hidden="true" />
       <br />
 
