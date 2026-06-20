@@ -31,8 +31,12 @@ export default function Nav() {
         {menuOpen ? '\u2715' : '\u2630'}
       </button>
       <div className={`nav-links${menuOpen ? ' open' : ''}`}>
-        {NAV_LINKS.filter(link => link.to !== pathname).map(link => (
-          <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>
+        {NAV_LINKS.map(link => (
+          link.to === pathname ? (
+            <span key={link.to} className="link-btn active" aria-current="page">[{link.label}]</span>
+          ) : (
+            <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>
+          )
         ))}
         <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer" className="link-btn">[GitHub]</a>
       </div>
