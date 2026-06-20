@@ -34,7 +34,7 @@ export default function Apps() {
             <pre>{`brew install edgevector/folddb/folddb
 brew services start folddb
 curl -s http://127.0.0.1:9001/api/health`}</pre>
-            <p className="dim">See the <Link to="/guide#install">Guide</Link> for other install options.</p></Card>
+            <p className="dim">See <Link to="/start">Get Started</Link> for the full setup, including an agent-ready runbook.</p></Card>
 
           <Card><p><Label color="green">2 &mdash; BUN</Label></p>
             <p>The clients are <span className="bold">Bun / TypeScript</span> &mdash; no Rust toolchain needed. Install Bun (&ge; 1.3.10):</p>

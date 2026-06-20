@@ -157,7 +157,7 @@ export default function Home() {
         <p>Early releases focus on local encrypted storage, shared structures, transform execution, and semantic indexing.</p>
 
         <p>
-          <Link to="/guide#install" className="link-btn">[Download for Mac]</Link>{'  '}
+          <Link to="/start" className="link-btn">[Get Started]</Link>{'  '}
           <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Read the Paper]</a>{'  '}
           <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5 Version]</a>{'  '}
           <Link to="/developer" className="link-btn">[Developer Guide]</Link>{'  '}

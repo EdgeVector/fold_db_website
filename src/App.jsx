@@ -1,12 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 
-const Guide = lazy(() => import('./pages/Guide'));
-const Using = lazy(() => import('./pages/Using'));
+const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Encryption = lazy(() => import('./pages/Encryption'));
@@ -21,8 +20,10 @@ export default function App() {
           <Suspense fallback={<p className="dim">Loading...</p>}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/guide" element={<Guide />} />
-              <Route path="/using" element={<Using />} />
+              <Route path="/start" element={<Start />} />
+              {/* /guide and /using merged into /start (2026-06-20) — redirect old URLs */}
+              <Route path="/guide" element={<Navigate to="/start" replace />} />
+              <Route path="/using" element={<Navigate to="/start" replace />} />
               <Route path="/apps" element={<Apps />} />
               <Route path="/developer" element={<Developer />} />
               <Route path="/encryption" element={<Encryption />} />

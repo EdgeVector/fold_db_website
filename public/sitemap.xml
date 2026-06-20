@@ -5,11 +5,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://folddb.com/guide</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://folddb.com/using</loc>
+    <loc>https://folddb.com/start</loc>
     <priority>0.8</priority>
   </url>
   <url>

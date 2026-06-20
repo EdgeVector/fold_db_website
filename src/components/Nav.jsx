@@ -4,8 +4,7 @@ import AnimatedLogo from './AnimatedLogo';
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
-  { to: '/guide', label: 'Guide' },
-  { to: '/using', label: 'Use It' },
+  { to: '/start', label: 'Get Started' },
   { to: '/apps', label: 'Apps' },
   { to: '/developer', label: 'Developer' },
   { to: '/encryption', label: 'Encryption' },
