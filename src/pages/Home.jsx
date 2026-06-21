@@ -38,6 +38,12 @@ export default function Home() {
         <span className="dim">LastDB is in alpha &mdash; run it on your machine today.</span>
       </p>
 
+      <p>
+        <span className="dim">Download the macOS app &mdash;{' '}</span>
+        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/LastDB-aarch64.dmg">[Apple Silicon]</a>{' '}
+        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-folddb/releases/latest/download/LastDB-x86_64.dmg">[Intel]</a>
+      </p>
+
       <Section variant="rose" id="problem">
         <h2><span className="bold">THE PROBLEM</span></h2>
 
