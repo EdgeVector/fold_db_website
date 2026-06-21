@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -11,7 +13,7 @@ export default function Footer() {
       </p>
       <p>
         <span className="dim">LINKS</span>{'    '}
-        <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">Schema Registry</a>
+        <Link to="/developer#schemas">Schema Registry</Link>
       </p>
       <p className="dim">&copy; 2025-2026 Last DB &mdash; Built by Edge Vector</p>
     </footer>
