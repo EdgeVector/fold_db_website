@@ -46,9 +46,10 @@ export default function Developer() {
             <p className="dim">Required for AI-powered ingestion and natural language queries</p></Card>
 
           <Card><p><Label color="yellow">3. RUN</Label></p>
-            <pre>./run.sh --local</pre>
-            <p className="dim">Web UI at localhost:5173 &middot; Backend API at localhost:9001</p>
-            <pre>{'./run.sh --local --local-schema  # Fully offline\n./run.sh --local --empty-db      # Fresh database\n./run.sh --local --dev           # Dev schema service'}</pre></Card>
+            <pre>{`brew services start lastdb
+curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
+            <p className="dim">Starts the LastDB daemon in the background &middot; API and dashboard at <span className="bold">localhost:9001</span></p>
+            <pre>lastdb_server --port 9001   # run it in the foreground instead</pre></Card>
 
           <Card><p><Label color="yellow">4. INGEST SAMPLE DATA</Label></p>
             <pre>{`curl -s -X POST http://localhost:9001/api/ingestion/process \\
