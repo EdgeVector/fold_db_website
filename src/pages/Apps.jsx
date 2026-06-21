@@ -96,7 +96,7 @@ fkanban mcp                    # serve the MCP tools over stdio`}</pre>
 
         <p>Each app runs against <span className="bold">your own single-user node</span> &mdash; on LastDB, the owner of the device is the owner of the data. An app is just a namespaced workspace over your local database, not a hosted service you log into.</p>
 
-        <p>The app&rsquo;s schemas are published <span className="bold">once</span> to the shared schema registry at <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">schema.folddb.com</a> by its author. When you run <span className="bold">init</span>, your node simply <span className="bold">resolves</span> those published schemas &mdash; a read-only lookup that needs no invite, key, or sign-up. Building and publishing a <span className="bold">new</span> app is the only path that requires a developer identity; see the <Link to="/developer">Developer Guide</Link>.</p>
+        <p>The app&rsquo;s schemas are published <span className="bold">once</span> to the shared schema registry by its author. When you run <span className="bold">init</span>, your node simply <span className="bold">resolves</span> those published schemas &mdash; a read-only lookup that needs no invite, key, or sign-up. Building and publishing a <span className="bold">new</span> app is the only path that requires a developer identity; see the <Link to="/developer">Developer Guide</Link>.</p>
 
         <pre className="compare-table"><span className="dim">YOU WANT TO...                       WHAT YOU NEED</span>{'\n'}<span className="dim">{'─'.repeat(65)}</span>{'\n'}Run LastDB + use Brain / Kanban      Nothing &mdash; just install{'\n'}Build & publish your own app         A developer identity (see Developer)</pre>
       </Section>

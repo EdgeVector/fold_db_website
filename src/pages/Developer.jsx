@@ -210,7 +210,7 @@ Files / JSON / APIs
             Send data in any format. AI analyzes the structure and maps it to a schema automatically.</p></Card>
 
           <Card><p><Label color="blue">SCHEMA</Label></p><p>
-            The global schema service at <a href="https://schema.folddb.com" target="_blank" rel="noreferrer">schema.folddb.com</a> checks for existing compatible schemas or creates new ones.</p></Card>
+            The global schema service checks for existing compatible schemas or creates new ones.</p></Card>
 
           <Card><p><Label color="blue">STORE</Label></p><p>
             Data is written to the append-only store with AES-256-GCM encryption at rest. Every write is signed and immutable.</p></Card>
@@ -467,7 +467,7 @@ FOLD_UPLOAD_STORAGE_MODE         Upload storage ("s3" for cloud)`}</pre>
 
       {/* SCHEMA REGISTRY */}
       <Section variant="lavender">
-        <h2 id="schemas"><span className="bold">SCHEMA REGISTRY</span> <span className="dim">Live from schema.folddb.com</span></h2>
+        <h2 id="schemas"><span className="bold">SCHEMA REGISTRY</span> <span className="dim">Live from the global schema service</span></h2>
 
         <p>Browse the global schema registry. Schemas define data structure and permissions for interoperability across nodes. During ingestion, AI checks this registry for compatible schemas before creating new ones.</p>
 
