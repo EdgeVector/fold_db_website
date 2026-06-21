@@ -316,7 +316,7 @@ const results = await fetch(
             <pre>{`// Ingest via local REST API
 // Last DB encrypts before writing to disk
 const response = await fetch(
-  "http://localhost:9001/api/ingest", {
+  "http://localhost:9001/api/ingestion/process", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -346,7 +346,7 @@ const results = await fetch(
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      schema: "person_profile",
+      schema_name: "person_profile",
       fields: ["name", "email", "role"],
     })
   }
@@ -358,7 +358,15 @@ const data = await results.json();
 // Natural language search
 // Search terms are blinded automatically
 const hits = await fetch(
-  "http://localhost:9001/api/ask?q=engineers"
+  "http://localhost:9001/api/llm-query/agent", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      query: "Which people are engineers?"
+    })
+  }
 );`}</pre>
           </Card>
         </div>
