@@ -28,7 +28,7 @@ const LIFECYCLE_DIAGRAM = `flowchart LR
 
 export default function BlogBuildingLastdbWithAgents() {
   return (
-    <>
+    <article className="blog-post">
       <Helmet>
         <title>Building LastDB with an autonomous agent loop - Last DB</title>
         <meta name="description" content="We let AI agents build LastDB toward goals we set — and merge their own pull requests — while we sleep. Here is the system that makes that safe: a North-Star-steered autonomous development loop." />
@@ -110,6 +110,6 @@ export default function BlogBuildingLastdbWithAgents() {
       <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
-    </>
+    </article>
   );
 }

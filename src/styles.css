@@ -22,6 +22,9 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 .blog-list { display: flex; flex-direction: column; gap: 1em; margin: 1em 0; }
 .blog-list-item h2 { margin: 0.3em 0; }
 .post-meta { margin: 0.2em 0; }
+/* Indent post lists so markers sit inside the content column (the site reset zeroes ul/ol padding). */
+.blog-post ul, .blog-post ol { padding-left: 1.6em; margin: 1em 0; }
+.blog-post li { margin: 0.4em 0; padding-left: 0.2em; }
 .compare-table-wrap { overflow-x: auto; margin: 0.5em 0; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin: 1em 0; align-items: stretch; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em; margin: 1em 0; align-items: stretch; }
