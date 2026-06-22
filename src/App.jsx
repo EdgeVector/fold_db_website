@@ -9,6 +9,8 @@ const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Encryption = lazy(() => import('./pages/Encryption'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogBuildingLastdbWithAgents = lazy(() => import('./pages/BlogBuildingLastdbWithAgents'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -27,6 +29,8 @@ export default function App() {
               <Route path="/apps" element={<Apps />} />
               <Route path="/developer" element={<Developer />} />
               <Route path="/encryption" element={<Encryption />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/building-lastdb-with-agents" element={<BlogBuildingLastdbWithAgents />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
