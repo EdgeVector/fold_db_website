@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
-import SchemaRegistry from '../components/SchemaRegistry';
 
 export default function Developer() {
   return (
@@ -463,15 +462,6 @@ FOLD_STORAGE_MODE                Storage backend ("s3" for cloud)
 FOLD_S3_BUCKET                   S3 bucket for database storage
 FOLD_S3_REGION                   AWS region for S3
 FOLD_UPLOAD_STORAGE_MODE         Upload storage ("s3" for cloud)`}</pre>
-      </Section>
-
-      {/* SCHEMA REGISTRY */}
-      <Section variant="lavender">
-        <h2 id="schemas"><span className="bold">SCHEMA REGISTRY</span> <span className="dim">Live from the global schema service</span></h2>
-
-        <p>Browse the global schema registry. Schemas define data structure and permissions for interoperability across nodes. During ingestion, AI checks this registry for compatible schemas before creating new ones.</p>
-
-        <SchemaRegistry />
       </Section>
 
       {/* DOCUMENTATION LINKS */}
