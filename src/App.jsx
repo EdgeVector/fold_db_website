@@ -8,7 +8,6 @@ import Home from './pages/Home';
 const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
-const Encryption = lazy(() => import('./pages/Encryption'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogBuildingLastdbWithAgents = lazy(() => import('./pages/BlogBuildingLastdbWithAgents'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -28,7 +27,8 @@ export default function App() {
               <Route path="/using" element={<Navigate to="/start" replace />} />
               <Route path="/apps" element={<Apps />} />
               <Route path="/developer" element={<Developer />} />
-              <Route path="/encryption" element={<Encryption />} />
+              {/* Encryption page retired (2026-06-22) — too technical; redirect old URLs */}
+              <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/building-lastdb-with-agents" element={<BlogBuildingLastdbWithAgents />} />
               <Route path="*" element={<NotFound />} />
