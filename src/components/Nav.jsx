@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { to: '/apps', label: 'Apps' },
   { to: '/developer', label: 'Developer' },
   { to: '/encryption', label: 'Encryption' },
+  { to: '/blog', label: 'Blog' },
 ];
 
 export default function Nav() {
