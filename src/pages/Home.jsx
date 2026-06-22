@@ -168,8 +168,7 @@ export default function Home() {
           <Link to="/start" className="link-btn">[Get Started]</Link>{'  '}
           <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Read the Paper]</a>{'  '}
           <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5 Version]</a>{'  '}
-          <Link to="/developer" className="link-btn">[Developer Guide]</Link>{'  '}
-          <Link to="/developer#schemas" className="link-btn">[Schema Registry]</Link>
+          <Link to="/developer" className="link-btn">[Developer Guide]</Link>
         </p>
       </Section>
 

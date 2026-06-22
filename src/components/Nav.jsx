@@ -37,7 +37,6 @@ export default function Nav() {
             <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>
           )
         ))}
-        <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer" className="link-btn">[GitHub]</a>
       </div>
     </nav>
   );
