@@ -5,12 +5,9 @@ import Mermaid from '../components/Mermaid';
 
 const LAYERS_DIAGRAM = `flowchart TB
   You(["You: set North Stars, clear the 5 gates"])
-  subgraph DATA["DATA — the brain: facts and rules"]
+  subgraph DATA["DATA — the brain (facts and rules)"]
     direction LR
-    NS["North Star"]
-    AP["Active Programs"]
-    AC["Autonomy Contract: dev = no gate"]
-    DM["Driving Model: prototype / harden / maintain"]
+    NS["North Star"] ~~~ AP["Active Programs"] ~~~ AC["Autonomy Contract"] ~~~ DM["Driving Model"]
   end
   subgraph LOOP["THE LOOP — scheduled routines"]
     direction LR
