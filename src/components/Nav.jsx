@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { to: '/start', label: 'Get Started' },
   { to: '/apps', label: 'Apps' },
   { to: '/developer', label: 'Developer' },
-  { to: '/encryption', label: 'Encryption' },
   { to: '/blog', label: 'Blog' },
 ];
 
