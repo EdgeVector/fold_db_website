@@ -9,9 +9,9 @@ export default function Start() {
   return (
     <>
       <Helmet>
-        <title>Get Started - Last DB</title>
+        <title>Get Started - LastDB</title>
         <meta name="description" content="Get started with LastDB and its apps: the daily loop for humans, and a full setup runbook your AI agent can read straight off the page. Local, private, MCP-ready, in alpha today." />
-        <meta property="og:title" content="Get Started - Last DB" />
+        <meta property="og:title" content="Get Started - LastDB" />
         <meta property="og:description" content="The human daily loop for LastDB + Brain + Kanban, and an agent-readable setup runbook. Local, private, no account. Alpha — runs on your machine today." />
         <link rel="canonical" href="https://thelastdb.com/start" />
       </Helmet>

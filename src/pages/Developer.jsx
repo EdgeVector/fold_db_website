@@ -8,9 +8,9 @@ export default function Developer() {
   return (
     <>
       <Helmet>
-        <title>Developer Guide - Last DB</title>
+        <title>Developer Guide - LastDB</title>
         <meta name="description" content="LastDB developer documentation. REST API reference, access policies, trust distance, transforms, CLI commands, and architecture overview." />
-        <meta property="og:title" content="Developer Guide - Last DB" />
+        <meta property="og:title" content="Developer Guide - LastDB" />
         <meta property="og:description" content="LastDB developer documentation. REST API, access policies, transforms, trust distance, and architecture." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
