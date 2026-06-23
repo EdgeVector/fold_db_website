@@ -316,16 +316,14 @@ const status = await systemClient.getSystemStatus();`}</pre>
 GET  /api/schema/{name}              Get schema by name
 GET  /api/schema/{name}/keys         List keys (paginated)
 POST /api/schemas/load               Load from schema dirs
-POST /api/schema/{name}/approve      Approve a schema
 POST /api/schema/{name}/block        Block a schema
-GET  /api/backfill/{hash}            Get backfill status`}</pre>
+POST /api/schema/{name}/set-org-hash Set schema org hash`}</pre>
           </Card>
 
           <Card>
             <p><Label color="purple">INGESTION</Label></p>
             <pre className="compare-table">{`POST /api/ingestion/process          Ingest JSON data
 POST /api/ingestion/upload           Upload a file
-POST /api/ingestion/validate         Validate without ingesting
 POST /api/ingestion/batch-folder     Batch ingest a folder
 GET  /api/ingestion/status           Ingestion status
 GET  /api/ingestion/config           Get ingestion config
@@ -352,7 +350,6 @@ GET  /api/ingestion/batch/{batch_id}
             <p><Label color="purple">QUERY &amp; MUTATION</Label></p>
             <pre className="compare-table">{`POST /api/query                      Execute a query
 POST /api/mutation                   Execute a mutation
-POST /api/mutations/batch            Batch mutations
 GET  /api/native-index/search        Keyword search (?term=)
 GET  /api/indexing/status            Indexing status`}</pre>
           </Card>
@@ -360,11 +357,9 @@ GET  /api/indexing/status            Indexing status`}</pre>
           <Card>
             <p><Label color="purple">LLM QUERY</Label></p>
             <pre className="compare-table">{`POST /api/llm-query/agent            Agent-based NL query
-POST /api/llm-query/analyze          Analyze a query
-POST /api/llm-query/execute          Execute a query plan
 POST /api/llm-query/chat             Chat endpoint
 POST /api/llm-query/analyze-followup Follow-up analysis
-GET  /api/llm-query/backfill/{hash}  Backfill status`}</pre>
+POST /api/llm-query/native-index     NL keyword search`}</pre>
           </Card>
 
           <Card>
