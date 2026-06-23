@@ -3,13 +3,16 @@ name: LastDB download counts
 # Snapshots the cumulative per-asset download_count of every LastDB release
 # (EdgeVector/homebrew-lastdb GitHub Releases) and emits a PostHog
 # `lastdb_download_count_snapshot` event per asset + a rollup total, computing
-# the delta vs. the previously committed snapshot. This is the completed-
-# download half of the LastDB download funnel; the visit->click half is the
-# site's client-side analytics.
+# the delta vs. the previous snapshot. This is the completed-download half of
+# the LastDB download funnel; the visit->click half is the site's client-side
+# analytics.
 #
-# GitHub's download_count is cumulative, so we persist the last snapshot in
-# scripts/lastdb-download-counts.state.json and commit it back so deltas are
-# meaningful across runs.
+# GitHub's download_count is cumulative, not an event stream, so we persist the
+# last snapshot between runs to compute meaningful deltas. We can't commit the
+# snapshot back to main (the branch ruleset requires a PR + merge queue), so we
+# persist it in the Actions cache instead — no PR, no infra, survives across
+# scheduled runs. The committed scripts/lastdb-download-counts.state.json is
+# only the initial baseline; the live state lives in the cache.
 
 on:
   schedule:
@@ -18,7 +21,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # to commit the updated state snapshot
+  contents: read
 
 concurrency:
   group: lastdb-download-counts
@@ -28,6 +31,8 @@ jobs:
   snapshot:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      STATE_FILE: ${{ github.workspace }}/.download-count-state.json
     steps:
       - uses: actions/checkout@v4
 
@@ -35,20 +40,36 @@ jobs:
         with:
           node-version: '20'
 
+      # Restore the most recent snapshot from the Actions cache. The exact key
+      # never matches (it includes run_id), so restore-keys always falls back
+      # to the newest prior `lastdb-download-counts-` entry. We seed the file
+      # from the committed baseline if the cache is empty (first ever run).
+      - name: Restore previous snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.STATE_FILE }}
+          key: lastdb-download-counts-${{ github.run_id }}
+          restore-keys: |
+            lastdb-download-counts-
+
+      - name: Seed baseline if no cached snapshot
+        run: |
+          if [ ! -f "$STATE_FILE" ]; then
+            echo "No cached snapshot; seeding from committed baseline."
+            cp scripts/lastdb-download-counts.state.json "$STATE_FILE"
+          fi
+
       - name: Snapshot download counts -> PostHog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
         run: node scripts/lastdb-download-counts.mjs
 
-      - name: Commit updated snapshot
-        run: |
-          if git diff --quiet -- scripts/lastdb-download-counts.state.json; then
-            echo "No change in download-count snapshot."
-            exit 0
-          fi
-          git config user.name  'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/lastdb-download-counts.state.json
-          git commit -m 'chore: update LastDB download-count snapshot [skip ci]'
-          git push
+      # Save the updated snapshot under a unique key so the next run's
+      # restore-keys prefix match picks it up.
+      - name: Save updated snapshot
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.STATE_FILE }}
+          key: lastdb-download-counts-${{ github.run_id }}
