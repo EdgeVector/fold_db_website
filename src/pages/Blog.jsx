@@ -16,9 +16,9 @@ export default function Blog() {
   return (
     <>
       <Helmet>
-        <title>Blog - Last DB</title>
+        <title>Blog - LastDB</title>
         <meta name="description" content="How we build LastDB: engineering notes on our autonomous, North-Star-steered AI development loop. A local-first database, built in the open." />
-        <meta property="og:title" content="Blog - Last DB" />
+        <meta property="og:title" content="Blog - LastDB" />
         <meta property="og:description" content="Engineering notes on how we build LastDB with an autonomous agent loop." />
         <link rel="canonical" href="https://thelastdb.com/blog" />
       </Helmet>

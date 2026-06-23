@@ -30,7 +30,7 @@ export default function BlogBuildingLastdbWithAgents() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>Building LastDB with an autonomous agent loop - Last DB</title>
+        <title>Building LastDB with an autonomous agent loop - LastDB</title>
         <meta name="description" content="We let AI agents build LastDB toward goals we set — and merge their own pull requests — while we sleep. Here is the system that makes that safe: a North-Star-steered autonomous development loop." />
         <meta property="og:title" content="Building LastDB with an autonomous agent loop" />
         <meta property="og:description" content="The North Star model, the dev = no gate contract, and the scheduled-routine loop that builds LastDB autonomously." />
