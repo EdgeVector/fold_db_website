@@ -371,7 +371,6 @@ GET  /api/llm-query/backfill/{hash}  Backfill status`}</pre>
             <p><Label color="purple">SYSTEM</Label></p>
             <pre className="compare-table">{`GET  /api/system/status              System health
 GET  /api/system/public-key          Node public key
-GET  /api/system/private-key         Node private key
 GET  /api/system/database-config     Database config
 POST /api/system/database-config     Update DB config
 POST /api/system/reset-database      Reset database
