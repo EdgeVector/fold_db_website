@@ -37,7 +37,7 @@ export default function Developer() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
-            <pre>brew install edgevector/folddb/lastdb</pre>
+            <pre>brew install edgevector/lastdb/lastdb</pre>
             <p className="dim">Installs the lastdb and lastdb_server binaries (macOS &amp; Linux). The old <span className="bold">folddb</span>/<span className="bold">folddb_server</span> command names keep working as aliases.</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
