@@ -4,6 +4,7 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
+import { captureDownloadClicked } from '../analytics';
 
 export default function Home() {
   return (
@@ -40,8 +41,8 @@ export default function Home() {
 
       <p>
         <span className="dim">Download the macOS app &mdash;{' '}</span>
-        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-aarch64.dmg">[Apple Silicon]</a>{' '}
-        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-x86_64.dmg">[Intel]</a>
+        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-aarch64.dmg" onClick={() => captureDownloadClicked({ arch: 'aarch64', page: 'home' })}>[Apple Silicon]</a>{' '}
+        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-x86_64.dmg" onClick={() => captureDownloadClicked({ arch: 'x86_64', page: 'home' })}>[Intel]</a>
       </p>
 
       <Section variant="rose" id="problem">

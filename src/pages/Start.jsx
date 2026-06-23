@@ -4,6 +4,7 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
+import { captureDownloadClicked } from '../analytics';
 
 export default function Start() {
   return (
@@ -64,8 +65,8 @@ export default function Start() {
         </div>
 
         <p className="dim">Prefer to click instead of the terminal? Download the macOS app &mdash;{' '}
-          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-aarch64.dmg">[Apple Silicon]</a>{' '}
-          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-x86_64.dmg">[Intel]</a>{' '}
+          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-aarch64.dmg" onClick={() => captureDownloadClicked({ arch: 'aarch64', page: 'start' })}>[Apple Silicon]</a>{' '}
+          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-x86_64.dmg" onClick={() => captureDownloadClicked({ arch: 'x86_64', page: 'start' })}>[Intel]</a>{' '}
           &mdash; then add the apps from the <Link to="/apps">Apps</Link> page.</p>
       </Section>
 
