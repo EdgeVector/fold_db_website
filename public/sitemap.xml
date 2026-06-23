@@ -17,7 +17,11 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thelastdb.com/encryption</loc>
+    <loc>https://thelastdb.com/blog</loc>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thelastdb.com/blog/building-lastdb-with-agents</loc>
+    <priority>0.6</priority>
   </url>
 </urlset>
