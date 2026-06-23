@@ -1,0 +1,54 @@
+name: LastDB download counts
+
+# Snapshots the cumulative per-asset download_count of every LastDB release
+# (EdgeVector/homebrew-lastdb GitHub Releases) and emits a PostHog
+# `lastdb_download_count_snapshot` event per asset + a rollup total, computing
+# the delta vs. the previously committed snapshot. This is the completed-
+# download half of the LastDB download funnel; the visit->click half is the
+# site's client-side analytics.
+#
+# GitHub's download_count is cumulative, so we persist the last snapshot in
+# scripts/lastdb-download-counts.state.json and commit it back so deltas are
+# meaningful across runs.
+
+on:
+  schedule:
+    # Daily at 06:17 UTC (off the top of the hour to dodge cron congestion).
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write # to commit the updated state snapshot
+
+concurrency:
+  group: lastdb-download-counts
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Snapshot download counts -> PostHog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+        run: node scripts/lastdb-download-counts.mjs
+
+      - name: Commit updated snapshot
+        run: |
+          if git diff --quiet -- scripts/lastdb-download-counts.state.json; then
+            echo "No change in download-count snapshot."
+            exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/lastdb-download-counts.state.json
+          git commit -m 'chore: update LastDB download-count snapshot [skip ci]'
+          git push

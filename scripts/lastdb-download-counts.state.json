@@ -1,0 +1,210 @@
+{
+  "assets": {
+    "v0.17.0/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.17.0/LastDB-aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "LastDB-aarch64.dmg"
+    },
+    "v0.17.0/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.17.0/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.17.0/LastDB-x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "LastDB-x86_64.dmg"
+    },
+    "v0.17.0/LastDB_0.17.0_aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "LastDB_0.17.0_aarch64.dmg"
+    },
+    "v0.17.0/LastDB_0.17.0_x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.17.0",
+      "name": "LastDB_0.17.0_x86_64.dmg"
+    },
+    "v0.16.1/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 1,
+      "tag": "v0.16.1",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.16.1/LastDB-aarch64.dmg": {
+      "count": 1,
+      "tag": "v0.16.1",
+      "name": "LastDB-aarch64.dmg"
+    },
+    "v0.16.1/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.1",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.16.1/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.1",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.16.1/LastDB-x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.1",
+      "name": "LastDB-x86_64.dmg"
+    },
+    "v0.16.1/LastDB_0.16.1_aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.16.1",
+      "name": "LastDB_0.16.1_aarch64.dmg"
+    },
+    "v0.16.1/LastDB_0.16.1_x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.1",
+      "name": "LastDB_0.16.1_x86_64.dmg"
+    },
+    "v0.16.0-rc2/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.16.0-rc2/LastDB-aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "LastDB-aarch64.dmg"
+    },
+    "v0.16.0-rc2/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.16.0-rc2/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.16.0-rc2/LastDB-x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "LastDB-x86_64.dmg"
+    },
+    "v0.16.0-rc2/LastDB_0.16.0-rc2_aarch64.dmg": {
+      "count": 1,
+      "tag": "v0.16.0-rc2",
+      "name": "LastDB_0.16.0-rc2_aarch64.dmg"
+    },
+    "v0.16.0-rc2/LastDB_0.16.0-rc2_x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc2",
+      "name": "LastDB_0.16.0-rc2_x86_64.dmg"
+    },
+    "v0.16.0-rc1/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.16.0-rc1/LastDB-aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "LastDB-aarch64.dmg"
+    },
+    "v0.16.0-rc1/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.16.0-rc1/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.16.0-rc1/LastDB-x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "LastDB-x86_64.dmg"
+    },
+    "v0.16.0-rc1/LastDB_0.16.0-rc1_aarch64.dmg": {
+      "count": 1,
+      "tag": "v0.16.0-rc1",
+      "name": "LastDB_0.16.0-rc1_aarch64.dmg"
+    },
+    "v0.16.0-rc1/LastDB_0.16.0-rc1_x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.16.0-rc1",
+      "name": "LastDB_0.16.0-rc1_x86_64.dmg"
+    },
+    "v0.16.0/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.16.0/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.16.0/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 0,
+      "tag": "v0.16.0",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.15.1/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 5,
+      "tag": "v0.15.1",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.15.1/LastDB-aarch64.dmg": {
+      "count": 1,
+      "tag": "v0.15.1",
+      "name": "LastDB-aarch64.dmg"
+    },
+    "v0.15.1/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 1,
+      "tag": "v0.15.1",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.15.1/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 1,
+      "tag": "v0.15.1",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    },
+    "v0.15.1/LastDB-x86_64.dmg": {
+      "count": 1,
+      "tag": "v0.15.1",
+      "name": "LastDB-x86_64.dmg"
+    },
+    "v0.15.1/LastDB_0.15.1_aarch64.dmg": {
+      "count": 0,
+      "tag": "v0.15.1",
+      "name": "LastDB_0.15.1_aarch64.dmg"
+    },
+    "v0.15.1/LastDB_0.15.1_x86_64.dmg": {
+      "count": 0,
+      "tag": "v0.15.1",
+      "name": "LastDB_0.15.1_x86_64.dmg"
+    },
+    "v0.15.0/lastdb-aarch64-apple-darwin.tar.gz": {
+      "count": 3,
+      "tag": "v0.15.0",
+      "name": "lastdb-aarch64-apple-darwin.tar.gz"
+    },
+    "v0.15.0/lastdb-x86_64-apple-darwin.tar.gz": {
+      "count": 1,
+      "tag": "v0.15.0",
+      "name": "lastdb-x86_64-apple-darwin.tar.gz"
+    },
+    "v0.15.0/lastdb-x86_64-unknown-linux-gnu.tar.gz": {
+      "count": 1,
+      "tag": "v0.15.0",
+      "name": "lastdb-x86_64-unknown-linux-gnu.tar.gz"
+    }
+  },
+  "updated_at": "2026-06-23T21:06:20.086Z"
+}
