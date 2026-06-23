@@ -7,7 +7,10 @@
 //   1. read the per-asset download_count for every release of the LastDB
 //      distribution repo (default EdgeVector/homebrew-lastdb),
 //   2. compute the delta vs. the value we recorded on the previous run
-//      (persisted in scripts/lastdb-download-counts.state.json),
+//      (persisted in a state file — STATE_FILE env, defaulting to
+//      scripts/lastdb-download-counts.state.json; the scheduled workflow
+//      points STATE_FILE at an Actions-cache-backed path since the branch
+//      ruleset forbids committing the snapshot back to main),
 //   3. emit one PostHog `lastdb_download_count_snapshot` event per tracked
 //      DMG asset, plus a `lastdb_download_count_rollup` total event, so
 //      PostHog can chart cumulative counts and computed deltas.
@@ -24,6 +27,8 @@
 //   POSTHOG_API_KEY  PostHog project write key (falls back to the public
 //                    project token below if unset).
 //   POSTHOG_HOST     (optional) defaults to https://us.i.posthog.com.
+//   STATE_FILE       (optional) path to the cross-run snapshot file; defaults
+//                    to scripts/lastdb-download-counts.state.json.
 //   DRY_RUN=1        compute + print, but do not POST to PostHog and do not
 //                    write the state file.
 
@@ -41,7 +46,8 @@ const POSTHOG_PUBLIC_TOKEN = "phc_gMzYLqfT6baay4Ve4q00PVRcCy4xUv3pCsQjreIt5aS";
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY || POSTHOG_PUBLIC_TOKEN;
 const DRY_RUN = process.env.DRY_RUN === "1" || process.env.DRY_RUN === "true";
 
-const STATE_PATH = join(__dirname, "lastdb-download-counts.state.json");
+const STATE_PATH =
+  process.env.STATE_FILE || join(__dirname, "lastdb-download-counts.state.json");
 
 // Only the user-facing LastDB installers are part of the download funnel.
 // We deliberately skip .sig / SHA256SUMS / latest.json / dev / legacy-FoldDB
