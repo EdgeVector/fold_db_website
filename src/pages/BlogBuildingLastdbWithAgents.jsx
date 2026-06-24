@@ -1,30 +1,142 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
-import Mermaid from '../components/Mermaid';
 
-const LAYERS_DIAGRAM = `flowchart TB
-  You(["You: set North Stars, clear the 5 gates"])
-  subgraph DATA["DATA — the brain (facts and rules)"]
-    direction LR
-    NS["North Star"] ~~~ AP["Active Programs"] ~~~ AC["Autonomy Contract"] ~~~ DM["Driving Model"]
-  end
-  subgraph LOOP["THE LOOP — scheduled routines"]
-    direction LR
-    PD["program-driver"] --> GR["groom"] --> PU["pickup"] --> AG["worker agent"] --> WA["watch"]
-  end
-  You --> DATA
-  DATA --> LOOP
-  AG --> RES["merged PRs on dev"]
-  WA -. "surfaces only the 5 gates" .-> You`;
+// Hand-drawn architectural figures (draftsman style: thin uniform strokes,
+// poché hatch for stored data, joint marks, mono caps labels, a single accent
+// for the shipped result). Rendered as inline SVG so there's no auto-layout.
+// Matches the house figure style used across the blog.
+function ArchFigure({ svg, caption }) {
+  return (
+    <figure style={{ margin: '34px 0', textAlign: 'center' }}>
+      <div dangerouslySetInnerHTML={{ __html: svg }} />
+      {caption && (
+        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
 
-const LIFECYCLE_DIAGRAM = `flowchart LR
-  A["You set a North Star"] --> B{"mode?"}
-  B -->|prototype| C["agent builds the rough working version"]
-  B -->|harden| D["agent finds edge cases, stabilizes, proves it by running the app"]
-  B -->|maintain| E["routines keep it healthy, in the background"]
-  C --> F["merged on dev"]
-  D --> F`;
+const SVG_DEFS = `
+  <defs>
+    <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+    </pattern>
+  </defs>`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+
+// 1 — three tiers: you set the brain, the loop reads it, and only the gates
+//     come back to you. The shipped result is the one accented element.
+const LAYERS = `${SVG_OPEN('0 0 660 430')}
+  <rect x="230" y="24" width="200" height="46" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="49" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">YOU</text>
+  <text x="330" y="64" text-anchor="middle" fill="#928374" font-size="10">set destinations &middot; clear the gates</text>
+
+  <rect x="328" y="70" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="74" x2="330" y2="110" stroke="#928374" stroke-width="1"/>
+  <rect x="328" y="106" width="4" height="4" fill="#928374"/>
+  <text x="342" y="92" fill="#928374" font-size="10" letter-spacing="2">SETS</text>
+
+  <rect x="60" y="110" width="540" height="92" fill="none" stroke="#928374" stroke-width="1"/>
+  <rect x="60" y="110" width="540" height="92" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="132" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">THE BRAIN</text>
+  <text x="330" y="147" text-anchor="middle" fill="#928374" font-size="10">facts &amp; rules &mdash; read, never acts alone</text>
+  <line x1="195" y1="156" x2="195" y2="202" stroke="#504945" stroke-width="1"/>
+  <line x1="330" y1="156" x2="330" y2="202" stroke="#504945" stroke-width="1"/>
+  <line x1="465" y1="156" x2="465" y2="202" stroke="#504945" stroke-width="1"/>
+  <text x="127.5" y="176" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">NORTH</text>
+  <text x="127.5" y="189" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">STAR</text>
+  <text x="262.5" y="176" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">ACTIVE</text>
+  <text x="262.5" y="189" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">PROGRAMS</text>
+  <text x="397.5" y="176" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">AUTONOMY</text>
+  <text x="397.5" y="189" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">CONTRACT</text>
+  <text x="532.5" y="176" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">DRIVING</text>
+  <text x="532.5" y="189" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">MODEL</text>
+
+  <rect x="328" y="202" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="206" x2="330" y2="240" stroke="#928374" stroke-width="1"/>
+  <rect x="328" y="236" width="4" height="4" fill="#928374"/>
+  <text x="342" y="224" fill="#928374" font-size="10" letter-spacing="2">READ BY</text>
+
+  <rect x="60" y="240" width="540" height="112" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="262" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">THE LOOP</text>
+  <text x="330" y="277" text-anchor="middle" fill="#928374" font-size="10">scheduled routines, in sequence</text>
+  <rect x="75" y="296" width="78" height="40" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="114" y="313" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">PROGRAM</text>
+  <text x="114" y="326" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">DRIVER</text>
+  <rect x="183" y="296" width="78" height="40" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="222" y="320" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="0.5">GROOM</text>
+  <rect x="291" y="296" width="78" height="40" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="320" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="0.5">PICKUP</text>
+  <rect x="399" y="296" width="78" height="40" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="438" y="320" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="0.5">WORKER</text>
+  <rect x="507" y="296" width="78" height="40" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="546" y="320" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="0.5">WATCH</text>
+  <line x1="153" y1="316" x2="179" y2="316" stroke="#928374" stroke-width="1"/>
+  <polygon points="183,316 174,312 174,320" fill="#928374"/>
+  <line x1="261" y1="316" x2="287" y2="316" stroke="#928374" stroke-width="1"/>
+  <polygon points="291,316 282,312 282,320" fill="#928374"/>
+  <line x1="369" y1="316" x2="395" y2="316" stroke="#928374" stroke-width="1"/>
+  <polygon points="399,316 390,312 390,320" fill="#928374"/>
+  <line x1="477" y1="316" x2="503" y2="316" stroke="#928374" stroke-width="1"/>
+  <polygon points="507,316 498,312 498,320" fill="#928374"/>
+
+  <rect x="328" y="352" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="356" x2="330" y2="388" stroke="#928374" stroke-width="1"/>
+  <rect x="328" y="384" width="4" height="4" fill="#928374"/>
+  <text x="342" y="372" fill="#928374" font-size="10" letter-spacing="2">PRODUCES</text>
+
+  <rect x="210" y="388" width="240" height="40" fill="none" stroke="#83a598" stroke-width="1"/>
+  <text x="330" y="412" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">MERGED PRS ON DEV</text>
+
+  <rect x="583" y="314" width="4" height="4" fill="#928374"/>
+  <polyline points="585,316 628,316 628,47 432,47" fill="none" stroke="#928374" stroke-width="1" stroke-dasharray="2 3"/>
+  <polygon points="430,47 439,43 439,51" fill="#928374"/>
+  <text x="620" y="40" text-anchor="end" fill="#928374" font-size="10" letter-spacing="0.5">SURFACES ONLY THE 5 GATES</text>
+</svg>`;
+
+// 2 — one North Star, three modes over its life; prototype and harden ship,
+//     maintain runs in the background. The merged result is the accent.
+const LIFECYCLE = `${SVG_OPEN('0 0 660 280')}
+  <rect x="24" y="116" width="148" height="50" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="98" y="137" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">NORTH STAR</text>
+  <text x="98" y="151" text-anchor="middle" fill="#928374" font-size="9">a destination with</text>
+  <text x="98" y="162" text-anchor="middle" fill="#928374" font-size="9">a checkable &lsquo;done&rsquo;</text>
+
+  <rect x="170" y="139" width="4" height="4" fill="#928374"/>
+  <line x1="174" y1="141" x2="210" y2="141" stroke="#928374" stroke-width="1"/>
+  <line x1="210" y1="62" x2="210" y2="218" stroke="#928374" stroke-width="1"/>
+  <text x="210" y="30" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1.5">BY MODE</text>
+  <line x1="210" y1="62" x2="250" y2="62" stroke="#928374" stroke-width="1"/>
+  <rect x="246" y="60" width="4" height="4" fill="#928374"/>
+  <line x1="210" y1="218" x2="250" y2="218" stroke="#928374" stroke-width="1"/>
+  <rect x="246" y="216" width="4" height="4" fill="#928374"/>
+  <rect x="246" y="139" width="4" height="4" fill="#928374"/>
+
+  <rect x="250" y="39" width="150" height="46" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="325" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">PROTOTYPE</text>
+  <text x="325" y="73" text-anchor="middle" fill="#928374" font-size="9">build the rough version</text>
+  <rect x="250" y="118" width="150" height="46" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="325" y="137" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">HARDEN</text>
+  <text x="325" y="152" text-anchor="middle" fill="#928374" font-size="9">find edges &middot; prove by running</text>
+  <rect x="250" y="195" width="150" height="46" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="325" y="214" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">MAINTAIN</text>
+  <text x="325" y="229" text-anchor="middle" fill="#928374" font-size="9">keep it healthy</text>
+
+  <polyline points="400,62 435,62 435,117 466,117" fill="none" stroke="#928374" stroke-width="1"/>
+  <polyline points="400,141 435,141 435,117" fill="none" stroke="#928374" stroke-width="1"/>
+  <rect x="466" y="115" width="4" height="4" fill="#928374"/>
+  <rect x="470" y="94" width="160" height="46" fill="none" stroke="#83a598" stroke-width="1"/>
+  <text x="550" y="121" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">MERGED ON DEV</text>
+
+  <line x1="400" y1="218" x2="466" y2="218" stroke="#928374" stroke-width="1"/>
+  <rect x="466" y="216" width="4" height="4" fill="#928374"/>
+  <rect x="470" y="195" width="160" height="46" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="550" y="214" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1">RUNS IN BACKGROUND</text>
+  <text x="550" y="229" text-anchor="middle" fill="#928374" font-size="9">routines keep it healthy</text>
+</svg>`;
 
 export default function BlogBuildingLastdbWithAgents() {
   return (
@@ -59,7 +171,7 @@ export default function BlogBuildingLastdbWithAgents() {
       </ul>
       <p>So a routine is just a harness with a timer, and data is what they all read.</p>
 
-      <Mermaid chart={LAYERS_DIAGRAM} />
+      <ArchFigure svg={LAYERS} caption="Fig. 1 — you set the brain; the loop reads it; only the gates return to you" />
 
       <Section variant="sage">
         <h2><span className="bold">The unit of work is a North Star</span></h2>
@@ -72,7 +184,7 @@ export default function BlogBuildingLastdbWithAgents() {
         <p>A North Star moves through those modes over its life. The agent reads the mode and picks its approach.</p>
       </Section>
 
-      <Mermaid chart={LIFECYCLE_DIAGRAM} />
+      <ArchFigure svg={LIFECYCLE} caption="Fig. 2 — one North Star, three modes; prototype and harden ship, maintain runs on" />
 
       <h2>The contract: drive by default, stop at five gates</h2>
       <p>The reason most &ldquo;autonomous&rdquo; setups stall is that they ask permission constantly. Ours has one rule: <span className="bold">drive everything to done on the development track without asking.</span> Build, test, security-review, fix, and merge &mdash; all autonomous.</p>
