@@ -11,6 +11,12 @@ const POSTS = [
     blurb: 'Adding a field to a live system is conventionally a crisis: a window, a script, a rollback plan. We added eight to a running application and convened none of it. The database was not consulted. The migration is not a technical necessity — it is a tax.',
   },
   {
+    slug: 'private-ai-setup',
+    title: 'Easy AI setup that keeps your data yours',
+    date: '2026-06-24',
+    blurb: 'Setting up AI shouldn’t mean handing your data to a stranger. One-click local models for ingestion, and a split-trust chat design where the cloud relay stays blind to what you say — no single party holds both who you are and what you said.',
+  },
+  {
     slug: 'building-lastdb-with-agents',
     title: 'Building LastDB with an autonomous agent loop',
     date: '2026-06-22',
