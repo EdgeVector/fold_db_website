@@ -104,48 +104,48 @@ export default function BlogEvolvingALiveSchema() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>Upgrading a field, no migration required - LastDB</title>
-        <meta name="description" content="We added structured fields to our Kanban app's data model while it was in active use. On most databases that's a migration — a schema change, a maintenance window, a backfill. On LastDB it required no database change and no migration at all, because the app owns its schema and the database adapts to it." />
-        <meta property="og:title" content="Upgrading a field, no migration required" />
-        <meta property="og:description" content="How we evolved our app's data model on LastDB with zero database changes, zero migrations, and zero downtime." />
+        <title>Against Migration - LastDB</title>
+        <meta name="description" content="Adding a field to a live system is conventionally a crisis: a window, a script, a rollback plan. We added eight fields to a running application and convened none of it. The database was not consulted. The migration is not a technical necessity — it is a tax levied by databases that confuse storing data with owning its shape." />
+        <meta property="og:title" content="Against Migration" />
+        <meta property="og:description" content="The application owns the shape of its data. The database stores against it. Remove that confusion and the migration — the window, the script, the apology — simply disappears." />
         <link rel="canonical" href="https://thelastdb.com/blog/evolving-a-live-schema" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">Upgrading a field, no migration required</h1>
+      <h1 className="tagline">Against Migration</h1>
       <p className="post-meta dim">2026-06-24</p>
 
-      <p className="bold white">We just upgraded a core piece of our Kanban app&rsquo;s data model &mdash; turning facts that used to live in free text into real, structured fields &mdash; while the app was in active use. On most databases that&rsquo;s a migration: a schema change, a maintenance window, a backfill script. Here it was none of those. <span className="white">We changed the app. The database didn&rsquo;t change at all.</span></p>
+      <p className="bold white">Adding a field to a live system is, conventionally, a crisis. It demands a window, a script, a rollback plan &mdash; an entire bureaucracy erected around a single admission: that your data and your model have drifted apart, and one must now be dragged to meet the other. We added eight fields to a running application and convened none of it. <span className="white">The database was not consulted. It did not need to be.</span></p>
 
-      <p>We build LastDB using two of our own apps that run on it: <span className="bold">Brain</span> and <span className="bold">Kanban</span>, the task board our agents pull work from. Kanban had grown a habit of stuffing important facts &mdash; which repo a task targets, whether it&rsquo;s blocked, how urgent it is &mdash; into the free-text body of each card. We wanted those to be first-class <span className="bold">fields</span>. The interesting part is what that upgrade did <em>not</em> require.</p>
+      <p>The application in question is Kanban &mdash; one of two apps we build LastDB with, both running on LastDB. Its cards had been hoarding meaning in prose: which repository a task targets, whether it is blocked, how urgent. Prose is where structure goes to hide. We promoted those facts to fields. The procedure is unremarkable. Its cost is the entire point: there wasn&rsquo;t one.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      <h2>The app owns its schema</h2>
-      <p>In LastDB, the shape of your data is declared by the <span className="bold">app</span>, not hand-built into the database as tables you then have to alter. The database stores records against whatever shape the app declares. So &ldquo;add a field&rdquo; is fundamentally an <span className="bold">app-level change</span> &mdash; Kanban declares a richer card &mdash; not a database operation you schedule and babysit.</p>
+      <h2>Schema belongs to the application</h2>
+      <p>A conventional database treats the shape of your data as its own property &mdash; tables poured like concrete, altered only with permits. LastDB does not. The <span className="bold">application</span> declares the shape; the database stores facts against whatever shape it is given. The distinction is not academic. It relocates &ldquo;add a field&rdquo; from a database operation &mdash; scheduled, rehearsed, feared &mdash; to what it always should have been: a line in the app.</p>
 
-      <ArchFigure svg={OWNERSHIP} caption="Fig. 1 — the app declares the shape; the database stores against it" />
+      <ArchFigure svg={OWNERSHIP} caption="Fig. 1 — the application declares the form; the database obeys" />
 
       <Section variant="sage">
-        <h2><span className="bold">What the upgrade actually was</span></h2>
-        <p>Kanban&rsquo;s card went from 10 fields to 18. To make that real, the app declared the new, wider shape &mdash; a <span className="bold">superset</span> of the old one. LastDB recognized it as the next version of the same card and <span className="bold">expanded</span> it: the 10 existing fields keep pointing at the data already on disk, and the 8 new fields are simply empty until something writes them.</p>
-        <p>No <code>ALTER TABLE</code>. No backfill job. No maintenance window. Nothing to roll back. We checked the obvious way &mdash; counting the live cards before and after &mdash; and it was identical, down to the row.</p>
+        <h2><span className="bold">Ten fields became eighteen</span></h2>
+        <p>The application declared the wider form &mdash; a <span className="bold">superset</span>. LastDB recognized it as the same object, larger, and <span className="bold">expanded</span> into it. The original ten fields go on addressing the data already on disk. The eight new ones are empty. Emptiness here is not absence; it is capacity &mdash; space the application may fill, or not.</p>
+        <p>No <code>ALTER TABLE</code>. No backfill. No window. Nothing to undo. The maintenance window &mdash; that scheduled apology &mdash; was never opened. We counted the cards before and after. Identical, to the row.</p>
       </Section>
 
-      <ArchFigure svg={EXPANSION} caption="Fig. 2 — expansion: existing fields keep their data, new fields start empty" />
+      <ArchFigure svg={EXPANSION} caption="Fig. 2 — ten fields untouched; eight added; nothing migrated" />
 
-      <p>That&rsquo;s the whole point of an app-owned schema: evolving your data model is a property of shipping a new version of the <em>app</em>, not a database project with its own runbook.</p>
+      <p>Evolving the model is therefore a property of shipping the application, not a project the database imposes on you, with its own runbook and its own held breath.</p>
 
-      <h2>No flag day, either</h2>
-      <p>Here&rsquo;s the part that surprised even us. Because LastDB happily serves <span className="bold">both</span> the old and the new card shape at the same time, we didn&rsquo;t need a coordinated cutover. The new app code rolled out gradually, and while it did, old and new versions were reading and writing the same board side by side &mdash; the old code working with its 10 fields, the new code with all 18, against the same data, with no errors and no flag day.</p>
+      <h2>There was no cutover</h2>
+      <p>Because the old form and the new are equally valid at once, there was nothing to cut over to. Two versions of the application addressed one body of data simultaneously, indifferent to one another &mdash; the old confined to its ten fields, the new fluent in all eighteen &mdash; without error, without ceremony.</p>
 
-      <ArchFigure svg={ROLLOUT} caption="Fig. 3 — both app versions serve the same board during a rollout" />
+      <ArchFigure svg={ROLLOUT} caption="Fig. 3 — two versions, one body of data, no cutover" />
 
-      <p>An older writer just doesn&rsquo;t set the new fields; a newer one does. The new fields fill in naturally as the new version takes over. There&rsquo;s no moment where the system is half-migrated and brittle, because there&rsquo;s no migration to be halfway through.</p>
+      <p>An older writer simply omits the new fields; a newer one supplies them. The new structure accretes as the new version prevails. There is no half-migrated interval in which the system is brittle, because there is no migration to be halfway through.</p>
 
-      <h2>Why this matters</h2>
-      <p>The cost of changing a data model is one of the quiet taxes on building software: it turns a one-line product idea (&ldquo;tasks should have a priority&rdquo;) into a migration, a deploy plan, and a held breath. LastDB&rsquo;s model &mdash; the app declares its schema, the database adapts, both versions coexist &mdash; collapses that back down to what it should be: <span className="bold">an app change.</span> The same local-first, you-own-your-data philosophy behind LastDB is why evolving the data on top of it doesn&rsquo;t drag the database into it.</p>
+      <h2>The migration is a tax</h2>
+      <p>It is not a technical necessity. It is a tax &mdash; levied by databases that confuse storing data with owning its shape, and paid by everyone downstream in windows, scripts, and dread. A one-line idea (&ldquo;tasks should have a priority&rdquo;) is conscripted into a deploy plan. Remove the confusion &mdash; let the application own the shape, let the database adapt, let both versions coexist &mdash; and the tax does not get cheaper. It ceases to exist. What remains is the only honest unit of change: the deploy.</p>
 
       <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB &mdash; inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>.</p>
 

@@ -6,9 +6,9 @@ import Label from '../components/Label';
 const POSTS = [
   {
     slug: 'evolving-a-live-schema',
-    title: 'Upgrading a field, no migration required',
+    title: 'Against Migration',
     date: '2026-06-24',
-    blurb: 'We turned free-text facts in our Kanban app into real, structured fields — while it was in active use. On most databases that’s a migration with a maintenance window. On LastDB it needed no database change and no migration at all, because the app owns its schema and the database adapts.',
+    blurb: 'Adding a field to a live system is conventionally a crisis: a window, a script, a rollback plan. We added eight to a running application and convened none of it. The database was not consulted. The migration is not a technical necessity — it is a tax.',
   },
   {
     slug: 'building-lastdb-with-agents',
