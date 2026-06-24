@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'evolving-a-live-schema',
+    title: 'Evolving a schema on a live database',
+    date: '2026-06-24',
+    blurb: 'We added fields to a database that was in active use — no downtime, no migration, no data loss. It mostly just worked. The interesting part is the one place it didn’t, and what that taught us about schema change.',
+  },
+  {
     slug: 'building-lastdb-with-agents',
     title: 'Building LastDB with an autonomous agent loop',
     date: '2026-06-22',
