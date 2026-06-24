@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'evolving-a-live-schema',
+    title: 'Against Migration',
+    date: '2026-06-24',
+    blurb: 'Adding a field to a live system is conventionally a crisis: a window, a script, a rollback plan. We added eight to a running application and convened none of it. The database was not consulted. The migration is not a technical necessity — it is a tax.',
+  },
+  {
     slug: 'building-lastdb-with-agents',
     title: 'Building LastDB with an autonomous agent loop',
     date: '2026-06-22',
