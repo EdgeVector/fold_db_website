@@ -12,9 +12,9 @@ const POSTS = [
   },
   {
     slug: 'idea-to-north-star',
-    title: 'An idea is worthless',
+    title: 'From a rough idea to a North Star',
     date: '2026-06-24',
-    blurb: 'An idea is the cheapest thing a company makes; its abundance is its worth, which is nothing. What is scarce is the discipline it is made to survive. One idea — “make AI setup a single gesture” — put through it.',
+    blurb: 'Every feature starts as a rough idea. Here’s what happened to one — “make AI setup one click” — between the idea and the feature we’re shipping: one-click local setup, and cloud chat that doesn’t read your data.',
   },
   {
     slug: 'building-lastdb-with-agents',
