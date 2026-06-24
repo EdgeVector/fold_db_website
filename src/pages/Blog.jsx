@@ -14,7 +14,7 @@ const POSTS = [
     slug: 'idea-to-north-star',
     title: 'An idea is worthless',
     date: '2026-06-24',
-    blurb: 'Everyone has ideas; that is precisely what makes them worthless. The discipline is the product. A single idea — “make AI setup one click” — forced into a falsifiable destination and made to survive what we actually believe.',
+    blurb: 'An idea is the cheapest thing a company makes; its abundance is its worth, which is nothing. What is scarce is the discipline it is made to survive. One idea — “make AI setup a single gesture” — put through it.',
   },
   {
     slug: 'building-lastdb-with-agents',
