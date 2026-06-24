@@ -12,9 +12,9 @@ const POSTS = [
   },
   {
     slug: 'idea-to-north-star',
-    title: 'Against the API key',
+    title: 'Against authorship',
     date: '2026-06-24',
-    blurb: 'A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand — one click, local by default — and declined the tidy shortcut that would have had our cloud read your data.',
+    blurb: 'The interesting part of a feature is never the feature, but the procedure that produced it: a sentence pinned to a fixed point, handed to a machine paid to dislike it, cut into parts, and built overnight by agents while no one was at the desk.',
   },
   {
     slug: 'building-lastdb-with-agents',

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-// Figures are hand-authored architectural line drawings (inline SVG strings,
+// The figure is a hand-authored architectural line drawing (inline SVG string,
 // rendered via dangerouslySetInnerHTML so the SVG grammar stays verbatim).
 // Thin uniform strokes, poché hatch for "solid/built", a measured story-pole,
 // joints, orthogonal connectors, one accent (#fe8019). No auto-layout.
@@ -21,7 +21,7 @@ function ArchFigure({ svg, caption }) {
 const FIG_DISCIPLINE = `
 <svg viewBox="0 0 660 432" xmlns="http://www.w3.org/2000/svg"
      style="width:100%;height:auto;max-width:620px;display:block;margin:0 auto"
-     font-family="'IBM Plex Mono', monospace" role="img" aria-label="From a rough idea to shipped code: five stages — idea, North Star, review, tasks, merged code.">
+     font-family="'IBM Plex Mono', monospace" role="img" aria-label="The path of a job: a sentence, a fixed point, review, parts, built.">
   <defs>
     <pattern id="poche1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
@@ -59,108 +59,67 @@ const FIG_DISCIPLINE = `
   <polygon points="330,360 326,354 334,354" fill="#928374"/>
 
   <rect x="140" y="24" width="380" height="48" fill="none" stroke="#928374" stroke-width="1" stroke-dasharray="5 4"/>
-  <text x="330" y="46" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">AN IDEA</text>
-  <text x="330" y="62" text-anchor="middle" fill="#928374" font-size="11">rough, one sentence</text>
+  <text x="330" y="46" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">A SENTENCE</text>
+  <text x="330" y="62" text-anchor="middle" fill="#928374" font-size="11">the job, stated once</text>
 
   <rect x="140" y="108" width="380" height="48" fill="none" stroke="#fe8019" stroke-width="1"/>
   <line x1="159" y1="132" x2="169" y2="132" stroke="#fe8019" stroke-width="1"/>
   <line x1="164" y1="127" x2="164" y2="137" stroke="#fe8019" stroke-width="1"/>
-  <text x="334" y="130" text-anchor="middle" fill="#fe8019" font-size="13" letter-spacing="1.5">A NORTH STAR</text>
+  <text x="334" y="130" text-anchor="middle" fill="#fe8019" font-size="13" letter-spacing="1.5">A FIXED POINT</text>
   <text x="334" y="146" text-anchor="middle" fill="#928374" font-size="11">a checkable &#8220;done&#8221;</text>
 
   <rect x="140" y="192" width="380" height="48" fill="none" stroke="#928374" stroke-width="1"/>
   <text x="330" y="214" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">REVIEW</text>
-  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="11">built to be disliked</text>
+  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="11">paid to dislike it</text>
 
   <rect x="140" y="276" width="380" height="48" fill="url(#cells1)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="298" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">TASKS</text>
-  <text x="330" y="314" text-anchor="middle" fill="#928374" font-size="11">cut into parts</text>
+  <text x="330" y="298" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">PARTS</text>
+  <text x="330" y="314" text-anchor="middle" fill="#928374" font-size="11">cut up, handed out</text>
 
   <rect x="140" y="360" width="380" height="48" fill="url(#poche1)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="382" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">MERGED CODE</text>
-  <text x="330" y="398" text-anchor="middle" fill="#928374" font-size="11">built</text>
-</svg>`;
-
-const FIG_PATHS = `
-<svg viewBox="0 0 660 246" xmlns="http://www.w3.org/2000/svg"
-     style="width:100%;height:auto;max-width:620px;display:block;margin:0 auto"
-     font-family="'IBM Plex Mono', monospace" role="img" aria-label="Three ways to chat with your data: your own key, a local model, or the one-click managed option.">
-  <defs>
-    <pattern id="poche2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
-    </pattern>
-  </defs>
-
-  <rect x="24" y="92" width="180" height="58" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="114" y="118" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">CHAT WITH</text>
-  <text x="114" y="134" text-anchor="middle" fill="#928374" font-size="11">your data</text>
-
-  <line x1="204" y1="121" x2="300" y2="121" stroke="#928374" stroke-width="1"/>
-  <line x1="300" y1="44" x2="300" y2="198" stroke="#928374" stroke-width="1"/>
-
-  <rect x="298" y="42" width="4" height="4" fill="#928374"/>
-  <line x1="300" y1="44" x2="360" y2="44" stroke="#928374" stroke-width="1"/>
-  <polygon points="360,44 354,40 354,48" fill="#928374"/>
-  <rect x="360" y="20" width="276" height="48" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="498" y="42" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">YOUR OWN KEY</text>
-  <text x="498" y="58" text-anchor="middle" fill="#928374" font-size="11">straight to the provider</text>
-
-  <rect x="298" y="119" width="4" height="4" fill="#928374"/>
-  <line x1="300" y1="121" x2="360" y2="121" stroke="#928374" stroke-width="1"/>
-  <polygon points="360,121 354,117 354,125" fill="#928374"/>
-  <rect x="360" y="97" width="276" height="48" fill="url(#poche2)" stroke="#928374" stroke-width="1"/>
-  <text x="498" y="119" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">A LOCAL MODEL</text>
-  <text x="498" y="135" text-anchor="middle" fill="#928374" font-size="11">nothing leaves the device</text>
-
-  <rect x="298" y="196" width="4" height="4" fill="#928374"/>
-  <line x1="300" y1="198" x2="360" y2="198" stroke="#928374" stroke-width="1"/>
-  <polygon points="360,198 354,194 354,202" fill="#928374"/>
-  <rect x="360" y="174" width="276" height="48" fill="none" stroke="#fe8019" stroke-width="1"/>
-  <text x="498" y="196" text-anchor="middle" fill="#fe8019" font-size="13" letter-spacing="1.5">ONE-CLICK OPTION</text>
-  <text x="498" y="212" text-anchor="middle" fill="#928374" font-size="11">no key, stays private</text>
+  <text x="330" y="382" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">BUILT</text>
+  <text x="330" y="398" text-anchor="middle" fill="#928374" font-size="11">merged, overnight</text>
 </svg>`;
 
 export default function BlogIdeaToNorthStar() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>Against the API key - LastDB</title>
-        <meta name="description" content="A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand — and refused the shortcut that would have had our cloud read your data." />
-        <meta property="og:title" content="Against the API key" />
-        <meta property="og:description" content="One click, local by default; cloud chat the user never has to trust. The errand is gone and the shortcut was declined." />
+        <title>Against authorship - LastDB</title>
+        <meta name="description" content="The interesting part of a feature is never the feature, but the procedure that produced it — and the awkward fact that, by the end, no one in particular produced it at all." />
+        <meta property="og:title" content="Against authorship" />
+        <meta property="og:description" content="A sentence pinned to a fixed point, handed to a machine paid to dislike it, cut into parts, and built overnight by agents while no one was at the desk." />
         <link rel="canonical" href="https://thelastdb.com/blog/idea-to-north-star" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">Against the API key</h1>
+      <h1 className="tagline">Against authorship</h1>
       <p className="post-meta dim">2026-06-24</p>
 
-      <p className="bold white">A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand.</p>
+      <p className="bold white">The interesting part of a feature is never the feature. It is the procedure that produced it &mdash; and the awkward fact that, by the end, no one in particular produced it at all.</p>
 
-      <p>The feature is ordinary enough: the app reads what you give it, and you can put questions to it. Until recently it was gated behind a small humiliation &mdash; produce an API key from some company that is not us, or leave. Shown that door on the first day, most people took it.</p>
+      <p>A job arrives as a sentence. This one concerned setup; it could have been anything, and the sentence is the least important thing in this account.</p>
 
-      <h2>The obvious solution, declined</h2>
-      <p>There is a tidy way to make the errand vanish. Route every question through our servers, supply the intelligence ourselves, bill it to a key the user never sees. We declined it without much ceremony.</p>
-      <p>It asks our cloud to read your data &mdash; the single thing this company is built not to do. A convenience bought with the entire premise is not a convenience; it is a price tag in a better typeface. Discarded, and the idea sent back to do the harder thing.</p>
+      <hr className="decorative-rule" aria-hidden="true" />
 
-      <h2>What we built instead</h2>
-      <p>The work is two things, not one.</p>
-      <p>The dull part &mdash; reading and ordering whatever you deposit &mdash; runs on small models entirely at ease on your own machine. One click installs them; nothing leaves. For most people that is the whole feature, and it asks nothing further of them.</p>
-      <p>Conversation is the other part, and it wants a model too large to keep at home. So the user chooses, and the choices are not interchangeable.</p>
+      <h2>A fixed point</h2>
+      <p>Nothing is built from a sentence. It is first pinned to a fixed point &mdash; a goal stated precisely enough that one can be wrong about having reached it. Everything upstream of that point is opinion, and is handled as opinion: quickly, and without sentiment.</p>
 
-      <ArchFigure svg={FIG_PATHS} caption="Fig. 1 — Three ways to chat with your data" />
+      <h2>Paid to dislike it</h2>
+      <p>The plan is then handed to people whose task is to find it wanting, and to a second machine assigned that task and no other. What survives is seldom what entered. We are spared our affection for the first draft; the procedure does not share it.</p>
 
-      <p>Bring your own key and you address the provider directly; we are not in the room. Run your own large model and the room is your laptop. Or take the one-click option &mdash; meant for those who have neither &mdash; arranged so the content passes through us without ever being legible to us. Private by construction, not by assurance. The honest version of it ships now and a stricter one follows; we will say so rather than imply otherwise.</p>
+      <ArchFigure svg={FIG_DISCIPLINE} caption="Fig. — A job, from sentence to structure" />
 
-      <h2>Method</h2>
-      <p>An idea is not promoted here for being agreeable. It is fixed into a goal that can be checked, handed to several disciplines and to a machine instructed to find it contemptible, cut into parts, and built. The drawing, for those who collect them:</p>
+      <h2>Built overnight</h2>
+      <p>Then the part that unsettles visitors. The surviving plan is cut into parts and given to a loop of agents that write the code, argue among themselves, open their own proposals, and merge them &mdash; mostly at hours when no one is at the desk. The building goes up overnight. In the morning there is a structure where there had been a drawing, and a short note listing the few decisions it declined to make alone.</p>
 
-      <ArchFigure svg={FIG_DISCIPLINE} caption="Fig. 2 — From a rough idea to shipped code" />
+      <h2>The absent architect</h2>
+      <p>Our part in this is smaller than any firm would admit in its monograph. We set the fixed point, and we answer the handful of questions a machine is right to refuse &mdash; what reaches the public, what costs money, what cannot be undone. The remainder proceeds without us, and is the better for it.</p>
 
-      <p>None of this is generosity. It is merely correct. A tool that makes you fetch a key, or quietly reads your files to spare you the bother, has only mistaken its own convenience for yours.</p>
+      <p>People want to be told how a thing was built, and are disappointed to learn it was not, in the end, built by anyone. The drawing was exact. The labour was delegated. The architect, having drawn, left the room &mdash; which is, properly understood, the whole of the craft.</p>
 
-      <p className="dim">From the same office: <Link to="/blog/building-lastdb-with-agents">how we build LastDB in the open</Link> &mdash; and <Link to="/apps">the apps we build on LastDB</Link>.</p>
+      <p className="dim">Seen at length: <Link to="/blog/building-lastdb-with-agents">how we build LastDB in the open</Link> &mdash; and <Link to="/apps">the apps we build on LastDB</Link>.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>
