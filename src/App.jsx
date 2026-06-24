@@ -11,7 +11,7 @@ const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogBuildingLastdbWithAgents = lazy(() => import('./pages/BlogBuildingLastdbWithAgents'));
 const BlogEvolvingALiveSchema = lazy(() => import('./pages/BlogEvolvingALiveSchema'));
-const BlogPrivateAiSetup = lazy(() => import('./pages/BlogPrivateAiSetup'));
+const BlogIdeaToNorthStar = lazy(() => import('./pages/BlogIdeaToNorthStar'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -34,7 +34,7 @@ export default function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/building-lastdb-with-agents" element={<BlogBuildingLastdbWithAgents />} />
               <Route path="/blog/evolving-a-live-schema" element={<BlogEvolvingALiveSchema />} />
-              <Route path="/blog/private-ai-setup" element={<BlogPrivateAiSetup />} />
+              <Route path="/blog/idea-to-north-star" element={<BlogIdeaToNorthStar />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
