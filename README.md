@@ -62,6 +62,6 @@ fold_db_website/
 
 ## 🔗 Related
 
-- **Install FoldDB:** `brew install edgevector/folddb/folddb` ([Homebrew tap](https://github.com/EdgeVector/homebrew-folddb))
+- **Install LastDB:** `brew install edgevector/lastdb/lastdb` ([Homebrew tap](https://github.com/EdgeVector/homebrew-lastdb))
 - **Source:** [github.com/EdgeVector/fold_db](https://github.com/EdgeVector/fold_db) (the original public repo; development has since moved to the private `EdgeVector/fold` monorepo)
 - **Schema registry:** [schema.folddb.com](https://schema.folddb.com)
