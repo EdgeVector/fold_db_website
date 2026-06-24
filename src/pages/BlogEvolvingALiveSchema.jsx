@@ -3,94 +3,77 @@ import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 import Mermaid from '../components/Mermaid';
 
-// Zero-migration schema change: register a superset, the new fields' siblings
-// keep pointing at the existing data.
+// The app owns its schema; the database stores data against whatever shape the
+// app declares. Upgrading a field is an app change, not a database operation.
+const OWNERSHIP_DIAGRAM = `flowchart LR
+  APP["Kanban app<br/>declares the shape of a card"] -->|"its schema"| DB[("LastDB<br/>stores records<br/>against that shape")]
+  UP{{"want a new field?"}} -->|"the APP declares<br/>a richer shape"| APP
+  DB -. "no DB change,<br/>no migration job" .-> DB`;
+
+// Adding fields is an expansion: existing data stays put, new fields are simply
+// empty until something writes them. No ALTER, no backfill, no downtime.
 const EXPANSION_DIAGRAM = `flowchart LR
-  V1["Schema v1<br/>(the fields you had)"]
-  REG{{"register a superset:<br/>same shape + new fields"}}
-  V2["Schema v2<br/>(old fields + new ones)"]
-  DATA[("your existing<br/>records")]
-  V1 --> REG --> V2
-  V2 -. "shared fields keep pointing<br/>at the same data" .-> DATA
-  V1 --- DATA`;
+  V1["card: 10 fields"] -->|"app declares a superset"| V2["card: 18 fields<br/>(same 10 + 8 new)"]
+  DATA[("every existing card")]
+  V1 --- DATA
+  V2 -. "the 10 you had keep<br/>pointing at the same data" .-> DATA
+  V2 --> NEW["the 8 new fields:<br/>empty until written"]`;
 
-// The real culprit: two code versions writing the same record mid-rollout.
-const CLOBBER_DIAGRAM = `flowchart TB
-  REC[("a record being<br/>actively rewritten")]
-  NEW["NEW code<br/>writes {…, repo, status}"] -->|"sets the new fields"| REC
-  OLD["OLD code (still running<br/>during the rollout)<br/>writes {… only the old fields}"] -->|"doesn't know the<br/>new fields exist"| REC
-  REC --> OUT{"who wrote last?"}
-  OUT -->|new code| GOOD["new fields present ✓"]
-  OUT -->|old code| GONE["new fields blank again"]`;
-
-// The controlled experiment that settled it.
-const EXPERIMENT_DIAGRAM = `flowchart LR
-  ISO(["one isolated node<br/>(no other writers)"]) --> W["write the new field<br/>on an existing record"]
-  W --> WAIT["drain background work"]
-  WAIT --> R["read it back"]
-  R --> OK(["persists — every time ✓<br/>the database was fine"])`;
+// Because the DB serves both shapes at once, the app rollout needs no flag day.
+const ROLLOUT_DIAGRAM = `flowchart TB
+  BOARD[("the live board<br/>(one set of cards)")]
+  OLDV["app v1 (old fields)"] -->|"reads & writes fine"| BOARD
+  NEWV["app v2 (new fields)"] -->|"reads & writes fine"| BOARD
+  BOARD --> NOTE["both versions valid at once<br/>→ roll out gradually, no cutover"]`;
 
 export default function BlogEvolvingALiveSchema() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>The database bug that wasn't - LastDB</title>
-        <meta name="description" content="We added fields to a live LastDB database with zero downtime and zero migration. Then the new fields seemed to vanish on old records. We nearly shipped two different wrong explanations before a controlled experiment proved the database was fine all along — the real culprit was a mixed-version rollout." />
-        <meta property="og:title" content="The database bug that wasn't" />
-        <meta property="og:description" content="Zero-migration schema expansion, a vanishing-field mystery, and why a single live observation is never a root cause." />
+        <title>Upgrading a field, no migration required - LastDB</title>
+        <meta name="description" content="We added structured fields to our Kanban app's data model while it was in active use. On most databases that's a migration — a schema change, a maintenance window, a backfill. On LastDB it required no database change and no migration at all, because the app owns its schema and the database adapts to it." />
+        <meta property="og:title" content="Upgrading a field, no migration required" />
+        <meta property="og:description" content="How we evolved our app's data model on LastDB with zero database changes, zero migrations, and zero downtime." />
         <link rel="canonical" href="https://thelastdb.com/blog/evolving-a-live-schema" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">The database bug that wasn&rsquo;t</h1>
+      <h1 className="tagline">Upgrading a field, no migration required</h1>
       <p className="post-meta dim">2026-06-24</p>
 
-      <p className="bold white">We added fields to a database that was in active use &mdash; zero downtime, zero migration, zero data loss. Then the new fields appeared to <em>vanish</em> from older records. We came within an inch of shipping two confident, opposite, wrong explanations before a controlled experiment showed the database had been fine the whole time.</p>
+      <p className="bold white">We just upgraded a core piece of our Kanban app&rsquo;s data model &mdash; turning facts that used to live in free text into real, structured fields &mdash; while the app was in active use. On most databases that&rsquo;s a migration: a schema change, a maintenance window, a backfill script. Here it was none of those. <span className="white">We changed the app. The database didn&rsquo;t change at all.</span></p>
 
-      <p>We build LastDB using two of our own apps that run on it: <span className="bold">Brain</span> and <span className="bold">Kanban</span>, the task board our agents pull work from. The board kept important facts &mdash; which repo a task targets, whether it&rsquo;s blocked &mdash; buried in free-text. We wanted them as real <span className="bold">fields</span>, on a board being read and written every few minutes.</p>
+      <p>We build LastDB using two of our own apps that run on it: <span className="bold">Brain</span> and <span className="bold">Kanban</span>, the task board our agents pull work from. Kanban had grown a habit of stuffing important facts &mdash; which repo a task targets, whether it&rsquo;s blocked, how urgent it is &mdash; into the free-text body of each card. We wanted those to be first-class <span className="bold">fields</span>. The interesting part is what that upgrade did <em>not</em> require.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      <h2>The good part: changing a schema with no migration</h2>
-      <p>In a lot of databases, &ldquo;add columns to a table full of live data&rdquo; means a migration window and a held breath. In LastDB it&rsquo;s an <span className="bold">expansion</span>: you register a schema that&rsquo;s a superset of one that already exists, and LastDB treats it as the next version &mdash; the shared fields keep pointing at the data you already had, and the new fields are simply empty until something writes them. No window, no backfill script, nothing to roll back.</p>
+      <h2>The app owns its schema</h2>
+      <p>In LastDB, the shape of your data is declared by the <span className="bold">app</span>, not hand-built into the database as tables you then have to alter. The database stores records against whatever shape the app declares. So &ldquo;add a field&rdquo; is fundamentally an <span className="bold">app-level change</span> &mdash; Kanban declares a richer card &mdash; not a database operation you schedule and babysit.</p>
+
+      <Mermaid chart={OWNERSHIP_DIAGRAM} />
+
+      <Section variant="sage">
+        <h2><span className="bold">What the upgrade actually was</span></h2>
+        <p>Kanban&rsquo;s card went from 10 fields to 18. To make that real, the app declared the new, wider shape &mdash; a <span className="bold">superset</span> of the old one. LastDB recognized it as the next version of the same card and <span className="bold">expanded</span> it: the 10 existing fields keep pointing at the data already on disk, and the 8 new fields are simply empty until something writes them.</p>
+        <p>No <code>ALTER TABLE</code>. No backfill job. No maintenance window. Nothing to roll back. We checked the obvious way &mdash; counting the live cards before and after &mdash; and it was identical, down to the row.</p>
+      </Section>
 
       <Mermaid chart={EXPANSION_DIAGRAM} />
 
-      <p>We registered the wider schema, pointed the app at it, and checked the obvious way: count the live records under the old shape and the new one. <span className="bold white">Identical, down to the row.</span> That part genuinely just worked.</p>
+      <p>That&rsquo;s the whole point of an app-owned schema: evolving your data model is a property of shipping a new version of the <em>app</em>, not a database project with its own runbook.</p>
 
-      <Section variant="rose">
-        <h2><span className="bold">The mystery: new fields that wouldn&rsquo;t stay written</span></h2>
-        <p>Then we tried to fill the new fields on the existing cards &mdash; and they wouldn&rsquo;t stick. Write a value, read it back immediately: there. Read again a few seconds later: <em>gone.</em> No error, no warning. Just&hellip; empty again.</p>
-        <p>Our first instinct was a tidy story: &ldquo;old records are preserved exactly, so new fields read as empty &mdash; that&rsquo;s graceful by design.&rdquo; We even drafted a post saying so. It was wrong. Our <em>second</em> instinct was the opposite: &ldquo;the write is silently dropped &mdash; it&rsquo;s a database bug.&rdquo; We filed it as one. That was wrong too.</p>
-      </Section>
+      <h2>No flag day, either</h2>
+      <p>Here&rsquo;s the part that surprised even us. Because LastDB happily serves <span className="bold">both</span> the old and the new card shape at the same time, we didn&rsquo;t need a coordinated cutover. The new app code rolled out gradually, and while it did, old and new versions were reading and writing the same board side by side &mdash; the old code working with its 10 fields, the new code with all 18, against the same data, with no errors and no flag day.</p>
 
-      <h2>The tell we almost missed</h2>
-      <p>One detail didn&rsquo;t fit either story: when the value reverted, the record&rsquo;s <span className="bold">last-modified timestamp didn&rsquo;t change.</span> If the database were silently dropping our write, the record we wrote would still be <em>our</em> write. And if something were overwriting it, the timestamp would move. Neither matched. That&rsquo;s the moment to stop theorizing about the live system and build a clean one.</p>
+      <Mermaid chart={ROLLOUT_DIAGRAM} />
 
-      <h2>The experiment that settled it</h2>
-      <p>We reproduced the whole sequence on a single, isolated node &mdash; one writer, nothing else running: create a record, expand the schema, write the new field on that pre-existing record, let the background work drain, read it back.</p>
+      <p>An older writer just doesn&rsquo;t set the new fields; a newer one does. The new fields fill in naturally as the new version takes over. There&rsquo;s no moment where the system is half-migrated and brittle, because there&rsquo;s no migration to be halfway through.</p>
 
-      <Mermaid chart={EXPERIMENT_DIAGRAM} />
+      <h2>Why this matters</h2>
+      <p>The cost of changing a data model is one of the quiet taxes on building software: it turns a one-line product idea (&ldquo;tasks should have a priority&rdquo;) into a migration, a deploy plan, and a held breath. LastDB&rsquo;s model &mdash; the app declares its schema, the database adapts, both versions coexist &mdash; collapses that back down to what it should be: <span className="bold">an app change.</span> The same local-first, you-own-your-data philosophy behind LastDB is why evolving the data on top of it doesn&rsquo;t drag the database into it.</p>
 
-      <p>It persisted. Every time. The new field got its own storage on first write and read back cleanly &mdash; we even checked that the write and the read resolved to the <em>same</em> underlying location. <span className="bold white">The database was never the problem.</span></p>
-
-      <Section variant="sage">
-        <h2><span className="bold">The actual culprit: a mixed-version rollout</span></h2>
-        <p>The board wasn&rsquo;t being written by one program. It was being written by a <span className="bold">fleet</span> &mdash; and during the rollout, some of those writers were still running the <em>old</em> code, which didn&rsquo;t know the new fields existed. New code would set <code>repo</code>; moments later an old-code writer would rewrite the same actively-edited record without it. The field flickered in and out depending on who wrote last. The records that <em>weren&rsquo;t</em> being actively rewritten kept their new values just fine.</p>
-      </Section>
-
-      <Mermaid chart={CLOBBER_DIAGRAM} />
-
-      <h2>The lessons</h2>
-      <ul>
-        <li><span className="bold white">Zero-migration schema change is real</span> &mdash; and it held up: existing data was provably intact, and new fields work on old records the moment a single writer owns them.</li>
-        <li><span className="bold white">A single live observation is not a root cause.</span> A busy production system is the worst place to reason about <em>why</em> something happens. The reproduction that matters is the one you can run in isolation.</li>
-        <li><span className="bold white">Design so a rollout can&rsquo;t hurt.</span> Our readers prefer the new field but fall back to where the value already lived, so nothing breaks while a deploy is in flight &mdash; and the new fields simply take over as the last old writer ages out.</li>
-        <li><span className="bold white">Be willing to be wrong twice.</span> We almost shipped &ldquo;graceful feature,&rdquo; then almost shipped &ldquo;database bug.&rdquo; The honest answer was neither &mdash; and the only thing that got us there was a controlled test instead of a confident narrative.</li>
-      </ul>
-
-      <p className="dim">This whole episode &mdash; the change, two wrong theories, and the experiment that corrected them &mdash; ran inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>, on <Link to="/apps">Brain and Kanban</Link>, open-source apps built on LastDB.</p>
+      <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB &mdash; inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>
