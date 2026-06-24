@@ -6,9 +6,9 @@ import Label from '../components/Label';
 const POSTS = [
   {
     slug: 'evolving-a-live-schema',
-    title: 'Evolving a schema on a live database',
+    title: 'The database bug that wasn’t',
     date: '2026-06-24',
-    blurb: 'We added fields to a database that was in active use — no downtime, no migration, no data loss. It mostly just worked. The interesting part is the one place it didn’t, and what that taught us about schema change.',
+    blurb: 'We added fields to a live database with zero downtime and zero migration — then the new fields seemed to vanish on old records. We nearly shipped two opposite wrong explanations before a controlled experiment proved the database was fine all along.',
   },
   {
     slug: 'building-lastdb-with-agents',

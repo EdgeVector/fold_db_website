@@ -3,94 +3,94 @@ import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 import Mermaid from '../components/Mermaid';
 
-// What happens when you register a superset of a schema that already has data.
+// Zero-migration schema change: register a superset, the new fields' siblings
+// keep pointing at the existing data.
 const EXPANSION_DIAGRAM = `flowchart LR
   V1["Schema v1<br/>(the fields you had)"]
   REG{{"register a superset:<br/>same shape + new fields"}}
   V2["Schema v2<br/>(old fields + new ones)"]
   DATA[("your existing<br/>records")]
   V1 --> REG --> V2
-  V2 -. "auto-generated<br/>field-mappers (v2 → v1)" .-> V1
-  V1 --- DATA
-  V2 --- DATA`;
+  V2 -. "shared fields keep pointing<br/>at the same data" .-> DATA
+  V1 --- DATA`;
 
-// The subtlety: reads of an OLD record route through the predecessor.
-const READTHROUGH_DIAGRAM = `flowchart TB
-  subgraph OLD["A record written before the change"]
-    direction TB
-    RO["read it under v2"] --> MAP["field-mappers"]
-    MAP -->|"old fields: mapped from v1 ✓"| OK1["correct values"]
-    MAP -.->|"new fields: no source<br/>to map from"| EMPTY["read as empty"]
-  end
-  subgraph NEW["A record written after the change"]
-    direction TB
-    RN["read it under v2"] --> NAT["native v2 record"]
-    NAT -->|"every field present ✓"| OK2["correct values"]
-  end`;
+// The real culprit: two code versions writing the same record mid-rollout.
+const CLOBBER_DIAGRAM = `flowchart TB
+  REC[("a record being<br/>actively rewritten")]
+  NEW["NEW code<br/>writes {…, repo, status}"] -->|"sets the new fields"| REC
+  OLD["OLD code (still running<br/>during the rollout)<br/>writes {… only the old fields}"] -->|"doesn't know the<br/>new fields exist"| REC
+  REC --> OUT{"who wrote last?"}
+  OUT -->|new code| GOOD["new fields present ✓"]
+  OUT -->|old code| GONE["new fields blank again"]`;
 
-// The design move that makes the transition a non-event.
-const FALLBACK_DIAGRAM = `flowchart LR
-  Q(["need a value, e.g. the card's repo"]) --> F{"is the new<br/>field set?"}
-  F -->|yes| UF["use the field"]
-  F -->|"no (older record)"| FB["fall back to the<br/>value's old home"]
-  UF --> OK(["always correct"])
-  FB --> OK`;
+// The controlled experiment that settled it.
+const EXPERIMENT_DIAGRAM = `flowchart LR
+  ISO(["one isolated node<br/>(no other writers)"]) --> W["write the new field<br/>on an existing record"]
+  W --> WAIT["drain background work"]
+  WAIT --> R["read it back"]
+  R --> OK(["persists — every time ✓<br/>the database was fine"])`;
 
 export default function BlogEvolvingALiveSchema() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>Evolving a schema on a live database - LastDB</title>
-        <meta name="description" content="LastDB let us add fields to a live, in-use database with zero downtime and zero data loss. Then we learned a subtle thing about what 'old data just works' really means — and the one design move that makes a schema change a non-event." />
-        <meta property="og:title" content="Evolving a schema on a live database — what 'just works' really means" />
-        <meta property="og:description" content="Adding fields to a live LastDB schema: zero-downtime expansion, field-mappers, and the read-through subtlety we learned to design around." />
+        <title>The database bug that wasn't - LastDB</title>
+        <meta name="description" content="We added fields to a live LastDB database with zero downtime and zero migration. Then the new fields seemed to vanish on old records. We nearly shipped two different wrong explanations before a controlled experiment proved the database was fine all along — the real culprit was a mixed-version rollout." />
+        <meta property="og:title" content="The database bug that wasn't" />
+        <meta property="og:description" content="Zero-migration schema expansion, a vanishing-field mystery, and why a single live observation is never a root cause." />
         <link rel="canonical" href="https://thelastdb.com/blog/evolving-a-live-schema" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">Evolving a schema on a live database</h1>
+      <h1 className="tagline">The database bug that wasn&rsquo;t</h1>
       <p className="post-meta dim">2026-06-24</p>
 
-      <p className="bold white">We added a batch of new fields to a database that was in active use &mdash; no downtime, no migration script, no data loss. It mostly &ldquo;just worked.&rdquo; The interesting part is the one place it <em>didn&rsquo;t</em>, and what that taught us about schema change.</p>
+      <p className="bold white">We added fields to a database that was in active use &mdash; zero downtime, zero migration, zero data loss. Then the new fields appeared to <em>vanish</em> from older records. We came within an inch of shipping two confident, opposite, wrong explanations before a controlled experiment showed the database had been fine the whole time.</p>
 
-      <p>We build LastDB using two of our own apps that run on it: <span className="bold">Brain</span> (a knowledge base) and <span className="bold">Kanban</span> (the task board our agents pull work from). The board had grown a habit of hiding important facts &mdash; which repo a task targets, whether it&rsquo;s blocked, how urgent it is &mdash; inside the free-text body of each card, where every reader had to re-parse them. We wanted those to be real, first-class <span className="bold">fields</span>. On a board that agents were reading and writing every few minutes.</p>
+      <p>We build LastDB using two of our own apps that run on it: <span className="bold">Brain</span> and <span className="bold">Kanban</span>, the task board our agents pull work from. The board kept important facts &mdash; which repo a task targets, whether it&rsquo;s blocked &mdash; buried in free-text. We wanted them as real <span className="bold">fields</span>, on a board being read and written every few minutes.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      <h2>Adding fields without a migration</h2>
-      <p>In a lot of databases, &ldquo;add some columns to a table full of live data&rdquo; means a migration window, a backfill script, and a held breath. In LastDB it&rsquo;s an <span className="bold">expansion</span>: you register a schema that is a <em>superset</em> of one that already exists &mdash; same shape, plus the new fields &mdash; and LastDB recognizes it as the next version of that schema. It keeps both versions, and it auto-generates <span className="bold">field-mappers</span> so the old version&rsquo;s data is reachable through the new one.</p>
+      <h2>The good part: changing a schema with no migration</h2>
+      <p>In a lot of databases, &ldquo;add columns to a table full of live data&rdquo; means a migration window and a held breath. In LastDB it&rsquo;s an <span className="bold">expansion</span>: you register a schema that&rsquo;s a superset of one that already exists, and LastDB treats it as the next version &mdash; the shared fields keep pointing at the data you already had, and the new fields are simply empty until something writes them. No window, no backfill script, nothing to roll back.</p>
 
       <Mermaid chart={EXPANSION_DIAGRAM} />
 
-      <p>The practical result: we registered the wider schema, pointed the app at it, and every existing record was still there and still correct. We checked the obvious way &mdash; counting the live records under the old shape and under the new one. <span className="bold white">Identical, down to the row.</span> No window, no script, nothing to roll back. That part genuinely just works, and it&rsquo;s the whole reason you can evolve a schema under a running system instead of scheduling an outage.</p>
+      <p>We registered the wider schema, pointed the app at it, and checked the obvious way: count the live records under the old shape and the new one. <span className="bold white">Identical, down to the row.</span> That part genuinely just worked.</p>
 
       <Section variant="rose">
-        <h2><span className="bold">The subtlety: &ldquo;old data works&rdquo; isn&rsquo;t &ldquo;old data has the new fields&rdquo;</span></h2>
-        <p>Here&rsquo;s the thing we had to learn the un-obvious way. When you read a record that was written <em>before</em> the change, LastDB serves it by mapping from the previous version. The fields that existed back then map straight through &mdash; that&rsquo;s why all your old data reads perfectly. But the <span className="bold">brand-new fields have nothing to map from</span>. There was no such field when that record was written, so it reads as empty &mdash; no matter what you try to write into it afterward, because the read still resolves through the predecessor.</p>
-        <p>Records created <em>after</em> the change are native to the new shape and carry every field. So you end up with a board where new cards are fully populated and older cards show blanks for the new fields &mdash; not because anything is broken, but because that&rsquo;s what &ldquo;the old data is preserved exactly as it was&rdquo; literally means.</p>
+        <h2><span className="bold">The mystery: new fields that wouldn&rsquo;t stay written</span></h2>
+        <p>Then we tried to fill the new fields on the existing cards &mdash; and they wouldn&rsquo;t stick. Write a value, read it back immediately: there. Read again a few seconds later: <em>gone.</em> No error, no warning. Just&hellip; empty again.</p>
+        <p>Our first instinct was a tidy story: &ldquo;old records are preserved exactly, so new fields read as empty &mdash; that&rsquo;s graceful by design.&rdquo; We even drafted a post saying so. It was wrong. Our <em>second</em> instinct was the opposite: &ldquo;the write is silently dropped &mdash; it&rsquo;s a database bug.&rdquo; We filed it as one. That was wrong too.</p>
       </Section>
 
-      <Mermaid chart={READTHROUGH_DIAGRAM} />
+      <h2>The tell we almost missed</h2>
+      <p>One detail didn&rsquo;t fit either story: when the value reverted, the record&rsquo;s <span className="bold">last-modified timestamp didn&rsquo;t change.</span> If the database were silently dropping our write, the record we wrote would still be <em>our</em> write. And if something were overwriting it, the timestamp would move. Neither matched. That&rsquo;s the moment to stop theorizing about the live system and build a clean one.</p>
 
-      <p>We spent a while convinced something was racing us &mdash; a stale process overwriting the new fields right after we filled them. It wasn&rsquo;t. A clean test settled it: write a new field onto an old record, read it back immediately (there it is), read it again a moment later (gone). Nothing was clobbering anything. The read was simply resolving through the older version of the record the whole time, where that field has never existed.</p>
+      <h2>The experiment that settled it</h2>
+      <p>We reproduced the whole sequence on a single, isolated node &mdash; one writer, nothing else running: create a record, expand the schema, write the new field on that pre-existing record, let the background work drain, read it back.</p>
 
-      <h2>The move that makes it a non-event</h2>
-      <p>Once you see it clearly, the fix isn&rsquo;t to fight it &mdash; it&rsquo;s to <span className="bold">not depend on a backfill that can&rsquo;t happen</span>. Every reader of the new fields prefers them, but falls back to where that information already lived (for us, the card body) when the field is empty.</p>
+      <Mermaid chart={EXPERIMENT_DIAGRAM} />
 
-      <Mermaid chart={FALLBACK_DIAGRAM} />
+      <p>It persisted. Every time. The new field got its own storage on first write and read back cleanly &mdash; we even checked that the write and the read resolved to the <em>same</em> underlying location. <span className="bold white">The database was never the problem.</span></p>
 
-      <p>That one rule dissolves the whole problem:</p>
+      <Section variant="sage">
+        <h2><span className="bold">The actual culprit: a mixed-version rollout</span></h2>
+        <p>The board wasn&rsquo;t being written by one program. It was being written by a <span className="bold">fleet</span> &mdash; and during the rollout, some of those writers were still running the <em>old</em> code, which didn&rsquo;t know the new fields existed. New code would set <code>repo</code>; moments later an old-code writer would rewrite the same actively-edited record without it. The field flickered in and out depending on who wrote last. The records that <em>weren&rsquo;t</em> being actively rewritten kept their new values just fine.</p>
+      </Section>
+
+      <Mermaid chart={CLOBBER_DIAGRAM} />
+
+      <h2>The lessons</h2>
       <ul>
-        <li><span className="bold white">New records</span> get the clean, structured field immediately.</li>
-        <li><span className="bold white">Old records</span> keep working untouched, served by the fallback.</li>
-        <li><span className="bold white">There&rsquo;s no migration to finish</span> and no flag day &mdash; the system is correct at every moment of the transition, and old records simply adopt the new field the next time they&rsquo;re genuinely rewritten.</li>
+        <li><span className="bold white">Zero-migration schema change is real</span> &mdash; and it held up: existing data was provably intact, and new fields work on old records the moment a single writer owns them.</li>
+        <li><span className="bold white">A single live observation is not a root cause.</span> A busy production system is the worst place to reason about <em>why</em> something happens. The reproduction that matters is the one you can run in isolation.</li>
+        <li><span className="bold white">Design so a rollout can&rsquo;t hurt.</span> Our readers prefer the new field but fall back to where the value already lived, so nothing breaks while a deploy is in flight &mdash; and the new fields simply take over as the last old writer ages out.</li>
+        <li><span className="bold white">Be willing to be wrong twice.</span> We almost shipped &ldquo;graceful feature,&rdquo; then almost shipped &ldquo;database bug.&rdquo; The honest answer was neither &mdash; and the only thing that got us there was a controlled test instead of a confident narrative.</li>
       </ul>
 
-      <h2>The lesson</h2>
-      <p>&ldquo;Zero-downtime schema change&rdquo; is a real and wonderful thing &mdash; LastDB&rsquo;s expansion gave us exactly that, with the old data provably intact. But &ldquo;your old data is preserved&rdquo; and &ldquo;your old data retroactively grows new fields&rdquo; are different promises, and only the first one is physically free. The engineering that matters is on the <em>read</em> side: design the consumers so a newly-added field is an <span className="bold">upgrade where it&rsquo;s present and a no-op where it isn&rsquo;t</span>. Do that, and evolving a live schema stops being an event you schedule and becomes a change you just ship.</p>
-
-      <p className="dim">This whole episode &mdash; the change, the confused debugging, and the fix &mdash; ran inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>, on <Link to="/apps">Brain and Kanban</Link>, open-source apps built on LastDB.</p>
+      <p className="dim">This whole episode &mdash; the change, two wrong theories, and the experiment that corrected them &mdash; ran inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>, on <Link to="/apps">Brain and Kanban</Link>, open-source apps built on LastDB.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>
