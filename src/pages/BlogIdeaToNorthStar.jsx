@@ -1,20 +1,82 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
-import Mermaid from '../components/Mermaid';
 
-const PIPELINE_DIAGRAM = `flowchart LR
-  I["A half-formed idea<br/>&quot;just make it one click&quot;"] --> NS{"Turn it into<br/>a North Star?"}
-  NS -->|"write a checkable 'done'"| R["Pressure-test it<br/>strategy · engineering · design<br/>+ a model that argues back"]
-  R --> RS["Reshaped by what we believe"]
-  RS --> C["Broken into real cards"]
-  C --> L(["Driven to merged code<br/>by the loop"])`;
+// Diagrams are hand-authored SVG (not an auto-layout tool) so every label is the
+// same fixed 14px and boxes share one width — no auto-scaling, consistent type.
+const MONO = "'IBM Plex Mono', monospace";
+const FS = 14;
+const svgStyle = { width: '100%', height: 'auto', maxWidth: '660px', display: 'block', margin: '1.6em auto' };
 
-const PATHS_DIAGRAM = `flowchart TB
-  Q(["You want to chat with your data"]) --> P{"How?"}
-  P -->|"bring your own key"| A["Straight to your provider<br/>we're not in the middle"]
-  P -->|"a beefy machine"| B["A big local model<br/>nothing leaves your device"]
-  P -->|"neither — just start"| M["One-click managed on-ramp<br/>built to stay out of your content"]`;
+function PipelineFigure() {
+  const X = 110, W = 500, H = 46, STEP = 84;
+  const top = (i) => 8 + i * STEP;
+  const steps = [
+    { t: '“Just make AI setup one click”', stroke: '#928374' },
+    { t: 'A North Star — a checkable “done”', stroke: '#fe8019' },
+    { t: 'Argued with in review', stroke: '#504945' },
+    { t: 'Broken into ordered cards', stroke: '#504945' },
+    { t: 'Driven to merged code by the loop', stroke: '#b8bb26' },
+  ];
+  const edges = ['write the ‘done’', 'let it get argued with', 'reshape it', 'hand it to the loop'];
+  return (
+    <svg viewBox="0 0 720 400" style={svgStyle} role="img" aria-labelledby="pl-t pl-d">
+      <title id="pl-t">From an idea to a North Star</title>
+      <desc id="pl-d">A half-formed idea becomes a North Star with a checkable done, gets argued with in review, is reshaped, broken into ordered cards, and driven to merged code by the loop.</desc>
+      <defs>
+        <marker id="plArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#928374" />
+        </marker>
+      </defs>
+      {edges.map((e, i) => {
+        const y0 = top(i) + H + 3, y1 = top(i + 1) - 3;
+        return (
+          <g key={`e${i}`}>
+            <line x1="360" y1={y0} x2="360" y2={y1} stroke="#928374" strokeWidth="1.5" markerEnd="url(#plArr)" />
+            <text x="378" y={(y0 + y1) / 2 + 5} fontFamily={MONO} fontSize={FS} fill="#928374">{e}</text>
+          </g>
+        );
+      })}
+      {steps.map((s, i) => (
+        <g key={`s${i}`}>
+          <rect x={X} y={top(i)} width={W} height={H} rx="6" fill="#3c3836" stroke={s.stroke} strokeWidth="1.5" />
+          <text x={X + W / 2} y={top(i) + H / 2 + 5} textAnchor="middle" fontFamily={MONO} fontSize={FS} fill="#ebdbb2">{s.t}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function PathsFigure() {
+  const BX = 170, BW = 440, BH = 44;
+  const centers = [108, 168, 228];
+  const opts = [
+    { t: 'Your own key — straight to your provider', stroke: '#83a598' },
+    { t: 'A local model — stays on your device', stroke: '#83a598' },
+    { t: 'Neither — the one-click managed on-ramp', stroke: '#b8bb26' },
+  ];
+  return (
+    <svg viewBox="0 0 720 264" style={svgStyle} role="img" aria-labelledby="pa-t pa-d">
+      <title id="pa-t">Three ways to chat with your data</title>
+      <desc id="pa-d">When you chat you can bring your own provider key, run a big local model so nothing leaves your device, or — if you have neither — use the one-click managed on-ramp.</desc>
+      <defs>
+        <marker id="paArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#928374" />
+        </marker>
+      </defs>
+      <rect x="110" y="8" width="500" height={BH} rx="6" fill="#3c3836" stroke="#504945" strokeWidth="1.5" />
+      <text x="360" y={8 + BH / 2 + 5} textAnchor="middle" fontFamily={MONO} fontSize={FS} fill="#ebdbb2">You want to chat with your data</text>
+      <line x1="130" y1={8 + BH} x2="130" y2={centers[2]} stroke="#928374" strokeWidth="1.5" />
+      {opts.map((o, i) => (
+        <g key={`o${i}`}>
+          <line x1="130" y1={centers[i]} x2={BX} y2={centers[i]} stroke="#928374" strokeWidth="1.5" markerEnd="url(#paArr)" />
+          <rect x={BX} y={centers[i] - BH / 2} width={BW} height={BH} rx="6" fill="#3c3836" stroke={o.stroke} strokeWidth="1.5" />
+          <text x={BX + 16} y={centers[i] + 5} fontFamily={MONO} fontSize={FS} fill="#ebdbb2">{o.t}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function BlogIdeaToNorthStar() {
   return (
@@ -46,7 +108,7 @@ export default function BlogIdeaToNorthStar() {
       <p>An idea is cheap. Everybody has them. Before anything gets built here, it has to survive being turned into a <span className="bold">North Star</span> &mdash; a destination with a <span className="bold white">checkable &ldquo;done.&rdquo;</span> Writing that sentence down is where the hand-waving goes to die.</p>
       <p>&ldquo;Make AI setup one click&rdquo; became something you can actually check: <span className="bold">a brand-new user is using AI in one click, with no key to find &mdash; and our promise that your data stays yours still holds.</span> The instant you write the &ldquo;done&rdquo; honestly, the real questions fall out of it. <em>Which</em> AI? Running where? And that last clause &mdash; &ldquo;your data stays yours&rdquo; &mdash; turned out to be the whole game.</p>
 
-      <Mermaid chart={PIPELINE_DIAGRAM} />
+      <PipelineFigure />
 
       <h2>Where the idea got argued with</h2>
       <p>Before a North Star gets driven, the plan goes through review &mdash; a few different lenses (strategy, engineering, design) and, because we genuinely like being disagreed with, a second AI model whose only job is to argue against it. It&rsquo;s the same loop from the other post, pointed at a plan instead of code.</p>
@@ -67,7 +129,7 @@ export default function BlogIdeaToNorthStar() {
         <p>The managed, key-less path is an <span className="bold white">on-ramp</span> &mdash; it&rsquo;s for everyone who has neither of those, the people who&rsquo;d otherwise bounce at &ldquo;paste an API key.&rdquo; So the real design question was never &ldquo;lock everything down.&rdquo; It was: <em>how do we add an easy on-ramp without making it the very thing the other two groups chose LastDB to avoid?</em></p>
       </Section>
 
-      <Mermaid chart={PATHS_DIAGRAM} />
+      <PathsFigure />
 
       <h2>The idea grew up: ship the easy part, stage the hard part</h2>
       <p>Once we understood it, the North Star split itself into stages &mdash; which is usually the sign you finally understand a thing.</p>
