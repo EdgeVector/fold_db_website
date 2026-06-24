@@ -2,81 +2,136 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 
-// Diagrams are hand-authored SVG (not an auto-layout tool) so every label is the
-// same fixed 14px and boxes share one width — no auto-scaling, consistent type.
+// Figures are hand-authored architectural line drawings (inline SVG strings,
+// rendered via dangerouslySetInnerHTML so the SVG grammar stays verbatim).
+// Thin uniform strokes, poché hatch for "solid/built", a measured story-pole,
+// joints, orthogonal connectors, one accent (#fe8019). No auto-layout.
 const MONO = "'IBM Plex Mono', monospace";
-const FS = 14;
-const svgStyle = { width: '100%', height: 'auto', maxWidth: '660px', display: 'block', margin: '1.6em auto' };
 
-function PipelineFigure() {
-  const X = 110, W = 500, H = 46, STEP = 84;
-  const top = (i) => 8 + i * STEP;
-  const steps = [
-    { t: 'An idea (worth nothing)', stroke: '#928374' },
-    { t: 'A North Star — a falsifiable end', stroke: '#fe8019' },
-    { t: 'Submitted to opposition', stroke: '#504945' },
-    { t: 'Decomposed into labour', stroke: '#504945' },
-    { t: 'Driven to merged code', stroke: '#b8bb26' },
-  ];
-  const edges = ['state the end', 'submit it to contempt', 'let it deform', 'into the apparatus'];
+function ArchFigure({ svg, caption }) {
   return (
-    <svg viewBox="0 0 720 400" style={svgStyle} role="img" aria-labelledby="pl-t pl-d">
-      <title id="pl-t">An idea disciplined into a destination</title>
-      <desc id="pl-d">A worthless idea is stated as a falsifiable end, submitted to opposition, deformed, decomposed into labour, and driven to merged code.</desc>
-      <defs>
-        <marker id="plArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="#928374" />
-        </marker>
-      </defs>
-      {edges.map((e, i) => {
-        const y0 = top(i) + H + 3, y1 = top(i + 1) - 3;
-        return (
-          <g key={`e${i}`}>
-            <line x1="360" y1={y0} x2="360" y2={y1} stroke="#928374" strokeWidth="1.5" markerEnd="url(#plArr)" />
-            <text x="378" y={(y0 + y1) / 2 + 5} fontFamily={MONO} fontSize={FS} fill="#928374">{e}</text>
-          </g>
-        );
-      })}
-      {steps.map((s, i) => (
-        <g key={`s${i}`}>
-          <rect x={X} y={top(i)} width={W} height={H} rx="6" fill="#3c3836" stroke={s.stroke} strokeWidth="1.5" />
-          <text x={X + W / 2} y={top(i) + H / 2 + 5} textAnchor="middle" fontFamily={MONO} fontSize={FS} fill="#ebdbb2">{s.t}</text>
-        </g>
-      ))}
-    </svg>
+    <figure style={{ margin: '2em 0', textAlign: 'center' }}>
+      <div dangerouslySetInnerHTML={{ __html: svg }} />
+      <figcaption style={{ fontFamily: MONO, fontSize: '11px', letterSpacing: '1px', color: '#928374', textTransform: 'uppercase', marginTop: '0.7em' }}>
+        {caption}
+      </figcaption>
+    </figure>
   );
 }
 
-function PathsFigure() {
-  const BX = 170, BW = 440, BH = 44;
-  const centers = [108, 168, 228];
-  const opts = [
-    { t: 'Your own key — direct to the provider', stroke: '#83a598' },
-    { t: 'A local model — nothing leaves the device', stroke: '#83a598' },
-    { t: 'Neither — the managed on-ramp', stroke: '#b8bb26' },
-  ];
-  return (
-    <svg viewBox="0 0 720 264" style={svgStyle} role="img" aria-labelledby="pa-t pa-d">
-      <title id="pa-t">Three ways to question your data</title>
-      <desc id="pa-d">When you question your data you may bring your own provider key, run a large local model so nothing leaves the device, or — owning neither — use the managed on-ramp.</desc>
-      <defs>
-        <marker id="paArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="#928374" />
-        </marker>
-      </defs>
-      <rect x="110" y="8" width="500" height={BH} rx="6" fill="#3c3836" stroke="#504945" strokeWidth="1.5" />
-      <text x="360" y={8 + BH / 2 + 5} textAnchor="middle" fontFamily={MONO} fontSize={FS} fill="#ebdbb2">You put a question to your data</text>
-      <line x1="130" y1={8 + BH} x2="130" y2={centers[2]} stroke="#928374" strokeWidth="1.5" />
-      {opts.map((o, i) => (
-        <g key={`o${i}`}>
-          <line x1="130" y1={centers[i]} x2={BX} y2={centers[i]} stroke="#928374" strokeWidth="1.5" markerEnd="url(#paArr)" />
-          <rect x={BX} y={centers[i] - BH / 2} width={BW} height={BH} rx="6" fill="#3c3836" stroke={o.stroke} strokeWidth="1.5" />
-          <text x={BX + 16} y={centers[i] + 5} fontFamily={MONO} fontSize={FS} fill="#ebdbb2">{o.t}</text>
-        </g>
-      ))}
-    </svg>
-  );
-}
+const FIG_DISCIPLINE = `
+<svg viewBox="0 0 660 432" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%;height:auto;max-width:620px;display:block;margin:0 auto"
+     font-family="'IBM Plex Mono', monospace" role="img" aria-label="An idea disciplined into a destination: five measured stages from a worthless idea to merged code.">
+  <defs>
+    <pattern id="poche1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+    </pattern>
+    <pattern id="cells1" width="26" height="48" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="48" stroke="#504945" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- story-pole / measured rod -->
+  <line x1="80" y1="24" x2="80" y2="408" stroke="#928374" stroke-width="1"/>
+  <line x1="72" y1="24" x2="88" y2="24" stroke="#928374" stroke-width="1"/>
+  <line x1="72" y1="408" x2="88" y2="408" stroke="#928374" stroke-width="1"/>
+  <line x1="74" y1="48" x2="86" y2="48" stroke="#928374" stroke-width="1"/>
+  <text x="64" y="51" text-anchor="end" fill="#928374" font-size="10">01</text>
+  <line x1="74" y1="132" x2="86" y2="132" stroke="#928374" stroke-width="1"/>
+  <text x="64" y="135" text-anchor="end" fill="#928374" font-size="10">02</text>
+  <line x1="74" y1="216" x2="86" y2="216" stroke="#928374" stroke-width="1"/>
+  <text x="64" y="219" text-anchor="end" fill="#928374" font-size="10">03</text>
+  <line x1="74" y1="300" x2="86" y2="300" stroke="#928374" stroke-width="1"/>
+  <text x="64" y="303" text-anchor="end" fill="#928374" font-size="10">04</text>
+  <line x1="74" y1="384" x2="86" y2="384" stroke="#928374" stroke-width="1"/>
+  <text x="64" y="387" text-anchor="end" fill="#928374" font-size="10">05</text>
+
+  <!-- connectors (joint at top box, arrow into next) -->
+  <rect x="328" y="70" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="72" x2="330" y2="108" stroke="#928374" stroke-width="1"/>
+  <polygon points="330,108 326,102 334,102" fill="#928374"/>
+  <rect x="328" y="154" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="156" x2="330" y2="192" stroke="#928374" stroke-width="1"/>
+  <polygon points="330,192 326,186 334,186" fill="#928374"/>
+  <rect x="328" y="238" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="240" x2="330" y2="276" stroke="#928374" stroke-width="1"/>
+  <polygon points="330,276 326,270 334,270" fill="#928374"/>
+  <rect x="328" y="322" width="4" height="4" fill="#928374"/>
+  <line x1="330" y1="324" x2="330" y2="360" stroke="#928374" stroke-width="1"/>
+  <polygon points="330,360 326,354 334,354" fill="#928374"/>
+
+  <!-- 01 — an idea (void: dashed outline) -->
+  <rect x="140" y="24" width="380" height="48" fill="none" stroke="#928374" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="330" y="46" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">AN IDEA</text>
+  <text x="330" y="62" text-anchor="middle" fill="#928374" font-size="11">worth nothing</text>
+
+  <!-- 02 — a north star (accent + crosshair) -->
+  <rect x="140" y="108" width="380" height="48" fill="none" stroke="#fe8019" stroke-width="1"/>
+  <line x1="159" y1="132" x2="169" y2="132" stroke="#fe8019" stroke-width="1"/>
+  <line x1="164" y1="127" x2="164" y2="137" stroke="#fe8019" stroke-width="1"/>
+  <text x="334" y="130" text-anchor="middle" fill="#fe8019" font-size="13" letter-spacing="1.5">A NORTH STAR</text>
+  <text x="334" y="146" text-anchor="middle" fill="#928374" font-size="11">a falsifiable end</text>
+
+  <!-- 03 — opposition -->
+  <rect x="140" y="192" width="380" height="48" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="214" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">OPPOSITION</text>
+  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="11">submitted to contempt</text>
+
+  <!-- 04 — labour (decomposed: cells) -->
+  <rect x="140" y="276" width="380" height="48" fill="url(#cells1)" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="298" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">LABOUR</text>
+  <text x="330" y="314" text-anchor="middle" fill="#928374" font-size="11">decomposed into units</text>
+
+  <!-- 05 — merged code (solid: poché) -->
+  <rect x="140" y="360" width="380" height="48" fill="url(#poche1)" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="382" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">MERGED CODE</text>
+  <text x="330" y="398" text-anchor="middle" fill="#928374" font-size="11">driven, built</text>
+</svg>`;
+
+const FIG_PATHS = `
+<svg viewBox="0 0 660 246" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%;height:auto;max-width:620px;display:block;margin:0 auto"
+     font-family="'IBM Plex Mono', monospace" role="img" aria-label="Three ways to question your data: your own key, a local model, or the managed on-ramp.">
+  <defs>
+    <pattern id="poche2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- origin -->
+  <rect x="24" y="92" width="180" height="58" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="114" y="118" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">YOUR QUESTION</text>
+  <text x="114" y="134" text-anchor="middle" fill="#928374" font-size="11">put to your data</text>
+
+  <!-- feed + bus -->
+  <line x1="204" y1="121" x2="300" y2="121" stroke="#928374" stroke-width="1"/>
+  <line x1="300" y1="44" x2="300" y2="198" stroke="#928374" stroke-width="1"/>
+
+  <!-- branch a -->
+  <rect x="298" y="42" width="4" height="4" fill="#928374"/>
+  <line x1="300" y1="44" x2="360" y2="44" stroke="#928374" stroke-width="1"/>
+  <polygon points="360,44 354,40 354,48" fill="#928374"/>
+  <rect x="360" y="20" width="276" height="48" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="498" y="42" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">YOUR OWN KEY</text>
+  <text x="498" y="58" text-anchor="middle" fill="#928374" font-size="11">direct to the provider</text>
+
+  <!-- branch b (local: poché = on your machine) -->
+  <rect x="298" y="119" width="4" height="4" fill="#928374"/>
+  <line x1="300" y1="121" x2="360" y2="121" stroke="#928374" stroke-width="1"/>
+  <polygon points="360,121 354,117 354,125" fill="#928374"/>
+  <rect x="360" y="97" width="276" height="48" fill="url(#poche2)" stroke="#928374" stroke-width="1"/>
+  <text x="498" y="119" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">A LOCAL MODEL</text>
+  <text x="498" y="135" text-anchor="middle" fill="#928374" font-size="11">nothing leaves the device</text>
+
+  <!-- branch c (accent: the thing we built) -->
+  <rect x="298" y="196" width="4" height="4" fill="#928374"/>
+  <line x1="300" y1="198" x2="360" y2="198" stroke="#928374" stroke-width="1"/>
+  <polygon points="360,198 354,194 354,202" fill="#928374"/>
+  <rect x="360" y="174" width="276" height="48" fill="none" stroke="#fe8019" stroke-width="1"/>
+  <text x="498" y="196" text-anchor="middle" fill="#fe8019" font-size="13" letter-spacing="1.5">MANAGED ON-RAMP</text>
+  <text x="498" y="212" text-anchor="middle" fill="#928374" font-size="11">the thing we built</text>
+</svg>`;
 
 export default function BlogIdeaToNorthStar() {
   return (
@@ -108,7 +163,7 @@ export default function BlogIdeaToNorthStar() {
       <p>We do not build ideas. Ideas are democratic &mdash; available to anyone, costing nothing &mdash; and that availability is exactly their worth, which is to say none. What we build are <span className="bold">North Stars</span>: a destination stated as a condition that can be <span className="bold white">falsified.</span> Until an idea is written as a checkable end-state it is mood, not work.</p>
       <p>&ldquo;Make AI setup one click&rdquo; was mood. Forced into a condition, it read: <span className="bold">a new user is operating intelligence in a single gesture, with no key to procure &mdash; and the promise that their data remains theirs is not violated to achieve it.</span> State it that precisely and the idea begins to resist you. Which intelligence. Executed where. And that final clause &mdash; data remains theirs &mdash; is not a footnote. It is the entire problem.</p>
 
-      <PipelineFigure />
+      <ArchFigure svg={FIG_DISCIPLINE} caption="Fig. 1 — An idea, disciplined into a destination" />
 
       <h2>The adversary</h2>
       <p>Before a destination is pursued, the plan is submitted to opposition: several disciplines &mdash; strategy, engineering, design &mdash; and a second machine whose only assigned function is to find the plan contemptible. We are not interested in agreement. Agreement is merely what a plan produces in the people who wrote it.</p>
@@ -129,7 +184,7 @@ export default function BlogIdeaToNorthStar() {
         <p>The managed, key-free path is an <span className="bold white">on-ramp</span> &mdash; constructed for those who own neither, the people otherwise turned away at the threshold. The problem was never &ldquo;control everything.&rdquo; It was narrower and more interesting: how to admit the newcomer without erecting the precise thing the other two chose this product to escape.</p>
       </Section>
 
-      <PathsFigure />
+      <ArchFigure svg={FIG_PATHS} caption="Fig. 2 — Three ways to question your data" />
 
       <h2>Partition</h2>
       <p>Understood properly, the destination partitioned itself &mdash; which is generally the evidence that it has, at last, been understood.</p>
