@@ -12,9 +12,9 @@ const POSTS = [
   },
   {
     slug: 'idea-to-north-star',
-    title: 'From a crazy idea to a North Star',
+    title: 'An idea is worthless',
     date: '2026-06-24',
-    blurb: 'How one rough idea — “just make AI setup one click” — went from a sentence someone blurted out to a North Star we’re actually building, and what happened to it on the way there.',
+    blurb: 'Everyone has ideas; that is precisely what makes them worthless. The discipline is the product. A single idea — “make AI setup one click” — forced into a falsifiable destination and made to survive what we actually believe.',
   },
   {
     slug: 'building-lastdb-with-agents',
