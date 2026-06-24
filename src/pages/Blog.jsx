@@ -6,9 +6,9 @@ import Label from '../components/Label';
 const POSTS = [
   {
     slug: 'do-you-have-an-api-key',
-    title: 'Do You Have an API Key?',
+    title: 'Key, Llama, Gateway',
     date: '2026-06-24',
-    blurb: 'The first thing too many AI apps ask isn’t what you want to do — it’s for your credentials to somebody else’s cloud. That screen is a confession: the value isn’t in the app, it’s rented, and you’re holding the meter.',
+    blurb: 'Two fashionable ways to greet a user, both insults: ask for an API key, or ask them to download a llama. The same gesture — the software handing you its unfinished work. We take the third position: a gateway. Ease without surrender.',
   },
   {
     slug: 'evolving-a-live-schema',
