@@ -12,9 +12,9 @@ const POSTS = [
   },
   {
     slug: 'idea-to-north-star',
-    title: 'From a rough idea to a North Star',
+    title: 'Against the API key',
     date: '2026-06-24',
-    blurb: 'Every feature starts as a rough idea. Here’s what happened to one — “make AI setup one click” — between the idea and the feature we’re shipping: one-click local setup, and cloud chat that doesn’t read your data.',
+    blurb: 'A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand — one click, local by default — and declined the tidy shortcut that would have had our cloud read your data.',
   },
   {
     slug: 'building-lastdb-with-agents',

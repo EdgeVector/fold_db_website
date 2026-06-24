@@ -70,15 +70,15 @@ const FIG_DISCIPLINE = `
 
   <rect x="140" y="192" width="380" height="48" fill="none" stroke="#928374" stroke-width="1"/>
   <text x="330" y="214" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">REVIEW</text>
-  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="11">we argue with it</text>
+  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="11">built to be disliked</text>
 
   <rect x="140" y="276" width="380" height="48" fill="url(#cells1)" stroke="#928374" stroke-width="1"/>
   <text x="330" y="298" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">TASKS</text>
-  <text x="330" y="314" text-anchor="middle" fill="#928374" font-size="11">broken down</text>
+  <text x="330" y="314" text-anchor="middle" fill="#928374" font-size="11">cut into parts</text>
 
   <rect x="140" y="360" width="380" height="48" fill="url(#poche1)" stroke="#928374" stroke-width="1"/>
   <text x="330" y="382" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">MERGED CODE</text>
-  <text x="330" y="398" text-anchor="middle" fill="#928374" font-size="11">shipped</text>
+  <text x="330" y="398" text-anchor="middle" fill="#928374" font-size="11">built</text>
 </svg>`;
 
 const FIG_PATHS = `
@@ -124,59 +124,43 @@ export default function BlogIdeaToNorthStar() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>From a rough idea to a North Star - LastDB</title>
-        <meta name="description" content="Every feature starts as a rough idea. Here's what happened to one — 'make AI setup one click' — between the idea and the feature we're shipping." />
-        <meta property="og:title" content="From a rough idea to a North Star" />
-        <meta property="og:description" content="One-click local AI setup, and cloud chat that doesn't read your data — the path a rough idea took to get there." />
+        <title>Against the API key - LastDB</title>
+        <meta name="description" content="A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand — and refused the shortcut that would have had our cloud read your data." />
+        <meta property="og:title" content="Against the API key" />
+        <meta property="og:description" content="One click, local by default; cloud chat the user never has to trust. The errand is gone and the shortcut was declined." />
         <link rel="canonical" href="https://thelastdb.com/blog/idea-to-north-star" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">From a rough idea to a North Star</h1>
+      <h1 className="tagline">Against the API key</h1>
       <p className="post-meta dim">2026-06-24</p>
 
-      <p className="bold white">Every feature starts as a rough idea. Here&rsquo;s what happened to one of ours &mdash; &ldquo;make AI setup one click&rdquo; &mdash; between the idea and the feature we&rsquo;re shipping.</p>
+      <p className="bold white">A database that sends you elsewhere for a credential before it will do anything is not finished. We removed the errand.</p>
 
-      <p>A companion to <Link to="/blog/building-lastdb-with-agents">how we build LastDB in the open</Link>. That post is about the system. This one follows a single idea through it.</p>
+      <p>The feature is ordinary enough: the app reads what you give it, and you can put questions to it. Until recently it was gated behind a small humiliation &mdash; produce an API key from some company that is not us, or leave. Shown that door on the first day, most people took it.</p>
 
-      <hr className="decorative-rule" aria-hidden="true" />
+      <h2>The obvious solution, declined</h2>
+      <p>There is a tidy way to make the errand vanish. Route every question through our servers, supply the intelligence ourselves, bill it to a key the user never sees. We declined it without much ceremony.</p>
+      <p>It asks our cloud to read your data &mdash; the single thing this company is built not to do. A convenience bought with the entire premise is not a convenience; it is a price tag in a better typeface. Discarded, and the idea sent back to do the harder thing.</p>
 
-      <h2>The problem</h2>
-      <p>To use any AI feature in LastDB, you first had to bring an API key. If you didn&rsquo;t have one, you were stuck on day one &mdash; and plenty of people don&rsquo;t have one. So the idea was simple: make setup one click. We pick the models and set them up; you just start.</p>
-      <p>Simple to say. The word doing all the work is &ldquo;just.&rdquo;</p>
+      <h2>What we built instead</h2>
+      <p>The work is two things, not one.</p>
+      <p>The dull part &mdash; reading and ordering whatever you deposit &mdash; runs on small models entirely at ease on your own machine. One click installs them; nothing leaves. For most people that is the whole feature, and it asks nothing further of them.</p>
+      <p>Conversation is the other part, and it wants a model too large to keep at home. So the user chooses, and the choices are not interchangeable.</p>
 
-      <h2>An idea isn&rsquo;t a plan</h2>
-      <p>We don&rsquo;t build ideas. We turn them into a <span className="bold">North Star</span> &mdash; a goal with a checkable &ldquo;done.&rdquo; Writing that &ldquo;done&rdquo; is where the vague parts show up.</p>
-      <p>&ldquo;Make AI setup one click&rdquo; became: <span className="bold">a new user is using AI in one click, with no key to find, and their data still stays on their machine.</span> Write it that way and the hard questions are right there. Which AI? Running where? And &ldquo;data stays theirs&rdquo; turned out to be the whole problem.</p>
+      <ArchFigure svg={FIG_PATHS} caption="Fig. 1 — Three ways to chat with your data" />
 
-      <ArchFigure svg={FIG_DISCIPLINE} caption="Fig. 1 — From a rough idea to shipped code" />
+      <p>Bring your own key and you address the provider directly; we are not in the room. Run your own large model and the room is your laptop. Or take the one-click option &mdash; meant for those who have neither &mdash; arranged so the content passes through us without ever being legible to us. Private by construction, not by assurance. The honest version of it ships now and a stricter one follows; we will say so rather than imply otherwise.</p>
 
-      <h2>We argue with it first</h2>
-      <p>Before we build a plan, we try to break it &mdash; strategy, engineering, and design passes, plus a second AI model whose job is to attack it. That&rsquo;s where the fast version of &ldquo;one click&rdquo; fell apart.</p>
+      <h2>Method</h2>
+      <p>An idea is not promoted here for being agreeable. It is fixed into a goal that can be checked, handed to several disciplines and to a machine instructed to find it contemptible, cut into parts, and built. The drawing, for those who collect them:</p>
 
-      <h2>The shortcut we didn&rsquo;t take</h2>
-      <p>The easy answer was to route everyone&rsquo;s chats through our servers. Setup solved. But that breaks the one thing LastDB promises: <span className="bold">your data stays yours, and our cloud never reads it.</span> We weren&rsquo;t going to trade that for a setup step. So we kept the one click and dropped the version that gets there by reading your data.</p>
+      <ArchFigure svg={FIG_DISCIPLINE} caption="Fig. 2 — From a rough idea to shipped code" />
 
-      <h2>Most people don&rsquo;t need the cloud anyway</h2>
-      <p>For a lot of users this never comes up:</p>
-      <ul>
-        <li>Bring your own key and your chats go <span className="bold">straight to the provider</span> &mdash; we&rsquo;re never in the middle.</li>
-        <li>Run a model on your own machine and <span className="bold">nothing leaves your device.</span></li>
-      </ul>
-      <p>The one-click cloud option is for people who have neither &mdash; the ones who&rsquo;d otherwise quit at &ldquo;paste a key.&rdquo; The job was to add that on-ramp without turning it into the thing the other two came here to avoid.</p>
+      <p>None of this is generosity. It is merely correct. A tool that makes you fetch a key, or quietly reads your files to spare you the bother, has only mistaken its own convenience for yours.</p>
 
-      <ArchFigure svg={FIG_PATHS} caption="Fig. 2 — Three ways to chat with your data" />
-
-      <h2>Ship the easy part first</h2>
-      <p>Once it was clear, the work split in two. The easy half shipped first: a lot of the AI work &mdash; reading and organizing what you add &mdash; runs on small models that work fine on your own machine. That&rsquo;s now one click and fully local. No account, no key, nothing leaves. Most of the setup pain is just gone.</p>
-      <p>The cloud chat part is built to keep us out of your content, and we&rsquo;re shipping the honest version first and hardening it next &mdash; not pretending it&rsquo;s further along than it is.</p>
-
-      <h2>Then it&rsquo;s just work</h2>
-      <p>Once it&rsquo;s a North Star with a checkable &ldquo;done,&rdquo; it stops being talk. It gets logged, broken into tasks, and run through the loop that drives them to merged code &mdash; a tracked piece of work with a finish line, not a note someone will get to eventually.</p>
-      <p>&ldquo;Make AI setup one click&rdquo; was a fine idea. It got better because we made it survive what we actually believe: no key required, and your data stays yours. That&rsquo;s what a North Star is for.</p>
-
-      <p className="dim">More: <Link to="/blog/building-lastdb-with-agents">how we build LastDB in the open</Link> &mdash; and <Link to="/apps">the apps we build on LastDB</Link>.</p>
+      <p className="dim">From the same office: <Link to="/blog/building-lastdb-with-agents">how we build LastDB in the open</Link> &mdash; and <Link to="/apps">the apps we build on LastDB</Link>.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>
