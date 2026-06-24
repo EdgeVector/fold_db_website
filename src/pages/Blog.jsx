@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'do-you-have-an-api-key',
+    title: 'Do You Have an API Key?',
+    date: '2026-06-24',
+    blurb: 'The first thing too many AI apps ask isn’t what you want to do — it’s for your credentials to somebody else’s cloud. That screen is a confession: the value isn’t in the app, it’s rented, and you’re holding the meter.',
+  },
+  {
     slug: 'evolving-a-live-schema',
     title: 'Against Migration',
     date: '2026-06-24',
