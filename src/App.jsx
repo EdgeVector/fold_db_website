@@ -9,6 +9,7 @@ const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogSpeedupsWeDidntWrite = lazy(() => import('./pages/BlogSpeedupsWeDidntWrite'));
 const BlogBuildingLastdbWithAgents = lazy(() => import('./pages/BlogBuildingLastdbWithAgents'));
 const BlogEvolvingALiveSchema = lazy(() => import('./pages/BlogEvolvingALiveSchema'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -31,6 +32,7 @@ export default function App() {
               {/* Encryption page retired (2026-06-22) — too technical; redirect old URLs */}
               <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/speedups-we-didnt-write" element={<BlogSpeedupsWeDidntWrite />} />
               <Route path="/blog/building-lastdb-with-agents" element={<BlogBuildingLastdbWithAgents />} />
               <Route path="/blog/evolving-a-live-schema" element={<BlogEvolvingALiveSchema />} />
               <Route path="*" element={<NotFound />} />
