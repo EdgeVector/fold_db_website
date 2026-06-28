@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'anatomy-of-a-sync-outage',
+    title: 'Anatomy of a Sync Outage',
+    date: '2026-06-28',
+    blurb: 'Cloud sync went down, and the error pointed at the wrong thing entirely. What looked like one bug was three — stacked, each hiding the one behind it — and we fixed the first two before realizing neither was what users were hitting: a scan on a hot path, a list that couldn’t finish, and a fix that never ran. The whole descent, told straight, plus the rules we took from it.',
+  },
+  {
     slug: 'speedups-we-didnt-write',
     title: 'A week of speedups we didn’t write',
     date: '2026-06-28',
