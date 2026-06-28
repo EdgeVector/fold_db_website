@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'speedups-we-didnt-write',
+    title: 'A week of speedups we didn’t write',
+    date: '2026-06-28',
+    blurb: 'The database got materially faster last week — one operation from ~4.4 seconds to ~10 milliseconds, another from ~7 hours to ~15 minutes. No human wrote those changes. The autonomous loop found the slow paths, wrote the fixes, wrote the benchmarks that prove they worked, and merged its own pull requests — including one win it found and chose not to take.',
+  },
+  {
     slug: 'evolving-a-live-schema',
     title: 'Against Migration',
     date: '2026-06-24',
