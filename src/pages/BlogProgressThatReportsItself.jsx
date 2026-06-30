@@ -126,6 +126,13 @@ export default function BlogProgressThatReportsItself() {
 
       <ArchFigure svg={ROLLUP} caption="Fig. 1 — notes, board, and git history roll up into one picture" />
 
+      <figure style={{ margin: '34px 0', textAlign: 'center' }}>
+        <img src="/dashboard-progress-snapshot.png" alt="A generated dashboard showing 17 feature areas tracked, 10 shipped and live, 4 actively building, and 1 waiting on a decision, plus a daily commit-activity chart broken out by app." style={{ width: '100%', maxWidth: '760px', border: '1px solid #3c3836', borderRadius: '6px' }} />
+        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+          Fig. 1a &mdash; an actual snapshot, generated from the rollup, not written by hand
+        </figcaption>
+      </figure>
+
       <Section variant="sage">
         <h2><span className="bold">A card already knows its own state</span></h2>
         <p>Because a feature&rsquo;s card is broken into the pieces that make it up, it doesn&rsquo;t need a person to estimate how done it is &mdash; it counts. &ldquo;5 of 6 pieces done&rdquo; isn&rsquo;t a guess written into a spreadsheet on a Friday; it&rsquo;s a tally of what&rsquo;s actually checked off, read at whatever moment someone asks.</p>
