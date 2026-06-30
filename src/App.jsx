@@ -14,6 +14,7 @@ const BlogSpeedupsWeDidntWrite = lazy(() => import('./pages/BlogSpeedupsWeDidntW
 const BlogBuildingLastdbWithAgents = lazy(() => import('./pages/BlogBuildingLastdbWithAgents'));
 const BlogEvolvingALiveSchema = lazy(() => import('./pages/BlogEvolvingALiveSchema'));
 const BlogCantNotWont = lazy(() => import('./pages/BlogCantNotWont'));
+const BlogProgressThatReportsItself = lazy(() => import('./pages/BlogProgressThatReportsItself'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/blog/building-lastdb-with-agents" element={<BlogBuildingLastdbWithAgents />} />
               <Route path="/blog/evolving-a-live-schema" element={<BlogEvolvingALiveSchema />} />
               <Route path="/blog/cant-not-wont" element={<BlogCantNotWont />} />
+              <Route path="/blog/progress-that-reports-itself" element={<BlogProgressThatReportsItself />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
