@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'progress-that-reports-itself',
+    title: 'Progress That Reports Itself',
+    date: '2026-06-30',
+    blurb: 'No one filled in a status report this week. We still know, to the feature, what shipped, what’s mid-build, and what one decision is sitting in someone’s queue — because it’s a rollup of a durable notes store, a card per feature, and the commits that actually landed, not a form anyone filled in.',
+  },
+  {
     slug: 'cant-not-wont',
     title: 'Can’t, Not Won’t',
     date: '2026-06-30',
