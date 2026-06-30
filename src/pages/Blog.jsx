@@ -5,12 +5,6 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
-    slug: 'an-outbox-for-your-data',
-    title: 'An Outbox for Your Data',
-    date: '2026-06-29',
-    blurb: 'Sharing data with someone else is, almost everywhere, fire-and-forget: a permission flips, a row syncs, and the bytes are gone before you finished deciding which bytes. We gave sharing an outbox. Nothing leaves your node until you stage it, review the exact slice — which schemas, which fields — and approve it, or reject it and nothing was ever sent. Consent at the moment of departure, on both ends of the wire.',
-  },
-  {
     slug: 'anatomy-of-a-sync-outage',
     title: 'Anatomy of a Sync Outage',
     date: '2026-06-28',
