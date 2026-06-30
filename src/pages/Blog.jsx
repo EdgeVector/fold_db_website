@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'cant-not-wont',
+    title: 'Can’t, Not Won’t',
+    date: '2026-06-30',
+    blurb: 'We wanted to hand a new user working AI chat with no API key to paste — which tempts you to run a server in the middle that reads every message. We threw that away. Here’s how we arrived at hosted chat we are physically unable to read: a blind relay that knows who but not what, a sealed enclave that knows what but not who, and the honest list of what you still have to trust.',
+  },
+  {
     slug: 'anatomy-of-a-sync-outage',
     title: 'Anatomy of a Sync Outage',
     date: '2026-06-28',
