@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'prove-it-to-land',
+    title: 'Prove It To Land',
+    date: '2026-06-30',
+    blurb: 'A green pull request is not proof the thing works — it is proof that some code compiled and nobody objected. When agents write and merge their own code, that gap is exactly where bugs ship from. So we closed it: nothing lands unless it proves the user-visible capability works, checked by something other than the author. The gate, and the two ways code lies about being finished.',
+  },
+  {
     slug: 'progress-that-reports-itself',
     title: 'Progress That Reports Itself',
     date: '2026-06-30',
