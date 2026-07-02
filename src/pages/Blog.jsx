@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-parallelism-tax',
+    title: 'The Parallelism Tax',
+    date: '2026-07-02',
+    blurb: 'We split our test suite into 267 parallel shards to make CI faster. It worked — and the monthly compute bill went up roughly a hundredfold, until our provider refused to start any more jobs. The catch nobody prices in: every parallel job re-pays a fixed setup cost before its first test, so parallelism buys wall-clock with money. The fix — run only what a change can touch — and the three guardrails that stop it recurring.',
+  },
+  {
     slug: 'n-plus-one-six-bugs',
     title: 'The N+1 That Looked Like Six Bugs',
     date: '2026-07-02',
