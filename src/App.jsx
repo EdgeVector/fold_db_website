@@ -16,6 +16,7 @@ const BlogEvolvingALiveSchema = lazy(() => import('./pages/BlogEvolvingALiveSche
 const BlogCantNotWont = lazy(() => import('./pages/BlogCantNotWont'));
 const BlogProgressThatReportsItself = lazy(() => import('./pages/BlogProgressThatReportsItself'));
 const BlogProveItToLand = lazy(() => import('./pages/BlogProveItToLand'));
+const BlogArgumentListTooLong = lazy(() => import('./pages/BlogArgumentListTooLong'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/blog/cant-not-wont" element={<BlogCantNotWont />} />
               <Route path="/blog/progress-that-reports-itself" element={<BlogProgressThatReportsItself />} />
               <Route path="/blog/prove-it-to-land" element={<BlogProveItToLand />} />
+              <Route path="/blog/argument-list-too-long" element={<BlogArgumentListTooLong />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

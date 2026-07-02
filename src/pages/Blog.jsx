@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'argument-list-too-long',
+    title: 'Argument List Too Long',
+    date: '2026-07-01',
+    blurb: 'A little script that had run cleanly a hundred times started failing every run — and the error came from the kernel, not our code. The data wasn’t wrong; there was just too much of it to hand over the way we were handing it. An invisible ceiling that scales in exact proportion to how well things are going, why the error blames the one innocent tool, and the three-line fix.',
+  },
+  {
     slug: 'prove-it-to-land',
     title: 'Prove It To Land',
     date: '2026-06-30',
