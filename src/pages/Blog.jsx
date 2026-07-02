@@ -5,10 +5,10 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
-    slug: 'one-symptom-six-causes',
-    title: 'One Symptom, Six Causes',
+    slug: 'n-plus-one-six-bugs',
+    title: 'The N+1 That Looked Like Six Bugs',
     date: '2026-07-02',
-    blurb: 'For three days our own database greeted us with a blank window. We diagnosed it six times and were wrong five — because the same symptom had six different causes, and the universal reflex, quit and reopen, was the one move guaranteed to make it worse. Why restarting is not a neutral act, and the thirty-second read-only checklist that replaced sixteen hours of theory.',
+    blurb: 'For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that blew through the file-descriptor budget macOS grants a GUI app and killed the embedded server seconds after every launch. Everything else was an echo, and every restart re-armed it. How a resource bug impersonates other bugs, and the thirty-second checklist that names it.',
   },
   {
     slug: 'argument-list-too-long',
