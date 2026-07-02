@@ -215,9 +215,6 @@ export default function BlogNPlusOneSixBugs() {
         <meta name="description" content="For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that exhausted the file descriptors macOS grants a GUI app and killed the embedded server seconds after every launch. The full descent: the six disguises, the controlled experiment that ended the argument, the five releases it took to ship one fix — including the safety gate that rejected a correct release — and the proof at the end." />
         <meta property="og:title" content="The N+1 That Looked Like Six Bugs" />
         <meta property="og:description" content="One textbook N+1, billed in file descriptors instead of latency. Six disguises, one thirty-second diagnosis, five releases to ship the cure — and the experiment that settled it in two commands." />
-        <meta property="og:image" content="https://thelastdb.com/blog/n-plus-one-six-bugs-header.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://thelastdb.com/blog/n-plus-one-six-bugs-header.png" />
         <link rel="canonical" href="https://thelastdb.com/blog/n-plus-one-six-bugs" />
       </Helmet>
 
@@ -226,13 +223,6 @@ export default function BlogNPlusOneSixBugs() {
       <h1 className="tagline">The N+1 That Looked Like Six Bugs</h1>
       <p className="post-meta dim">2026-07-02</p>
 
-      <figure style={{ margin: '28px 0' }}>
-        <img
-          src="/blog/n-plus-one-six-bugs-header.png"
-          alt="Architectural line drawing: hundreds of thin request lines fan out from one small opening in an application window, cross a dashed ceiling line, and pile into a tiny doorway in a cross-hatched server block"
-          style={{ width: '100%', height: 'auto', display: 'block', border: '1px solid #504945' }}
-        />
-      </figure>
 
       <p className="bold white">For three days our own database kept greeting us with a blank window, and over those days we diagnosed &mdash; with real conviction &mdash; six different bugs. There was one. <span className="white">A textbook N+1 in the data browser, the most ordinary bug in software, billed in the one currency nobody was watching: file descriptors.</span> Everything else we blamed was an echo of it, the universal recovery reflex &mdash; quit and reopen &mdash; re-armed it on every launch, and when we finally had the fix in hand, it took <span className="white">five releases to get it out the door</span>, because our own release pipeline turned out to be hiding three bugs of its own. This is the whole descent, the experiment that ended the argument, and the proof at the end.</p>
 
