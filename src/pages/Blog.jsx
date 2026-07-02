@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'one-symptom-six-causes',
+    title: 'One Symptom, Six Causes',
+    date: '2026-07-02',
+    blurb: 'For three days our own database greeted us with a blank window. We diagnosed it six times and were wrong five — because the same symptom had six different causes, and the universal reflex, quit and reopen, was the one move guaranteed to make it worse. Why restarting is not a neutral act, and the thirty-second read-only checklist that replaced sixteen hours of theory.',
+  },
+  {
     slug: 'argument-list-too-long',
     title: 'Argument List Too Long',
     date: '2026-07-01',
