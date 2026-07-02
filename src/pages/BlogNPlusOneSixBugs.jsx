@@ -172,7 +172,7 @@ const EXPERIMENT = `${SVG_OPEN('0 0 660 312')}
   <text x="330" y="298" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">SAME BINARY · SAME DATA · SAME CLICK — ONLY THE BUDGET CHANGED</text>
 </svg>`;
 
-// 5 — the safety gate that convicted an innocent binary: grep -q + pipefail.
+// 5 — the safety gate that rejected a correct binary: grep -q + pipefail.
 const GATE = `${SVG_OPEN('0 0 660 300')}
   <rect x="36" y="48" width="176" height="58" fill="none" stroke="#928374" stroke-width="1"/>
   <text x="124" y="73" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">STRING SCAN</text>
@@ -195,7 +195,7 @@ const GATE = `${SVG_OPEN('0 0 660 300')}
 
   <rect x="36" y="204" width="280" height="58" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
   <text x="176" y="229" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">EXIT 141</text>
-  <text x="176" y="248" text-anchor="middle" fill="#928374" font-size="10">pipefail reads the corpse, not the match</text>
+  <text x="176" y="248" text-anchor="middle" fill="#928374" font-size="10">pipefail sees the failed scan, not the match</text>
 
   <line x1="316" y1="233" x2="420" y2="233" stroke="#928374" stroke-width="1"/>
   <polygon points="426,233 417,229 417,237" fill="#928374"/>
@@ -212,7 +212,7 @@ export default function BlogNPlusOneSixBugs() {
     <article className="blog-post">
       <Helmet>
         <title>The N+1 That Looked Like Six Bugs - LastDB</title>
-        <meta name="description" content="For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that exhausted the file descriptors macOS grants a GUI app and killed the embedded server seconds after every launch. The full descent: the six disguises, the controlled experiment that ended the argument, the five releases it took to ship one fix — including the safety gate that convicted an innocent binary — and the proof at the end." />
+        <meta name="description" content="For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that exhausted the file descriptors macOS grants a GUI app and killed the embedded server seconds after every launch. The full descent: the six disguises, the controlled experiment that ended the argument, the five releases it took to ship one fix — including the safety gate that rejected a correct release — and the proof at the end." />
         <meta property="og:title" content="The N+1 That Looked Like Six Bugs" />
         <meta property="og:description" content="One textbook N+1, billed in file descriptors instead of latency. Six disguises, one thirty-second diagnosis, five releases to ship the cure — and the experiment that settled it in two commands." />
         <link rel="canonical" href="https://thelastdb.com/blog/n-plus-one-six-bugs" />
@@ -243,19 +243,19 @@ export default function BlogNPlusOneSixBugs() {
       <p>One more property worth naming, because it decides who hits this: the burst scales with the <span className="bold">number of schemas</span>, not the volume of data. A schema with 1,600 records costs exactly one request, same as an empty one. It is variety, not size, that grows the storm &mdash; and a knowledge-shaped workload on LastDB grows variety as a feature, one inferred schema per shape of thing it learns. Success, in other words, was the trigger.</p>
 
       <h2>Six faces</h2>
-      <p>Which is how one bug wore six disguises. Over three days we confidently convicted, in order:</p>
+      <p>Which is how one bug wore six disguises. Over three days we confidently blamed, in order:</p>
       <ul>
         <li><span className="bold white">An unlock/keychain regression.</span> The window died right after unlock, every time &mdash; of course it looked like unlock. And here the investigation got genuinely confusing, because we <em>found real bugs</em>. Sensitive reads after unlock were re-deriving key material from the root instead of using the key the unlock had just placed in memory &mdash; a true bug, sincerely fixed. The app was also still touching the OS keychain from an earlier era of its life, which after a product rename produced genuine permission-prompt storms &mdash; also true, also fixed, secrets moved into the node&rsquo;s own encrypted-at-rest store where no surprise dialog can interrupt a headless process. Two real bugs, two real fixes, zero effect on the blank window. Nothing anchors a wrong theory like finding true evidence for it.</li>
         <li><span className="bold white">Data loss.</span> The window was empty; the data was fine, every byte, the whole time.</li>
-        <li><span className="bold white">A stale build.</span> We rebuilt; the corpse looked identical. (Hold this thought &mdash; a stale build shows up later in this story as a real villain, just not this scene&rsquo;s.)</li>
-        <li><span className="bold white">Warring background daemons.</span> A real hazard &mdash; over the bad days we had accumulated supervisor scripts and watchdogs that could genuinely fight over one socket. We removed them all. The app kept dying, now with cleaner crime scenes.</li>
+        <li><span className="bold white">A stale build.</span> We rebuilt; the failure looked identical. (Hold this thought &mdash; a stale build shows up later in this story as a real villain, just not this scene&rsquo;s.)</li>
+        <li><span className="bold white">Warring background daemons.</span> A real hazard &mdash; over the bad days we had accumulated supervisor scripts and watchdogs that could genuinely fight over one socket. We removed them all. The app kept dying, just with less clutter around it.</li>
         <li><span className="bold white">A cloud-sync auth failure.</span> Its retry loop was genuinely noisy in the logs, which made it a superb decoy &mdash; a bug-shaped object, loudly innocent.</li>
         <li><span className="bold white">A haunted socket</span> that &ldquo;kept vanishing.&rdquo; Which was true, and was the bug&rsquo;s signature, not its cause.</li>
       </ul>
 
       <ArchFigure svg={FACES} caption="Fig. 2 — six confident diagnoses, one bug" />
 
-      <p>Every theory had evidence, because the corpse was real &mdash; only the murderer kept changing. We even shipped a release for one of the theories. The theory was wrong; the release was sincere. The tell we kept ignoring: <span className="bold">if a symptom survives one clean rebuild, it is not a stale binary</span> &mdash; and if the window dies right after the same tab opens, look at what that tab <em>does</em>.</p>
+      <p>Every theory had evidence, because the failure was real &mdash; only the explanation kept changing. We even shipped a release for one of the theories. The theory was wrong; the release was sincere. The tell we kept ignoring: <span className="bold">if a symptom survives one clean rebuild, it is not a stale binary</span> &mdash; and if the window dies right after the same tab opens, look at what that tab <em>does</em>.</p>
 
       <Section variant="rose">
         <h2><span className="bold">The reflex re-armed the bug</span></h2>
@@ -277,17 +277,17 @@ export default function BlogNPlusOneSixBugs() {
       </Section>
 
       <h2>The experiment that ended the argument</h2>
-      <p>A theory that good deserved better than belief, so we made it falsifiable. First we reproduced the murder weapon without the app: 459 concurrent requests fired at the node from the command line &mdash; the same burst Browse produces, minus everything else the app does. At the default budget, the result was total: <span className="bold white">all 459 connections refused</span>, the accept loop dead, the socket file gone from disk. Twice, to be sure. Not a degradation &mdash; an execution.</p>
+      <p>A theory that good deserved better than belief, so we made it falsifiable. First we reproduced the failure without the app: 459 concurrent requests fired at the node from the command line &mdash; the same burst Browse produces, minus everything else the app does. At the default budget, the result was total: <span className="bold white">all 459 connections refused</span>, the accept loop dead, the socket file gone from disk. Twice, to be sure. Not a degradation &mdash; a total stop.</p>
       <p>Then the other half of the A/B: relaunch the <em>identical binary</em> from a shell that granted it a 65,536-descriptor budget &mdash; one command, no code changes &mdash; and fire the identical storm. <span className="bold white">All 459 requests answered in about one second.</span> Server healthy, socket present, window full of data. Same binary, same data, same click; only the budget changed. Every one of the six theories predicted the storm would kill the second run too &mdash; the daemons, the stale build, the haunted socket were all still &ldquo;there.&rdquo; They didn&rsquo;t survive the toggle.</p>
 
-      <ArchFigure svg={EXPERIMENT} caption="Fig. 4 — the A/B that convicted the descriptor budget and acquitted everything else" />
+      <ArchFigure svg={EXPERIMENT} caption="Fig. 4 — the A/B that isolated the descriptor budget and cleared everything else" />
 
-      <p>A diagnosis you can toggle is the only kind worth shipping a fix for. Sixteen hours of theorizing produced six suspects; two commands produced one conviction. That asymmetry &mdash; and the embarrassment of it &mdash; is most of why we&rsquo;re writing this down.</p>
+      <p>A diagnosis you can toggle is the only kind worth shipping a fix for. Sixteen hours of theorizing produced six candidate causes; two commands produced one answer. That asymmetry &mdash; and the embarrassment of it &mdash; is most of why we&rsquo;re writing this down.</p>
 
       <h2>Five releases to ship one fix</h2>
-      <p>The fix itself is small and boring, which is exactly what you want. Getting it into users&rsquo; hands was neither, because the moment we tried, our release pipeline began confessing to unrelated crimes. It took five consecutive release attempts to ship one two-part fix, and every failure taught us something we&rsquo;d rather have learned cheaper.</p>
+      <p>The fix itself is small and boring, which is exactly what you want. Getting it into users&rsquo; hands was neither, because the moment we tried, our release pipeline began failing in unrelated ways of its own. It took five consecutive release attempts to ship one two-part fix, and every failure taught us something we&rsquo;d rather have learned cheaper.</p>
       <p><span className="bold white">Attempt one shipped last month&rsquo;s app.</span> The desktop UI is compiled <em>into</em> the server binary at build time &mdash; which means a cached binary is a time capsule, and a release pipeline with a shared build cache can exhume one. Version .8 went out the door carrying a binary from weeks earlier: correctly signed, correctly packaged, wrong contents. Installing a &ldquo;new&rdquo; release silently downgraded the app. So we added a release-integrity gate: before packaging, scan the built binary and refuse to ship unless it literally contains the version string being released. Simple, mechanical, obviously correct.</p>
-      <p><span className="bold white">Attempt two: the gate convicted an innocent binary.</span> Version .9 built perfectly &mdash; fresh compile, right version baked in &mdash; and the gate failed it anyway. The gate&rsquo;s shell one-liner piped a string-scan of the binary into <code>grep -q</code>, under the shell&rsquo;s strict pipeline mode. <code>grep -q</code> does something reasonable that becomes a trap: it exits <em>the instant it finds a match</em>. The scanner, still streaming a hundred-megabyte binary into a pipe nobody is reading, is killed by the operating system mid-write &mdash; and strict mode dutifully reports the pipeline as failed. <span className="bold">The check failed <em>because</em> it succeeded</span>: finding the match early is what killed the producer. The fix is one character of intent &mdash; count matches instead of exiting on the first &mdash; so the reader drains the stream and the producer exits in peace.</p>
+      <p><span className="bold white">Attempt two: the gate rejected a correct binary.</span> Version .9 built perfectly &mdash; fresh compile, right version baked in &mdash; and the gate failed it anyway. The gate&rsquo;s shell one-liner piped a string-scan of the binary into <code>grep -q</code>, under the shell&rsquo;s strict pipeline mode. <code>grep -q</code> does something reasonable that becomes a trap: it exits <em>the instant it finds a match</em>. The scanner, still streaming a hundred-megabyte binary into a pipe nobody is reading, is killed by the operating system mid-write &mdash; and strict mode dutifully reports the pipeline as failed. <span className="bold">The check failed <em>because</em> it succeeded</span>: finding the match early is what killed the producer. The fix is one character of intent &mdash; count matches instead of exiting on the first &mdash; so the reader drains the stream and the producer exits in peace.</p>
 
       <ArchFigure svg={GATE} caption="Fig. 5 — the release gate&rsquo;s false negative: it failed because it matched" />
 
@@ -310,7 +310,7 @@ export default function BlogNPlusOneSixBugs() {
       <p>We hardened the echo chamber too &mdash; launches refuse to steal a live socket, the watchdog probes what the app actually serves, failing sync backs off &mdash; but those were amplifiers. The disease was the N+1.</p>
 
       <h2>Proof, the only kind that counts</h2>
-      <p>We&rsquo;d already been burned this week by believing green dashboards, so the acceptance test for the fix was the hostile path, end to end: install the published release, launch it <em>normally</em> &mdash; the double-click path, the one that hands out 256 descriptors &mdash; and try to kill it. The startup log reported the raised limit. The same 459-request storm that had executed the server twice came back <span className="bold white">459-for-459, all answered, socket alive</span>. Then the human path: unlock at the password screen, open Browse, and watch it render seventeen populated schemas with live record counts &mdash; the hundreds of empty ones correctly hidden for the first time &mdash; while the node&rsquo;s health check read steady underneath. The blank window is gone because the thing that blanked it can no longer happen, and we know because we did the exact thing that used to cause it, on the exact build users get.</p>
+      <p>We&rsquo;d already been burned this week by believing green dashboards, so the acceptance test for the fix was the hostile path, end to end: install the published release, launch it <em>normally</em> &mdash; the double-click path, the one that hands out 256 descriptors &mdash; and try to kill it. The startup log reported the raised limit. The same 459-request storm that had killed the server twice came back <span className="bold white">459-for-459, all answered, socket alive</span>. Then the human path: unlock at the password screen, open Browse, and watch it render seventeen populated schemas with live record counts &mdash; the hundreds of empty ones correctly hidden for the first time &mdash; while the node&rsquo;s health check read steady underneath. The blank window is gone because the thing that blanked it can no longer happen, and we know because we did the exact thing that used to cause it, on the exact build users get.</p>
 
       <h2>The rules we kept</h2>
       <ul>

@@ -8,7 +8,7 @@ const POSTS = [
     slug: 'n-plus-one-six-bugs',
     title: 'The N+1 That Looked Like Six Bugs',
     date: '2026-07-02',
-    blurb: 'For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that blew through the file-descriptor budget macOS grants a GUI app and killed the embedded server seconds after every launch. The full descent: six confident wrong diagnoses, the restart reflex that re-armed the bug, the two-command A/B that convicted the descriptor budget, the five releases it took to ship one small fix — including a safety gate that failed because it matched — and the hostile-path proof at the end.',
+    blurb: 'For three days our own database greeted us with a blank window, and we diagnosed six different bugs. There was one: a textbook N+1 in the data browser — one request per schema, hundreds at once — that blew through the file-descriptor budget macOS grants a GUI app and killed the embedded server seconds after every launch. The full descent: six confident wrong diagnoses, the restart reflex that re-armed the bug, the two-command A/B that isolated the descriptor budget, the five releases it took to ship one small fix — including a safety gate that failed because it matched — and the hostile-path proof at the end.',
   },
   {
     slug: 'argument-list-too-long',
