@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-second-binary',
+    title: 'The Second Binary',
+    date: '2026-07-03',
+    blurb: 'Two builds of our dev tool, weeks of work apart, both reported v0.3.0 — and both were telling the truth. The investigation that started as "is the dev node up to date?" ended with "the dev node should not exist." Why a separate dev binary is a standing invitation to drift, how every reason for ours had quietly expired, and how the safety we liked about it — a playground that physically can\'t touch production data — survives the merge as construction, not discipline.',
+  },
+  {
     slug: 'self-hosting-the-forge',
     title: 'The Forge Comes Home',
     date: '2026-07-02',
