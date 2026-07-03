@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'declared-not-registered',
+    title: 'Declared, Not Registered',
+    date: '2026-07-03',
+    blurb: 'A central schema registry is a phone call you have to make before you’re allowed to work: publish the shape upstream, wait for the world to acknowledge the name. We deleted the call. An app now declares its schema to its own node, and the name it gets back is exactly the one the central registry would assign — the same 64 characters — because a schema’s canonical name is a fingerprint of its shape, not a registrar’s decree. How content-addressing makes local declaration and central registration converge without ever consulting each other, the small per-app adapter the node keeps, and the honest last inch we’re still closing.',
+  },
+  {
     slug: 'the-second-binary',
     title: 'The Second Binary',
     date: '2026-07-03',
