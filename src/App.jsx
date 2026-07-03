@@ -9,6 +9,7 @@ const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogDeclaredNotRegistered = lazy(() => import('./pages/BlogDeclaredNotRegistered'));
 const BlogTheSecondBinary = lazy(() => import('./pages/BlogTheSecondBinary'));
 const BlogSelfHostingTheForge = lazy(() => import('./pages/BlogSelfHostingTheForge'));
 const BlogMachineryListeningToSilence = lazy(() => import('./pages/BlogMachineryListeningToSilence'));
@@ -42,6 +43,7 @@ export default function App() {
               {/* Encryption page retired (2026-06-22) — too technical; redirect old URLs */}
               <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/declared-not-registered" element={<BlogDeclaredNotRegistered />} />
               <Route path="/blog/the-second-binary" element={<BlogTheSecondBinary />} />
               <Route path="/blog/self-hosting-the-forge" element={<BlogSelfHostingTheForge />} />
               <Route path="/blog/machinery-listening-to-silence" element={<BlogMachineryListeningToSilence />} />
