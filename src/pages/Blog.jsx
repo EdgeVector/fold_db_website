@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'machinery-listening-to-silence',
+    title: 'Machinery Listening to Silence',
+    date: '2026-07-02',
+    blurb: 'Our database core carried a pub/sub event bus from an earlier design. In production it published exactly one kind of event — and ran five subscriber loops per boot, four of them waiting forever on events that never came. Worse, the unused machinery invented a bug: a committed, durable write returned to the client as an error. We deleted the whole thing — about fourteen hundred lines, seven perpetual tasks — and made the one real behavior a direct call. The cost of an abstraction you don’t use isn’t zero. It’s negative.',
+  },
+  {
     slug: 'the-parallelism-tax',
     title: 'The Parallelism Tax',
     date: '2026-07-02',
