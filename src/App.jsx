@@ -9,6 +9,7 @@ const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogMachineryListeningToSilence = lazy(() => import('./pages/BlogMachineryListeningToSilence'));
 const BlogTheParallelismTax = lazy(() => import('./pages/BlogTheParallelismTax'));
 const BlogAnatomyOfASyncOutage = lazy(() => import('./pages/BlogAnatomyOfASyncOutage'));
 const BlogSpeedupsWeDidntWrite = lazy(() => import('./pages/BlogSpeedupsWeDidntWrite'));
@@ -39,6 +40,7 @@ export default function App() {
               {/* Encryption page retired (2026-06-22) — too technical; redirect old URLs */}
               <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/machinery-listening-to-silence" element={<BlogMachineryListeningToSilence />} />
               <Route path="/blog/the-parallelism-tax" element={<BlogTheParallelismTax />} />
               <Route path="/blog/anatomy-of-a-sync-outage" element={<BlogAnatomyOfASyncOutage />} />
               <Route path="/blog/speedups-we-didnt-write" element={<BlogSpeedupsWeDidntWrite />} />
