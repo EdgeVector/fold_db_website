@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'self-hosting-the-forge',
+    title: 'The Forge Comes Home',
+    date: '2026-07-02',
+    blurb: 'On June 23rd every merge in our org froze for hours — not a bug, a billing switch on someone else’s computer. We build a local-first database, and our own source of truth was the least local thing we owned. So we moved the monorepo to a self-hosted forge on our own disk — GitHub demoted to a warm daily mirror, twenty open PRs migrated in an evening, sixteen landed by the fleet within the hour. Plus the lesson the mirror taught us: its definition of tidy is total.',
+  },
+  {
     slug: 'machinery-listening-to-silence',
     title: 'Machinery Listening to Silence',
     date: '2026-07-02',
