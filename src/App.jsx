@@ -23,6 +23,7 @@ const BlogProgressThatReportsItself = lazy(() => import('./pages/BlogProgressTha
 const BlogProveItToLand = lazy(() => import('./pages/BlogProveItToLand'));
 const BlogArgumentListTooLong = lazy(() => import('./pages/BlogArgumentListTooLong'));
 const BlogNPlusOneSixBugs = lazy(() => import('./pages/BlogNPlusOneSixBugs'));
+const BlogTheRunnerComesHome = lazy(() => import('./pages/BlogTheRunnerComesHome'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -46,6 +47,7 @@ export default function App() {
               <Route path="/blog/declared-not-registered" element={<BlogDeclaredNotRegistered />} />
               <Route path="/blog/the-second-binary" element={<BlogTheSecondBinary />} />
               <Route path="/blog/self-hosting-the-forge" element={<BlogSelfHostingTheForge />} />
+              <Route path="/blog/the-runner-comes-home" element={<BlogTheRunnerComesHome />} />
               <Route path="/blog/machinery-listening-to-silence" element={<BlogMachineryListeningToSilence />} />
               <Route path="/blog/the-parallelism-tax" element={<BlogTheParallelismTax />} />
               <Route path="/blog/anatomy-of-a-sync-outage" element={<BlogAnatomyOfASyncOutage />} />

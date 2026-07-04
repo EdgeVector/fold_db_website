@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-runner-comes-home',
+    title: 'The Runner Comes Home',
+    date: '2026-07-03',
+    blurb: 'We moved our monorepo to a self-hosted forge and left one thing unsolved: the forge didn’t run CI. Proof was enforced by discipline, not machinery. We’ve since closed the gap — CI runs on the forge, and the compute behind it is idle cycles on hardware already in the room, not a rented queue. PR merge velocity is back to where it was before the whole detour, with a few hardening cards left open, none of them on the merge path.',
+  },
+  {
     slug: 'declared-not-registered',
     title: 'Declared, Not Registered',
     date: '2026-07-03',
