@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'read-me-dont-run-me',
+    title: 'Read Me, Don’t Run Me',
+    date: '2026-07-03',
+    blurb: 'A Markdown code fence is a promise to a human — “here’s roughly the command I mean” — and an instruction to a machine: run this, verbatim. We build LastDB with a fleet of agents that read their own skill and card files and shell out the commands inside them, which means those files are documentation and script at once. Then prose lands inside a ```bash fence — a heading, a bullet, a card header — and the shell tries to run English. Sometimes it errors; sometimes it quietly “succeeds”; worst case an agent wraps the whole block in eval. The fix isn’t a rule in a style guide — it’s a lint that walks every shell fence line by line and refuses prose on a command line, before anything runs. Injection, moved up a floor: into the documents we hand to machines.',
+  },
+  {
     slug: 'declared-not-registered',
     title: 'Declared, Not Registered',
     date: '2026-07-03',
