@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'degrade-dont-die',
+    title: 'Degrade, Don’t Die',
+    date: '2026-07-04',
+    blurb: 'When a database can’t answer one part of your question, it has two honest options — fail the whole request, or answer the parts it can and tell you which part it couldn’t — and one dishonest one. This week one type’s schema config drifted stale on a machine, and our Brain app kept answering every other type while printing the one command that fixes the drift, instead of erroring the whole read. But dropping the broken slice silently would have been worse than dying: a subtly incomplete answer that believes it’s complete is the most dangerous kind of wrong. Graceful degradation has two halves and the second isn’t optional — serve what you can, and make the gap loud. Why local-first databases meet this case constantly, and the old principle with a clause bolted on: fail soft, report hard.',
+  },
+  {
     slug: 'read-me-dont-run-me',
     title: 'Read Me, Don’t Run Me',
     date: '2026-07-03',
