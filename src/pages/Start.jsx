@@ -83,7 +83,7 @@ export default function Start() {
             <p>LastDB is a local, encrypted, single-user database. Install the daemon and start it:</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
+curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
             <p className="dim">No Homebrew? Download the signed macOS app instead (links in the Humans section above).</p></Card>
 
           <Card><p><Label color="yellow">2 &mdash; INSTALL BUN</Label></p>
@@ -137,7 +137,7 @@ fkanban move ship-login doing`}</pre></Card>
         <p className="section-subheading"><span className="bold">IF SOMETHING STOPS RESPONDING</span></p>
         <pre>{`fbrain doctor      # checks the brain + its node connection
 fkanban doctor     # checks the board + schemas
-curl -s http://127.0.0.1:9001/api/health   # is the node itself up?`}</pre>
+curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # is the node itself up?`}</pre>
         <p className="dim">Most &ldquo;it stopped responding&rdquo; moments are just a node that isn&rsquo;t running &mdash; start it and re-check.</p>
 
         <p className="dim">Just want the app details? See <Link to="/apps">Apps</Link>. Building your own app on LastDB? See the <Link to="/developer">Developer Guide</Link>.</p>
