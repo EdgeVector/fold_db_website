@@ -11,12 +11,6 @@ const POSTS = [
     blurb: 'The slowest thing in our own tooling wasn’t a missing feature — it was a small tower of fixes, each one correct, each added to survive a mistake nobody had noticed. To read one record by name, the client hauled the whole collection over the wire, a thousand-plus rows, and kept one. Around that scan had grown a retry loop (the scan flaked), a fast-miss heuristic (retrying every absent row was expensive), and a retry cap (a fresh collection stalled the loop). Every layer defended the scan; none defended anything the reader needed. And the store served a keyed read the whole time — one row off the index in hundredths of a second. Replacing the scan didn’t tune the tower, it deleted it: 20s → 0.1s, and less code than before. On measuring per-phase before you name a cause — we blamed load with the CPU 62% idle, then the auth handshake that failed in 0.03s — and on how complexity accretes to defend a wrong assumption.',
   },
   {
-    slug: 'degrade-dont-die',
-    title: 'Degrade, Don’t Die',
-    date: '2026-07-04',
-    blurb: 'When a database can’t answer one part of your question, it has two honest options — fail the whole request, or answer the parts it can and tell you which part it couldn’t — and one dishonest one. This week one type’s schema config drifted stale on a machine, and our Brain app kept answering every other type while printing the one command that fixes the drift, instead of erroring the whole read. But dropping the broken slice silently would have been worse than dying: a subtly incomplete answer that believes it’s complete is the most dangerous kind of wrong. Graceful degradation has two halves and the second isn’t optional — serve what you can, and make the gap loud. Why local-first databases meet this case constantly, and the old principle with a clause bolted on: fail soft, report hard.',
-  },
-  {
     slug: 'read-me-dont-run-me',
     title: 'Read Me, Don’t Run Me',
     date: '2026-07-03',
