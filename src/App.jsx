@@ -10,7 +10,6 @@ const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogTheFixWasSubtraction = lazy(() => import('./pages/BlogTheFixWasSubtraction'));
-const BlogDegradeDontDie = lazy(() => import('./pages/BlogDegradeDontDie'));
 const BlogReadMeDontRunMe = lazy(() => import('./pages/BlogReadMeDontRunMe'));
 const BlogDeclaredNotRegistered = lazy(() => import('./pages/BlogDeclaredNotRegistered'));
 const BlogTheSecondBinary = lazy(() => import('./pages/BlogTheSecondBinary'));
@@ -47,7 +46,6 @@ export default function App() {
               <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/the-fix-was-subtraction" element={<BlogTheFixWasSubtraction />} />
-              <Route path="/blog/degrade-dont-die" element={<BlogDegradeDontDie />} />
               <Route path="/blog/read-me-dont-run-me" element={<BlogReadMeDontRunMe />} />
               <Route path="/blog/declared-not-registered" element={<BlogDeclaredNotRegistered />} />
               <Route path="/blog/the-second-binary" element={<BlogTheSecondBinary />} />

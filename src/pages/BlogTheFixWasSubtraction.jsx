@@ -146,7 +146,7 @@ export default function BlogTheFixWasSubtraction() {
 
       <p>The most satisfying fixes don&rsquo;t add a clever thing. They remove a thing that was never needed, and quietly demolish the scaffolding that had grown up to survive it. A keyed read, and a subtraction.</p>
 
-      <p className="dim">More on distrusting a confident story until it&rsquo;s proven: <Link to="/blog/prove-it-to-land">Prove It To Land</Link>. And on serving what you can when one slice is out of sync: <Link to="/blog/degrade-dont-die">Degrade, Don&rsquo;t Die</Link>.</p>
+      <p className="dim">More on distrusting a confident story until it&rsquo;s proven: <Link to="/blog/prove-it-to-land">Prove It To Land</Link>.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>
