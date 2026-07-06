@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'no-known-consumers',
+    title: 'No Known Consumers',
+    date: '2026-07-05',
+    blurb: 'For months, every release of our database spent five to six hours building software for computers no one was running it on. Our installer ships from a Homebrew tap, and the release pipeline compiled a tarball for each target we claimed to support — Apple-Silicon Mac, Intel Mac, Linux — three legs in series on one cold machine. When we looked at who actually pulled each one, two of the three had no known consumers: not few, none. We were spending most of every release producing artifacts downloaded by nobody. So we cut the matrix to the one target our users run, dropping releases from ~6h to ~2h — and wrote the rule that made it safe: re-add a platform the day a real consumer appears, not before. The quieter cousin of the parallelism tax: a cost that scales with your good intentions instead of your actual reach, and the guardrail that makes the empty slot fail loudly instead of rotting in silence.',
+  },
+  {
     slug: 'the-fix-was-subtraction',
     title: 'The Fix Was Subtraction',
     date: '2026-07-05',

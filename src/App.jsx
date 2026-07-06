@@ -9,6 +9,7 @@ const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogNoKnownConsumers = lazy(() => import('./pages/BlogNoKnownConsumers'));
 const BlogTheFixWasSubtraction = lazy(() => import('./pages/BlogTheFixWasSubtraction'));
 const BlogReadMeDontRunMe = lazy(() => import('./pages/BlogReadMeDontRunMe'));
 const BlogDeclaredNotRegistered = lazy(() => import('./pages/BlogDeclaredNotRegistered'));
@@ -45,6 +46,7 @@ export default function App() {
               {/* Encryption page retired (2026-06-22) — too technical; redirect old URLs */}
               <Route path="/encryption" element={<Navigate to="/" replace />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/no-known-consumers" element={<BlogNoKnownConsumers />} />
               <Route path="/blog/the-fix-was-subtraction" element={<BlogTheFixWasSubtraction />} />
               <Route path="/blog/read-me-dont-run-me" element={<BlogReadMeDontRunMe />} />
               <Route path="/blog/declared-not-registered" element={<BlogDeclaredNotRegistered />} />
