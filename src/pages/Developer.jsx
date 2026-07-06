@@ -46,12 +46,12 @@ export default function Developer() {
 
           <Card><p><Label color="yellow">3. RUN</Label></p>
             <pre>{`brew services start lastdb
-curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
-            <p className="dim">Starts the LastDB daemon in the background &middot; API and dashboard at <span className="bold">localhost:9001</span></p>
-            <pre>lastdb_server --port 9001   # run it in the foreground instead</pre></Card>
+curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
+            <p className="dim">Starts the LastDB daemon in the background &middot; API over the owner Unix socket at <span className="bold">~/.folddb/data/folddb.sock</span></p>
+            <pre>lastdb_server   # run it in the foreground instead</pre></Card>
 
           <Card><p><Label color="yellow">4. INGEST SAMPLE DATA</Label></p>
-            <pre>{`curl -s -X POST http://localhost:9001/api/ingestion/process \\
+            <pre>{`curl -s --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/process \\
   -H "Content-Type: application/json" \\
   -d '{
     "data": {
@@ -64,7 +64,7 @@ curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
             <p className="dim">AI detects the schema, creates it if needed, writes the data, and indexes keywords</p></Card>
 
           <Card><p><Label color="yellow">5. QUERY IT BACK</Label></p>
-            <pre>{`curl -s -X POST http://localhost:9001/api/query \\
+            <pre>{`curl -s --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
   -d '{
     "schema_name": "person_profile",
@@ -73,7 +73,7 @@ curl -s http://127.0.0.1:9001/api/health   # confirm the node is up`}</pre>
             <p className="dim">Use the schema name from step 4&rsquo;s response</p></Card>
 
           <Card><p><Label color="yellow">6. SEARCH THE INDEX</Label></p>
-            <pre>curl -s &quot;http://localhost:9001/api/native-index/search?term=john&quot; | jq .</pre>
+            <pre>curl -s --unix-socket ~/.folddb/data/folddb.sock &quot;http://localhost/api/native-index/search?term=john&quot; | jq .</pre>
             <p className="dim">Returns all indexed entries matching the search term</p></Card>
         </div>
       </Section>
@@ -229,13 +229,13 @@ Files / JSON / APIs
       <Section variant="rose">
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
-        <p>Most integrations use the HTTP API at <span className="bold">localhost:9001</span>. All endpoints accept and return JSON.</p>
+        <p>Most integrations use HTTP over the owner Unix socket at <span className="bold">~/.folddb/data/folddb.sock</span>. All endpoints accept and return JSON.</p>
         <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">EdgeVector on GitHub</a>.</p>
 
         <div className="grid-2">
           <Card>
             <p><Label color="red">HTTP &mdash; INGEST JSON</Label></p>
-            <pre>{`curl -X POST http://localhost:9001/api/ingestion/process \\
+            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/process \\
   -H "Content-Type: application/json" \\
   -d '{
     "data": {
@@ -250,7 +250,7 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; QUERY DATA</Label></p>
-            <pre>{`curl -X POST http://localhost:9001/api/query \\
+            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
   -d '{
     "schema_name": "quarterly_report",
@@ -261,7 +261,7 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; NATURAL LANGUAGE</Label></p>
-            <pre>{`curl -X POST http://localhost:9001/api/llm-query/agent \\
+            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/llm-query/agent \\
   -H "Content-Type: application/json" \\
   -d '{
     "query": "What reports did Jane write?"
@@ -271,13 +271,13 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; SEARCH INDEX</Label></p>
-            <pre>curl &quot;http://localhost:9001/api/native-index/search?term=revenue&quot;</pre>
+            <pre>curl --unix-socket ~/.folddb/data/folddb.sock &quot;http://localhost/api/native-index/search?term=revenue&quot;</pre>
             <p className="dim">Fast keyword search across all indexed data</p>
           </Card>
 
           <Card>
             <p><Label color="red">HTTP &mdash; UPLOAD FILE</Label></p>
-            <pre>{`curl -X POST http://localhost:9001/api/ingestion/upload \\
+            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/upload \\
   -F "file=@report.pdf"`}</pre>
             <p className="dim">Upload any file &mdash; AI extracts content, converts to JSON, and ingests</p>
           </Card>
@@ -305,9 +305,9 @@ const status = await systemClient.getSystemStatus();`}</pre>
 
       {/* REST API REFERENCE */}
       <Section variant="lavender">
-        <h2 id="api"><span className="bold">REST API REFERENCE</span> <span className="dim">All endpoints at localhost:9001</span></h2>
+        <h2 id="api"><span className="bold">REST API REFERENCE</span> <span className="dim">All endpoints over ~/.folddb/data/folddb.sock</span></h2>
 
-        <p>Full OpenAPI spec available at <a href="http://localhost:9001/api/openapi.json" target="_blank" rel="noreferrer">localhost:9001/api/openapi.json</a> when the server is running.</p>
+        <p>Fetch the full OpenAPI spec with <span className="bold">curl --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/openapi.json</span> when the server is running.</p>
 
         <div className="grid-2">
           <Card>
