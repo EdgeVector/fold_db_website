@@ -33,7 +33,7 @@ export default function Apps() {
             <p>The apps talk to a local LastDB daemon. Install it from the Homebrew tap and start it:</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-curl -s http://127.0.0.1:9001/api/health`}</pre>
+curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health`}</pre>
             <p className="dim">See <Link to="/start">Get Started</Link> for the full setup, including an agent-ready runbook.</p></Card>
 
           <Card><p><Label color="green">2 &mdash; BUN</Label></p>
