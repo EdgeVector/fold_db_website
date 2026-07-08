@@ -30,10 +30,10 @@ export default function Apps() {
 
         <div className="grid-2">
           <Card><p><Label color="green">1 &mdash; LASTDB NODE</Label></p>
-            <p>The apps talk to a local LastDB daemon. Install it from the Homebrew tap and start it:</p>
+            <p>The apps talk to a local LastDB daemon. Homebrew installs the minimal semantic daemon plus a tiny socket/control CLI:</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health`}</pre>
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</pre>
             <p className="dim">See <Link to="/start">Get Started</Link> for the full setup, including an agent-ready runbook.</p></Card>
 
           <Card><p><Label color="green">2 &mdash; BUN</Label></p>
