@@ -22,7 +22,7 @@ export default function Start() {
 
       <h1 className="tagline">Get Started</h1>
 
-      <p className="bold white">LastDB is in <span className="white">alpha</span> &mdash; and you can run it today. Download the macOS app, add Brain and Kanban, and the whole stack runs on your own machine.</p>
+      <p className="bold white">LastDB is in <span className="white">alpha</span> &mdash; and you can run it today. Download the macOS app, add Brain, Kanban, Situations, Dogfood Graph, and LastSecrets, and the whole stack runs on your own machine.</p>
 
       <p>LastDB is one local, encrypted database with two apps on top &mdash; <span className="bold">Brain</span> (your memory, the <span className="bold">fbrain</span> CLI) and <span className="bold">Kanban</span> (your board, the <span className="bold">fkanban</span> CLI). Two ways in: follow the <span className="bold">daily loop</span> below to work with it yourself, or just <span className="bold">point your AI agent at this page</span> and let it set everything up and run the loop with you.</p>
 
@@ -74,7 +74,7 @@ export default function Start() {
       <Section variant="amber">
         <h2 id="agent"><span className="bold">FOR YOUR AGENT</span> <span className="dim">Point your agent at this page</span></h2>
 
-        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the apps, serve the MCP tools, install the agent skills, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
+        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the usable app stack, serve the MCP tools, install the agent skills, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
 
         <p className="section-subheading"><span className="bold">SET IT UP</span> <span className="dim">Install the node, the apps, and the tools</span></p>
 
@@ -90,17 +90,17 @@ curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   #
             <p>The apps are Bun / TypeScript clients &mdash; no Rust toolchain needed:</p>
             <pre>curl -fsSL https://bun.sh/install | bash</pre></Card>
 
-          <Card><p><Label color="yellow">3 &mdash; ADD BRAIN</Label> <span className="dim">your memory &middot; the <span className="bold">fbrain</span> CLI</span></p>
-            <pre>{`git clone https://github.com/EdgeVector/fbrain && cd fbrain
-bun install && bun link
-fbrain init --grant-consent   # resolves published schemas + grants this node access to fbrain's namespace
-cd ..`}</pre></Card>
+          <Card><p><Label color="yellow">3 &mdash; ADD THE APP STACK</Label> <span className="dim">Brain, Kanban, Situations, Dogfood Graph, LastSecrets</span></p>
+            <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps --no-brew`}</pre>
+            <p className="dim">The bundle downloads the usable app repos and links their CLIs. LastGit is intentionally excluded until it is stable enough for the public bundle. Full guide: <a href="https://github.com/EdgeVector/last-stack/blob/main/docs/lastdb-apps.md" target="_blank" rel="noreferrer">last-stack/docs/lastdb-apps.md</a>.</p></Card>
 
-          <Card><p><Label color="yellow">4 &mdash; ADD KANBAN</Label> <span className="dim">your board &middot; the <span className="bold">fkanban</span> CLI</span></p>
-            <pre>{`git clone https://github.com/EdgeVector/fkanban && cd fkanban
-bun install && bun link
-fkanban init                  # resolves schemas + seeds the default board
-cd ..`}</pre></Card>
+          <Card><p><Label color="yellow">4 &mdash; INITIALIZE THE APPS</Label></p>
+            <pre>{`fbrain init --grant-consent   # memory
+fkanban init                  # board
+fsituations init              # operational posture
+lastsecrets init              # secret refs`}</pre></Card>
 
           <Card><p><Label color="yellow">5 &mdash; SERVE THE MCP TOOLS</Label></p>
             <p>So the agent can read and write the memory and the board directly:</p>
