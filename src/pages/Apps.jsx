@@ -9,18 +9,18 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="Brain and Kanban are open-source apps built on LastDB. Each is a thin client over your own local LastDB node — install LastDB once, then add the apps. No account needed to use them." />
+        <meta name="description" content="Download the usable LastDB app stack: Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. Each is a thin client over your own local LastDB node." />
         <meta property="og:title" content="Apps - LastDB" />
-        <meta property="og:description" content="Install and use Brain (a personal brain) and Kanban (a kanban board) on top of LastDB." />
+        <meta property="og:description" content="Install and use the LastDB app stack: Brain, Kanban, Situations, Dogfood Graph, and LastSecrets." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">Apps on LastDB</h1>
 
-      <p><span className="bold white">Brain</span> and <span className="bold white">Kanban</span> are open-source apps (MIT) built on LastDB &mdash; the <span className="bold">fbrain</span> and <span className="bold">fkanban</span> command-line tools. Each is a thin client over <span className="bold">your own local LastDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install LastDB once, then add an app in a couple of minutes.</p>
+      <p><span className="bold white">Brain</span>, <span className="bold white">Kanban</span>, <span className="bold white">Situations</span>, <span className="bold white">Dogfood Graph</span>, and <span className="bold white">LastSecrets</span> are open-source apps built on LastDB. Each is a thin client over <span className="bold">your own local LastDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install LastDB once, then add the app stack in a couple of minutes.</p>
 
-      <p className="dim">Source: <a href="https://github.com/EdgeVector/fbrain" target="_blank" rel="noreferrer">github.com/EdgeVector/fbrain</a> &middot; <a href="https://github.com/EdgeVector/fkanban" target="_blank" rel="noreferrer">github.com/EdgeVector/fkanban</a></p>
+      <p className="dim">Source: <a href="https://github.com/EdgeVector/fbrain" target="_blank" rel="noreferrer">fbrain</a> &middot; <a href="https://github.com/EdgeVector/fkanban" target="_blank" rel="noreferrer">fkanban</a> &middot; <a href="https://github.com/EdgeVector/fsituations" target="_blank" rel="noreferrer">fsituations</a> &middot; <a href="https://github.com/EdgeVector/dogfood-graph" target="_blank" rel="noreferrer">dogfood-graph</a> &middot; <a href="https://github.com/EdgeVector/lastsecrets" target="_blank" rel="noreferrer">lastsecrets</a></p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -41,6 +41,19 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</
             <pre>curl -fsSL https://bun.sh/install | bash</pre>
             <p className="dim">Already have Bun? Check with <span className="bold">bun --version</span>.</p></Card>
         </div>
+      </Section>
+
+      {/* APP STACK */}
+      <Section variant="lavender">
+        <h2 id="bundle"><span className="bold">INSTALL THE STACK</span> <span className="dim">One command for the usable apps</span></h2>
+
+        <p>The easiest path is the Last Stack installer. It installs the LastDB daemon, clones the usable app repos, installs their dependencies, and links the CLI apps where they expose a command.</p>
+
+        <Card><p><Label color="purple">BUNDLE INSTALLER</Label></p>
+          <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps`}</pre>
+          <p className="dim">This bundle includes Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. LastGit is intentionally left out until it is stable enough for the public bundle. Full guide: <a href="https://github.com/EdgeVector/last-stack/blob/main/docs/lastdb-apps.md" target="_blank" rel="noreferrer">last-stack/docs/lastdb-apps.md</a>.</p></Card>
       </Section>
 
       {/* BRAIN */}
@@ -87,6 +100,63 @@ fkanban list
 fkanban show ship-login
 fkanban mcp                    # serve the MCP tools over stdio`}</pre>
             <p className="dim">Run <span className="bold">fkanban --help</span> for dependencies, boards, and more.</p></Card>
+        </div>
+      </Section>
+
+      {/* SITUATIONS */}
+      <Section variant="sage">
+        <h2 id="fsituations"><span className="bold">SITUATIONS</span> <span className="dim">Operational posture &middot; the <span className="bold">fsituations</span> CLI</span></h2>
+
+        <p>Situations records current shared reality that agents must respect before mutating shared systems: active incidents, blocked actions, scoped preflights, and required human clearance.</p>
+
+        <div className="card-stack">
+          <Card><p><Label color="green">INSTALL</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/fsituations && cd fsituations
+bun install
+ln -snf "$PWD/bin/fsituations" ~/.local/bin/fsituations
+fsituations init`}</pre></Card>
+
+          <Card><p><Label color="green">USE</Label></p>
+            <pre>{`fsituations list --json
+fsituations preflight --action enable-ci --repo EdgeVector/fold`}</pre>
+            <p className="dim">Use this before CI, deployment, automation, release-gate, PR-merge, or production/shared infrastructure changes.</p></Card>
+        </div>
+      </Section>
+
+      {/* DOGFOOD GRAPH */}
+      <Section variant="amber">
+        <h2 id="dogfood-graph"><span className="bold">DOGFOOD GRAPH</span> <span className="dim">Manual dogfood evidence</span></h2>
+
+        <p>Dogfood Graph models expected product UX as a graph and records what humans actually observe while walking a workflow. It keeps goal state, evidence, screenshots, and expected-vs-actual diffs together.</p>
+
+        <div className="card-stack">
+          <Card><p><Label color="yellow">INSTALL</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/dogfood-graph && cd dogfood-graph
+bun install`}</pre></Card>
+
+          <Card><p><Label color="yellow">RUN</Label></p>
+            <pre>npm run dev</pre>
+            <p className="dim">Dogfood Graph is a local web app, not a global CLI.</p></Card>
+        </div>
+      </Section>
+
+      {/* LASTSECRETS */}
+      <Section variant="slate">
+        <h2 id="lastsecrets"><span className="bold">LASTSECRETS</span> <span className="dim">Local secret refs &middot; the <span className="bold">lastsecrets</span> CLI</span></h2>
+
+        <p>LastSecrets stores raw secrets in LastDB while Brain, Kanban, docs, and scripts store stable <span className="bold">lastsecrets://</span> references instead of secret values.</p>
+
+        <div className="card-stack">
+          <Card><p><Label color="blue">INSTALL</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
+bun install && bun link
+lastsecrets init`}</pre></Card>
+
+          <Card><p><Label color="blue">USE</Label></p>
+            <pre>{`printf '%s' "$TOKEN" | lastsecrets put schema-r2-dev --value-stdin
+lastsecrets ref schema-r2-dev
+lastsecrets get schema-r2-dev`}</pre>
+            <p className="dim">Only retrieve a raw value at the point of use. Do not paste secret values into Brain, Kanban, docs, logs, or PR descriptions.</p></Card>
         </div>
       </Section>
 
