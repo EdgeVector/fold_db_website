@@ -63,7 +63,7 @@ export default function Start() {
             <p>Status lives on the board; the reasoning lives in the brain. When something lands, note <span className="bold">why</span> in Brain and move the card &mdash; so a week later you can reconstruct both what happened and why.</p></Card>
         </div>
 
-        <p className="dim">Prefer to click instead of the terminal? The desktop app ships separately from the minimal Brew artifact. Use the <a href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/canary">app release channel</a>, then add the apps from the <Link to="/apps">Apps</Link> page.</p>
+        <p className="dim">Prefer to click instead of the terminal? LastDB Desktop ships separately from LastDB Mini. Use the <a href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/canary">app release channel</a>, then add the apps from the <Link to="/apps">Apps</Link> page.</p>
       </Section>
 
       {/* FOR YOUR AGENT */}
@@ -76,7 +76,7 @@ export default function Start() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1 &mdash; INSTALL THE NODE</Label></p>
-            <p>LastDB is a local, encrypted, single-user database. Install the minimal semantic daemon and start it:</p>
+            <p>LastDB is a local, encrypted, single-user database. Install LastDB Mini and start it:</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>

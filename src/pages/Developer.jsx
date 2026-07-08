@@ -38,7 +38,7 @@ export default function Developer() {
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
             <pre>brew install edgevector/lastdb/lastdb</pre>
-            <p className="dim">Installs the minimal Homebrew product for Apple Silicon: <span className="bold">lastdbd</span>, the local semantic daemon, plus the tiny socket/control <span className="bold">lastdb</span> CLI. The old <span className="bold">folddb</span> command name still works as an alias.</p></Card>
+            <p className="dim">Installs LastDB Mini for Apple Silicon: <span className="bold">lastdbd</span>, the local semantic daemon, plus the tiny socket/control <span className="bold">lastdb</span> CLI. The old <span className="bold">folddb</span> command name still works as an alias.</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
             <pre>{`lastdb connect     # optional: join an existing account with a recovery phrase
@@ -65,7 +65,7 @@ fbrain ask "what did I note about search?"`}</pre>
 
           <Card><p><Label color="yellow">6. NEED THE FULL UI?</Label></p>
             <pre>Download the signed macOS desktop app from the home page.</pre>
-            <p className="dim">The desktop app is the home for web UI, file ingestion, and full-node workflows. Homebrew stays small for agents and headless apps.</p></Card>
+            <p className="dim">LastDB Desktop is the home for web UI, file ingestion, and full-node workflows. LastDB Mini stays small for agents and headless apps.</p></Card>
         </div>
       </Section>
 
@@ -221,7 +221,7 @@ Files / JSON / APIs
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
         <p>Most integrations use HTTP over the owner Unix socket. Homebrew&rsquo;s service uses <span className="bold">~/.lastdb/data/folddb.sock</span>; older full-node installs may use <span className="bold">~/.folddb/data/folddb.sock</span>.</p>
-        <p className="dim">The examples below describe the full desktop/dev-node API surface. The Homebrew artifact is the minimal daemon product and does not include the web UI, ingestion CLI, or file-upload workflow.</p>
+        <p className="dim">The examples below describe the full desktop/dev-node API surface. LastDB Mini does not include the web UI, ingestion CLI, or file-upload workflow.</p>
         <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">EdgeVector on GitHub</a>.</p>
 
         <div className="grid-2">

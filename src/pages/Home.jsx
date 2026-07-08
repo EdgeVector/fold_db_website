@@ -39,7 +39,7 @@ export default function Home() {
       </p>
 
       <p>
-        <span className="dim">Headless install &mdash;{' '}</span>
+        <span className="dim">LastDB Mini &mdash;{' '}</span>
         <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb">[Homebrew]</a>{' '}
         <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/v0.21.6">[v0.21.6 assets]</a>
       </p>
