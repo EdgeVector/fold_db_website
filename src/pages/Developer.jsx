@@ -38,43 +38,34 @@ export default function Developer() {
         <div className="card-stack">
           <Card><p><Label color="yellow">1. INSTALL</Label></p>
             <pre>brew install edgevector/lastdb/lastdb</pre>
-            <p className="dim">Installs the lastdb and lastdb_server binaries (macOS &amp; Linux). The old <span className="bold">folddb</span>/<span className="bold">folddb_server</span> command names keep working as aliases.</p></Card>
+            <p className="dim">Installs the minimal Homebrew product for Apple Silicon: <span className="bold">lastdbd</span>, the local semantic daemon, plus the tiny socket/control <span className="bold">lastdb</span> CLI. The old <span className="bold">folddb</span> command name still works as an alias.</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
-            <pre>export FOLD_OPENROUTER_API_KEY=&quot;sk-...&quot;</pre>
-            <p className="dim">Required for AI-powered ingestion and natural language queries</p></Card>
+            <pre>{`lastdb connect     # optional: join an existing account with a recovery phrase
+lastdb status      # inspect the local daemon`}</pre>
+            <p className="dim">The Brew daemon keeps embeddings local for semantic search. It does not ship the full web UI or ingestion CLI; install the desktop app for those workflows.</p></Card>
 
           <Card><p><Label color="yellow">3. RUN</Label></p>
             <pre>{`brew services start lastdb
-curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
-            <p className="dim">Starts the LastDB daemon in the background &middot; API over the owner Unix socket at <span className="bold">~/.folddb/data/folddb.sock</span></p>
-            <pre>lastdb_server   # run it in the foreground instead</pre></Card>
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
+            <p className="dim">Starts <span className="bold">lastdbd</span> in the background &middot; API over the owner Unix socket at <span className="bold">~/.lastdb/data/folddb.sock</span></p>
+            <pre>lastdbd --data-dir ~/.lastdb   # run it in the foreground instead</pre></Card>
 
-          <Card><p><Label color="yellow">4. INGEST SAMPLE DATA</Label></p>
-            <pre>{`curl -s --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/process \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "data": {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "engineer",
-      "joined": "2024-03-15"
-    }
-  }' | jq .`}</pre>
-            <p className="dim">AI detects the schema, creates it if needed, writes the data, and indexes keywords</p></Card>
+          <Card><p><Label color="yellow">4. ADD A SOCKET APP</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/fbrain && cd fbrain
+bun install && bun link
+fbrain init --grant-consent`}</pre>
+            <p className="dim">First-party apps such as Brain and Kanban talk directly to the daemon socket; no hosted account is required.</p></Card>
 
-          <Card><p><Label color="yellow">5. QUERY IT BACK</Label></p>
-            <pre>{`curl -s --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/query \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "schema_name": "person_profile",
-    "fields": ["name", "email", "role"]
-  }' | jq .`}</pre>
-            <p className="dim">Use the schema name from step 4&rsquo;s response</p></Card>
+          <Card><p><Label color="yellow">5. USE THE LOCAL INDEX</Label></p>
+            <pre>{`fbrain put concept local-search --title "Local search" --body "Embeddings stay on this machine."
+fbrain search "local embeddings"
+fbrain ask "what did I note about search?"`}</pre>
+            <p className="dim">Semantic search uses the local FastEmbed path in the daemon; search terms are embedded locally too.</p></Card>
 
-          <Card><p><Label color="yellow">6. SEARCH THE INDEX</Label></p>
-            <pre>curl -s --unix-socket ~/.folddb/data/folddb.sock &quot;http://localhost/api/native-index/search?term=john&quot; | jq .</pre>
-            <p className="dim">Returns all indexed entries matching the search term</p></Card>
+          <Card><p><Label color="yellow">6. NEED THE FULL UI?</Label></p>
+            <pre>Download the signed macOS desktop app from the home page.</pre>
+            <p className="dim">The desktop app is the home for web UI, file ingestion, and full-node workflows. Homebrew stays small for agents and headless apps.</p></Card>
         </div>
       </Section>
 
@@ -229,13 +220,14 @@ Files / JSON / APIs
       <Section variant="rose">
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
-        <p>Most integrations use HTTP over the owner Unix socket at <span className="bold">~/.folddb/data/folddb.sock</span>. All endpoints accept and return JSON.</p>
+        <p>Most integrations use HTTP over the owner Unix socket. Homebrew&rsquo;s service uses <span className="bold">~/.lastdb/data/folddb.sock</span>; older full-node installs may use <span className="bold">~/.folddb/data/folddb.sock</span>.</p>
+        <p className="dim">The examples below describe the full desktop/dev-node API surface. The Homebrew artifact is the minimal daemon product and does not include the web UI, ingestion CLI, or file-upload workflow.</p>
         <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">EdgeVector on GitHub</a>.</p>
 
         <div className="grid-2">
           <Card>
             <p><Label color="red">HTTP &mdash; INGEST JSON</Label></p>
-            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/process \\
+            <pre>{`curl --unix-socket ~/.lastdb/data/folddb.sock -X POST http://localhost/api/ingestion/process \\
   -H "Content-Type: application/json" \\
   -d '{
     "data": {
@@ -250,7 +242,7 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; QUERY DATA</Label></p>
-            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/query \\
+            <pre>{`curl --unix-socket ~/.lastdb/data/folddb.sock -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
   -d '{
     "schema_name": "quarterly_report",
@@ -261,7 +253,7 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; NATURAL LANGUAGE</Label></p>
-            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/llm-query/agent \\
+            <pre>{`curl --unix-socket ~/.lastdb/data/folddb.sock -X POST http://localhost/api/llm-query/agent \\
   -H "Content-Type: application/json" \\
   -d '{
     "query": "What reports did Jane write?"
@@ -271,13 +263,13 @@ Files / JSON / APIs
 
           <Card>
             <p><Label color="red">HTTP &mdash; SEARCH INDEX</Label></p>
-            <pre>curl --unix-socket ~/.folddb/data/folddb.sock &quot;http://localhost/api/native-index/search?term=revenue&quot;</pre>
+            <pre>curl --unix-socket ~/.lastdb/data/folddb.sock &quot;http://localhost/api/native-index/search?term=revenue&quot;</pre>
             <p className="dim">Fast keyword search across all indexed data</p>
           </Card>
 
           <Card>
             <p><Label color="red">HTTP &mdash; UPLOAD FILE</Label></p>
-            <pre>{`curl --unix-socket ~/.folddb/data/folddb.sock -X POST http://localhost/api/ingestion/upload \\
+            <pre>{`curl --unix-socket ~/.lastdb/data/folddb.sock -X POST http://localhost/api/ingestion/upload \\
   -F "file=@report.pdf"`}</pre>
             <p className="dim">Upload any file &mdash; AI extracts content, converts to JSON, and ingests</p>
           </Card>
@@ -305,9 +297,9 @@ const status = await systemClient.getSystemStatus();`}</pre>
 
       {/* REST API REFERENCE */}
       <Section variant="lavender">
-        <h2 id="api"><span className="bold">REST API REFERENCE</span> <span className="dim">All endpoints over ~/.folddb/data/folddb.sock</span></h2>
+        <h2 id="api"><span className="bold">REST API REFERENCE</span> <span className="dim">Full-node endpoints over the owner socket</span></h2>
 
-        <p>Fetch the full OpenAPI spec with <span className="bold">curl --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/openapi.json</span> when the server is running.</p>
+        <p>Fetch the full OpenAPI spec with <span className="bold">curl --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/openapi.json</span> when the server is running.</p>
 
         <div className="grid-2">
           <Card>

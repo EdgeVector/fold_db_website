@@ -4,7 +4,6 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
-import { captureDownloadClicked } from '../analytics';
 
 export default function Start() {
   return (
@@ -64,10 +63,7 @@ export default function Start() {
             <p>Status lives on the board; the reasoning lives in the brain. When something lands, note <span className="bold">why</span> in Brain and move the card &mdash; so a week later you can reconstruct both what happened and why.</p></Card>
         </div>
 
-        <p className="dim">Prefer to click instead of the terminal? Download the macOS app &mdash;{' '}
-          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-aarch64.dmg" onClick={() => captureDownloadClicked({ arch: 'aarch64', page: 'start' })}>[Apple Silicon]</a>{' '}
-          <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/latest/download/LastDB-x86_64.dmg" onClick={() => captureDownloadClicked({ arch: 'x86_64', page: 'start' })}>[Intel]</a>{' '}
-          &mdash; then add the apps from the <Link to="/apps">Apps</Link> page.</p>
+        <p className="dim">Prefer to click instead of the terminal? The desktop app ships separately from the minimal Brew artifact. Use the <a href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/canary">app release channel</a>, then add the apps from the <Link to="/apps">Apps</Link> page.</p>
       </Section>
 
       {/* FOR YOUR AGENT */}
@@ -80,10 +76,10 @@ export default function Start() {
 
         <div className="card-stack">
           <Card><p><Label color="yellow">1 &mdash; INSTALL THE NODE</Label></p>
-            <p>LastDB is a local, encrypted, single-user database. Install the daemon and start it:</p>
+            <p>LastDB is a local, encrypted, single-user database. Install the minimal semantic daemon and start it:</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
             <p className="dim">No Homebrew? Download the signed macOS app instead (links in the Humans section above).</p></Card>
 
           <Card><p><Label color="yellow">2 &mdash; INSTALL BUN</Label></p>
@@ -137,7 +133,7 @@ fkanban move ship-login doing`}</pre></Card>
         <p className="section-subheading"><span className="bold">IF SOMETHING STOPS RESPONDING</span></p>
         <pre>{`fbrain doctor      # checks the brain + its node connection
 fkanban doctor     # checks the board + schemas
-curl -s --unix-socket ~/.folddb/data/folddb.sock http://localhost/api/health   # is the node itself up?`}</pre>
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # is the node itself up?`}</pre>
         <p className="dim">Most &ldquo;it stopped responding&rdquo; moments are just a node that isn&rsquo;t running &mdash; start it and re-check.</p>
 
         <p className="dim">Just want the app details? See <Link to="/apps">Apps</Link>. Building your own app on LastDB? See the <Link to="/developer">Developer Guide</Link>.</p>
