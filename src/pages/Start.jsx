@@ -21,9 +21,23 @@ export default function Start() {
 
       <h1 className="tagline">Get Started</h1>
 
-      <p className="bold white">LastDB is in <span className="white">alpha</span> &mdash; and you can run it today. Download the macOS app, add Brain, Kanban, Situations, Dogfood Graph, and LastSecrets, and the whole stack runs on your own machine.</p>
+      <p className="bold white">LastDB is in <span className="white">alpha</span> &mdash; and you can run it today. The main path is LastDB Mini: the local daemon your agent can install, start, and wire into Brain, Kanban, Situations, Dogfood Graph, and LastSecrets.</p>
 
-      <p>LastDB is one local, encrypted database with two apps on top &mdash; <span className="bold">Brain</span> (your memory, the <span className="bold">fbrain</span> CLI) and <span className="bold">Kanban</span> (your board, the <span className="bold">fkanban</span> CLI). Two ways in: follow the <span className="bold">daily loop</span> below to work with it yourself, or just <span className="bold">point your AI agent at this page</span> and let it set everything up and run the loop with you.</p>
+      <p>LastDB is one local, encrypted database with apps on top &mdash; <span className="bold">Brain</span> (your memory, the <span className="bold">fbrain</span> CLI), <span className="bold">Kanban</span> (your board, the <span className="bold">fkanban</span> CLI), and the rest of the Last Stack. Two ways in: let your agent install Mini and the whole stack, or download the current release assets yourself.</p>
+
+      <div className="cta-grid">
+        <Card className="cta-card cta-card-primary">
+          <p><Label color="orange">PRIMARY</Label> <span className="dim">agent installs Mini + apps + stack</span></p>
+          <p><span className="bold white">Point your agent at this page.</span> It should install LastDB Mini, clone Last Stack, install the usable apps, initialize them, and serve the MCP tools.</p>
+          <p><a className="link-btn" href="#agent">[Use the agent runbook &rarr;]</a></p>
+        </Card>
+
+        <Card className="cta-card">
+          <p><Label color="blue">MANUAL</Label> <span className="dim">download release assets</span></p>
+          <p>Prefer to inspect the release yourself? Get the current LastDB Mini assets, then add the app stack when you are ready.</p>
+          <p><a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/v0.22.4" target="_blank" rel="noreferrer">[Release assets &rarr;]</a></p>
+        </Card>
+      </div>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
@@ -31,7 +45,7 @@ export default function Start() {
       <Section variant="sage">
         <h2 id="humans"><span className="bold">FOR HUMANS</span> <span className="dim">How you&rsquo;ll actually work with it</span></h2>
 
-        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database that enforces access automatically on every read and write. The two apps are just two views into that one place:</p>
+        <p>Everything sits on <span className="bold">one local LastDB node</span> &mdash; an encrypted database that enforces access automatically on every read and write. The apps are separate views into that one place:</p>
 
         <div className="grid-2">
           <Card><p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
@@ -63,14 +77,30 @@ export default function Start() {
             <p>Status lives on the board; the reasoning lives in the brain. When something lands, note <span className="bold">why</span> in Brain and move the card &mdash; so a week later you can reconstruct both what happened and why.</p></Card>
         </div>
 
-        <p className="dim">Prefer to click instead of the terminal? LastDB Desktop ships separately from LastDB Mini. Use the <a href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/canary">app release channel</a>, then add the apps from the <Link to="/apps">Apps</Link> page.</p>
+        <p className="dim">Prefer to inspect the release instead of using Homebrew? LastDB Desktop ships separately from LastDB Mini; the current public Mini assets are on the <a href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/v0.22.4" target="_blank" rel="noreferrer">v0.22.4 release</a>. Then add the apps from the <Link to="/apps">Apps</Link> page.</p>
       </Section>
 
       {/* FOR YOUR AGENT */}
       <Section variant="amber">
         <h2 id="agent"><span className="bold">FOR YOUR AGENT</span> <span className="dim">Point your agent at this page</span></h2>
 
-        <p>Working with an AI agent &mdash; Claude or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB and the usable app stack, serve the MCP tools, install the agent skills, and how you want to work. No copy-paste, no separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
+        <p>Working with an AI agent &mdash; Claude, Codex, or any MCP client? <span className="bold">Just point it at this page.</span> Everything it needs is written out below: how to install LastDB Mini, install the usable app stack, serve the MCP tools, install the agent skills, and how you want to work. No separate prompt &mdash; the agent reads the runbook right here and gets to work. Every byte stays in your own encrypted node, with no hosted service in the loop.</p>
+
+        <p className="section-subheading"><span className="bold">HAND THIS TO THE AGENT</span> <span className="dim">the intended setup path</span></p>
+
+        <Card>
+          <p><Label color="yellow">GOAL</Label> <span className="dim">install Mini, the apps, and the agent stack</span></p>
+          <p>Install LastDB Mini with Homebrew, start the daemon, install Bun if missing, clone Last Stack, run its setup, install the app bundle, initialize Brain, Kanban, Situations, and LastSecrets, then expose the Brain and Kanban MCP servers to the agent client.</p>
+          <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps
+brew services start lastdb
+fbrain init --grant-consent
+fkanban init
+fsituations init
+lastsecrets init`}</pre>
+          <p className="dim">The installer requires <span className="bold">git</span>, <span className="bold">brew</span>, and <span className="bold">bun</span>. If Bun is missing, the agent should install it first with <span className="bold">curl -fsSL https://bun.sh/install | bash</span> and make sure <span className="bold">~/.bun/bin</span> is on PATH.</p>
+        </Card>
 
         <p className="section-subheading"><span className="bold">SET IT UP</span> <span className="dim">Install the node, the apps, and the tools</span></p>
 
@@ -80,7 +110,7 @@ export default function Start() {
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
-            <p className="dim">No Homebrew? Download the signed macOS app instead (links in the Humans section above).</p></Card>
+            <p className="dim">No Homebrew? Download the current release assets instead, using the link near the top of this page.</p></Card>
 
           <Card><p><Label color="yellow">2 &mdash; INSTALL BUN</Label></p>
             <p>The apps are Bun / TypeScript clients &mdash; no Rust toolchain needed:</p>
@@ -131,10 +161,10 @@ fkanban move ship-login doing`}</pre></Card>
         </div>
 
         <p className="section-subheading"><span className="bold">IF SOMETHING STOPS RESPONDING</span></p>
-        <pre>{`fbrain doctor      # checks the brain + its node connection
-fkanban doctor     # checks the board + schemas
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # is the node itself up?`}</pre>
-        <p className="dim">Most &ldquo;it stopped responding&rdquo; moments are just a node that isn&rsquo;t running &mdash; start it and re-check.</p>
+        <pre>{`fkanban list
+fbrain ask "health check"
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</pre>
+        <p className="dim">A socket-backed read succeeding means the node is up. Avoid routine <span className="bold">doctor</span> checks here: some control-plane health commands still exercise stale TCP-only routes and can print a misleading <span className="bold">127.0.0.1:9001</span> error even when the socket path is healthy.</p>
 
         <p className="dim">Just want the app details? See <Link to="/apps">Apps</Link>. Building your own app on LastDB? See the <Link to="/developer">Developer Guide</Link>.</p>
       </Section>

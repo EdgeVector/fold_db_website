@@ -55,7 +55,7 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   #
             <pre>{`git clone https://github.com/EdgeVector/fbrain && cd fbrain
 bun install && bun link
 fbrain init --grant-consent`}</pre>
-            <p className="dim">First-party apps such as Brain and Kanban talk directly to the daemon socket; no hosted account is required.</p></Card>
+            <p className="dim">First-party apps such as Brain, Kanban, Situations, Dogfood Graph, and LastSecrets talk directly to the daemon socket; no hosted account is required.</p></Card>
 
           <Card><p><Label color="yellow">5. USE THE LOCAL INDEX</Label></p>
             <pre>{`fbrain put concept local-search --title "Local search" --body "Embeddings stay on this machine."
@@ -64,8 +64,8 @@ fbrain ask "what did I note about search?"`}</pre>
             <p className="dim">Semantic search uses the local FastEmbed path in the daemon; search terms are embedded locally too.</p></Card>
 
           <Card><p><Label color="yellow">6. NEED THE FULL UI?</Label></p>
-            <pre>Download the signed macOS desktop app from the home page.</pre>
-            <p className="dim">LastDB Desktop is the home for web UI, file ingestion, and full-node workflows. LastDB Mini stays small for agents and headless apps.</p></Card>
+            <pre>LastDB Desktop ships separately from LastDB Mini.</pre>
+            <p className="dim">LastDB Desktop is the home for web UI, file ingestion, and full-node workflows. LastDB Mini stays small for agents and headless apps; use the Get Started page for the current public Mini path.</p></Card>
         </div>
       </Section>
 
@@ -200,7 +200,7 @@ Files / JSON / APIs
             Send data in any format. AI analyzes the structure and maps it to a schema automatically.</p></Card>
 
           <Card><p><Label color="blue">SCHEMA</Label></p><p>
-            The global schema service checks for existing compatible schemas or creates new ones.</p></Card>
+            Apps declare their shapes, and the node resolves compatible schemas without adding a hosted account to the user path.</p></Card>
 
           <Card><p><Label color="blue">STORE</Label></p><p>
             Data is written to the append-only store with AES-256-GCM encryption at rest. Every write is signed and immutable.</p></Card>
@@ -441,7 +441,6 @@ lastdb --schema-service-url http://... <command>`}</pre>
 VARIABLE                         PURPOSE
 ${'─'.repeat(65)}
 FOLD_OPENROUTER_API_KEY          API key for AI ingestion
-FOLD_SCHEMA_SERVICE_URL          Schema service (default: schema.folddb.com)
 FOLD_CONFIG                      Path to config file
 FOLD_LOG_LEVEL                   trace | debug | info | warn | error
 FOLD_STORAGE_MODE                Storage backend ("s3" for cloud)

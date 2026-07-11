@@ -9,16 +9,31 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="Download the usable LastDB app stack: Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. Each is a thin client over your own local LastDB node." />
+        <meta name="description" content="Install the usable LastDB Mini app stack: Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. Each is a thin client over your own local LastDB node." />
         <meta property="og:title" content="Apps - LastDB" />
-        <meta property="og:description" content="Install and use the LastDB app stack: Brain, Kanban, Situations, Dogfood Graph, and LastSecrets." />
+        <meta property="og:description" content="Use LastDB Mini as the local node for Brain, Kanban, Situations, Dogfood Graph, and LastSecrets." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">Apps on LastDB</h1>
 
-      <p><span className="bold white">Brain</span>, <span className="bold white">Kanban</span>, <span className="bold white">Situations</span>, <span className="bold white">Dogfood Graph</span>, and <span className="bold white">LastSecrets</span> are open-source apps built on LastDB. Each is a thin client over <span className="bold">your own local LastDB node</span> &mdash; your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them. Install LastDB once, then add the app stack in a couple of minutes.</p>
+      <p><span className="bold white">Brain</span>, <span className="bold white">Kanban</span>, <span className="bold white">Situations</span>, <span className="bold white">Dogfood Graph</span>, and <span className="bold white">LastSecrets</span> are open-source apps built on LastDB. They are meant to run on <span className="bold white">LastDB Mini</span>: the local semantic daemon plus a tiny socket/control CLI. Your data never leaves your machine, and there is <span className="bold">no account to sign up for</span> to use them.</p>
+
+      <div className="cta-grid">
+        <Card className="cta-card cta-card-primary">
+          <p><Label color="orange">RECOMMENDED</Label> <span className="dim">let your agent install everything</span></p>
+          <p>The easiest path is to send your agent to Get Started. It installs LastDB Mini, the app stack, and the Last Stack skills, then wires Brain and Kanban into MCP.</p>
+          <p><Link to="/start#agent" className="link-btn">[Agent setup &rarr;]</Link></p>
+        </Card>
+
+        <Card className="cta-card">
+          <p><Label color="green">MINI</Label> <span className="dim">daemon for local apps</span></p>
+          <p>Mini is the node these apps talk to. Install it once, start the service, then add the bundle below.</p>
+          <pre>{`brew install edgevector/lastdb/lastdb
+brew services start lastdb`}</pre>
+        </Card>
+      </div>
 
       <p className="dim">Source: <a href="https://github.com/EdgeVector/fbrain" target="_blank" rel="noreferrer">fbrain</a> &middot; <a href="https://github.com/EdgeVector/fkanban" target="_blank" rel="noreferrer">fkanban</a> &middot; <a href="https://github.com/EdgeVector/fsituations" target="_blank" rel="noreferrer">fsituations</a> &middot; <a href="https://github.com/EdgeVector/dogfood-graph" target="_blank" rel="noreferrer">dogfood-graph</a> &middot; <a href="https://github.com/EdgeVector/lastsecrets" target="_blank" rel="noreferrer">lastsecrets</a></p>
 
@@ -26,15 +41,15 @@ export default function Apps() {
 
       {/* PREREQUISITES */}
       <Section variant="sage">
-        <h2 id="prerequisites"><span className="bold">PREREQUISITES</span> <span className="dim">A node and a runtime</span></h2>
+        <h2 id="prerequisites"><span className="bold">MINI FIRST</span> <span className="dim">A node and a runtime</span></h2>
 
         <div className="grid-2">
           <Card><p><Label color="green">1 &mdash; LASTDB NODE</Label></p>
-            <p>The apps talk to a local LastDB daemon. Homebrew installs LastDB Mini: the semantic daemon plus a tiny socket/control CLI.</p>
+            <p>The apps talk to a local LastDB daemon. Homebrew installs LastDB Mini: the semantic daemon plus a tiny socket/control CLI. This is the intended base for the app stack.</p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</pre>
-            <p className="dim">See <Link to="/start">Get Started</Link> for the full setup, including an agent-ready runbook.</p></Card>
+            <p className="dim">See <Link to="/start#agent">Get Started</Link> for the full agent-ready runbook.</p></Card>
 
           <Card><p><Label color="green">2 &mdash; BUN</Label></p>
             <p>The clients are <span className="bold">Bun / TypeScript</span> &mdash; no Rust toolchain needed. Install Bun (&ge; 1.3.10):</p>
@@ -45,15 +60,15 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</
 
       {/* APP STACK */}
       <Section variant="lavender">
-        <h2 id="bundle"><span className="bold">INSTALL THE STACK</span> <span className="dim">One command for the usable apps</span></h2>
+        <h2 id="bundle"><span className="bold">INSTALL THE STACK</span> <span className="dim">Mini plus the usable apps</span></h2>
 
-        <p>The easiest path is the Last Stack installer. It installs the LastDB daemon, clones the usable app repos, installs their dependencies, and links the CLI apps where they expose a command.</p>
+        <p>The easiest path is the Last Stack installer. It installs LastDB Mini with Homebrew, clones the usable app repos, installs their dependencies, and links the CLI apps where they expose a command. This is the same path the agent runbook uses.</p>
 
         <Card><p><Label color="purple">BUNDLE INSTALLER</Label></p>
           <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps`}</pre>
-          <p className="dim">This bundle includes Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. LastGit is intentionally left out until it is stable enough for the public bundle. Full guide: <a href="https://github.com/EdgeVector/last-stack/blob/main/docs/lastdb-apps.md" target="_blank" rel="noreferrer">last-stack/docs/lastdb-apps.md</a>.</p></Card>
+          <p className="dim">This bundle includes LastDB Mini, Brain, Kanban, Situations, Dogfood Graph, and LastSecrets. LastGit is intentionally left out until it is stable enough for the public bundle. Full guide: <a href="https://github.com/EdgeVector/last-stack/blob/main/docs/lastdb-apps.md" target="_blank" rel="noreferrer">last-stack/docs/lastdb-apps.md</a>.</p></Card>
       </Section>
 
       {/* BRAIN */}
@@ -76,7 +91,7 @@ fbrain search "how did we do auth"
 fbrain ask "what did I note about caching?"
 fbrain list
 fbrain mcp                     # serve the MCP tools over stdio`}</pre>
-            <p className="dim">Run <span className="bold">fbrain --help</span> for the full command set, or <span className="bold">fbrain doctor</span> to health-check your setup.</p></Card>
+            <p className="dim">Run <span className="bold">fbrain --help</span> for the full command set. For a socket-safe health check, use a targeted read such as <span className="bold">fbrain ask "health check"</span>.</p></Card>
         </div>
       </Section>
 
