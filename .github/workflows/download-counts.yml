@@ -38,7 +38,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: .nvmrc
 
       # Restore the most recent snapshot from the Actions cache. The exact key
       # never matches (it includes run_id), so restore-keys always falls back
