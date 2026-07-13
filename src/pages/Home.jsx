@@ -39,9 +39,10 @@ export default function Home() {
       </p>
 
       <p>
-        <span className="dim">LastDB Mini &mdash;{' '}</span>
+        <span className="dim">LastDB Mini (canonical) &mdash;{' '}</span>
         <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb">[Homebrew]</a>{' '}
-        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/v0.21.6">[v0.21.6 assets]</a>
+        <a className="link-btn" href="https://github.com/EdgeVector/homebrew-lastdb/releases/tag/v0.22.7">[v0.22.7]</a>{' '}
+        <Link to="/apps" className="link-btn">[Apps]</Link>
       </p>
 
       <Section variant="rose" id="problem">
