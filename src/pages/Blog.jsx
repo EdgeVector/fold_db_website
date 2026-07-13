@@ -5,6 +5,12 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-stop-work-order',
+    title: 'The Stop-Work Order',
+    date: '2026-07-13',
+    blurb: 'In three days we deleted 61% of our Rust — 275,958 lines — while the agent fleet kept merging unrelated work around the demolition. The hard part wasn’t the deletion; it was shared reality: how do forty lines of in-flight work all stop touching the doomed subsystem at the same instant, without a meeting? The answer was a single machine-readable stop-work order — a P0 Situation with named blocked actions that every agent preflights before mutating anything — plus Kanban cards to make the demolition small and revertable, Brain to make the decisions durable, and a responder routine that verified progress every few hours and caught the one card that slipped the fence. The numbers: −515,831 lines deleted across 1,548 files, CI merge gate 2.5 → 1.2 minutes, full suite 11 → 6.3 minutes, and a release channel that went from a four-hour DMG pipeline with zero green tags in its final week to a seven-minute tarball.',
+  },
+  {
     slug: 'the-fix-was-subtraction',
     title: 'The Fix Was Subtraction',
     date: '2026-07-05',
