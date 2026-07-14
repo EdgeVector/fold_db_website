@@ -17,21 +17,21 @@ const READINESS_GROUPS = [
         name: 'Brain',
         cmd: 'brain',
         pct: 75,
-        note: 'Longest-lived dogfood. Public CLI + MCP. Still alpha edges.',
+        note: 'Long-term memory. Public CLI + MCP. Still alpha edges.',
       },
       {
         rank: 2,
         name: 'LastDB',
         cmd: 'brew · lastdbd',
         pct: 70,
-        note: 'The database itself. Homebrew primary. Whole product is still alpha.',
+        note: 'The database itself. Everything below talks to this process.',
       },
       {
         rank: 3,
         name: 'Kanban',
         cmd: 'kanban',
         pct: 70,
-        note: 'Daily work board + MCP. Public repo still named fkanban.',
+        note: 'Work board + MCP. Public repo is still named fkanban.',
       },
     ],
   },
@@ -46,7 +46,7 @@ const READINESS_GROUPS = [
         name: 'Last Stack',
         cmd: 'installer + skills',
         pct: 60,
-        note: 'How you install everything. Agent skills, not a data app.',
+        note: 'How you install the stack. Agent skills, not a data app.',
       },
       {
         rank: 5,
@@ -75,7 +75,7 @@ const READINESS_GROUPS = [
         name: 'LastSecrets',
         cmd: 'lastsecrets',
         pct: 40,
-        note: 'Secret refs (lastsecrets://…). Often private; not required for a first try.',
+        note: 'Secret refs (lastsecrets://…). Not required for a first try.',
       },
     ],
   },
@@ -97,7 +97,7 @@ const READINESS_GROUPS = [
         name: 'LastGit',
         cmd: 'lastdb://…',
         pct: 30,
-        note: 'Git on LastDB. Explicitly excluded from the public bundle for now.',
+        note: 'Git on LastDB. Not in the public install bundle yet.',
       },
       {
         rank: 10,
@@ -118,10 +118,10 @@ const READINESS_GROUPS = [
 ];
 
 const STAGE_LEGEND = [
-  { stage: 'Alpha', color: 'green', text: 'Daily drivers. Sharp edges OK — install these first.' },
-  { stage: 'Dogfood', color: 'yellow', text: 'In the installer; more papercuts; no support promise.' },
-  { stage: 'Optional', color: 'blue', text: 'Only when available / when you need the capability.' },
-  { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer yet.' },
+  { stage: 'Alpha', color: 'green', text: 'Daily drivers. Sharp edges OK — start here.' },
+  { stage: 'Dogfood', color: 'yellow', text: 'Ships in the installer; more papercuts.' },
+  { stage: 'Optional', color: 'blue', text: 'Only if you need that capability.' },
+  { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer.' },
 ];
 
 function ReadinessRow({ rank, name, cmd, pct, note, stageClass }) {
@@ -152,43 +152,37 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="What each LastDB app does, plus honest alpha/dogfood/early readiness so you know how rough the edges are." />
+        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, and Situations." />
         <meta property="og:title" content="Apps - LastDB" />
-        <meta property="og:description" content="LastDB apps with readiness labels: Alpha, Dogfood, Early, Optional." />
+        <meta property="og:description" content="What runs on LastDB, how rough each app is, and how to try the main ones." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">Apps on LastDB</h1>
 
-      <p className="bold white">LastDB is the database. Apps are tools that use it. Same machine, no account.</p>
-
-      <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
-        <a href="#readiness" className="link-btn">[Readiness ranking]</a>
-        <span className="dim"> &mdash; install on the home page; this page is what each app is for and how rough it is.</span>
+      <p className="bold white">
+        LastDB is the database. Everything else is an app that talks to it.
       </p>
-
-      <pre className="compare-table">{`  LastDB          the database (Homebrew)
-     │
-     ├── Brain         long-term memory      → brain
-     ├── Kanban        work board            → kanban
-     ├── Situations    ops reality right now → situations
-     ├── Dogfood Graph manual UX evidence    → local web app
-     └── …             early / optional tools`}</pre>
+      <p>
+        This page answers two questions: <span className="bold">how ready is each app for a stranger?</span>{' '}
+        and <span className="bold">how do I try the main ones?</span>{' '}
+        To install the stack, go home first.
+      </p>
+      <p className="hero-cta">
+        <Link to="/#install" className="link-btn">[Install on Home &rarr;]</Link>
+      </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      {/* READINESS — ranked high → low */}
+      {/* 1 — READINESS */}
       <Section variant="sage" id="readiness">
-        <h2><span className="bold">HOW ROUGH IS THIS?</span> <span className="dim">ranked by readiness</span></h2>
+        <h2><span className="bold">1 &mdash; HOW READY?</span> <span className="dim">ranked for a first-time user</span></h2>
 
         <p>
-          The whole stack is still product <span className="bold">alpha</span> (macOS Apple Silicon, local-only).
-          Below is a <span className="bold">deliberate ranking</span>: #01 is the thing we&rsquo;d hand a stranger first;
-          lower ranks are rougher or not in the default installer.
-          Stages are the product signal. The <span className="bold">~%</span> bars are only a gut sort key &mdash;{' '}
-          <span className="bold">not</span> SLAs, coverage, or failure rates.
+          Whole product is still <span className="bold">alpha</span> (macOS Apple Silicon).
+          Rank <span className="bold">#01</span> is what we&rsquo;d hand you first; lower ranks are rougher or not in the default installer.
+          Stage labels are the real signal. The <span className="bold">~%</span> bars are only a gut ranking &mdash; not SLAs or failure rates.
         </p>
 
         <div className="readiness-legend" role="list">
@@ -217,94 +211,86 @@ export default function Apps() {
         <div className="readiness-callout">
           <p>
             <span className="bold white">First try:</span>{' '}
-            ranks <span className="bold">#01&ndash;#03</span> (Brain, LastDB, Kanban).
-            Add Situations if you run agents. Skip everything Early until you&rsquo;re curious.
-            Skip LastSecrets unless you need secret refs.
+            install from the home page, then use <span className="bold">Brain</span> and{' '}
+            <span className="bold">Kanban</span> (and <span className="bold">Situations</span> if you run agents).
+            Ignore Early apps until you&rsquo;re curious.
           </p>
         </div>
       </Section>
 
-      <Section variant="lavender">
-        <h2 id="catalog"><span className="bold">DAILY APPS</span> <span className="dim">in the default installer</span></h2>
+      {/* 2 — TRY COMMANDS */}
+      <Section variant="lavender" id="try">
+        <h2><span className="bold">2 &mdash; TRY THE MAIN ONES</span> <span className="dim">after install</span></h2>
+
+        <p>
+          After the home-page installer finishes, these three CLIs are the ones you actually type.
+          Last Stack was the installer itself; Dogfood Graph and LastSecrets are optional extras (see ranking above).
+        </p>
 
         <div className="grid-2">
           <Card>
-            <p><Label color="purple">BRAIN</Label> <span className="dim">alpha &middot; command: <span className="bold">brain</span></span></p>
-            <p><span className="bold">Long-term memory.</span> Decisions, designs, notes, “why we did it.” Search later in plain English.</p>
+            <p>
+              <Label color="green">ALPHA</Label>{' '}
+              <Label color="purple">BRAIN</Label>{' '}
+              <span className="dim">memory · <span className="bold">brain</span></span>
+            </p>
+            <p>Long-term notes and decisions. Ask later in plain English.</p>
             <pre>{`brain concept new caching --title "Cache" --body "chose LRU because …"
 brain ask "what did we decide about caching?"
 brain list --type concept --limit 5`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="purple">KANBAN</Label> <span className="dim">alpha &middot; command: <span className="bold">kanban</span></span></p>
-            <p><span className="bold">Work board.</span> Cards move through columns. Live status of what’s in flight &mdash; not the reasoning (that goes in Brain).</p>
+            <p>
+              <Label color="green">ALPHA</Label>{' '}
+              <Label color="purple">KANBAN</Label>{' '}
+              <span className="dim">board · <span className="bold">kanban</span></span>
+            </p>
+            <p>What&rsquo;s in flight. Status lives here; reasoning lives in Brain.</p>
             <pre>{`kanban add ship-login --title "Ship login" --tags auth
 kanban move ship-login doing
 kanban list`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="purple">SITUATIONS</Label> <span className="dim">dogfood &middot; command: <span className="bold">situations</span></span></p>
-            <p><span className="bold">Operational reality right now.</span> Incidents, freezes, “don’t touch CI.” Agents check this before changing shared systems.</p>
+            <p>
+              <Label color="yellow">DOGFOOD</Label>{' '}
+              <Label color="purple">SITUATIONS</Label>{' '}
+              <span className="dim">ops · <span className="bold">situations</span></span>
+            </p>
+            <p>What&rsquo;s true operationally right now &mdash; freezes, incidents, preflight gates.</p>
             <pre>{`situations list
 situations preflight --action enable-ci --repo my-org/my-repo`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="purple">DOGFOOD GRAPH</Label> <span className="dim">dogfood &middot; local web app</span></p>
-            <p><span className="bold">Manual product-test evidence.</span> Expected UX as a graph, plus what humans actually saw. Not an automated test runner.</p>
+            <p><Label color="blue">ALSO IN THE INSTALLER</Label></p>
+            <p>
+              <span className="bold">Dogfood Graph</span> &mdash; local web app for manual product evidence:
+            </p>
             <pre>{`cd ~/lastdb-apps/dogfood-graph && npm run dev`}</pre>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">THE LAST STACK</Label> <span className="dim">dogfood &middot; installer + agent skills</span></p>
-            <p><span className="bold">Not a data app.</span> The helper from the home-page install. Also teaches coding agents how to use Brain and Kanban.</p>
-            <pre>{`cd ~/.last-stack && git pull && ./setup`}</pre>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">LASTSECRETS</Label> <span className="dim">optional / dogfood</span></p>
-            <p><span className="bold">Secret refs.</span> Store a value once; everywhere else keep <span className="bold">lastsecrets://…</span>. Included when the public repo is available; otherwise skip.</p>
-            <pre>{`printf '%s' "$TOKEN" | lastsecrets put api-token --value-stdin
-lastsecrets ref api-token`}</pre>
+            <p className="dim">
+              <span className="bold">LastSecrets</span> &mdash; only if you have access and need{' '}
+              <span className="bold">lastsecrets://</span> refs. Skip on a first try.
+            </p>
           </Card>
         </div>
+
+        <p className="dim">
+          Day-to-day loop (board + brain + agents):{' '}
+          <Link to="/start" className="link-btn">[How to use it &rarr;]</Link>
+        </p>
       </Section>
 
-      <Section variant="amber">
-        <h2 id="early"><span className="bold">EARLY</span> <span className="dim">real, not in the default installer</span></h2>
+      {/* 3 — MANUAL (advanced) */}
+      <Section variant="slate" id="manual">
+        <h2><span className="bold">3 &mdash; MANUAL INSTALL</span> <span className="dim">advanced · skip if you used Home</span></h2>
 
-        <div className="grid-2">
-          <Card>
-            <p><Label color="yellow">ROUTINES</Label> <span className="dim">early</span></p>
-            <p>Scheduled agent jobs (Claude / Codex) with a local registry and launchd daemon.</p>
-            <pre>{`git clone https://github.com/EdgeVector/routines && cd routines
-bun install && bun run install-shim
-routines list`}</pre>
-          </Card>
-          <Card>
-            <p><Label color="yellow">LASTGIT</Label> <span className="dim">early</span></p>
-            <p>Git hosting on LastDB. Remotes look like <span className="bold">lastdb:///my-repo</span>.</p>
-          </Card>
-          <Card>
-            <p><Label color="yellow">CODERINGS</Label> <span className="dim">early</span></p>
-            <p>Repo size vs the complexity you claim the code should have.</p>
-          </Card>
-          <Card>
-            <p><Label color="yellow">DISCOVERY</Label> <span className="dim">early</span></p>
-            <p>Friends-of-friends discovery without a central social graph in the cloud.</p>
-          </Card>
-        </div>
-      </Section>
-
-      <Section variant="slate">
-        <h2 id="manual"><span className="bold">INSTALL ONE APP YOURSELF</span> <span className="dim">optional</span></h2>
-
-        <p>Prefer not to use the stack installer? Install LastDB first:</p>
+        <p>
+          Prefer not to use the Last Stack installer? Install the database, then only the apps you want:
+        </p>
         <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb`}</pre>
-        <p>Then clone only what you want:</p>
 
         <div className="card-stack">
           <Card>
@@ -318,7 +304,7 @@ brain init --grant-consent`}</pre>
             <pre>{`git clone https://github.com/EdgeVector/fkanban && cd fkanban
 bun install && bun run install-cli
 kanban init`}</pre>
-            <p className="dim">Public repo is still named <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
+            <p className="dim">Repo name is still <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
           </Card>
           <Card>
             <p><Label color="blue">SITUATIONS</Label></p>
@@ -330,7 +316,7 @@ situations init`}</pre>
         </div>
 
         <p className="dim">
-          <Link to="/#install" className="link-btn">[Install (home)]</Link>{'  '}
+          <Link to="/#install" className="link-btn">[Recommended install (home)]</Link>{'  '}
           <Link to="/start" className="link-btn">[How to use it]</Link>{'  '}
           <Link to="/about" className="link-btn">[About]</Link>
         </p>
