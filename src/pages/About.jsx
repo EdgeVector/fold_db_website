@@ -17,7 +17,9 @@ export default function About() {
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">About LastDB</h1>
-      <p className="bold white">Why this exists &mdash; and how the model differs from “every app owns a database.”</p>
+      <p className="bold white">
+        Why own the floor under your software factory &mdash; instead of renting a silo per tool.
+      </p>
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
         <Link to="/apps" className="link-btn">[Apps]</Link>

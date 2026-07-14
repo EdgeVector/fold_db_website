@@ -94,17 +94,17 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>LastDB - Your data, one local database</title>
-        <meta name="description" content="LastDB is a local encrypted database on your Mac. Install it in a few commands. Apps like Brain and Kanban run on top — no account, no cloud lock-in." />
-        <meta property="og:title" content="LastDB - Your data, one local database" />
-        <meta property="og:description" content="One permanent local database under your control. Install LastDB, then add apps. No signup." />
+        <title>LastDB - Build your software factory</title>
+        <meta name="description" content="LastDB is the local floor under a hard development stack — memory, board, ops, agents — that you own. Install offline with no account; optional cloud backup/sync when you connect multi-device." />
+        <meta property="og:title" content="LastDB - Build your software factory" />
+        <meta property="og:description" content="A local encrypted database for a serious AI development stack. Own the shop floor — not another rented SaaS silo." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://thelastdb.com" />
         <meta property="og:site_name" content="LastDB" />
         <meta property="og:image" content="https://thelastdb.com/favicon.png" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="LastDB - Your data, one local database" />
-        <meta name="twitter:description" content="One permanent local database under your control. Install in a few commands." />
+        <meta name="twitter:title" content="LastDB - Build your software factory" />
+        <meta name="twitter:description" content="Own the floor under your agents and tools. Local install; optional cloud backup/sync." />
         <meta name="twitter:image" content="https://thelastdb.com/favicon.png" />
         <link rel="canonical" href="https://thelastdb.com" />
         <script type="application/ld+json">{`
@@ -115,7 +115,7 @@ export default function Home() {
       "@type": "WebSite",
       "name": "LastDB",
       "url": "https://thelastdb.com",
-      "description": "Local encrypted database for your data. Apps like Brain and Kanban run on top."
+      "description": "Local encrypted database for building your own software factory — apps and agents on a substrate you own."
     },
     {
       "@type": "SoftwareApplication",
@@ -123,7 +123,7 @@ export default function Home() {
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS (Apple Silicon)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "A local encrypted database you install with Homebrew. Thin-client apps talk to it over a Unix socket. No account required.",
+      "description": "Local encrypted database that powers a hard development stack: memory, work board, ops posture, agent skills. Local use needs no account; optional cloud backup/sync joins an account for multi-device.",
       "url": "https://thelastdb.com",
       "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
       "softwareVersion": "alpha"
@@ -134,36 +134,53 @@ export default function Home() {
 
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />
-      <h1 className="tagline">Own your data. For good.</h1>
-      <p className="bold white">One local database on your machine. Apps talk to it. Nothing requires an account.</p>
-      <p className="dim">Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.</p>
+      <h1 className="tagline">Build your software factory.</h1>
+      <p className="bold white">Own the floor it stands on.</p>
+      <p>
+        LastDB is a <span className="bold white">local encrypted database</span> for people who build hard &mdash;
+        an AI development stack you run yourself: memory, board, ops gates, agent skills.
+        Not another rented tool. A <span className="bold white">shop floor</span> under tools you control.
+      </p>
+      <p className="dim">
+        Local use needs no account. Optional cloud backup/sync joins an account when you want multi-device.
+        Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.
+      </p>
       <p className="hero-cta">
-        <a href="#install" className="link-btn">[Install &rarr;]</a>{'  '}
+        <a href="#install" className="link-btn">[Install the floor &rarr;]</a>{'  '}
         <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
         <a href="https://thelastdb.com/llms.txt" className="link-btn">[llms.txt]</a>
-        <span className="dim"> &mdash; agents: plain-text install map</span>
+        <span className="dim"> &mdash; plain-text install for agents</span>
       </p>
       <hr className="decorative-rule" aria-hidden="true" />
 
       {/* WHAT */}
       <Section variant="sage" id="what">
-        <h2><span className="bold">WHAT IT IS</span></h2>
+        <h2><span className="bold">THE FLOOR, NOT THE RENTAL</span></h2>
 
-        <p>Today every app builds its own silo: notes in one place, tasks in another, secrets somewhere else. <span className="bold white">LastDB inverts that.</span> Your data lives in <span className="bold">one</span> encrypted database you run yourself. Applications become thin clients of <em>your</em> database &mdash; not permanent custodians of a copy.</p>
+        <p>
+          Most teams assemble a development stack out of SaaS: one product for notes, one for tickets,
+          one for secrets, one for agents &mdash; each with its own database, account, and lock-in.
+          You are building the car in a dozen rented garages.
+        </p>
+        <p>
+          <span className="bold white">LastDB is the garage you own.</span> One permanent local database.
+          Apps (Brain, Kanban, Situations, and the ones you write) are thin clients of <em>that</em> database &mdash;
+          not permanent custodians of a copy. Bolt on a serious AI stack; keep the substrate.
+        </p>
 
         <ArchFigure
           svg={MODEL_SVG}
-          caption="Fig. 1 — apps are clients; the data lives in one local database"
+          caption="Fig. 1 — apps are tools on the floor; the data stays in one local database"
         />
 
         <div className="grid-2">
           <Card>
-            <p><Label color="green">LASTDB</Label></p>
-            <p>The database. One process on your Mac. Your data stays there.</p>
+            <p><Label color="green">LASTDB</Label> <span className="dim">the floor</span></p>
+            <p>Encrypted local database. One process on your Mac. The thing everything else stands on.</p>
           </Card>
           <Card>
-            <p><Label color="green">APPS</Label></p>
-            <p>Tools that use it &mdash; memory, boards, and more. Same data, different jobs.</p>
+            <p><Label color="green">YOUR STACK</Label> <span className="dim">the factory</span></p>
+            <p>Memory, board, ops, agent skills &mdash; and apps you build. Same data, different tools. No per-app silo.</p>
           </Card>
         </div>
       </Section>
@@ -173,10 +190,10 @@ export default function Home() {
         <h2><span className="bold">INSTALL</span> <span className="dim">the main call to action</span></h2>
 
         <p>
-          <span className="bold white">This is how you get LastDB.</span>{' '}
+          <span className="bold white">This is how you stand up the floor.</span>{' '}
           Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and{' '}
           <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon.
-          One installer puts <span className="bold">LastDB</span> and the daily apps on your machine.
+          One installer puts <span className="bold">LastDB</span> and the starter factory apps on your machine.
           Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
         </p>
 
@@ -206,30 +223,35 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
 
       {/* WHAT YOU GET */}
       <Section variant="lavender" id="apps-teaser">
-        <h2><span className="bold">WHAT YOU GET</span></h2>
+        <h2><span className="bold">THE STARTER FACTORY</span> <span className="dim">what ships with install</span></h2>
+
+        <p>
+          You don&rsquo;t only get a database. You get a first cut of a <span className="bold white">development factory</span> &mdash;
+          the same shape we use to build LastDB itself with agents.
+        </p>
 
         <div className="grid-2">
           <Card>
-            <p><Label color="purple">BRAIN</Label> <span className="dim">memory</span></p>
-            <p>Long-term notes and decisions. Ask later in plain English.</p>
+            <p><Label color="purple">BRAIN</Label> <span className="dim">institutional memory</span></p>
+            <p>Decisions and designs that outlive any chat session. Agents read it before they invent history.</p>
           </Card>
           <Card>
-            <p><Label color="purple">KANBAN</Label> <span className="dim">work board</span></p>
-            <p>Cards that track what&rsquo;s actually in flight.</p>
+            <p><Label color="purple">KANBAN</Label> <span className="dim">work on the floor</span></p>
+            <p>Cards that track what&rsquo;s actually in flight. The board is status; Brain is why.</p>
           </Card>
           <Card>
-            <p><Label color="purple">SITUATIONS</Label> <span className="dim">ops posture</span></p>
-            <p>What&rsquo;s true right now before agents touch shared systems.</p>
+            <p><Label color="purple">SITUATIONS</Label> <span className="dim">ops gates</span></p>
+            <p>What&rsquo;s true right now before agents touch shared systems &mdash; freezes, preflights, clearance.</p>
           </Card>
           <Card>
-            <p><Label color="purple">MORE</Label></p>
-            <p>Dogfood Graph, agent skills (Last Stack), and early apps like LastGit.</p>
+            <p><Label color="purple">LAST STACK</Label> <span className="dim">agent playbook</span></p>
+            <p>Skills so coding agents file work, drive a card to a merged PR, and close out cleanly.</p>
           </Card>
         </div>
 
         <p>
-          <Link to="/apps" className="link-btn">[All apps &rarr;]</Link>
-          <span className="dim"> &mdash; what each one does, plus honest readiness (alpha / dogfood / early).</span>
+          <Link to="/apps" className="link-btn">[Full catalog &amp; readiness &rarr;]</Link>
+          <span className="dim"> &mdash; then build your own apps on the same floor.</span>
         </p>
       </Section>
 

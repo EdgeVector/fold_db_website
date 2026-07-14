@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="site-footer">
       <p>
         <span className="bold white">LastDB</span>{' '}
-        <span className="dim">One local database for your data. Experimental &mdash; in alpha.</span>
+        <span className="dim">The local floor under a software factory. Experimental &mdash; in alpha.</span>
       </p>
       <p>
         <Link to="/#install">Install</Link>{'  '}
