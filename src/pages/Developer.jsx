@@ -36,44 +36,24 @@ export default function Developer() {
         <h2 id="quickstart"><span className="bold">QUICK START</span> <span className="dim">Up and running in 5 minutes</span></h2>
 
         <div className="card-stack">
-          <Card><p><Label color="yellow">1. INSTALL LASTDB MINI</Label></p>
-            <pre>brew install edgevector/lastdb/lastdb</pre>
-            <p className="dim">Canonical product for Apple Silicon: <span className="bold">lastdbd</span> (local semantic daemon) plus the tiny socket/control <span className="bold">lastdb</span> CLI. The old <span className="bold">folddb</span> command name still works as an alias. No desktop UI ships in this package.</p></Card>
-
-          <Card><p><Label color="yellow">2. CONFIGURE</Label></p>
-            <pre>{`lastdb connect     # optional: join an existing account with a recovery phrase
-lastdb status      # inspect the local daemon
-lastdb --version
-lastdbd --version`}</pre>
-            <p className="dim">The Brew daemon keeps embeddings local for semantic search. Mini is intentionally small: schema declare/query/mutate, app identity, native search, and (when connected) cloud sync &mdash; no web UI or file-ingestion CLI.</p></Card>
-
-          <Card><p><Label color="yellow">3. RUN</Label></p>
-            <pre>{`brew services start lastdb
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health   # confirm the node is up`}</pre>
-            <p className="dim">Starts <span className="bold">lastdbd</span> in the background &middot; API over the owner Unix socket at <span className="bold">~/.lastdb/data/folddb.sock</span>. TCP <span className="bold">:9001</span> is retired; a refused TCP probe is not an outage.</p>
-            <pre>lastdbd --data-dir ~/.lastdb   # run it in the foreground instead</pre></Card>
-
-          <Card><p><Label color="yellow">4. ADD A SOCKET APP</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/brain && cd brain
-bun install && bun link
-brain init --grant-consent`}</pre>
-            <p className="dim">First-party apps (Brain, Kanban, Situations, &hellip;) talk directly to the Mini socket; no hosted account is required. Catalog: <Link to="/apps">Apps</Link>.</p></Card>
-
-          <Card><p><Label color="yellow">5. USE THE LOCAL INDEX</Label></p>
-            <pre>{`brain put concept local-search --title "Local search" --body "Embeddings stay on this machine."
-brain search "local embeddings"
-brain ask "what did I note about search?"`}</pre>
-            <p className="dim">Semantic search uses the local FastEmbed path in the daemon; search terms are embedded locally too.</p></Card>
-
-          <Card><p><Label color="yellow">6. INSTALL THE FULL APP STACK</Label></p>
+          <Card><p><Label color="yellow">1. INSTALL LASTDB + APPS</Label> <span className="dim">recommended</span></p>
             <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps --no-brew
-brain init --grant-consent
-kanban init
-situations init
-lastsecrets init`}</pre>
-            <p className="dim">Agent-readable runbook on <Link to="/start">Get Started</Link>. Building a new app still needs a developer identity (below).</p></Card>
+~/.last-stack/bin/last-stack-install-apps
+brew services start lastdb`}</pre>
+            <p className="dim">The Last Stack installer installs LastDB via Homebrew and the daily apps (Brain, Kanban, &hellip;). Database-only: <span className="bold">brew install edgevector/lastdb/lastdb</span>. Details: <Link to="/apps">Apps</Link> / <Link to="/start">Get Started</Link>.</p></Card>
+
+          <Card><p><Label color="yellow">2. CONFIRM IT&rsquo;S UP</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health
+lastdb status
+lastdb --version`}</pre>
+            <p className="dim">Apps talk to LastDB over a local Unix socket at <span className="bold">~/.lastdb/data/folddb.sock</span>. Embeddings for search stay on this machine.</p></Card>
+
+          <Card><p><Label color="yellow">3. INIT AN APP + TRY SEARCH</Label></p>
+            <pre>{`brain init --grant-consent
+brain put concept local-search --title "Local search" --body "Embeddings stay on this machine."
+brain ask "what did I note about search?"`}</pre>
+            <p className="dim">No hosted account is required to use first-party apps. Building and publishing a <span className="bold">new</span> app needs a developer identity (below).</p></Card>
         </div>
       </Section>
 
@@ -228,8 +208,8 @@ Files / JSON / APIs
       <Section variant="rose">
         <h2 id="code"><span className="bold">CODE EXAMPLES</span> <span className="dim">HTTP API &amp; TypeScript</span></h2>
 
-        <p>Most integrations use HTTP over the owner Unix socket. Homebrew&rsquo;s Mini service uses <span className="bold">~/.lastdb/data/folddb.sock</span>. That is the canonical path; do not assume TCP <span className="bold">:9001</span>.</p>
-        <p className="dim">The examples below include broader API routes used by apps and dev tooling. LastDB Mini does not ship a web UI, ingestion CLI, or file-upload workflow &mdash; apps talk query/mutation/schema surfaces over the socket.</p>
+        <p>Most integrations use HTTP over the owner Unix socket at <span className="bold">~/.lastdb/data/folddb.sock</span> (the path Homebrew&rsquo;s service uses).</p>
+        <p className="dim">The examples below include broader API routes used by apps and dev tooling. The Homebrew install is a headless local daemon &mdash; apps talk query/mutation/schema surfaces over the socket, not a bundled web UI.</p>
         <p className="dim">Rust library API is also available for embedded use &mdash; see <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">EdgeVector on GitHub</a>.</p>
 
         <div className="grid-2">
