@@ -42,7 +42,7 @@ export default function Apps() {
           <Card>
             <p><Label color="purple">BRAIN</Label> <span className="dim">command: <span className="bold">brain</span></span></p>
             <p><span className="bold">Long-term memory.</span> Decisions, designs, notes, “why we did it.” Search later in plain English. What agents should write so the next session is not empty-headed.</p>
-            <pre>{`brain put concept caching --title "Cache" --body "chose LRU because …"
+            <pre>{`brain concept new caching --title "Cache" --body "chose LRU because …"
 brain ask "what did we decide about caching?"`}</pre>
           </Card>
 
