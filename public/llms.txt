@@ -52,10 +52,30 @@ brain concept new hello --title "Hello" --body "my first note"
 brain ask "what did I just write?"
 ```
 
+## App readiness (judgment, not SLAs)
+
+Whole stack is product alpha. Stages: Alpha (daily driver) · Dogfood (more edges) · Early (not in default installer) · Optional (when available).
+
+| App | Stage | Installer | ~% |
+|-----|--------|-----------|-----|
+| LastDB | Alpha | yes | ~70 |
+| Brain | Alpha | yes | ~75 |
+| Kanban | Alpha | yes | ~70 |
+| Situations | Dogfood | yes | ~55 |
+| Dogfood Graph | Dogfood | yes | ~45 |
+| Last Stack | Dogfood | yes* | ~60 |
+| LastSecrets | Optional | when avail | ~40 |
+| Routines | Early | no | ~35 |
+| LastGit | Early | no | ~30 |
+| CodeRings | Early | no | ~25 |
+| Discovery | Early | no | ~25 |
+
+Full notes: https://thelastdb.com/apps#readiness
+
 ## Key pages
 
 - https://thelastdb.com/ — what it is + install
-- https://thelastdb.com/apps — what each app does
+- https://thelastdb.com/apps — what each app does + readiness
 - https://thelastdb.com/start — daily loop + agent MCP/skills
 - https://thelastdb.com/about — product thesis
 - https://thelastdb.com/developer — socket API for builders
