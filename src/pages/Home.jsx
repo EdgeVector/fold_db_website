@@ -185,7 +185,7 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
 
         <p>
           <Link to="/apps" className="link-btn">[All apps &rarr;]</Link>
-          <span className="dim"> &mdash; what each one does, in plain language.</span>
+          <span className="dim"> &mdash; what each one does, plus honest readiness (alpha / dogfood / early).</span>
         </p>
       </Section>
 
