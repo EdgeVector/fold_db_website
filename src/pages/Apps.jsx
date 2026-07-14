@@ -4,6 +4,149 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 
+/** Ranked high → low. Stage is the product signal; pct is only a gut sort key. */
+const READINESS_GROUPS = [
+  {
+    stage: 'Alpha',
+    labelColor: 'green',
+    stageClass: 'stage-alpha',
+    blurb: 'Install these first — we run them every day.',
+    apps: [
+      {
+        rank: 1,
+        name: 'Brain',
+        cmd: 'brain',
+        pct: 75,
+        note: 'Longest-lived dogfood. Public CLI + MCP. Still alpha edges.',
+      },
+      {
+        rank: 2,
+        name: 'LastDB',
+        cmd: 'brew · lastdbd',
+        pct: 70,
+        note: 'The database itself. Homebrew primary. Whole product is still alpha.',
+      },
+      {
+        rank: 3,
+        name: 'Kanban',
+        cmd: 'kanban',
+        pct: 70,
+        note: 'Daily work board + MCP. Public repo still named fkanban.',
+      },
+    ],
+  },
+  {
+    stage: 'Dogfood',
+    labelColor: 'yellow',
+    stageClass: 'stage-dogfood',
+    blurb: 'In the default installer — more papercuts than Alpha.',
+    apps: [
+      {
+        rank: 4,
+        name: 'Last Stack',
+        cmd: 'installer + skills',
+        pct: 60,
+        note: 'How you install everything. Agent skills, not a data app.',
+      },
+      {
+        rank: 5,
+        name: 'Situations',
+        cmd: 'situations',
+        pct: 55,
+        note: 'Ops posture for agents. Critical for us; thinner stranger story.',
+      },
+      {
+        rank: 6,
+        name: 'Dogfood Graph',
+        cmd: 'local web app',
+        pct: 45,
+        note: 'Manual UX evidence tool. Useful, not a polished product.',
+      },
+    ],
+  },
+  {
+    stage: 'Optional',
+    labelColor: 'blue',
+    stageClass: 'stage-optional',
+    blurb: 'Skip unless you need it — only when the repo is available to you.',
+    apps: [
+      {
+        rank: 7,
+        name: 'LastSecrets',
+        cmd: 'lastsecrets',
+        pct: 40,
+        note: 'Secret refs (lastsecrets://…). Often private; not required for a first try.',
+      },
+    ],
+  },
+  {
+    stage: 'Early',
+    labelColor: 'orange',
+    stageClass: 'stage-early',
+    blurb: 'Real for us — not in the one-command installer. Come back later.',
+    apps: [
+      {
+        rank: 8,
+        name: 'Routines',
+        cmd: 'routines',
+        pct: 35,
+        note: 'Scheduled agent jobs. Our fleet tooling, not stranger onboarding.',
+      },
+      {
+        rank: 9,
+        name: 'LastGit',
+        cmd: 'lastdb://…',
+        pct: 30,
+        note: 'Git on LastDB. Explicitly excluded from the public bundle for now.',
+      },
+      {
+        rank: 10,
+        name: 'CodeRings',
+        cmd: 'coderings',
+        pct: 25,
+        note: 'Repo size vs claimed complexity. No public install story yet.',
+      },
+      {
+        rank: 11,
+        name: 'Discovery',
+        cmd: '—',
+        pct: 25,
+        note: 'Friends-of-friends discovery. Not a public try path.',
+      },
+    ],
+  },
+];
+
+const STAGE_LEGEND = [
+  { stage: 'Alpha', color: 'green', text: 'Daily drivers. Sharp edges OK — install these first.' },
+  { stage: 'Dogfood', color: 'yellow', text: 'In the installer; more papercuts; no support promise.' },
+  { stage: 'Optional', color: 'blue', text: 'Only when available / when you need the capability.' },
+  { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer yet.' },
+];
+
+function ReadinessRow({ rank, name, cmd, pct, note, stageClass }) {
+  return (
+    <div className="readiness-row">
+      <span className="readiness-rank" aria-label={`rank ${rank}`}>
+        {String(rank).padStart(2, '0')}
+      </span>
+      <div className="readiness-main">
+        <p className="readiness-title-line">
+          <span className="readiness-name">{name}</span>
+          <span className="readiness-cmd">{cmd}</span>
+        </p>
+        <p className="readiness-note">{note}</p>
+      </div>
+      <div className="readiness-meter" title={`Gut readiness ~${pct}% — judgment, not a measured SLA`}>
+        <span className="readiness-pct">~{pct}%</span>
+        <div className={`readiness-bar ${stageClass}`} aria-hidden="true">
+          <span style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Apps() {
   return (
     <>
@@ -35,47 +178,49 @@ export default function Apps() {
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      {/* READINESS */}
+      {/* READINESS — ranked high → low */}
       <Section variant="sage" id="readiness">
-        <h2><span className="bold">HOW ROUGH IS THIS?</span> <span className="dim">honest readiness labels</span></h2>
+        <h2><span className="bold">HOW ROUGH IS THIS?</span> <span className="dim">ranked by readiness</span></h2>
 
-        <p>The whole stack is still product <span className="bold">alpha</span> (macOS Apple Silicon, local-only). These labels are our judgment for strangers &mdash; <span className="bold">not</span> SLAs, test coverage, or measured failure rates. The &ldquo;~%&rdquo; column is only a gut ranking so you can sort; treat the stage name as the real signal.</p>
+        <p>
+          The whole stack is still product <span className="bold">alpha</span> (macOS Apple Silicon, local-only).
+          Below is a <span className="bold">deliberate ranking</span>: #01 is the thing we&rsquo;d hand a stranger first;
+          lower ranks are rougher or not in the default installer.
+          Stages are the product signal. The <span className="bold">~%</span> bars are only a gut sort key &mdash;{' '}
+          <span className="bold">not</span> SLAs, coverage, or failure rates.
+        </p>
 
-        <div className="grid-2">
-          <Card>
-            <p><Label color="green">ALPHA</Label></p>
-            <p>We use it daily. Expect sharp edges and CLI churn. Worth installing first.</p>
-          </Card>
-          <Card>
-            <p><Label color="yellow">DOGFOOD</Label></p>
-            <p>Installable and useful; more papercuts than Alpha; no support promise.</p>
-          </Card>
-          <Card>
-            <p><Label color="yellow">EARLY</Label></p>
-            <p>Real and working for us; not in the default installer; no public one-liner.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">OPTIONAL</Label></p>
-            <p>In the install path when the repo is available to you; skip otherwise.</p>
-          </Card>
+        <div className="readiness-legend" role="list">
+          {STAGE_LEGEND.map((s) => (
+            <div key={s.stage} className="readiness-legend-item" role="listitem">
+              <Label color={s.color}>{s.stage.toUpperCase()}</Label>
+              <p>{s.text}</p>
+            </div>
+          ))}
         </div>
 
-        <pre className="compare-table">{`
-APP              STAGE      INSTALLER   ~%    NOTES
-${'─'.repeat(72)}
-LastDB           Alpha      yes (brew)  ~70   Daily primary daemon; still alpha product
-Brain            Alpha      yes         ~75   Longest-lived dogfood; public CLI + MCP
-Kanban           Alpha      yes         ~70   Daily board; public repo still named fkanban
-Situations       Dogfood    yes         ~55   Agent ops posture; smaller stranger story
-Dogfood Graph    Dogfood    yes         ~45   Local web evidence tool; name confuses outsiders
-Last Stack       Dogfood    yes*        ~60   Installer + agent skills (*you start here)
-LastSecrets      Optional   when avail  ~40   Secret refs; often private / skippable
-Routines         Early      no          ~35   Our scheduler fleet; not stranger onboarding
-LastGit          Early      no          ~30   lastdb:// git; dogfood/shadow-heavy
-CodeRings        Early      no          ~25   Size vs complexity; no public install story
-Discovery        Early      no          ~25   FoF discovery; not a public try path`}</pre>
+        <div className="readiness-list" aria-label="Apps ranked by public readiness, highest first">
+          {READINESS_GROUPS.map((group) => (
+            <div key={group.stage} className="readiness-group">
+              <div className="readiness-group-head">
+                <Label color={group.labelColor}>{group.stage.toUpperCase()}</Label>
+                <span className="dim">{group.blurb}</span>
+              </div>
+              {group.apps.map((app) => (
+                <ReadinessRow key={app.name} {...app} stageClass={group.stageClass} />
+              ))}
+            </div>
+          ))}
+        </div>
 
-        <p className="dim"><span className="bold">For a first try:</span> install LastDB + Brain + Kanban (and Situations if you run agents). Ignore LastGit / CodeRings / Discovery / Routines until you&rsquo;re curious. Skip LastSecrets unless you need secret refs.</p>
+        <div className="readiness-callout">
+          <p>
+            <span className="bold white">First try:</span>{' '}
+            ranks <span className="bold">#01&ndash;#03</span> (Brain, LastDB, Kanban).
+            Add Situations if you run agents. Skip everything Early until you&rsquo;re curious.
+            Skip LastSecrets unless you need secret refs.
+          </p>
+        </div>
       </Section>
 
       <Section variant="lavender">
