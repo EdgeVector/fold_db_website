@@ -95,16 +95,16 @@ export default function Home() {
     <>
       <Helmet>
         <title>LastDB - Your data, one local database</title>
-        <meta name="description" content="LastDB is a local encrypted database on your Mac. Install it in a few commands. Apps like Brain and Kanban run on top — no account, no cloud lock-in." />
+        <meta name="description" content="LastDB is a local encrypted database on your Mac. Install and use apps offline with no account. Optional cloud backup/sync joins an account when you want multi-device." />
         <meta property="og:title" content="LastDB - Your data, one local database" />
-        <meta property="og:description" content="One permanent local database under your control. Install LastDB, then add apps. No signup." />
+        <meta property="og:description" content="Local encrypted database under your control. Run offline with no account; optional cloud backup/sync when you connect a second device." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://thelastdb.com" />
         <meta property="og:site_name" content="LastDB" />
         <meta property="og:image" content="https://thelastdb.com/favicon.png" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="LastDB - Your data, one local database" />
-        <meta name="twitter:description" content="One permanent local database under your control. Install in a few commands." />
+        <meta name="twitter:description" content="Local database on your Mac. Offline with no account; optional cloud backup/sync when you connect." />
         <meta name="twitter:image" content="https://thelastdb.com/favicon.png" />
         <link rel="canonical" href="https://thelastdb.com" />
         <script type="application/ld+json">{`
@@ -123,7 +123,7 @@ export default function Home() {
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS (Apple Silicon)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "A local encrypted database you install with Homebrew. Thin-client apps talk to it over a Unix socket. No account required.",
+      "description": "A local encrypted database you install with Homebrew. Thin-client apps talk to it over a Unix socket. Local use needs no account; optional cloud backup/sync joins an account for multi-device.",
       "url": "https://thelastdb.com",
       "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
       "softwareVersion": "alpha"
@@ -135,7 +135,7 @@ export default function Home() {
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Own your data. For good.</h1>
-      <p className="bold white">One local database on your machine. Apps talk to it. Nothing requires an account.</p>
+      <p className="bold white">One local database on your machine. Apps talk to it. Local use needs no account &mdash; optional cloud backup/sync does.</p>
       <p className="dim">Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.</p>
       <p className="hero-cta">
         <a href="#install" className="link-btn">[Install &rarr;]</a>{'  '}
