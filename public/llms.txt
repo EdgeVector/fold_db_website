@@ -1,0 +1,54 @@
+# LastDB
+
+> A local encrypted database that runs on your machine. Apps (Brain, Kanban, …) are thin clients of that database. No account required.
+
+Website: https://thelastdb.com
+This site is a React app that is **prerendered at build time** so agents and curl can read page text without executing JavaScript.
+
+## Install (macOS Apple Silicon)
+
+Needs Homebrew and Bun (https://bun.sh).
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+
+git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps
+
+brew services start lastdb
+brain init --grant-consent
+kanban init
+```
+
+That installer runs `brew install edgevector/lastdb/lastdb`, clones the daily apps, and links CLIs.
+
+Database only:
+
+```bash
+brew install edgevector/lastdb/lastdb
+brew services start lastdb
+```
+
+## Mental model
+
+- **LastDB** — the database (Homebrew service)
+- **Apps** — tools that talk to it (`brain`, `kanban`, …)
+- **The Last Stack** — installer + agent skills (not a second database)
+
+## Key pages
+
+- https://thelastdb.com/ — what it is + install
+- https://thelastdb.com/apps — what each app does
+- https://thelastdb.com/start — daily loop + agent MCP/skills
+- https://thelastdb.com/about — product thesis
+- https://thelastdb.com/developer — API / build on LastDB
+- https://thelastdb.com/blog — engineering writing
+
+## Quick try after install
+
+```bash
+kanban list
+brain put concept hello --title "Hello" --body "my first note"
+brain ask "what did I just write?"
+```

@@ -119,5 +119,10 @@ export default function AsciiTitle({ text = 'LAST DB' }) {
     };
   }, [text]);
 
-  return <pre className="ascii" ref={preRef} />;
+  // SSR / agent-readable fallback: canvas art only runs in the browser.
+  return (
+    <pre className="ascii" ref={preRef}>
+      {text}
+    </pre>
+  );
 }
