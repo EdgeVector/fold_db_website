@@ -100,17 +100,49 @@ export default function Home() {
         <meta property="og:description" content="One permanent local database under your control. Install LastDB, then add apps. No signup." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://thelastdb.com" />
+        <meta property="og:site_name" content="LastDB" />
+        <meta property="og:image" content="https://thelastdb.com/favicon.png" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="LastDB - Your data, one local database" />
         <meta name="twitter:description" content="One permanent local database under your control. Install in a few commands." />
+        <meta name="twitter:image" content="https://thelastdb.com/favicon.png" />
         <link rel="canonical" href="https://thelastdb.com" />
+        <script type="application/ld+json">{`
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "LastDB",
+      "url": "https://thelastdb.com",
+      "description": "Local encrypted database for your data. Apps like Brain and Kanban run on top."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "LastDB",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS (Apple Silicon)",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "A local encrypted database you install with Homebrew. Thin-client apps talk to it over a Unix socket. No account required.",
+      "url": "https://thelastdb.com",
+      "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
+      "softwareVersion": "alpha"
+    }
+  ]
+}`}</script>
       </Helmet>
 
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Own your data. For good.</h1>
       <p className="bold white">One local database on your machine. Apps talk to it. Nothing requires an account.</p>
-      <p className="dim">Alpha &mdash; macOS Apple Silicon, ~5 minutes.</p>
+      <p className="dim">Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.</p>
+      <p className="hero-cta">
+        <a href="#install" className="link-btn">[Install &rarr;]</a>{'  '}
+        <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
+        <a href="https://thelastdb.com/llms.txt" className="link-btn">[llms.txt]</a>
+        <span className="dim"> &mdash; agents: plain-text install map</span>
+      </p>
       <hr className="decorative-rule" aria-hidden="true" />
 
       {/* WHAT */}
@@ -138,14 +170,20 @@ export default function Home() {
 
       {/* GET IT — primary CTA */}
       <Section variant="amber" id="install">
-        <h2><span className="bold">INSTALL</span> <span className="dim">copy, paste, done</span></h2>
+        <h2><span className="bold">INSTALL</span> <span className="dim">the main call to action</span></h2>
 
-        <p>Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon. One installer puts <span className="bold">LastDB</span> and the daily apps on your machine:</p>
+        <p>
+          <span className="bold white">This is how you get LastDB.</span>{' '}
+          Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and{' '}
+          <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon.
+          One installer puts <span className="bold">LastDB</span> and the daily apps on your machine.
+          Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
+        </p>
 
         <Card>
           <p>
             <Label color="yellow">RUN THIS</Label>{' '}
-            <span className="dim">one click → paste to a terminal or your agent</span>
+            <span className="dim">copy once → terminal or agent</span>
           </p>
           <CopyBlock text={INSTALL_SCRIPT} label="Copy" />
           <p className="dim">If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span> (the Bun installer usually does this; open a new terminal if needed).</p>
@@ -197,26 +235,32 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
 
       {/* NEXT */}
       <Section variant="slate" id="next">
-        <h2><span className="bold">GO DEEPER</span> <span className="dim">when you want more than install</span></h2>
+        <h2><span className="bold">GO DEEPER</span> <span className="dim">after you&rsquo;re installed</span></h2>
+
+        <p className="dim">Installed already? Next steps, by intent:</p>
 
         <div className="grid-2">
           <Card>
-            <p><Label color="blue">USING IT</Label></p>
+            <p><Label color="blue">1 &mdash; USE IT</Label></p>
             <p>Daily loop for humans, MCP + skills for agents.</p>
             <p><Link to="/start" className="link-btn">[How to use it &rarr;]</Link></p>
           </Card>
           <Card>
-            <p><Label color="blue">WHY THIS EXISTS</Label></p>
-            <p>The problem with silos, the model, and the principles.</p>
-            <p><Link to="/about" className="link-btn">[About LastDB &rarr;]</Link></p>
+            <p><Label color="blue">2 &mdash; PICK APPS</Label></p>
+            <p>What each app does, ranked by how ready it is for strangers.</p>
+            <p><Link to="/apps#readiness" className="link-btn">[Apps &amp; readiness &rarr;]</Link></p>
           </Card>
           <Card>
-            <p><Label color="blue">BUILD ON IT</Label></p>
-            <p>Socket API, access policies, shipping your own app.</p>
-            <p><Link to="/developer" className="link-btn">[Developer guide &rarr;]</Link></p>
+            <p><Label color="blue">3 &mdash; WHY / BUILD</Label></p>
+            <p>Thesis and principles, or the socket API for your own app.</p>
+            <p>
+              <Link to="/about" className="link-btn">[About]</Link>{'  '}
+              <Link to="/developer" className="link-btn">[Developer]</Link>
+            </p>
           </Card>
           <Card>
-            <p><Label color="blue">PAPERS &amp; WRITING</Label></p>
+            <p><Label color="blue">4 &mdash; READ</Label></p>
+            <p>Paper, ELI5, and how we build LastDB in the open.</p>
             <p>
               <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Paper]</a>{' '}
               <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer" className="link-btn">[ELI5]</a>{' '}

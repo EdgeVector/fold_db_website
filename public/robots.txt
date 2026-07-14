@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Human site + prerendered HTML for crawlers/agents
 Sitemap: https://thelastdb.com/sitemap.xml
+
+# Plain-text install + readiness map for AI agents
+# https://thelastdb.com/llms.txt

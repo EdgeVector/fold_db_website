@@ -163,9 +163,10 @@ export default function Apps() {
 
       <p className="bold white">LastDB is the database. Apps are tools that use it. Same machine, no account.</p>
 
-      <p>
-        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>
-        <span className="dim"> &mdash; one copy-paste block on the home page. This page is only <em>what each app is for</em>.</span>
+      <p className="hero-cta">
+        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
+        <a href="#readiness" className="link-btn">[Readiness ranking]</a>
+        <span className="dim"> &mdash; install on the home page; this page is what each app is for and how rough it is.</span>
       </p>
 
       <pre className="compare-table">{`  LastDB          the database (Homebrew)

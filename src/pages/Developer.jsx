@@ -29,9 +29,10 @@ export default function Developer() {
 
       <p>Data is never accessed as a free-for-all dump. Queries and mutations go through the node; first-party apps (Brain, Kanban, &hellip;) are the usual interface. Building a new app uses the same socket contract.</p>
 
-      <p>
-        <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>
-        <span className="dim"> &mdash; start there if you do not have a node yet.</span>
+      <p className="hero-cta">
+        <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>{'  '}
+        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <span className="dim"> &mdash; install first if you do not have a node yet.</span>
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
