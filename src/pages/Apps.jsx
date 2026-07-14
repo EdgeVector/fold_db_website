@@ -162,7 +162,7 @@ export default function Apps() {
       <h1 className="tagline">Apps on LastDB</h1>
 
       <p className="bold white">
-        LastDB is the floor. The apps are factory tools that stand on it.
+        LastDB is the foundation. The apps are tools that run on it.
       </p>
       <p>
         How ready is each tool for a stranger? How do you try the main ones?
