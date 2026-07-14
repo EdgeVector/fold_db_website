@@ -9,75 +9,39 @@ export default function Start() {
   return (
     <>
       <Helmet>
-        <title>Get Started - LastDB</title>
-        <meta name="description" content="Install LastDB and its apps in a few commands. Local encrypted database, no account. Human daily loop and agent setup." />
-        <meta property="og:title" content="Get Started - LastDB" />
-        <meta property="og:description" content="Get LastDB running on your Mac, add Brain and Kanban, and start the daily loop — yourself or with an AI agent." />
+        <title>How to use LastDB</title>
+        <meta name="description" content="Daily loop for LastDB: Brain for why, Kanban for what's in flight. MCP and skills for AI agents." />
+        <meta property="og:title" content="How to use LastDB" />
+        <meta property="og:description" content="After install: the daily loop for humans and agents." />
         <link rel="canonical" href="https://thelastdb.com/start" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
-      <AsciiTitle text="START" />
+      <AsciiTitle text="USE" />
 
-      <h1 className="tagline">Get Started</h1>
+      <h1 className="tagline">How to use it</h1>
 
-      <p className="bold white">LastDB is in <span className="white">alpha</span>. Install it on your Mac, add a couple of apps, and everything stays on your machine &mdash; no signup.</p>
+      <p className="bold white">This page assumes LastDB is already installed.</p>
+      <p>
+        Not there yet?{' '}
+        <Link to="/#install" className="link-btn">[Install on the home page &rarr;]</Link>
+      </p>
 
-      <p><span className="bold">LastDB</span> is the database. <span className="bold">Brain</span> is long-term memory. <span className="bold">Kanban</span> is the work board. Same database, different tools. Full app list: <Link to="/apps">Apps</Link>.</p>
+      <p><span className="bold">Brain</span> is long-term memory. <span className="bold">Kanban</span> is the work board. Same database, different jobs. Catalog: <Link to="/apps">Apps</Link>.</p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      {/* INSTALL */}
-      <Section variant="sage">
-        <h2 id="install"><span className="bold">INSTALL</span> <span className="dim">~5 minutes on Apple Silicon</span></h2>
-
-        <p>You need Homebrew and <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a>. Then one installer gives you LastDB <em>and</em> the daily apps:</p>
-
-        <div className="card-stack">
-          <Card>
-            <p><Label color="green">1 &mdash; BUN</Label> <span className="dim">if you don’t have it</span></p>
-            <pre>curl -fsSL https://bun.sh/install | bash</pre>
-          </Card>
-
-          <Card>
-            <p><Label color="green">2 &mdash; LAST STACK</Label> <span className="dim">installs LastDB + apps</span></p>
-            <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
-~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps`}</pre>
-            <p className="dim">Under the hood this runs <span className="bold">brew install edgevector/lastdb/lastdb</span>, clones Brain / Kanban / Situations / Dogfood Graph / LastSecrets, and links their commands.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="green">3 &mdash; START LASTDB</Label></p>
-            <pre>{`brew services start lastdb
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health`}</pre>
-            <p className="dim">You want a healthy JSON response. LastDB is now a background service on your Mac.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="green">4 &mdash; INIT THE APPS</Label></p>
-            <pre>{`brain init --grant-consent
-kanban init
-situations init
-lastsecrets init`}</pre>
-          </Card>
-        </div>
-
-        <p className="dim">Only want the database, not the apps? <span className="bold">brew install edgevector/lastdb/lastdb</span> is enough &mdash; details on <Link to="/apps">Apps</Link>.</p>
-      </Section>
-
-      {/* FOR HUMANS */}
       <Section variant="lavender">
-        <h2 id="humans"><span className="bold">THE DAILY LOOP</span> <span className="dim">How to use it</span></h2>
+        <h2 id="humans"><span className="bold">THE DAILY LOOP</span></h2>
 
         <div className="grid-2">
           <Card>
             <p><Label color="purple">BRAIN = WHY</Label></p>
-            <p>Long-lived notes: decisions, designs, context. Update existing notes in place instead of starting new ones every time.</p>
+            <p>Decisions, designs, context. Update existing notes in place instead of starting a new one every time.</p>
           </Card>
           <Card>
-            <p><Label color="purple">KANBAN = WHAT’S IN FLIGHT</Label></p>
-            <p>One card per unit of work. Move it as reality changes. The board is the source of truth for status &mdash; not your memory.</p>
+            <p><Label color="purple">KANBAN = WHAT&rsquo;S IN FLIGHT</Label></p>
+            <p>One card per unit of work. Move it as reality changes. The board is the source of truth for status.</p>
           </Card>
         </div>
 
@@ -101,11 +65,10 @@ kanban move ship-login doing`}</pre>
         </div>
       </Section>
 
-      {/* FOR AGENTS */}
       <Section variant="amber">
-        <h2 id="agent"><span className="bold">FOR YOUR AGENT</span> <span className="dim">Claude, Codex, or any MCP client</span></h2>
+        <h2 id="agent"><span className="bold">FOR YOUR AGENT</span></h2>
 
-        <p>Point the agent at this page (or <Link to="/apps">Apps</Link>). After the install above:</p>
+        <p>After install (and <span className="bold">~/.last-stack/setup</span>), point the agent at this page or the home page.</p>
 
         <div className="card-stack">
           <Card>
@@ -116,24 +79,29 @@ kanban mcp`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="yellow">SKILLS</Label> already installed by <span className="bold">~/.last-stack/setup</span></p>
-            <p>Skills teach the agent to file cards, drive one card to a merged PR, wait on CI, and close out work. Update anytime:</p>
+            <p><Label color="yellow">SKILLS</Label></p>
+            <p>Last Stack skills teach filing cards, driving one card to a merged PR, waiting on CI, and closing out. Refresh:</p>
             <pre>{`cd ~/.last-stack && git pull && ./setup`}</pre>
           </Card>
 
           <Card>
             <p><Label color="yellow">HOW TO WORK WITH YOU</Label></p>
-            <p>Start from <span className="bold">kanban list</span>. Put durable “why” in Brain, not only in the chat. One unit of work = one card. Prefer updating existing Brain notes over creating duplicates.</p>
+            <p>Start from <span className="bold">kanban list</span>. Put durable “why” in Brain, not only in chat. One unit of work = one card. Prefer updating existing Brain notes over creating duplicates.</p>
           </Card>
         </div>
 
-        <p className="section-subheading"><span className="bold">IF IT’S NOT RESPONDING</span></p>
+        <p className="section-subheading"><span className="bold">IF IT&rsquo;S NOT RESPONDING</span></p>
         <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health
 brew services restart lastdb    # only if health fails
-kanban list                     # cheap check that apps can talk to LastDB`}</pre>
+kanban list`}</pre>
       </Section>
 
-      <p className="dim">App catalog and per-app details: <Link to="/apps">Apps</Link>. Building on the API: <Link to="/developer">Developer Guide</Link>.</p>
+      <p className="dim">
+        <Link to="/" className="link-btn">[Install]</Link>{'  '}
+        <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
+        <Link to="/about" className="link-btn">[About]</Link>{'  '}
+        <Link to="/developer" className="link-btn">[Developer]</Link>
+      </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
     </>

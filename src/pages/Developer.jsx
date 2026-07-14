@@ -36,12 +36,12 @@ export default function Developer() {
         <h2 id="quickstart"><span className="bold">QUICK START</span> <span className="dim">Up and running in 5 minutes</span></h2>
 
         <div className="card-stack">
-          <Card><p><Label color="yellow">1. INSTALL LASTDB + APPS</Label> <span className="dim">recommended</span></p>
+          <Card><p><Label color="yellow">1. INSTALL</Label> <span className="dim">full path on the home page</span></p>
             <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
 brew services start lastdb`}</pre>
-            <p className="dim">The Last Stack installer installs LastDB via Homebrew and the daily apps (Brain, Kanban, &hellip;). Database-only: <span className="bold">brew install edgevector/lastdb/lastdb</span>. Details: <Link to="/apps">Apps</Link> / <Link to="/start">Get Started</Link>.</p></Card>
+            <p className="dim">Same commands as <Link to="/#install">Home &rarr; Get it</Link>. Database-only: <span className="bold">brew install edgevector/lastdb/lastdb</span>.</p></Card>
 
           <Card><p><Label color="yellow">2. CONFIRM IT&rsquo;S UP</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health
