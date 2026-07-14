@@ -9,7 +9,7 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="What each LastDB app does: Brain, Kanban, Situations, LastSecrets, and more — all on one local database." />
+        <meta name="description" content="What each LastDB app does: Brain, Kanban, Situations, and more — all on one local database." />
         <meta property="og:title" content="Apps - LastDB" />
         <meta property="og:description" content="Plain-language guide to the apps that run on LastDB." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
@@ -21,29 +21,30 @@ export default function Apps() {
       <p className="bold white">LastDB is the database. Apps are tools that use it. Same machine, no account.</p>
 
       <p>
-        <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>
-        <span className="dim"> &mdash; one path on the home page. This page is only about <em>what</em> each app is for.</span>
+        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>
+        <span className="dim"> &mdash; one copy-paste block on the home page. This page is only <em>what each app is for</em>.</span>
       </p>
 
-      <pre className="compare-table">{`  LastDB          the database
+      <pre className="compare-table">{`  LastDB          the database (Homebrew)
      │
-     ├── Brain         long-term memory
-     ├── Kanban        work board
-     ├── Situations    ops reality right now
-     ├── LastSecrets   secret refs (not paste-into-chat)
-     └── …             more tools, same database`}</pre>
+     ├── Brain         long-term memory      → brain
+     ├── Kanban        work board            → kanban
+     ├── Situations    ops reality right now → situations
+     ├── Dogfood Graph manual UX evidence    → local web app
+     └── …             early / optional tools`}</pre>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
       <Section variant="lavender">
-        <h2 id="catalog"><span className="bold">WHAT EACH APP DOES</span></h2>
+        <h2 id="catalog"><span className="bold">DAILY APPS</span> <span className="dim">in the default installer</span></h2>
 
         <div className="grid-2">
           <Card>
             <p><Label color="purple">BRAIN</Label> <span className="dim">command: <span className="bold">brain</span></span></p>
-            <p><span className="bold">Long-term memory.</span> Decisions, designs, notes, “why we did it.” Search later in plain English. What agents should write so the next session is not empty-headed.</p>
+            <p><span className="bold">Long-term memory.</span> Decisions, designs, notes, “why we did it.” Search later in plain English.</p>
             <pre>{`brain concept new caching --title "Cache" --body "chose LRU because …"
-brain ask "what did we decide about caching?"`}</pre>
+brain ask "what did we decide about caching?"
+brain list --type concept --limit 5`}</pre>
           </Card>
 
           <Card>
@@ -62,37 +63,37 @@ situations preflight --action enable-ci --repo my-org/my-repo`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="purple">LASTSECRETS</Label> <span className="dim">command: <span className="bold">lastsecrets</span></span></p>
-            <p><span className="bold">Secrets that stay out of chat and docs.</span> Store the value once; everywhere else keep a <span className="bold">lastsecrets://…</span> reference.</p>
-            <pre>{`printf '%s' "$TOKEN" | lastsecrets put api-token --value-stdin
-lastsecrets ref api-token`}</pre>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">DOGFOOD GRAPH</Label> <span className="dim">local web app</span></p>
+            <p><Label color="purple">DOGFOOD GRAPH</Label> <span className="dim">local web app</span></p>
             <p><span className="bold">Manual product-test evidence.</span> Expected UX as a graph, plus what humans actually saw. Not an automated test runner.</p>
             <pre>{`cd ~/lastdb-apps/dogfood-graph && npm run dev`}</pre>
           </Card>
 
           <Card>
             <p><Label color="yellow">THE LAST STACK</Label> <span className="dim">installer + agent skills</span></p>
-            <p><span className="bold">Not a data app.</span> The helper you used on the home page to install LastDB and the apps. Also teaches coding agents how to use Brain and Kanban.</p>
+            <p><span className="bold">Not a data app.</span> The helper from the home-page install. Also teaches coding agents how to use Brain and Kanban.</p>
             <pre>{`cd ~/.last-stack && git pull && ./setup`}</pre>
           </Card>
 
           <Card>
-            <p><Label color="yellow">ROUTINES</Label> <span className="dim">command: <span className="bold">routines</span></span></p>
-            <p><span className="bold">Scheduled agent jobs.</span> Optional timer for recurring Claude/Codex work. Not part of the default install.</p>
-            <pre>{`git clone https://github.com/EdgeVector/routines && cd routines
-bun install && bun run install-shim`}</pre>
+            <p><Label color="yellow">LASTSECRETS</Label> <span className="dim">optional</span></p>
+            <p><span className="bold">Secret refs.</span> Store a value once; everywhere else keep <span className="bold">lastsecrets://…</span>. Included when the public repo is available; otherwise skip.</p>
+            <pre>{`printf '%s' "$TOKEN" | lastsecrets put api-token --value-stdin
+lastsecrets ref api-token`}</pre>
           </Card>
         </div>
       </Section>
 
       <Section variant="amber">
-        <h2 id="early"><span className="bold">EARLY</span> <span className="dim">real, not polished for strangers yet</span></h2>
+        <h2 id="early"><span className="bold">EARLY</span> <span className="dim">real, not in the default installer</span></h2>
 
         <div className="grid-2">
+          <Card>
+            <p><Label color="yellow">ROUTINES</Label></p>
+            <p>Scheduled agent jobs (Claude / Codex) with a local registry and launchd daemon.</p>
+            <pre>{`git clone https://github.com/EdgeVector/routines && cd routines
+bun install && bun run install-shim
+routines list`}</pre>
+          </Card>
           <Card>
             <p><Label color="yellow">LASTGIT</Label></p>
             <p>Git hosting on LastDB. Remotes look like <span className="bold">lastdb:///my-repo</span>.</p>
@@ -111,7 +112,10 @@ bun install && bun run install-shim`}</pre>
       <Section variant="slate">
         <h2 id="manual"><span className="bold">INSTALL ONE APP YOURSELF</span> <span className="dim">optional</span></h2>
 
-        <p>Prefer not to use the stack installer? Install LastDB from the <Link to="/#install">home page</Link> (brew), then clone only what you want:</p>
+        <p>Prefer not to use the stack installer? Install LastDB first:</p>
+        <pre>{`brew install edgevector/lastdb/lastdb
+brew services start lastdb`}</pre>
+        <p>Then clone only what you want:</p>
 
         <div className="card-stack">
           <Card>
@@ -125,7 +129,7 @@ brain init --grant-consent`}</pre>
             <pre>{`git clone https://github.com/EdgeVector/fkanban && cd fkanban
 bun install && bun run install-cli
 kanban init`}</pre>
-            <p className="dim">Repo name is still <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
+            <p className="dim">Public repo is still named <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
           </Card>
           <Card>
             <p><Label color="blue">SITUATIONS</Label></p>
@@ -137,7 +141,7 @@ situations init`}</pre>
         </div>
 
         <p className="dim">
-          <Link to="/" className="link-btn">[Home / install]</Link>{'  '}
+          <Link to="/#install" className="link-btn">[Install (home)]</Link>{'  '}
           <Link to="/start" className="link-btn">[How to use it]</Link>{'  '}
           <Link to="/about" className="link-btn">[About]</Link>
         </p>

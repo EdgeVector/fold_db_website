@@ -1,17 +1,20 @@
 # LastDB
 
-> A local encrypted database that runs on your machine. Apps (Brain, Kanban, …) are thin clients of that database. No account required.
+> A local encrypted database that runs on your machine. Apps (Brain, Kanban, Situations, …) are thin clients of that database. No account required.
 
 Website: https://thelastdb.com
-This site is a React app that is **prerendered at build time** so agents and curl can read page text without executing JavaScript.
+Pages are prerendered at build time so agents and curl can read them without executing JavaScript.
 
 ## Install (macOS Apple Silicon)
 
 Needs Homebrew and Bun (https://bun.sh).
 
 ```bash
+# Bun (skip if already installed)
 curl -fsSL https://bun.sh/install | bash
+export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
+# Last Stack installer: LastDB (via brew) + daily apps
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
@@ -19,9 +22,12 @@ git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 brew services start lastdb
 brain init --grant-consent
 kanban init
-```
+situations init
 
-That installer runs `brew install edgevector/lastdb/lastdb`, clones the daily apps, and links CLIs.
+# Health check — note path is /health (not /api/health)
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+# expect: {"status":"ok"}
+```
 
 Database only:
 
@@ -32,9 +38,19 @@ brew services start lastdb
 
 ## Mental model
 
-- **LastDB** — the database (Homebrew service)
-- **Apps** — tools that talk to it (`brain`, `kanban`, …)
+- **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
+- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, …)
 - **The Last Stack** — installer + agent skills (not a second database)
+
+Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
+
+## Quick try after install
+
+```bash
+kanban list
+brain concept new hello --title "Hello" --body "my first note"
+brain ask "what did I just write?"
+```
 
 ## Key pages
 
@@ -42,13 +58,5 @@ brew services start lastdb
 - https://thelastdb.com/apps — what each app does
 - https://thelastdb.com/start — daily loop + agent MCP/skills
 - https://thelastdb.com/about — product thesis
-- https://thelastdb.com/developer — API / build on LastDB
+- https://thelastdb.com/developer — socket API for builders
 - https://thelastdb.com/blog — engineering writing
-
-## Quick try after install
-
-```bash
-kanban list
-brain put concept hello --title "Hello" --body "my first note"
-brain ask "what did I just write?"
-```
