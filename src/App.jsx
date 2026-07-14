@@ -7,6 +7,7 @@ import Home from './pages/Home';
 
 const Start = lazy(() => import('./pages/Start'));
 const Apps = lazy(() => import('./pages/Apps'));
+const About = lazy(() => import('./pages/About'));
 const Developer = lazy(() => import('./pages/Developer'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogTheStopWorkOrder = lazy(() => import('./pages/BlogTheStopWorkOrder'));
@@ -37,6 +38,7 @@ export default function App() {
           <Suspense fallback={<p className="dim">Loading...</p>}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
               <Route path="/start" element={<Start />} />
               {/* /guide and /using merged into /start (2026-06-20) — redirect old URLs */}
               <Route path="/guide" element={<Navigate to="/start" replace />} />
