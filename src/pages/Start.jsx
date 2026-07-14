@@ -37,7 +37,7 @@ export default function Start() {
         <div className="grid-2">
           <Card>
             <p><Label color="purple">BRAIN = WHY</Label></p>
-            <p>Decisions, designs, context. Update existing notes in place instead of starting a new one every time.</p>
+            <p>Decisions, designs, context. Prefer updating an existing note over creating a new one every time.</p>
           </Card>
           <Card>
             <p><Label color="purple">KANBAN = WHAT&rsquo;S IN FLIGHT</Label></p>
@@ -68,14 +68,14 @@ kanban move ship-login doing`}</pre>
       <Section variant="amber">
         <h2 id="agent"><span className="bold">FOR YOUR AGENT</span></h2>
 
-        <p>After install (and <span className="bold">~/.last-stack/setup</span>), point the agent at this page or the home page.</p>
+        <p>After install (and <span className="bold">~/.last-stack/setup</span>), point the agent at <Link to="/">the home page</Link>, this page, or <a href="https://thelastdb.com/llms.txt">llms.txt</a>.</p>
 
         <div className="card-stack">
           <Card>
             <p><Label color="yellow">MCP</Label> so the agent can read/write Brain and Kanban</p>
             <pre>{`brain mcp
 kanban mcp`}</pre>
-            <p className="dim">Register those as MCP servers in your client (stdio).</p>
+            <p className="dim">Register those as MCP servers in your client (stdio). Or: <span className="bold">brain mcp install</span> for Claude Code wiring.</p>
           </Card>
 
           <Card>
@@ -86,18 +86,20 @@ kanban mcp`}</pre>
 
           <Card>
             <p><Label color="yellow">HOW TO WORK WITH YOU</Label></p>
-            <p>Start from <span className="bold">kanban list</span>. Put durable “why” in Brain, not only in chat. One unit of work = one card. Prefer updating existing Brain notes over creating duplicates.</p>
+            <p>Start from <span className="bold">kanban list</span>. Put durable “why” in Brain, not only in chat. One unit of work = one card.</p>
           </Card>
         </div>
 
         <p className="section-subheading"><span className="bold">IF IT&rsquo;S NOT RESPONDING</span></p>
-        <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/health
+        <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+# expect {"status":"ok"}
 brew services restart lastdb    # only if health fails
 kanban list`}</pre>
+        <p className="dim">Health is <span className="bold">/health</span> on the Unix socket (not <span className="bold">/api/health</span>, and not TCP port 9001).</p>
       </Section>
 
       <p className="dim">
-        <Link to="/" className="link-btn">[Install]</Link>{'  '}
+        <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
         <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
         <Link to="/about" className="link-btn">[About]</Link>{'  '}
         <Link to="/developer" className="link-btn">[Developer]</Link>

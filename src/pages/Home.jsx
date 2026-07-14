@@ -87,7 +87,7 @@ export default function Home() {
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Own your data. For good.</h1>
       <p className="bold white">One local database on your machine. Apps talk to it. Nothing requires an account.</p>
-      <p className="dim">Alpha &mdash; macOS Apple Silicon today.</p>
+      <p className="dim">Alpha &mdash; macOS Apple Silicon, ~5 minutes.</p>
       <hr className="decorative-rule" aria-hidden="true" />
 
       {/* WHAT */}
@@ -108,48 +108,56 @@ export default function Home() {
           </Card>
           <Card>
             <p><Label color="green">APPS</Label></p>
-            <p>Tools that use it &mdash; memory, boards, secrets, and more. Same data, different jobs.</p>
+            <p>Tools that use it &mdash; memory, boards, and more. Same data, different jobs.</p>
           </Card>
         </div>
       </Section>
 
       {/* GET IT — primary CTA */}
       <Section variant="amber" id="install">
-        <h2><span className="bold">GET IT</span> <span className="dim">The only install path you need</span></h2>
+        <h2><span className="bold">INSTALL</span> <span className="dim">copy, paste, done</span></h2>
 
-        <p>You need <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a>. Then one installer gives you <span className="bold">LastDB and the daily apps</span>:</p>
+        <p>Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon. One installer puts <span className="bold">LastDB</span> and the daily apps on your machine:</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="yellow">1 &mdash; BUN</Label> <span className="dim">skip if you already have it</span></p>
-            <pre>curl -fsSL https://bun.sh/install | bash</pre>
-          </Card>
+        <Card>
+          <p><Label color="yellow">RUN THIS</Label></p>
+          <pre>{`# 0) Bun (skip if \`bun --version\` works)
+curl -fsSL https://bun.sh/install | bash
+# open a new terminal after Bun installs, or:
+export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
-          <Card>
-            <p><Label color="yellow">2 &mdash; INSTALL LASTDB + APPS</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations, Dogfood Graph
+git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps`}</pre>
-            <p className="dim">That runs <span className="bold">brew install</span> for LastDB, downloads Brain / Kanban / Situations / Dogfood Graph (and LastSecrets when available), and puts their commands on your PATH.</p>
-          </Card>
+~/.last-stack/bin/last-stack-install-apps
 
-          <Card>
-            <p><Label color="yellow">3 &mdash; START + INIT</Label></p>
-            <pre>{`brew services start lastdb
+# 2) Start the database and init the apps
+brew services start lastdb
 brain init --grant-consent
-kanban init`}</pre>
-            <p className="dim">Optional: <span className="bold">situations init</span> and <span className="bold">lastsecrets init</span> if you want those too.</p>
-          </Card>
+kanban init
+situations init
 
-          <Card>
-            <p><Label color="yellow">4 &mdash; TRY IT</Label></p>
-            <pre>{`kanban list
+# 3) Prove it
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+kanban list
 brain concept new hello --title "Hello" --body "my first note"
 brain ask "what did I just write?"`}</pre>
+          <p className="dim">If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span> (the Bun installer usually does this; open a new terminal if needed).</p>
+        </Card>
+
+        <div className="grid-2" style={{ marginTop: '1em' }}>
+          <Card>
+            <p><Label color="blue">WHAT THAT DID</Label></p>
+            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span>, start the daemon, init each app.</p>
+          </Card>
+          <Card>
+            <p><Label color="blue">DATABASE ONLY</Label></p>
+            <pre>{`brew install edgevector/lastdb/lastdb
+brew services start lastdb
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
+            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>. Add apps later from the same installer with <span className="bold">--no-brew</span>.</p>
           </Card>
         </div>
-
-        <p className="dim">Database only (no apps)? <span className="bold">brew install edgevector/lastdb/lastdb</span> then <span className="bold">brew services start lastdb</span>.</p>
       </Section>
 
       {/* WHAT YOU GET */}
@@ -171,7 +179,7 @@ brain ask "what did I just write?"`}</pre>
           </Card>
           <Card>
             <p><Label color="purple">MORE</Label></p>
-            <p>LastSecrets, Dogfood Graph, agent skills, and early apps like LastGit.</p>
+            <p>Dogfood Graph, agent skills (Last Stack), and early apps like LastGit.</p>
           </Card>
         </div>
 
@@ -198,7 +206,7 @@ brain ask "what did I just write?"`}</pre>
           </Card>
           <Card>
             <p><Label color="blue">BUILD ON IT</Label></p>
-            <p>API, access policies, and shipping your own app.</p>
+            <p>Socket API, access policies, shipping your own app.</p>
             <p><Link to="/developer" className="link-btn">[Developer guide &rarr;]</Link></p>
           </Card>
           <Card>
