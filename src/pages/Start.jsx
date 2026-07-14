@@ -51,7 +51,7 @@ export default function Start() {
           </Card>
           <Card>
             <p><Label color="blue">2</Label> When a decision settles, write it to Brain:</p>
-            <pre>{`brain put concept caching --title "Cache layer" --body "chose LRU; why: …"
+            <pre>{`brain concept new caching --title "Cache layer" --body "chose LRU; why: …"
 brain ask "what did we decide about caching?"`}</pre>
           </Card>
           <Card>

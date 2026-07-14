@@ -130,7 +130,7 @@ export default function Home() {
             <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps`}</pre>
-            <p className="dim">That runs <span className="bold">brew install</span> for LastDB, downloads Brain / Kanban / Situations / Dogfood Graph / LastSecrets, and puts their commands on your PATH.</p>
+            <p className="dim">That runs <span className="bold">brew install</span> for LastDB, downloads Brain / Kanban / Situations / Dogfood Graph (and LastSecrets when available), and puts their commands on your PATH.</p>
           </Card>
 
           <Card>
@@ -144,7 +144,7 @@ kanban init`}</pre>
           <Card>
             <p><Label color="yellow">4 &mdash; TRY IT</Label></p>
             <pre>{`kanban list
-brain put concept hello --title "Hello" --body "my first note"
+brain concept new hello --title "Hello" --body "my first note"
 brain ask "what did I just write?"`}</pre>
           </Card>
         </div>

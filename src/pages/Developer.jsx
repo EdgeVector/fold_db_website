@@ -51,7 +51,7 @@ lastdb --version`}</pre>
 
           <Card><p><Label color="yellow">3. INIT AN APP + TRY SEARCH</Label></p>
             <pre>{`brain init --grant-consent
-brain put concept local-search --title "Local search" --body "Embeddings stay on this machine."
+brain concept new local-search --title "Local search" --body "Embeddings stay on this machine."
 brain ask "what did I note about search?"`}</pre>
             <p className="dim">No hosted account is required to use first-party apps. Building and publishing a <span className="bold">new</span> app needs a developer identity (below).</p></Card>
         </div>
