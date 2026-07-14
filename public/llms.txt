@@ -55,7 +55,9 @@ Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
 ```bash
 kanban list
 brain concept new hello --title "Hello" --body "my first note"
-brain ask "what did I just write?"
+brain get hello
+# semantic ask may lag a few seconds after create; use a term from the body
+brain ask "first note"
 ```
 
 ## App readiness (ranked high → low; judgment, not SLAs)

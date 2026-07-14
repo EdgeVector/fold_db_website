@@ -27,7 +27,9 @@ situations init
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 kanban list
 brain concept new hello --title "Hello" --body "my first note"
-brain ask "what did I just write?"`;
+brain get hello
+# semantic ask may lag a few seconds after create; use a term from the body
+brain ask "first note"`;
 
 // Draftsman architecture figure: apps as outline clients, LastDB as poché store.
 const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
