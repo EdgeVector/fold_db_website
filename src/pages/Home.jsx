@@ -4,6 +4,68 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
+import ArchFigure from '../components/ArchFigure';
+
+// Draftsman architecture figure: apps as outline clients, LastDB as poché store.
+const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto"
+     font-family="'IBM Plex Mono', monospace">
+  <defs>
+    <pattern id="home-poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <text x="40" y="22" fill="#928374" font-size="10" letter-spacing="1.5">APPS — THIN CLIENTS</text>
+
+  <rect x="40" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="100" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">BRAIN</text>
+  <text x="100" y="74" text-anchor="middle" fill="#928374" font-size="10">memory</text>
+
+  <rect x="190" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">KANBAN</text>
+  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">work board</text>
+
+  <rect x="340" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SITUATIONS</text>
+  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">ops posture</text>
+
+  <rect x="490" y="36" width="130" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
+  <text x="555" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR APP</text>
+  <text x="555" y="74" text-anchor="middle" fill="#83a598" font-size="10">same contract</text>
+
+  <line x1="100" y1="88" x2="100" y2="128" stroke="#928374" stroke-width="1"/>
+  <rect x="98" y="86" width="4" height="4" fill="#928374"/>
+  <rect x="98" y="126" width="4" height="4" fill="#928374"/>
+
+  <line x1="250" y1="88" x2="250" y2="128" stroke="#928374" stroke-width="1"/>
+  <rect x="248" y="86" width="4" height="4" fill="#928374"/>
+  <rect x="248" y="126" width="4" height="4" fill="#928374"/>
+
+  <line x1="400" y1="88" x2="400" y2="128" stroke="#928374" stroke-width="1"/>
+  <rect x="398" y="86" width="4" height="4" fill="#928374"/>
+  <rect x="398" y="126" width="4" height="4" fill="#928374"/>
+
+  <line x1="555" y1="88" x2="555" y2="128" stroke="#83a598" stroke-width="1"/>
+  <rect x="553" y="86" width="4" height="4" fill="#83a598"/>
+  <rect x="553" y="126" width="4" height="4" fill="#83a598"/>
+
+  <line x1="100" y1="128" x2="555" y2="128" stroke="#928374" stroke-width="1"/>
+
+  <line x1="330" y1="128" x2="330" y2="168" stroke="#928374" stroke-width="1"/>
+  <rect x="328" y="126" width="4" height="4" fill="#928374"/>
+  <rect x="328" y="166" width="4" height="4" fill="#928374"/>
+  <text x="342" y="152" fill="#928374" font-size="10" letter-spacing="1">SOCKET</text>
+
+  <rect x="130" y="170" width="400" height="72" fill="url(#home-poche)" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="200" text-anchor="middle" fill="#ebdbb2" font-size="14" letter-spacing="2">YOUR LASTDB</text>
+  <text x="330" y="220" text-anchor="middle" fill="#928374" font-size="11">local · encrypted · one process</text>
+
+  <line x1="130" y1="256" x2="130" y2="270" stroke="#928374" stroke-width="1"/>
+  <line x1="530" y1="256" x2="530" y2="270" stroke="#928374" stroke-width="1"/>
+  <line x1="130" y1="263" x2="530" y2="263" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="288" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">ONE DATABASE — APPS DO NOT OWN THE DATA</text>
+</svg>`;
 
 export default function Home() {
   return (
@@ -34,14 +96,10 @@ export default function Home() {
 
         <p>Today every app builds its own silo: notes in one place, tasks in another, secrets somewhere else. <span className="bold white">LastDB inverts that.</span> Your data lives in <span className="bold">one</span> encrypted database you run yourself. Applications become thin clients of <em>your</em> database &mdash; not permanent custodians of a copy.</p>
 
-        <pre className="compare-table">{`  Brain · Kanban · Situations · your apps
-              \\      |      |      /
-               \\     |     |     /
-                `}<span style={{ color: '#fabd2f' }}>{`+---------------------------+`}</span>{`
-                `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`     `}<span className="bold white">Your LastDB</span>{`          `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
-                `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`  `}<span className="dim">local · encrypted · yours</span>{`  `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
-                `}<span style={{ color: '#fabd2f' }}>{`+---------------------------+`}</span>
-        </pre>
+        <ArchFigure
+          svg={MODEL_SVG}
+          caption="Fig. 1 — apps are clients; the data lives in one local database"
+        />
 
         <div className="grid-2">
           <Card>
