@@ -52,25 +52,26 @@ brain concept new hello --title "Hello" --body "my first note"
 brain ask "what did I just write?"
 ```
 
-## App readiness (judgment, not SLAs)
+## App readiness (ranked high → low; judgment, not SLAs)
 
-Whole stack is product alpha. Stages: Alpha (daily driver) · Dogfood (more edges) · Early (not in default installer) · Optional (when available).
+Whole stack is product alpha. Stages: Alpha · Dogfood · Optional · Early.
 
-| App | Stage | Installer | ~% |
-|-----|--------|-----------|-----|
-| LastDB | Alpha | yes | ~70 |
-| Brain | Alpha | yes | ~75 |
-| Kanban | Alpha | yes | ~70 |
-| Situations | Dogfood | yes | ~55 |
-| Dogfood Graph | Dogfood | yes | ~45 |
-| Last Stack | Dogfood | yes* | ~60 |
-| LastSecrets | Optional | when avail | ~40 |
-| Routines | Early | no | ~35 |
-| LastGit | Early | no | ~30 |
-| CodeRings | Early | no | ~25 |
-| Discovery | Early | no | ~25 |
+| Rank | App | Stage | ~% |
+|------|-----|--------|-----|
+| 01 | Brain | Alpha | ~75 |
+| 02 | LastDB | Alpha | ~70 |
+| 03 | Kanban | Alpha | ~70 |
+| 04 | Last Stack | Dogfood | ~60 |
+| 05 | Situations | Dogfood | ~55 |
+| 06 | Dogfood Graph | Dogfood | ~45 |
+| 07 | LastSecrets | Optional | ~40 |
+| 08 | Routines | Early | ~35 |
+| 09 | LastGit | Early | ~30 |
+| 10 | CodeRings | Early | ~25 |
+| 11 | Discovery | Early | ~25 |
 
-Full notes: https://thelastdb.com/apps#readiness
+First try: ranks 01–03. Full notes: https://thelastdb.com/apps#readiness
+
 
 ## Key pages
 
