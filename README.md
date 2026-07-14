@@ -32,6 +32,16 @@ npm run preview
 
 Vercel (`vercel.json`). Pushes to `main` deploy automatically. Domain: `thelastdb.com`. Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 
+## Source of truth
+
+This repository is homed at `lastdb:///fold_db_website`. LastGit change requests
+and `.lastgit/ci.sh` are the merge gate; GitHub is a read-only public mirror for
+clone and browse workflows. Repo-local GitHub Actions are intentionally inert.
+
+Mirror sync is handled by `.lastgit/sync-github-mirror.sh`, optionally installed
+as `com.edgevector.lastgit-mirror-fold-db-website` with
+`.lastgit/install-mirror-launchd.sh`.
+
 ## Related
 
 - Install: https://thelastdb.com/#install
