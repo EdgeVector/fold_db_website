@@ -1,54 +1,11 @@
-name: CI
+name: ci.yml (mirror-inert)
 
-# PR-time validation for the fold_db_website Vite app.
-# Runs `npm ci` + `npm run build` to catch broken builds before merge.
-
+# GitHub is a read-only public mirror. LastGit is source of truth for CR/CI/merge.
 on:
-  pull_request:
-  merge_group:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Vite build
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-  # Org-wide convention: every EdgeVector repo exposes a check named
-  # `ci-required` so the org ruleset can require a single uniform check
-  # across all repos.
-  ci-required:
-    name: ci-required
-    needs: [build]
-    if: always()
+  inert:
     runs-on: ubuntu-latest
     steps:
-      - name: All required jobs must succeed
-        env:
-          RESULTS: ${{ join(needs.*.result, ',') }}
-        run: |
-          echo "Required job results: $RESULTS"
-          for r in ${RESULTS//,/ }; do
-            if [ "$r" != "success" ]; then
-              echo "::error::A required job did not succeed (result: $r)"
-              exit 1
-            fi
-          done
-          echo "All required jobs passed."
+      - run: echo "GitHub mirror - no Actions. Use LastGit lastdb:///fold_db_website + code-node forge."
