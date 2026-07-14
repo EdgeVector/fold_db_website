@@ -49,6 +49,47 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 [class^="section-"] a:hover { color: #b8bb26; }
 .card { border: 1px solid #504945; padding: 12px; display: flex; flex-direction: column; min-width: 0; }
 .card pre { background: #282828; padding: 8px; margin: 0.5em 0; border: 1px solid #504945; }
+
+/* copyable install / code block */
+.copy-block {
+  position: relative;
+  margin: 0.5em 0;
+}
+.copy-block pre {
+  background: #282828;
+  padding: 8px;
+  padding-top: 2.1em;
+  margin: 0;
+  border: 1px solid #504945;
+  overflow-x: auto;
+}
+.copy-block-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  background: #3c3836;
+  border: 1px solid #504945;
+  color: #fe8019;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.copy-block-btn:hover {
+  border-color: #fabd2f;
+  color: #fabd2f;
+}
+.copy-block-btn.copied {
+  border-color: #b8bb26;
+  color: #b8bb26;
+}
+.copy-block-btn:focus-visible {
+  outline: 1px solid #fabd2f;
+  outline-offset: 2px;
+}
 .label { padding: 1px 6px; font-weight: 700; color: #282828; }
 .label-red    { background: #fb4934; }
 .label-green  { background: #b8bb26; }

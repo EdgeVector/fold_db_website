@@ -5,6 +5,29 @@ import Card from '../components/Card';
 import Label from '../components/Label';
 import AsciiTitle from '../components/AsciiTitle';
 import ArchFigure from '../components/ArchFigure';
+import CopyBlock from '../components/CopyBlock';
+
+const INSTALL_SCRIPT = `# 0) Bun (skip if \`bun --version\` works)
+curl -fsSL https://bun.sh/install | bash
+# open a new terminal after Bun installs, or:
+export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
+
+# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations, Dogfood Graph
+git clone https://github.com/EdgeVector/last-stack ~/.last-stack
+~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps
+
+# 2) Start the database and init the apps
+brew services start lastdb
+brain init --grant-consent
+kanban init
+situations init
+
+# 3) Prove it
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+kanban list
+brain concept new hello --title "Hello" --body "my first note"
+brain ask "what did I just write?"`;
 
 // Draftsman architecture figure: apps as outline clients, LastDB as poché store.
 const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
@@ -120,28 +143,11 @@ export default function Home() {
         <p>Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon. One installer puts <span className="bold">LastDB</span> and the daily apps on your machine:</p>
 
         <Card>
-          <p><Label color="yellow">RUN THIS</Label></p>
-          <pre>{`# 0) Bun (skip if \`bun --version\` works)
-curl -fsSL https://bun.sh/install | bash
-# open a new terminal after Bun installs, or:
-export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
-
-# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations, Dogfood Graph
-git clone https://github.com/EdgeVector/last-stack ~/.last-stack
-~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps
-
-# 2) Start the database and init the apps
-brew services start lastdb
-brain init --grant-consent
-kanban init
-situations init
-
-# 3) Prove it
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-kanban list
-brain concept new hello --title "Hello" --body "my first note"
-brain ask "what did I just write?"`}</pre>
+          <p>
+            <Label color="yellow">RUN THIS</Label>{' '}
+            <span className="dim">one click → paste to a terminal or your agent</span>
+          </p>
+          <CopyBlock text={INSTALL_SCRIPT} label="Copy" />
           <p className="dim">If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span> (the Bun installer usually does this; open a new terminal if needed).</p>
         </Card>
 
