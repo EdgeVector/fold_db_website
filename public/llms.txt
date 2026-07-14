@@ -1,9 +1,9 @@
 # LastDB
 
-> Build for your happiness. Own the floor under the work.
+> Build for your happiness. On a foundation you own.
 >
-> LastDB is a local encrypted database under a software factory you run yourself
-> (Brain, Kanban, Situations, agent skills — tools on one floor, not SaaS silos).
+> LastDB is a local encrypted database under a development stack you run yourself
+> (Brain, Kanban, Situations, agent skills — tools on one foundation, not SaaS silos).
 >
 > Local use needs no account. Optional cloud backup/sync joins an account for
 > multi-device (`lastdb connect`).
