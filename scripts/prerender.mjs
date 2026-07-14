@@ -27,14 +27,19 @@ function applyHelmet(template, helmet) {
   if (helmet?.title?.toString()) {
     html = html.replace(/<title>[^<]*<\/title>/, helmet.title.toString());
   }
-  if (helmet?.meta?.toString()) {
-    html = html.replace(/<meta name="description" content="[^"]*" \/>/, '');
-    html = html.replace(
-      '</head>',
-      `  ${helmet.meta.toString()}\n  ${helmet.link?.toString() || ''}\n</head>`,
-    );
-  } else if (helmet?.link?.toString()) {
-    html = html.replace('</head>', `  ${helmet.link.toString()}\n</head>`);
+  const headBits = [
+    helmet?.meta?.toString(),
+    helmet?.link?.toString(),
+    helmet?.script?.toString(),
+  ]
+    .filter(Boolean)
+    .join('\n  ');
+  if (headBits) {
+    // Drop static shell description when page Helmet supplies its own.
+    if (helmet?.meta?.toString()) {
+      html = html.replace(/<meta name="description" content="[^"]*"\s*\/?>/, '');
+    }
+    html = html.replace('</head>', `  ${headBits}\n</head>`);
   }
   return html;
 }
@@ -85,6 +90,33 @@ async function main() {
         );
       }
     }
+
+    // Keep sitemap in lockstep with prerendered routes (+ llms.txt for agents).
+    const sitemapUrls = [
+      ...paths.map((p) => (p === '/' ? 'https://thelastdb.com/' : `https://thelastdb.com${p}`)),
+      'https://thelastdb.com/llms.txt',
+    ];
+    const priority = (url) => {
+      if (url.endsWith('thelastdb.com/')) return '1.0';
+      if (url.includes('/apps')) return '0.9';
+      if (url.includes('/start') || url.includes('/about') || url.includes('/developer')) return '0.85';
+      if (url.includes('llms.txt')) return '0.7';
+      if (url.endsWith('/blog')) return '0.75';
+      if (url.includes('/blog/')) return '0.6';
+      return '0.5';
+    };
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls
+  .map(
+    (loc) =>
+      `  <url><loc>${loc}</loc><priority>${priority(loc)}</priority></url>`,
+  )
+  .join('\n')}
+</urlset>
+`;
+    fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap);
+    console.log(`sitemap → dist/sitemap.xml (${sitemapUrls.length} urls)`);
   } finally {
     await vite.close();
   }

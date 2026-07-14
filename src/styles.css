@@ -107,6 +107,18 @@ a:hover { color: #b8bb26; }
 .link-btn:hover { color: #fabd2f; }
 .link-btn.active { color: #fabd2f; cursor: default; }
 
+.hero-cta {
+  margin: 1em 0 0.4em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.6em;
+}
+.hero-cta .link-btn {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
 /* decorative rules */
 .decorative-rule {
   border: none;

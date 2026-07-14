@@ -22,9 +22,9 @@ export default function Start() {
       <h1 className="tagline">How to use it</h1>
 
       <p className="bold white">This page assumes LastDB is already installed.</p>
-      <p>
-        Not there yet?{' '}
-        <Link to="/#install" className="link-btn">[Install on the home page &rarr;]</Link>
+      <p className="hero-cta">
+        <Link to="/#install" className="link-btn">[Not installed? Install &rarr;]</Link>{'  '}
+        <Link to="/apps#readiness" className="link-btn">[App readiness]</Link>
       </p>
 
       <p><span className="bold">Brain</span> is long-term memory. <span className="bold">Kanban</span> is the work board. Same database, different jobs. Catalog: <Link to="/apps">Apps</Link>.</p>

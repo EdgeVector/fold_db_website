@@ -18,7 +18,11 @@ export default function About() {
 
       <h1 className="tagline">About LastDB</h1>
       <p className="bold white">Why this exists &mdash; and how the model differs from “every app owns a database.”</p>
-      <p className="dim">Want to run it? Install is on the <Link to="/">home page</Link>.</p>
+      <p className="hero-cta">
+        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
+        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <span className="dim"> &mdash; thesis here; install and apps live on their own pages.</span>
+      </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
