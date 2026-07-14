@@ -95,16 +95,16 @@ export default function Home() {
     <>
       <Helmet>
         <title>LastDB - Build for your happiness</title>
-        <meta name="description" content="Build for your happiness. LastDB is the local floor under a software factory you own — memory, board, ops, agents. Offline with no account; optional cloud backup/sync for multi-device." />
+        <meta name="description" content="Build for your happiness. LastDB is the local foundation under a development stack you own — memory, board, ops, agents. Offline with no account; optional cloud backup/sync for multi-device." />
         <meta property="og:title" content="LastDB - Build for your happiness" />
-        <meta property="og:description" content="A local encrypted database for a development stack that is yours. Build hard. Build happy. Own the floor." />
+        <meta property="og:description" content="A local encrypted database for a development stack that is yours. Build hard. Build happy. Own your foundation." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://thelastdb.com" />
         <meta property="og:site_name" content="LastDB" />
         <meta property="og:image" content="https://thelastdb.com/favicon.png" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="LastDB - Build for your happiness" />
-        <meta name="twitter:description" content="Own the floor under your agents and tools. Build for your happiness." />
+        <meta name="twitter:description" content="Build for your happiness — on a foundation you own." />
         <meta name="twitter:image" content="https://thelastdb.com/favicon.png" />
         <link rel="canonical" href="https://thelastdb.com" />
         <script type="application/ld+json">{`
@@ -115,7 +115,7 @@ export default function Home() {
       "@type": "WebSite",
       "name": "LastDB",
       "url": "https://thelastdb.com",
-      "description": "Build for your happiness. Local encrypted database under a software factory you own."
+      "description": "Build for your happiness. Local encrypted database under a development stack you own."
     },
     {
       "@type": "SoftwareApplication",
@@ -135,10 +135,10 @@ export default function Home() {
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />
       <h1 className="tagline">Build for your happiness.</h1>
-      <p className="bold white">Own the floor under the work.</p>
+      <p className="bold white">On a foundation you own.</p>
       <p>
         Software should make a life you want to live in &mdash; not a stack of rented silos you babysit.
-        LastDB is a <span className="bold white">local encrypted database</span> under a serious development factory:
+        LastDB is a <span className="bold white">local encrypted database</span> under a serious development stack:
         memory, board, ops gates, agent skills. Build hard. Build happy. Keep the substrate.
       </p>
       <p className="dim">
@@ -155,7 +155,7 @@ export default function Home() {
 
       {/* WHAT */}
       <Section variant="sage" id="what">
-        <h2><span className="bold">YOUR FACTORY, YOUR FLOOR</span></h2>
+        <h2><span className="bold">YOUR STACK, YOUR FOUNDATION</span></h2>
 
         <p>
           Most teams assemble a life out of SaaS: notes here, tickets there, agents somewhere else &mdash;
@@ -163,23 +163,23 @@ export default function Home() {
         </p>
         <p>
           <span className="bold white">LastDB is the room you own.</span> One permanent local database.
-          Apps (Brain, Kanban, Situations, and the ones you write) are tools on that floor &mdash;
-          not permanent custodians of a copy. The point of the factory is not grind for its own sake;
+          Apps (Brain, Kanban, Situations, and the ones you write) are tools on that foundation &mdash;
+          not permanent custodians of a copy. The point of the stack is not grind for its own sake;
           it is building software &mdash; and a practice &mdash; that makes you happy.
         </p>
 
         <ArchFigure
           svg={MODEL_SVG}
-          caption="Fig. 1 — tools on a floor you own; the data stays local"
+          caption="Fig. 1 — tools on a foundation you own; the data stays local"
         />
 
         <div className="grid-2">
           <Card>
-            <p><Label color="green">LASTDB</Label> <span className="dim">the floor</span></p>
+            <p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
             <p>Encrypted local database. One process on your Mac. Everything else stands on this.</p>
           </Card>
           <Card>
-            <p><Label color="green">YOUR STACK</Label> <span className="dim">the factory</span></p>
+            <p><Label color="green">YOUR STACK</Label> <span className="dim">the stack</span></p>
             <p>Memory, board, ops, agents &mdash; and apps you invent. Same data. No per-tool silo.</p>
           </Card>
         </div>
@@ -190,10 +190,10 @@ export default function Home() {
         <h2><span className="bold">INSTALL</span> <span className="dim">the main call to action</span></h2>
 
         <p>
-          <span className="bold white">This is how you stand up the floor.</span>{' '}
+          <span className="bold white">This is how you get started.</span>{' '}
           Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and{' '}
           <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon.
-          One installer puts <span className="bold">LastDB</span> and the starter factory apps on your machine.
+          One installer puts <span className="bold">LastDB</span> and the starter apps on your machine.
           Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
         </p>
 
@@ -223,7 +223,7 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
 
       {/* WHAT YOU GET */}
       <Section variant="lavender" id="apps-teaser">
-        <h2><span className="bold">A STARTER FACTORY</span> <span className="dim">what ships with install</span></h2>
+        <h2><span className="bold">STARTER APPS</span> <span className="dim">what ships with install</span></h2>
 
         <p>
           Not only a database &mdash; a first cut of the stack we use to build LastDB itself with agents.

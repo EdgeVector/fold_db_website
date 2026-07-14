@@ -18,7 +18,7 @@ export default function About() {
 
       <h1 className="tagline">About LastDB</h1>
       <p className="bold white">
-        Why own the floor under work that makes you happy &mdash; instead of renting a silo per tool.
+        Why own the foundation under work that makes you happy &mdash; instead of renting a silo per tool.
       </p>
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
