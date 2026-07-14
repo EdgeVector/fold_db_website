@@ -1,6 +1,12 @@
 # LastDB
 
-> A local encrypted database that runs on your machine. Apps (Brain, Kanban, Situations, …) are thin clients of that database. Local use needs no account; optional cloud backup/sync joins an account for multi-device (`lastdb connect`).
+> Build for your happiness. Own the floor under the work.
+>
+> LastDB is a local encrypted database under a software factory you run yourself
+> (Brain, Kanban, Situations, agent skills — tools on one floor, not SaaS silos).
+>
+> Local use needs no account. Optional cloud backup/sync joins an account for
+> multi-device (`lastdb connect`).
 
 Website: https://thelastdb.com
 Pages are prerendered at build time so agents and curl can read them without executing JavaScript.

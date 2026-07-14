@@ -162,12 +162,11 @@ export default function Apps() {
       <h1 className="tagline">Apps on LastDB</h1>
 
       <p className="bold white">
-        LastDB is the database. Everything else is an app that talks to it.
+        LastDB is the floor. The apps are factory tools that stand on it.
       </p>
       <p>
-        This page answers two questions: <span className="bold">how ready is each app for a stranger?</span>{' '}
-        and <span className="bold">how do I try the main ones?</span>{' '}
-        To install the stack, go home first.
+        How ready is each tool for a stranger? How do you try the main ones?
+        Install the stack from the home page first &mdash; then come back here.
       </p>
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install on Home &rarr;]</Link>
