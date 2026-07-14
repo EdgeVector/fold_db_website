@@ -189,10 +189,10 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
             <pre>{`lastdb status              # is the daemon up?
 lastdb --version
 lastdbd --version
-lastdb connect             # optional: multi-device recovery phrase
+lastdb connect             # optional: join cloud backup/sync (account + recovery phrase)
 brew services start lastdb
 brew services restart lastdb`}</pre>
-            <p className="dim">The control CLI is intentionally small. App workflows live in app CLIs.</p>
+            <p className="dim">Local use needs no account. <span className="bold">lastdb connect</span> joins an existing account for multi-device cloud backup/sync. App workflows live in app CLIs.</p>
           </Card>
 
           <Card>
