@@ -22,6 +22,10 @@
 #     Override for the scratch attribution commit (defaults to Tom's GitHub
 #     noreply, which is a Vercel team member). Required because Vercel blocks
 #     deploys whose HEAD author is lastgit-merge@lastdb.local (TEAM_ACCESS_REQUIRED).
+#   VITE_SENTRY_DSN / VITE_SENTRY_ENVIRONMENT / VITE_SENTRY_RELEASE
+#     Browser error reporting env. If VITE_SENTRY_DSN is unset, this script
+#     reads lastsecrets://obs-sentry-dsn-javascript-react as the current web
+#     Sentry project DSN.
 #   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
@@ -75,6 +79,17 @@ DEPLOY_GIT_AUTHOR_NAME="${VERCEL_DEPLOY_GIT_AUTHOR_NAME:-Tom Tang}"
 command -v npm >/dev/null || { echo "FAIL: npm missing" >&2; exit 1; }
 command -v vercel >/dev/null || { echo "FAIL: vercel CLI missing (npm i -g vercel)" >&2; exit 1; }
 command -v python3 >/dev/null || { echo "FAIL: python3 missing (used to write auth.json)" >&2; exit 1; }
+
+if [ -z "${VITE_SENTRY_DSN:-}" ]; then
+  VITE_SENTRY_DSN="$(lastsecrets_get obs-sentry-dsn-javascript-react || true)"
+  export VITE_SENTRY_DSN
+fi
+if [ -n "${VITE_SENTRY_DSN:-}" ]; then
+  export VITE_SENTRY_ENVIRONMENT="${VITE_SENTRY_ENVIRONMENT:-production}"
+  export VITE_SENTRY_RELEASE="${VITE_SENTRY_RELEASE:-$OID}"
+else
+  echo "WARN: no VITE_SENTRY_DSN; building without browser Sentry" >&2
+fi
 
 echo "== npm ci =="
 npm ci
