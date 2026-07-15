@@ -14,6 +14,11 @@
 # honors VERCEL_TOKEN *after* the credentials gate, so env-only auth fails
 # when auth.json is empty — file auth is the reliable path.
 #
+# Browser Sentry env is intentionally resolved before the build and deployed via
+# Vercel's prebuilt output path. A plain `vercel deploy` rebuilds in Vercel's
+# cloud and can drop LastSecrets-sourced VITE_* values that only exist in this
+# local deploy process.
+#
 # Optional env:
 #   VERCEL_SCOPE   (default shiba4lifes-projects)
 #   VERCEL_PROJECT (default fold_db — the project that owns thelastdb.com;
@@ -79,6 +84,7 @@ DEPLOY_GIT_AUTHOR_NAME="${VERCEL_DEPLOY_GIT_AUTHOR_NAME:-Tom Tang}"
 command -v npm >/dev/null || { echo "FAIL: npm missing" >&2; exit 1; }
 command -v vercel >/dev/null || { echo "FAIL: vercel CLI missing (npm i -g vercel)" >&2; exit 1; }
 command -v python3 >/dev/null || { echo "FAIL: python3 missing (used to write auth.json)" >&2; exit 1; }
+export npm_config_cache="${npm_config_cache:-${TMPDIR:-/tmp}/fold-db-website-npm-cache}"
 
 if [ -z "${VITE_SENTRY_DSN:-}" ]; then
   VITE_SENTRY_DSN="$(lastsecrets_get obs-sentry-dsn-javascript-react || true)"
@@ -134,9 +140,12 @@ case "$HEAD_EMAIL" in
     ;;
 esac
 
-echo "== vercel deploy --prod (scope=$SCOPE project=$PROJECT) =="
+echo "== vercel build --prod (scope=$SCOPE project=$PROJECT) =="
 # Link + deploy using the private global-config (token not on argv / not in env).
 vercel link --yes --scope="$SCOPE" --project="$PROJECT" --global-config="$CFG" >/dev/null
-vercel deploy --prod --yes --scope="$SCOPE" --global-config="$CFG"
+vercel build --prod --yes --scope="$SCOPE" --global-config="$CFG"
+
+echo "== vercel deploy --prebuilt --prod (scope=$SCOPE project=$PROJECT) =="
+vercel deploy --prebuilt --prod --yes --scope="$SCOPE" --global-config="$CFG"
 
 echo "lastgit fold_db_website deploy-prod PASSED"
