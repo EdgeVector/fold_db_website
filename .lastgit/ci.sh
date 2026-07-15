@@ -3,6 +3,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+export npm_config_cache="${npm_config_cache:-${TMPDIR:-/tmp}/fold-db-website-npm-cache}"
+
 echo "== install =="
 npm ci
 

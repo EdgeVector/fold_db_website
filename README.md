@@ -58,6 +58,36 @@ trigger Vercel. Production deploys only via LastGit `deploy-prod`. Logs:
 
 Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 
+## Browser Error Reporting
+
+The site initializes Sentry only when `VITE_SENTRY_DSN` is present at build time.
+Keep the DSN in LastSecrets and inject it into the deploy environment at the
+point of use. The LastGit production deploy script defaults to
+`lastsecrets://obs-sentry-dsn-javascript-react` when `VITE_SENTRY_DSN` is not
+already set.
+
+Recommended deploy env:
+
+```bash
+VITE_SENTRY_DSN=<from LastSecrets>
+VITE_SENTRY_ENVIRONMENT=production
+VITE_SENTRY_RELEASE=<deployed commit sha>
+```
+
+The browser SDK is configured with `sendDefaultPii=false`; event payloads also
+strip user fields, cookies, headers, request bodies, query strings, and URL
+fragments before send.
+
+Preview smoke:
+
+```bash
+VITE_SENTRY_DSN=<from LastSecrets> VITE_SENTRY_ENVIRONMENT=preview \
+VITE_SENTRY_RELEASE=<preview commit sha> VITE_SENTRY_SMOKE=1 npm run build
+```
+
+Deploy that preview and open `/?sentry-smoke=1`; Sentry should receive
+`fold_db_website.sentry_smoke` for the preview environment.
+
 ## Source of truth
 
 This repository is homed at `lastdb:///fold_db_website`. LastGit change requests
