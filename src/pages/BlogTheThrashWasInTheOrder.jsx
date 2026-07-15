@@ -26,7 +26,6 @@ const SVG_DEFS = `
 const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
 
 // Fig 1 — the wrong cycle: download every target, then maybe upload.
-// Personal finishes; org stack never ends; upload never starts.
 const WRONG_ORDER = `${SVG_OPEN('0 0 660 300')}
   <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE SYNC TICK — OLD ORDER</text>
 
@@ -64,7 +63,7 @@ const WRONG_ORDER = `${SVG_OPEN('0 0 660 300')}
   <text x="330" y="280" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">THE QUEUE LOOKED GUILTY. THE ORDER WAS.</text>
 </svg>`;
 
-// Fig 2 — personal first: download personal, upload, then at most one scoped.
+// Fig 2 — personal first.
 const RIGHT_ORDER = `${SVG_OPEN('0 0 660 250')}
   <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE SYNC TICK — PERSONAL FIRST</text>
 
@@ -121,9 +120,9 @@ const LIVED_IN = `${SVG_OPEN('0 0 660 240')}
   <text x="495" y="80" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PERSONAL</text>
   <text x="495" y="104" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">+ N SHARED LOGS</text>
   <text x="495" y="128" text-anchor="middle" fill="#928374" font-size="10">same label · many ids</text>
-  <text x="495" y="148" text-anchor="middle" fill="#928374" font-size="10">dogfood residue · real work</text>
+  <text x="495" y="148" text-anchor="middle" fill="#928374" font-size="10">stale registrations · real data</text>
 
-  <text x="330" y="214" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">ABSURD HYGIENE DEBT &mdash; EXCELLENT STRESS TEST</text>
+  <text x="330" y="214" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">REGISTRY SHAPE IS PART OF THE SYSTEM UNDER TEST</text>
 </svg>`;
 
 export default function BlogTheThrashWasInTheOrder() {
@@ -133,12 +132,12 @@ export default function BlogTheThrashWasInTheOrder() {
         <title>The Thrash Was in the Order - LastDB</title>
         <meta
           name="description"
-          content="Cloud sync re-enable blew memory while status said download=0 and pending was huge. We capped the wrong phases first. The real bug was cycle order: every shared log before any personal upload. On diagnosis, dogfood residue, and personal-first catch-up."
+          content="We re-enabled cloud sync after a memory incident and thrashed again. Status said download=0 and pending was huge. The bug was cycle order: every shared-log download before any personal upload."
         />
         <meta property="og:title" content="The Thrash Was in the Order" />
         <meta
           property="og:description"
-          content="When sync thrash shows download idle and a fat pending queue, the queue may be innocent. Cycle order &mdash; personal first, scoped later, never all-orgs-before-upload &mdash; is a memory budget. A lived-in node taught us that."
+          content="Download idle, pending full, swap climbing, never reached upload. Two wrong diagnoses. The schedule was downloading every registered shared log first."
         />
         <link rel="canonical" href="https://thelastdb.com/blog/the-thrash-was-in-the-order" />
       </Helmet>
@@ -153,182 +152,175 @@ export default function BlogTheThrashWasInTheOrder() {
       <p className="post-meta dim">2026-07-15</p>
 
       <p className="bold white">
-        We turned cloud sync back on after a memory incident. Within minutes the machine was
-        swapping hard again. Status said the download side was idle &mdash; zero new entries &mdash;
-        and the local pending queue was thousands deep. So we capped uploads. We capped batch sizes.
-        We still never saw an upload start. <span className="white">The thrash was not the queue. It was the order of work in a single tick.</span>
+        We re-enabled cloud sync after a memory incident. Within minutes the machine was swapping
+        hard again. Status said download was idle (zero new entries) and the local pending queue was
+        thousands deep. We still never saw an upload start. The thrash was not the queue. It was the
+        order of work inside one sync tick.
       </p>
 
       <p>
-        We build LastDB on LastDB: our own tools run on a Mini node that syncs to the cloud like
-        anyone else&rsquo;s. When that node thrashes, we feel it first. That is also why we get a
-        kind of testing money can&rsquo;t buy &mdash; a database that has been through dogfood,
-        experiments, and a few too many shared workspaces, not a clean fixture with one empty prefix.
+        This is a write-up of what we got wrong, what the logs actually meant, and what we changed so
+        we do not re-learn it under pressure. It is not a product pitch. The point is the failure
+        mode.
       </p>
 
-      <h2>
-        <span className="bold">Two wrong stories, then the right one</span>
-      </h2>
+      <hr className="decorative-rule" aria-hidden="true" />
+
+      <h2>What we thought was wrong</h2>
 
       <p>
-        The first story was pure download catch-up: unbounded concurrent fetches on a cold cursor.
-        That path is real, and we did put hard per-cycle caps on it. Shipping those caps and
-        re-enabling sync was supposed to be the end of the incident.
-      </p>
-
-      <p>
-        Re-enable failed again. Logs said <span className="bold white">download: 0 new entries</span>.
-        Pending stayed large. Swap climbed. The process never printed &ldquo;beginning upload.&rdquo;
-        So the second story wrote itself: the pending queue must be materializing multi-megabyte
-        batches into RAM. We bounded that path too &mdash; queue depth, entries per tick, bytes per
-        tick, refuse a poison-size head instead of force-admitting it &ldquo;to make progress.&rdquo;
+        <span className="bold white">Diagnosis 1: download catch-up.</span> The first incident looked
+        like unbounded concurrent fetches on a cold cursor. That path is real. We put hard
+        per-cycle caps on download (entry count, byte budget, per-object size) and shipped them.
+        Re-enabling sync was supposed to be the end of it.
       </p>
 
       <p>
-        Still wrong as the mainline. When we finally logged the target list at the start of a cycle,
-        the picture flipped: one personal log, then roughly two dozen shared (org) logs stacked after
-        it, many of them leftover dogfood identities that all wore the same human label. Personal
-        download finished in milliseconds. The first shared download alone pushed resident memory
-        into the multi-gigabyte range. Upload was scheduled after <em>every</em> target finished
-        downloading. A few kilobytes of personal upload never got a turn.
+        Re-enable failed again. The download line in the log was explicit:{' '}
+        <span className="bold white">0 new entries</span>, cursor already at head. Pending stayed
+        large. Swap climbed. The process never logged &ldquo;beginning upload.&rdquo; So we wrote a
+        second story.
+      </p>
+
+      <p>
+        <span className="bold white">Diagnosis 2: the pending outbox.</span> If download is idle and
+        pending is fat, the engine must be materializing thousands of multi-megabyte batches into
+        RAM before seal. We bounded that path too: queue depth, entries per tick, bytes per tick.
+        We stopped force-admitting an oversize head &ldquo;so catch-up can progress&rdquo; &mdash;
+        that rule alone is a thrash vector. Those caps were necessary. They were still not the
+        mainline cause of this re-enable failure.
+      </p>
+
+      <h2>What was actually wrong</h2>
+
+      <p>
+        When we finally logged the target list at the start of a cycle, the picture flipped. One
+        personal log. Then roughly two dozen shared (org) logs after it &mdash; many of them stale
+        dogfood registrations that shared a human-readable label but not an identity. Personal
+        download finished in milliseconds. The first shared download alone drove resident set size
+        into multi-gigabyte territory. Upload ran only after <em>every</em> target finished
+        downloading. A few kilobytes of personal work never got a turn.
       </p>
 
       <ArchFigure
         svg={WRONG_ORDER}
-        caption="Fig. 1 — Old cycle order: personal download, then every shared log, then upload. Status blamed the queue; the schedule starved it."
+        caption="Fig. 1 — Old tick: personal download, then every shared log, then upload. Status pointed at the queue; the schedule never reached it."
       />
 
       <Section variant="rose">
         <h2>
-          <span className="bold">The lesson in one line</span>
+          <span className="bold">If download is idle and pending is fat, log the schedule</span>
         </h2>
         <p>
-          If your status says download is idle and pending is fat, instrument{' '}
-          <span className="bold white">cycle order and target cardinality</span> before you rewrite
-          the queue. Caps on the wrong phase look exactly like &ldquo;the fix didn&rsquo;t work.&rdquo;
+          Target count, labels, &ldquo;personal download complete,&rdquo; &ldquo;beginning
+          upload,&rdquo; selected bytes. We spent a long time capping the wrong phase because the
+          status summary looked like an outbox problem. Caps on the wrong phase look exactly like
+          &ldquo;the fix did not work.&rdquo;
         </p>
       </Section>
 
-      <h2>
-        <span className="bold">Personal first is a reliability property</span>
-      </h2>
+      <h2>What we changed</h2>
 
       <p>
-        Cloud sync on a multi-device account is not one pipe. There is personal history, and there
-        may be one or more shared logs (team workspaces, experiments, integrations). Pulling shared
-        history matters. Letting shared pull monopolize a tick does not.
+        A multi-device account is not one pipe. There is personal history, and there may be shared
+        logs. Shared pull matters. Letting shared pull monopolize a tick does not.
       </p>
 
-      <p>
-        The corrected tick is boring on purpose:
-      </p>
+      <p>The corrected tick:</p>
 
       <ol>
         <li>
-          <span className="bold white">Download personal</span> &mdash; prove the key, take any new
-          personal entries, finish.
+          <span className="bold white">Download personal</span> &mdash; including the key check that
+          has to pass before we append personal ciphertext.
         </li>
         <li>
-          <span className="bold white">Upload a bounded personal batch</span> &mdash; drain the local
-          outbox under entry and byte caps. Never force-admit a single object larger than the budget.
+          <span className="bold white">Upload a bounded batch</span> &mdash; entry and byte caps;
+          never force-admit an object larger than the budget.
         </li>
         <li>
-          <span className="bold white">At most one scoped download</span> &mdash; and if the registry
-          has ballooned past a small active count, skip scoped entirely until someone cleans it up.
+          <span className="bold white">At most one scoped download</span> after that. If the active
+          shared-target count is absurdly high (we used &gt;4 as a leak signal), skip scoped work
+          for the tick and clean the registry offline.
         </li>
       </ol>
 
       <ArchFigure
         svg={RIGHT_ORDER}
-        caption="Fig. 2 — Personal-first: personal download, bounded upload, then at most one shared log. The rest wait for later ticks."
+        caption="Fig. 2 — Personal first: personal download, bounded upload, then at most one shared download. The rest wait."
       />
 
       <p>
-        After that change, the same machine that had been thrashing held a long prove window: last
-        successful sync kept advancing, resident memory stayed under a hard process guard, and swap
-        stopped doing the multi-tens-of-gigabytes impression of a horror movie. We also restored the
-        memory guard to its real ceiling instead of raising it mid-incident. Raising the guard is not
-        a fix; it is how you hide the fire.
+        We also put the process memory guard back to the ceiling we actually meant to ship (6&nbsp;GiB
+        on this machine). Mid-incident someone had raised it so restarts would stop. That does not
+        fix thrash; it only delays noticing it. Verification was a multi-sample status window under
+        that guard: last-success advancing, RSS under limit, no guard restart, swap not ballooning
+        into the tens of gigabytes.
       </p>
 
-      <h2>
-        <span className="bold">Dogfood residue is a fuzzer</span>
-      </h2>
+      <h2>Stale registrations as input, not atmosphere</h2>
 
       <p>
-        Having twenty shared-log registrations all labeled like the same product org is absurd
-        hygiene. Leaving them active is how you turn every sync tick into a fan-out. Tombstoning them
-        was the right ops move.
+        Having ~20 shared-log registrations under the same product label was bad hygiene. Leaving
+        them active made every tick a fan-out. Deactivating them was correct ops.
       </p>
 
       <p>
-        It was also a gift. No unit test would have invented that shape of registry on purpose. A
-        clean fixture has personal and maybe one shared prefix. A lived-in node has experiments that
-        never got deactivated, probes that stuck around, and labels that collide while the underlying
-        identities do not. Linear work per tick becomes a surprise only if you assume the registry
-        stays tiny.
+        It also exposed a missing invariant: the sync engine assumed a small target list. Unit tests
+        use personal-only or one shared prefix. A long-lived node accumulates probes, abandoned
+        workspaces, and labels that collide while the underlying ids do not. If work per tick is
+        linear in active targets, the registry is part of the performance envelope &mdash; same as
+        outbox depth or object size.
       </p>
 
       <ArchFigure
         svg={LIVED_IN}
-        caption="Fig. 3 — Clean fixtures do not thrash. Lived-in registries multiply work. Both are true; only one is your laptop."
+        caption="Fig. 3 — Fixture shape vs lived-in registry. Linear work per target is fine until N is not."
       />
+
+      <h2>What not to do next time</h2>
+
+      <ul>
+        <li>
+          <span className="bold white">Do not only cap the phase the status summary names.</span>{' '}
+          Status said download idle + pending fat. The hang was between personal download and
+          upload, on target N of many.
+        </li>
+        <li>
+          <span className="bold white">Do not schedule all downloads before any upload</span> when
+          personal catch-up is what keeps the machine usable. Shared catch-up can round-robin across
+          ticks.
+        </li>
+        <li>
+          <span className="bold white">Do not force-admit oversize heads</span> to &ldquo;make
+          progress.&rdquo; Progress that thrash-kills the process is not progress.
+        </li>
+        <li>
+          <span className="bold white">Do not raise the memory guard to clear restarts</span> and
+          call the incident closed. Prove under the limit you intend to keep.
+        </li>
+        <li>
+          <span className="bold white">Do not treat registry cardinality as configuration trivia.</span>{' '}
+          Log it. Cap per-tick work. Deactivate leaks.
+        </li>
+      </ul>
 
       <Section variant="sage">
         <h2>
-          <span className="bold">What we keep</span>
+          <span className="bold">The short version</span>
         </h2>
-        <ul>
-          <li>
-            <span className="bold white">Order before micro-caps.</span> Personal catch-up must not
-            wait on every shared log.
-          </li>
-          <li>
-            <span className="bold white">Cardinality is a budget.</span> N active shared targets is
-            N opportunities to blow a tick. Cap scoped work per cycle; refuse to run a stampede when
-            the registry looks like a leak.
-          </li>
-          <li>
-            <span className="bold white">Size gates without force-admit.</span> &ldquo;Always take the
-            first item so something progresses&rdquo; is how a multi-megabyte poison head owns RAM.
-          </li>
-          <li>
-            <span className="bold white">Phase logs beat queue depth alone.</span> Target count,
-            labels, &ldquo;personal complete,&rdquo; &ldquo;beginning upload,&rdquo; and selected
-            bytes would have cut this incident short.
-          </li>
-          <li>
-            <span className="bold white">Prove under the real guard.</span> Multi-sample status over
-            tens of minutes, with the memory ceiling you actually ship, not the temporary one you
-            raised so restarts would stop.
-          </li>
-        </ul>
+        <p>
+          A sync engine is a scheduler. This one looked busy downloading shared logs while personal
+          upload starved. We misread that as an outbox memory bug. Instrument phase order and target
+          count early; personal-first is a reliability property, not a polish item.
+        </p>
       </Section>
 
-      <h2>
-        <span className="bold">Why write it down</span>
-      </h2>
-
-      <p>
-        We almost published the tidy story: we capped downloads, then capped uploads, then everything
-        was fine. That would have been a lie of ordering. The durable learning is smaller and meaner:{' '}
-        <span className="bold white">a sync engine is a scheduler</span>, and schedulers fail by
-        starving the wrong queue while looking busy on the wrong phase.
-      </p>
-
-      <p>
-        Dogfood made the bug loud. Personal-first made it boring again. Boring is the goal.
-      </p>
-
       <p className="dim">
-        Related reading:{' '}
+        Earlier sync postmortem:{' '}
         <Link to="/blog/anatomy-of-a-sync-outage">Anatomy of a Sync Outage</Link>
         {' · '}
+        related mis-diagnosis pattern:{' '}
         <Link to="/blog/the-fix-was-subtraction">The Fix Was Subtraction</Link>
-        {' · '}
-        <Link to="/blog/the-parallelism-tax">The Parallelism Tax</Link>
-        {' · '}
-        <Link to="/apps">Apps we build on LastDB</Link>
       </p>
 
       <p>
