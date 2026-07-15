@@ -2,7 +2,7 @@
 # Push LastGit main -> GitHub public mirror for fold_db_website.
 # Usage: .lastgit/sync-github-mirror.sh [--once]
 set -euo pipefail
-export LASTGIT_SOCKET="${LASTGIT_SOCKET:-$HOME/.lastgit/code/data/folddb.sock}"
+export LASTGIT_SOCKET="${LASTGIT_SOCKET:-$HOME/.lastdb/data/folddb.sock}"
 export LASTGIT_SCHEMA_MAP="${LASTGIT_SCHEMA_MAP:-$HOME/.lastgit/schema-map.json}"
 export PATH="$HOME/code/edgevector/lastgit/bin:$HOME/.bun/bin:/opt/homebrew/bin:$PATH"
 export LASTGIT_MIRROR_CLONE="${LASTGIT_MIRROR_CLONE:-$HOME/.lastgit/mirror-clones/fold_db_website}"
