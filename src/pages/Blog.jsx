@@ -12,6 +12,12 @@ const POSTS = [
       'Re-enabled cloud sync after a memory incident; thrashed again. Status said download=0 and pending was thousands deep. We capped downloads, then the outbox — and never reached upload. Root cause: one tick downloaded every registered shared log before any personal upload, on a node with ~20 stale org registrations. What we changed (personal-first, per-tick scoped cap, no force-admit oversize) and the misreads to avoid next time.',
   },
   {
+    slug: 'how-an-app-runs-on-lastdb',
+    title: 'How an App Runs on LastDB',
+    date: '2026-07-14',
+    blurb: 'Running an app on LastDB is not a store install and not a single switch. It is three independent layers — process launch, app identity, and your consent — plus a firm rule for attributed apps: read broadly, write only your own namespace. What we learned by walking the path end to end instead of assuming the architecture sketch was enough.',
+  },
+  {
     slug: 'the-stop-work-order',
     title: 'The Stop-Work Order',
     date: '2026-07-13',

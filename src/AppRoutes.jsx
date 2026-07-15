@@ -5,6 +5,7 @@ import Apps from './pages/Apps';
 import About from './pages/About';
 import Developer from './pages/Developer';
 import Blog from './pages/Blog';
+import BlogHowAnAppRunsOnLastdb from './pages/BlogHowAnAppRunsOnLastdb';
 import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
 import BlogTheThrashWasInTheOrder from './pages/BlogTheThrashWasInTheOrder';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
@@ -34,6 +35,7 @@ export const PRERENDER_PATHS = [
   '/developer',
   '/blog',
   '/blog/the-thrash-was-in-the-order',
+  '/blog/how-an-app-runs-on-lastdb',
   '/blog/the-stop-work-order',
   '/blog/the-fix-was-subtraction',
   '/blog/read-me-dont-run-me',
@@ -66,6 +68,7 @@ export default function AppRoutes() {
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/the-thrash-was-in-the-order" element={<BlogTheThrashWasInTheOrder />} />
+      <Route path="/blog/how-an-app-runs-on-lastdb" element={<BlogHowAnAppRunsOnLastdb />} />
       <Route path="/blog/the-stop-work-order" element={<BlogTheStopWorkOrder />} />
       <Route path="/blog/the-fix-was-subtraction" element={<BlogTheFixWasSubtraction />} />
       <Route path="/blog/read-me-dont-run-me" element={<BlogReadMeDontRunMe />} />
