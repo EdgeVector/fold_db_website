@@ -4,17 +4,16 @@
 #
 # Auth (first match wins):
 #   1. $VERCEL_TOKEN
-#   2. macOS keychain service `lastgit-vercel-token`
-#      security add-generic-password -s lastgit-vercel-token -a "$USER" -w '<token>'
+#   2. lastsecrets get lastgit-vercel-token
+#      printf '%s' "$TOKEN" | lastsecrets put lastgit-vercel-token \
+#        --label "Vercel deploy token" --provider vercel \
+#        --purpose lastgit-fold-db-website-deploy-prod --env prod --value-stdin
+#   3. (optional) macOS keychain service lastgit-vercel-token — avoided; LastSecrets preferred
 #
-# Optional:
-#   VERCEL_SCOPE / keychain `lastgit-vercel-scope`  (default: shiba4lifes-projects)
-#   VERCEL_PROJECT / keychain `lastgit-vercel-project` (default: fold_db_website)
-#   LASTGIT_DEPLOY_SKIP_VERCEL=1  — build only (for dry runs)
+# Optional env: VERCEL_SCOPE (default shiba4lifes-projects), VERCEL_PROJECT (fold_db_website)
+# LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
 #
-# Deploys the **checked-out tree** from the LastGit CI scratch clone (not a
-# GitHub rebuild). Mirror to GitHub can still run for public clone; this is the
-# path that publishes thelastdb.com when the watcher is installed.
+# Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -26,28 +25,37 @@ if [ "${DEPLOY_FREEZE:-}" = "true" ]; then
   exit 0
 fi
 
-keychain_get() {
-  local service="$1"
-  security find-generic-password -s "$service" -w 2>/dev/null || true
+export PATH="${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:${PATH}"
+
+lastsecrets_get() {
+  local slug="$1"
+  local bin=""
+  if command -v lastsecrets >/dev/null 2>&1; then
+    bin=lastsecrets
+  elif [ -x "${HOME}/.bun/bin/lastsecrets" ]; then
+    bin="${HOME}/.bun/bin/lastsecrets"
+  else
+    return 1
+  fi
+  "$bin" get "$slug" 2>/dev/null || return 1
 }
 
 TOKEN="${VERCEL_TOKEN:-}"
 if [ -z "$TOKEN" ]; then
-  TOKEN="$(keychain_get lastgit-vercel-token)"
+  TOKEN="$(lastsecrets_get lastgit-vercel-token || true)"
 fi
 if [ -z "$TOKEN" ]; then
-  echo "FAIL: no Vercel token. Set VERCEL_TOKEN or:" >&2
-  echo "  security add-generic-password -U -s lastgit-vercel-token -a \"\$USER\" -w '<vercel-token>'" >&2
-  echo "Create a token at https://vercel.com/account/tokens (scope: deploy this project)." >&2
+  echo "FAIL: no Vercel token. Put it in LastSecrets (no keychain):" >&2
+  echo "  export PATH=\"\$HOME/.bun/bin:\$PATH\"" >&2
+  echo "  printf '%s' \"\$(pbpaste)\" | lastsecrets put lastgit-vercel-token \\" >&2
+  echo "    --label \"Vercel deploy token\" --provider vercel \\" >&2
+  echo "    --purpose lastgit-fold-db-website-deploy-prod --env prod --value-stdin" >&2
   exit 1
 fi
 
-SCOPE="${VERCEL_SCOPE:-$(keychain_get lastgit-vercel-scope)}"
-SCOPE="${SCOPE:-shiba4lifes-projects}"
-PROJECT="${VERCEL_PROJECT:-$(keychain_get lastgit-vercel-project)}"
-PROJECT="${PROJECT:-fold_db_website}"
+SCOPE="${VERCEL_SCOPE:-shiba4lifes-projects}"
+PROJECT="${VERCEL_PROJECT:-fold_db_website}"
 
-export PATH="${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:${PATH}"
 command -v npm >/dev/null || { echo "FAIL: npm missing" >&2; exit 1; }
 command -v vercel >/dev/null || { echo "FAIL: vercel CLI missing (npm i -g vercel)" >&2; exit 1; }
 

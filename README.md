@@ -41,15 +41,20 @@ npm run preview
 Install the deploy watcher (once per machine that should publish):
 
 ```bash
-# Vercel token: https://vercel.com/account/tokens
-security add-generic-password -U -s lastgit-vercel-token -a "$USER" -w '<token>'
+# Token in LastSecrets (not keychain): https://vercel.com/account/tokens
+export PATH="$HOME/.bun/bin:$PATH"
+printf '%s' "$(pbpaste)" | lastsecrets put lastgit-vercel-token \
+  --label "Vercel deploy token for LastGit fold_db_website" \
+  --provider vercel --purpose lastgit-fold-db-website-deploy-prod \
+  --env prod --value-stdin
 .lastgit/install-deploy-launchd.sh   # com.edgevector.lastgit-deploy-fold-db-website
 ```
 
-Optional overrides (env or keychain services `lastgit-vercel-scope` / `lastgit-vercel-project`):
-`VERCEL_SCOPE` (default `shiba4lifes-projects`), `VERCEL_PROJECT` (default `fold_db_website`).
+Optional env: `VERCEL_SCOPE` (default `shiba4lifes-projects`), `VERCEL_PROJECT` (default `fold_db_website`).
 
-`vercel.json` still describes the project. GitHub→Vercel auto-deploy may still fire when the mirror updates `main`; that is a backup, not the source of truth. Prefer fixing deploy failures in LastGit logs under `~/.lastgit/deploy-fold_db_website/`.
+`vercel.json` has `"git": { "deploymentEnabled": false }` — GitHub pushes do not
+trigger Vercel. Production deploys only via LastGit `deploy-prod`. Logs:
+`~/.lastgit/deploy-fold_db_website/`.
 
 Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 

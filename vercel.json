@@ -2,6 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "git": {
+    "deploymentEnabled": false
+  },
   "redirects": [
     { "source": "/guide", "destination": "/start", "permanent": true },
     { "source": "/using", "destination": "/start", "permanent": true }
