@@ -70,10 +70,13 @@ if [ "${LASTGIT_DEPLOY_SKIP_VERCEL:-}" = "1" ]; then
   exit 0
 fi
 
+# Export for Vercel CLI (never put token on argv — shows in ps).
+export VERCEL_TOKEN="$TOKEN"
+unset TOKEN
+
 echo "== vercel deploy --prod (scope=$SCOPE project=$PROJECT) =="
-# Link non-interactively then deploy the current directory as production.
-# --yes skips confirmations; --token is the only supported CI auth.
-vercel link --yes --token="$TOKEN" --scope="$SCOPE" --project="$PROJECT" >/dev/null
-vercel deploy --prod --yes --token="$TOKEN" --scope="$SCOPE"
+# Link + deploy; CLI reads VERCEL_TOKEN from the environment.
+vercel link --yes --scope="$SCOPE" --project="$PROJECT" >/dev/null
+vercel deploy --prod --yes --scope="$SCOPE"
 
 echo "lastgit fold_db_website deploy-prod PASSED"
