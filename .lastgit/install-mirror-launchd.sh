@@ -19,7 +19,7 @@ cat > "$PLIST" <<PL
   <dict>
     <key>HOME</key><string>$HOME</string>
     <key>PATH</key><string>$HOME/code/edgevector/lastgit/bin:$HOME/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
-    <key>LASTGIT_SOCKET</key><string>$HOME/.lastgit/code/data/folddb.sock</string>
+    <key>LASTGIT_SOCKET</key><string>$HOME/.lastdb/data/folddb.sock</string>
     <key>LASTGIT_SCHEMA_MAP</key><string>$HOME/.lastgit/schema-map.json</string>
     <key>LASTGIT_MIRROR_INTERVAL</key><string>60</string>
   </dict>

@@ -21,7 +21,7 @@ cat >"$PLIST" <<PL
   <dict>
     <key>HOME</key><string>$HOME</string>
     <key>PATH</key><string>$HOME/code/edgevector/lastgit/bin:$HOME/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
-    <key>LASTGIT_SOCKET</key><string>$HOME/.lastgit/code/data/folddb.sock</string>
+    <key>LASTGIT_SOCKET</key><string>$HOME/.lastdb/data/folddb.sock</string>
     <key>LASTGIT_SCHEMA_MAP</key><string>$HOME/.lastgit/schema-map.json</string>
     <key>LASTGIT_DEPLOY_CONTEXT</key><string>deploy-prod</string>
     <key>LASTGIT_DEPLOY_LOG_DIR</key><string>$LOGDIR</string>
@@ -38,4 +38,4 @@ launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null || true
 launchctl unload "$PLIST" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$PLIST" 2>/dev/null || launchctl load -w "$PLIST"
 echo "installed $LABEL"
-echo "Requires keychain: security add-generic-password -U -s lastgit-vercel-token -a \"\$USER\" -w '<token>'"
+echo "Requires LastSecrets: lastsecrets://lastgit-vercel-token (see .lastgit/deploy-prod.sh)"
