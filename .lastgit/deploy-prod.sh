@@ -2,16 +2,23 @@
 # LastGit post-merge production deploy for fold_db_website (context: deploy-prod).
 # Watches refs/heads/main only via deploy-run.sh — never runs on feature branches.
 #
-# Auth (first match wins):
+# Auth (first match wins for the token value):
 #   1. $VERCEL_TOKEN
 #   2. lastsecrets get lastgit-vercel-token
 #      printf '%s' "$TOKEN" | lastsecrets put lastgit-vercel-token \
 #        --label "Vercel deploy token" --provider vercel \
 #        --purpose lastgit-fold-db-website-deploy-prod --env prod --value-stdin
-#   3. (optional) macOS keychain service lastgit-vercel-token — avoided; LastSecrets preferred
 #
-# Optional env: VERCEL_SCOPE (default shiba4lifes-projects), VERCEL_PROJECT (fold_db_website)
-# LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
+# Token is NEVER placed on process argv (shows in `ps`). We write a short-lived
+# vercel global-config auth.json (mode 0600) instead. Vercel CLI 50.x only
+# honors VERCEL_TOKEN *after* the credentials gate, so env-only auth fails
+# when auth.json is empty — file auth is the reliable path.
+#
+# Optional env:
+#   VERCEL_SCOPE   (default shiba4lifes-projects)
+#   VERCEL_PROJECT (default fold_db — the project that owns thelastdb.com;
+#                  NOT fold_db_website, which is a separate empty alias project)
+#   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
@@ -54,10 +61,13 @@ if [ -z "$TOKEN" ]; then
 fi
 
 SCOPE="${VERCEL_SCOPE:-shiba4lifes-projects}"
-PROJECT="${VERCEL_PROJECT:-fold_db_website}"
+# Live domain thelastdb.com is attached to project "fold_db" (Vite site).
+# "fold_db_website" is a separate Vercel project without that domain.
+PROJECT="${VERCEL_PROJECT:-fold_db}"
 
 command -v npm >/dev/null || { echo "FAIL: npm missing" >&2; exit 1; }
 command -v vercel >/dev/null || { echo "FAIL: vercel CLI missing (npm i -g vercel)" >&2; exit 1; }
+command -v python3 >/dev/null || { echo "FAIL: python3 missing (used to write auth.json)" >&2; exit 1; }
 
 echo "== npm ci =="
 npm ci
@@ -70,13 +80,26 @@ if [ "${LASTGIT_DEPLOY_SKIP_VERCEL:-}" = "1" ]; then
   exit 0
 fi
 
-# Export for Vercel CLI (never put token on argv — shows in ps).
-export VERCEL_TOKEN="$TOKEN"
+# Ephemeral vercel global config: token in auth.json (0600), never on argv.
+CFG="$(mktemp -d "${TMPDIR:-/tmp}/vercel-deploy-cfg.XXXXXX")"
+cleanup() { rm -rf "$CFG"; }
+trap cleanup EXIT
+
+python3 - "$CFG" "$TOKEN" <<'PY'
+import json, pathlib, stat, sys
+cfg, token = pathlib.Path(sys.argv[1]), sys.argv[2]
+cfg.mkdir(parents=True, exist_ok=True)
+auth = cfg / "auth.json"
+auth.write_text(json.dumps({"token": token}) + "\n")
+auth.chmod(stat.S_IRUSR | stat.S_IWUSR)
+PY
+# Drop token from this shell after writing the file.
 unset TOKEN
+unset VERCEL_TOKEN
 
 echo "== vercel deploy --prod (scope=$SCOPE project=$PROJECT) =="
-# Link + deploy; CLI reads VERCEL_TOKEN from the environment.
-vercel link --yes --scope="$SCOPE" --project="$PROJECT" >/dev/null
-vercel deploy --prod --yes --scope="$SCOPE"
+# Link + deploy using the private global-config (token not on argv / not in env).
+vercel link --yes --scope="$SCOPE" --project="$PROJECT" --global-config="$CFG" >/dev/null
+vercel deploy --prod --yes --scope="$SCOPE" --global-config="$CFG"
 
 echo "lastgit fold_db_website deploy-prod PASSED"
