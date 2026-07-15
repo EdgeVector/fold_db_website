@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-thrash-was-in-the-order',
+    title: 'The Thrash Was in the Order',
+    date: '2026-07-15',
+    blurb:
+      'Cloud sync re-enable blew memory while status said download=0 and pending was thousands deep. We capped downloads, then uploads — and still never saw an upload start. The thrash was cycle order: every shared log before any personal upload, on a lived-in node that had accumulated two dozen dogfood org registrations. Personal-first catch-up, scoped cardinality caps, and refuse-to-force-admit poison heads. On diagnosis that revises itself, and why a messy registry is a better fuzzer than a clean fixture.',
+  },
+  {
     slug: 'the-stop-work-order',
     title: 'The Stop-Work Order',
     date: '2026-07-13',
