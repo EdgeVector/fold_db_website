@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-thrash-was-in-the-order',
+    title: 'The Thrash Was in the Order',
+    date: '2026-07-15',
+    blurb:
+      'Re-enabled cloud sync after a memory incident; thrashed again. Status said download=0 and pending was thousands deep. We capped downloads, then the outbox — and never reached upload. Root cause: one tick downloaded every registered shared log before any personal upload, on a node with ~20 stale org registrations. What we changed (personal-first, per-tick scoped cap, no force-admit oversize) and the misreads to avoid next time.',
+  },
+  {
     slug: 'the-stop-work-order',
     title: 'The Stop-Work Order',
     date: '2026-07-13',
