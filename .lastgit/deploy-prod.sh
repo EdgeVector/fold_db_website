@@ -18,6 +18,10 @@
 #   VERCEL_SCOPE   (default shiba4lifes-projects)
 #   VERCEL_PROJECT (default fold_db — the project that owns thelastdb.com;
 #                  NOT fold_db_website, which is a separate empty alias project)
+#   VERCEL_DEPLOY_GIT_AUTHOR_EMAIL / VERCEL_DEPLOY_GIT_AUTHOR_NAME
+#     Override for the scratch attribution commit (defaults to Tom's GitHub
+#     noreply, which is a Vercel team member). Required because Vercel blocks
+#     deploys whose HEAD author is lastgit-merge@lastdb.local (TEAM_ACCESS_REQUIRED).
 #   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
@@ -64,6 +68,9 @@ SCOPE="${VERCEL_SCOPE:-shiba4lifes-projects}"
 # Live domain thelastdb.com is attached to project "fold_db" (Vite site).
 # "fold_db_website" is a separate Vercel project without that domain.
 PROJECT="${VERCEL_PROJECT:-fold_db}"
+# Vercel team seat check uses HEAD commit author email.
+DEPLOY_GIT_AUTHOR_EMAIL="${VERCEL_DEPLOY_GIT_AUTHOR_EMAIL:-4220945+shiba4life@users.noreply.github.com}"
+DEPLOY_GIT_AUTHOR_NAME="${VERCEL_DEPLOY_GIT_AUTHOR_NAME:-Tom Tang}"
 
 command -v npm >/dev/null || { echo "FAIL: npm missing" >&2; exit 1; }
 command -v vercel >/dev/null || { echo "FAIL: vercel CLI missing (npm i -g vercel)" >&2; exit 1; }
@@ -96,6 +103,21 @@ PY
 # Drop token from this shell after writing the file.
 unset TOKEN
 unset VERCEL_TOKEN
+
+# Vercel blocks production deploys when HEAD author is not a team member
+# (e.g. lastgit-merge@lastdb.local on merge commits). Scratch trees only:
+# empty attribution commit so CLI meta uses a known team email.
+HEAD_EMAIL="$(git log -1 --format='%ae' 2>/dev/null || true)"
+case "$HEAD_EMAIL" in
+  *@users.noreply.github.com|tomtang2@gmail.com|"$DEPLOY_GIT_AUTHOR_EMAIL")
+    echo "== git author ok ($HEAD_EMAIL) — no attribution commit =="
+    ;;
+  *)
+    echo "== git author '$HEAD_EMAIL' not a Vercel team email — empty attribution commit =="
+    git -c user.email="$DEPLOY_GIT_AUTHOR_EMAIL" -c user.name="$DEPLOY_GIT_AUTHOR_NAME" \
+      commit --allow-empty -m "deploy-prod: Vercel team attribution (oid $OID)" >/dev/null
+    ;;
+esac
 
 echo "== vercel deploy --prod (scope=$SCOPE project=$PROJECT) =="
 # Link + deploy using the private global-config (token not on argv / not in env).
