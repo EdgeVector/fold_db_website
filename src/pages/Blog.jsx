@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-emergency-became-the-schedule',
+    title: 'The Emergency Became the Schedule',
+    date: '2026-07-15',
+    blurb:
+      'The durable sync outbox hit its cap and local writes failed. Status said free-tier quota was full at ~90 MiB of 1 GiB. Two wrong limiters: an emergency “one entry per tick” upload schedule that never left, and a presign size default of 1 MiB per object that invented a full account. Resource-shaped throughput and honest sealed size on the gate — without making the client the meter of record.',
+  },
+  {
     slug: 'the-thrash-was-in-the-order',
     title: 'The Thrash Was in the Order',
     date: '2026-07-15',
