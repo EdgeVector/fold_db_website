@@ -147,7 +147,8 @@ vercel build --prod --yes --scope="$SCOPE" --global-config="$CFG"
 
 echo "== vercel deploy --prebuilt --prod (scope=$SCOPE project=$PROJECT) =="
 run_vercel_deploy_prebuilt() {
-  local attempts="${VERCEL_DEPLOY_ATTEMPTS:-3}"
+  local attempts="${VERCEL_DEPLOY_ATTEMPTS:-6}"
+  local retry_delay_secs="${VERCEL_DEPLOY_RETRY_DELAY_SECS:-10}"
   local attempt=1
   local rc=0
   local out=""
@@ -159,7 +160,7 @@ run_vercel_deploy_prebuilt() {
 
     out="$(mktemp "${TMPDIR:-/tmp}/vercel-deploy-output.XXXXXX")"
     set +e
-    vercel deploy --prebuilt --prod --yes --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    vercel deploy --prebuilt --prod --yes --no-wait --archive=tgz --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
     rc="${PIPESTATUS[0]}"
     set -e
 
@@ -172,6 +173,7 @@ run_vercel_deploy_prebuilt() {
       && [ "$attempt" -lt "$attempts" ]; then
       echo "WARN: transient Vercel deploy network failure; retrying ($attempt/$attempts)" >&2
       rm -f "$out"
+      sleep "$retry_delay_secs"
       attempt=$((attempt + 1))
       continue
     fi
