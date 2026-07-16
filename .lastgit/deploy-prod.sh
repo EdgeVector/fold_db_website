@@ -200,6 +200,46 @@ run_vercel_deploy_prebuilt() {
 }
 run_vercel_deploy_prebuilt
 
+echo "== vercel inspect --wait $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
+run_vercel_inspect_wait() {
+  local attempts="${VERCEL_INSPECT_ATTEMPTS:-3}"
+  local retry_delay_secs="${VERCEL_INSPECT_RETRY_DELAY_SECS:-10}"
+  local inspect_timeout="${VERCEL_INSPECT_TIMEOUT:-5m}"
+  local attempt=1
+  local rc=0
+  local out=""
+
+  while [ "$attempt" -le "$attempts" ]; do
+    if [ "$attempt" -gt 1 ]; then
+      echo "== retry vercel inspect --wait attempt $attempt/$attempts =="
+    fi
+
+    out="$(mktemp "${TMPDIR:-/tmp}/vercel-inspect-output.XXXXXX")"
+    set +e
+    vercel inspect "$VERCEL_DEPLOYMENT_REF" --wait --timeout="$inspect_timeout" \
+      --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    rc="${PIPESTATUS[0]}"
+    set -e
+
+    if [ "$rc" -eq 0 ]; then
+      rm -f "$out"
+      return 0
+    fi
+
+    if is_transient_vercel_failure "$out" && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: transient Vercel inspect network failure; retrying ($attempt/$attempts)" >&2
+      rm -f "$out"
+      sleep "$retry_delay_secs"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    rm -f "$out"
+    return "$rc"
+  done
+}
+run_vercel_inspect_wait
+
 echo "== vercel promote $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
 run_vercel_promote() {
   local attempts="${VERCEL_PROMOTE_ATTEMPTS:-3}"
