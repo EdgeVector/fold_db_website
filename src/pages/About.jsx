@@ -9,16 +9,16 @@ export default function About() {
     <>
       <Helmet>
         <title>About - LastDB</title>
-        <meta name="description" content="Why LastDB exists: one permanent local database under your control, instead of a silo per app." />
+        <meta name="description" content="Why LastDB exists: one permanent local database you own, every tool you use built on it — and slices of it delivered to the people you choose." />
         <meta property="og:title" content="About - LastDB" />
-        <meta property="og:description" content="The problem with app silos, the LastDB model, and the principles behind it." />
+        <meta property="og:description" content="The problem with app silos, the LastDB model, and the principles behind owning your whole tool stack." />
         <link rel="canonical" href="https://thelastdb.com/about" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
       <h1 className="tagline">About LastDB</h1>
       <p className="bold white">
-        Why own the foundation under work that makes you happy &mdash; instead of renting a silo per tool.
+        Why build your tools on a database you own &mdash; instead of renting a silo per tool.
       </p>
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
@@ -39,9 +39,9 @@ export default function About() {
   (silo)       (silo)       (silo)       (silo)`}
         </pre>
 
-        <p>Every application rebuilds accounts, storage, indexing, permissions, and sync. Each stores its own copy of your information. No single system understands the full picture.</p>
+        <p>Every application rebuilds accounts, storage, indexing, and sync. Each stores its own copy of your information. No single system understands the full picture &mdash; and none of it is really yours.</p>
 
-        <p>Your data is <span className="bold white">fragmented, duplicated, and outside your control</span>.</p>
+        <p>Your data is <span className="bold white">fragmented, duplicated, and outside your control</span>. Your tools are rented.</p>
       </Section>
 
       <Section variant="sage" id="model">
@@ -53,18 +53,18 @@ export default function About() {
      \\        |         |         |        /
       `}<span style={{ color: '#fabd2f' }}>{`+----------------------------------------+`}</span>{`
       `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`          `}<span className="bold white">Your LastDB Database</span>{`          `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
-      `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`     `}<span className="dim">{`encrypted / local / permanent`}</span>{`      `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
+      `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`       `}<span className="dim">{`local / permanent / yours`}</span>{`        `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
       `}<span style={{ color: '#fabd2f' }}>{`+----------------------------------------+`}</span>
         </pre>
 
-        <p>Applications become <span className="bold white">clients of the user&rsquo;s database</span> rather than owners of the data. That inversion is the whole product thesis.</p>
+        <p>Applications become <span className="bold white">clients of the user&rsquo;s database</span> rather than owners of the data. That inversion is the whole product thesis: not a platform you join, but a foundation you own &mdash; every tool you use built on it, including the ones you write yourself.</p>
       </Section>
 
       <Section variant="slate" id="architecture">
         <h2><span className="bold">LAYERS</span></h2>
 
         <pre className="compare-table">
-{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`  Notes · Health · Finance · AI · Email
+{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`  Brain · Kanban · Situations · yours
         |
         v
   `}<span style={{ color: '#83a598' }}>{`Shared Structures`}</span>{`    public interfaces, standardized
@@ -76,10 +76,10 @@ export default function About() {
   `}<span style={{ color: '#fe8019' }}>{`Vector Embeddings`}</span>{`    semantic index across all data
         |
         v
-  `}<span style={{ color: '#fb4934' }}>{`Encrypted Storage`}</span>{`    user-controlled, append-only`}
+  `}<span style={{ color: '#fb4934' }}>{`Local Storage`}</span>{`        yours, append-only`}
         </pre>
 
-        <p>Computation runs locally. <span className="bold white">Raw data never leaves your control by default.</span></p>
+        <p>Computation runs locally. <span className="bold white">The data stays yours, on your machine, in one place.</span></p>
       </Section>
 
       <Section variant="amber" id="principles">
@@ -87,16 +87,16 @@ export default function About() {
 
         <div className="grid-3">
           <Card>
-            <p><Label color="yellow">NEVER TRUST THE CLOUD</Label></p>
-            <p>Data stays <span className="bold white">end-to-end encrypted</span>. Cloud may store or transport bytes; it should not be able to read them.</p>
+            <p><Label color="yellow">OWN THE WHOLE STACK</Label></p>
+            <p>Your tools are <span className="bold white">clients of your database</span>, not custodians of copies. Swap a tool, keep the data. Nothing about your setup is rented.</p>
           </Card>
           <Card>
-            <p><Label color="yellow">REVEAL THE MINIMUM</Label></p>
-            <p>Apps receive only what they need. Results live under access policies &mdash; <span className="bold white">nothing visible without permission</span>.</p>
+            <p><Label color="yellow">BUILD FAST</Label></p>
+            <p>Declare a schema, write a thin client. <span className="bold white">A new tool is an afternoon</span> &mdash; storage, indexing, and search are already there. No accounts, no ceremony.</p>
           </Card>
           <Card>
-            <p><Label color="yellow">SELF-MAINTAINING</Label></p>
-            <p>You should not babysit schemas, migrations, indexing, or cleanup. <span className="bold white">The system organizes itself.</span></p>
+            <p><Label color="yellow">DELIVER SLICES</Label></p>
+            <p>Sharing is a first-class verb: hand a <span className="bold white">curated slice of your database</span> to a person or an app, on your terms &mdash; without giving away the database.</p>
           </Card>
         </div>
       </Section>
@@ -108,7 +108,7 @@ export default function About() {
         <p>Structures are public and standardized: how data is organized, what you can query, how derived results are produced. Apps can work against any user&rsquo;s database without custom migrations.</p>
 
         <h2 className="section-subheading"><span className="bold">Transforms</span></h2>
-        <p>Deterministic functions attached to structures. Outputs are written back into structures &mdash; so they inherit the same access rules as anything else.</p>
+        <p>Deterministic functions attached to structures. Outputs are written back into structures &mdash; so any tool on the stack can build on any other tool&rsquo;s results.</p>
 
         <pre className="compare-table">
 {`  Structure: `}<span className="bold white">{`Messages`}</span>{`
@@ -125,13 +125,13 @@ export default function About() {
         <h2 className="section-subheading"><span className="bold">Semantic index</span></h2>
         <p>One semantic index across notes, messages, code, and structured records. Search is meaning-based, not stuck to one app&rsquo;s schema.</p>
 
-        <h2 className="section-subheading"><span className="bold">Privacy-preserving discovery</span></h2>
-        <p>Systems can ask whether relevant information <em>exists</em> without exposing raw content or its origin. Collaboration without surrendering the silo model&rsquo;s only remaining virtue: not dumping everything into a public feed.</p>
+        <h2 className="section-subheading"><span className="bold">Delivering slices</span></h2>
+        <p>A slice is a curated view of your database &mdash; a board rollup, a project digest, a dataset &mdash; that you deliver to another person or another node. The receiver gets a usable piece of your stack; you keep the source. This is how tools built by one person become useful to another without anyone standing up a platform in between.</p>
       </Section>
 
       <Section variant="slate" id="status">
         <h2><span className="bold">STATUS</span></h2>
-        <p>LastDB is <span className="bold white">experimental and in active development</span>. Early releases focus on local encrypted storage, apps on top of that node, semantic search, and the agent workflow we use to build it.</p>
+        <p>LastDB is <span className="bold white">experimental and in active development</span>. Early releases focus on local storage, apps on top of that node, semantic search, slice delivery, and the agent workflow we use to build it.</p>
         <p>
           <Link to="/" className="link-btn">[Install on the home page &rarr;]</Link>{'  '}
           <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}

@@ -1,6 +1,6 @@
 # LastDB Website
 
-Marketing site for **LastDB** — a local encrypted database with apps (Brain, Kanban, …) as thin clients. Live at **[thelastdb.com](https://thelastdb.com)**.
+Marketing site for **LastDB** — the local database you build your own tool stack on; apps (Brain, Kanban, …) are thin clients. Live at **[thelastdb.com](https://thelastdb.com)**.
 
 ## Pages
 

@@ -84,7 +84,7 @@ const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
 
   <rect x="130" y="170" width="400" height="72" fill="url(#home-poche)" stroke="#928374" stroke-width="1"/>
   <text x="330" y="200" text-anchor="middle" fill="#ebdbb2" font-size="14" letter-spacing="2">YOUR LASTDB</text>
-  <text x="330" y="220" text-anchor="middle" fill="#928374" font-size="11">local · encrypted · one process</text>
+  <text x="330" y="220" text-anchor="middle" fill="#928374" font-size="11">local · yours · one process</text>
 
   <line x1="130" y1="256" x2="130" y2="270" stroke="#928374" stroke-width="1"/>
   <line x1="530" y1="256" x2="530" y2="270" stroke="#928374" stroke-width="1"/>
@@ -97,9 +97,9 @@ export default function Home() {
     <>
       <Helmet>
         <title>LastDB - Build for your happiness</title>
-        <meta name="description" content="Build for your happiness. LastDB is the local foundation under a development stack you own — memory, board, ops, agents. Offline with no account; optional cloud backup/sync for multi-device." />
+        <meta name="description" content="Build for your happiness. LastDB is the database you build your own tools on — memory, board, ops, agents, and the apps you write. Own the whole stack; deliver slices of it to others." />
         <meta property="og:title" content="LastDB - Build for your happiness" />
-        <meta property="og:description" content="A local encrypted database for a development stack that is yours. Build hard. Build happy. Own your foundation." />
+        <meta property="og:description" content="One local database, every tool yours. Build hard. Build happy. Own your foundation." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://thelastdb.com" />
         <meta property="og:site_name" content="LastDB" />
@@ -117,7 +117,7 @@ export default function Home() {
       "@type": "WebSite",
       "name": "LastDB",
       "url": "https://thelastdb.com",
-      "description": "Build for your happiness. Local encrypted database under a development stack you own."
+      "description": "Build for your happiness. The local database you build your own tool stack on."
     },
     {
       "@type": "SoftwareApplication",
@@ -125,7 +125,7 @@ export default function Home() {
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS (Apple Silicon)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Local encrypted database for a hard development stack you run yourself. Local use needs no account; optional cloud backup/sync joins an account for multi-device.",
+      "description": "The local database you build and own your whole tool stack on. Local use needs no account; optional cloud backup/sync joins an account for multi-device.",
       "url": "https://thelastdb.com",
       "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
       "softwareVersion": "alpha"
@@ -140,8 +140,9 @@ export default function Home() {
       <p className="bold white">On a foundation you own.</p>
       <p>
         Software should make a life you want to live in &mdash; not a stack of rented silos you babysit.
-        LastDB is a <span className="bold white">local encrypted database</span> under a serious development stack:
-        memory, board, ops gates, agent skills. Build hard. Build happy. Keep the substrate.
+        LastDB is a <span className="bold white">local database all your tools are built on</span>:
+        memory, board, ops gates, agent skills &mdash; and the apps you write yourself.
+        Build hard. Build happy. Keep the substrate &mdash; and deliver slices of it to people you choose.
       </p>
       <p className="dim">
         Local use needs no account. Optional cloud backup/sync joins an account when you want multi-device.
@@ -178,7 +179,7 @@ export default function Home() {
         <div className="grid-2">
           <Card>
             <p><Label color="green">LASTDB</Label> <span className="dim">the foundation</span></p>
-            <p>Encrypted local database. One process on your Mac. Everything else stands on this.</p>
+            <p>Your local database. One process on your Mac. Everything else stands on this.</p>
           </Card>
           <Card>
             <p><Label color="green">YOUR STACK</Label> <span className="dim">the stack</span></p>
