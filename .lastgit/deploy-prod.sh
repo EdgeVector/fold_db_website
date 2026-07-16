@@ -32,6 +32,8 @@
 #     reads lastsecrets://obs-sentry-dsn-javascript-react as the current web
 #     Sentry project DSN.
 #   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
+#   VERCEL_INSPECT_TIMEOUT / VERCEL_INSPECT_ATTEMPTS
+#     Wait for a no-wait deployment to become ready before promotion.
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
