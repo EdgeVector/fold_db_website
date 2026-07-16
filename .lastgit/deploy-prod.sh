@@ -146,6 +146,40 @@ vercel link --yes --scope="$SCOPE" --project="$PROJECT" --global-config="$CFG" >
 vercel build --prod --yes --scope="$SCOPE" --global-config="$CFG"
 
 echo "== vercel deploy --prebuilt --prod (scope=$SCOPE project=$PROJECT) =="
-vercel deploy --prebuilt --prod --yes --scope="$SCOPE" --global-config="$CFG"
+run_vercel_deploy_prebuilt() {
+  local attempts="${VERCEL_DEPLOY_ATTEMPTS:-3}"
+  local attempt=1
+  local rc=0
+  local out=""
+
+  while [ "$attempt" -le "$attempts" ]; do
+    if [ "$attempt" -gt 1 ]; then
+      echo "== retry vercel deploy --prebuilt attempt $attempt/$attempts =="
+    fi
+
+    out="$(mktemp "${TMPDIR:-/tmp}/vercel-deploy-output.XXXXXX")"
+    set +e
+    vercel deploy --prebuilt --prod --yes --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    rc="${PIPESTATUS[0]}"
+    set -e
+
+    if [ "$rc" -eq 0 ]; then
+      rm -f "$out"
+      return 0
+    fi
+
+    if grep -Eqi 'read ETIMEDOUT|ETIMEDOUT|ECONNRESET|EAI_AGAIN|ENOTFOUND|socket hang up|network timeout|fetch failed' "$out" \
+      && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: transient Vercel deploy network failure; retrying ($attempt/$attempts)" >&2
+      rm -f "$out"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    rm -f "$out"
+    return "$rc"
+  done
+}
+run_vercel_deploy_prebuilt
 
 echo "lastgit fold_db_website deploy-prod PASSED"
