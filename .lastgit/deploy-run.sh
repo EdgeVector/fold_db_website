@@ -5,7 +5,10 @@ REPO="${1:-fold_db_website}"
 CONTEXT="${LASTGIT_DEPLOY_CONTEXT:-deploy-prod}"
 REF="${LASTGIT_DEPLOY_REF:-refs/heads/main}"
 TIMEOUT_MS="${LASTGIT_DEPLOY_TIMEOUT_MS:-1800000}"
-export PATH="${HOME}/code/edgevector/lastgit/bin:${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH}"
+# Prefer the installed lastgit binary (~/.local/bin). Putting the lastgit
+# checkout's bin/ first used `bun src/cli.ts`, which breaks when the checkout
+# is mid-edit (missing modules) and never reaches deploy-prod / Vercel.
+export PATH="${HOME}/.local/bin:${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH}"
 export LASTGIT_SOCKET="${LASTGIT_SOCKET:-${HOME}/.lastdb/data/folddb.sock}"
 export LASTGIT_SCHEMA_MAP="${LASTGIT_SCHEMA_MAP:-$HOME/.lastgit/schema-map.json}"
 LOG_DIR="${LASTGIT_DEPLOY_LOG_DIR:-$HOME/.lastgit/deploy-$REPO}"

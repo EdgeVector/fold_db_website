@@ -12,6 +12,13 @@ const POSTS = [
       'We built a live theater for our real Kanban board: cards hop lanes when work actually moves, scheduled jobs show up as a crew with personalities, and the only animation that fires is a real delta — not fake motion to look busy. Screen recording included.',
   },
   {
+    slug: 'thin-tips-and-honest-history',
+    title: 'Thin Tips and Honest History',
+    date: '2026-07-16',
+    blurb:
+      'We slimmed current-field pointers, stopped writing a fat mutation log by default, and kept real per-key history as a small tip-version chain. Same reads and multi-device last-writer-wins; less bulk for free — and a clearer story about where the bytes go.',
+  },
+  {
     slug: 'the-thrash-was-in-the-order',
     title: 'The Thrash Was in the Order',
     date: '2026-07-15',
