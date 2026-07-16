@@ -9,6 +9,7 @@ import BlogHowAnAppRunsOnLastdb from './pages/BlogHowAnAppRunsOnLastdb';
 import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
 import BlogThinTipsAndHonestHistory from './pages/BlogThinTipsAndHonestHistory';
 import BlogTheThrashWasInTheOrder from './pages/BlogTheThrashWasInTheOrder';
+import BlogKanbanFactory from './pages/BlogKanbanFactory';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -35,6 +36,7 @@ export const PRERENDER_PATHS = [
   '/apps',
   '/developer',
   '/blog',
+  '/blog/kanban-factory',
   '/blog/thin-tips-and-honest-history',
   '/blog/the-thrash-was-in-the-order',
   '/blog/how-an-app-runs-on-lastdb',
@@ -69,6 +71,7 @@ export default function AppRoutes() {
       <Route path="/developer" element={<Developer />} />
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/kanban-factory" element={<BlogKanbanFactory />} />
       <Route path="/blog/thin-tips-and-honest-history" element={<BlogThinTipsAndHonestHistory />} />
       <Route path="/blog/the-thrash-was-in-the-order" element={<BlogTheThrashWasInTheOrder />} />
       <Route path="/blog/how-an-app-runs-on-lastdb" element={<BlogHowAnAppRunsOnLastdb />} />

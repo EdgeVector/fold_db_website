@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'kanban-factory',
+    title: 'The Factory Floor',
+    date: '2026-07-16',
+    blurb:
+      'We built a live theater for our real Kanban board: cards hop lanes when work actually moves, scheduled jobs show up as a crew with personalities, and the only animation that fires is a real delta — not fake motion to look busy. Screen recording included.',
+  },
+  {
     slug: 'thin-tips-and-honest-history',
     title: 'Thin Tips and Honest History',
     date: '2026-07-16',
