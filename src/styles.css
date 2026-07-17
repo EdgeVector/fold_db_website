@@ -197,6 +197,20 @@ a:hover { color: #b8bb26; }
 /* section subheading */
 .section-subheading { margin-top: 1.5em; }
 
+/* docs */
+.docs-reviewed {
+  margin-top: 0.2em;
+}
+.docs-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1em;
+  margin: 1em 0;
+}
+.docs-list .card h2 {
+  margin-top: 0.35em;
+}
+
 /* app readiness ranking (Apps page) */
 .readiness-legend {
   display: grid;
@@ -316,6 +330,7 @@ a:hover { color: #b8bb26; }
 /* responsive */
 @media (max-width: 900px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .docs-list { grid-template-columns: 1fr; }
   .readiness-legend { grid-template-columns: 1fr 1fr; }
 }
 
