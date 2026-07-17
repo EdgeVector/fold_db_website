@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'through-the-front-door',
+    title: 'Through the Front Door',
+    date: '2026-07-17',
+    blurb:
+      'We opened the registry with zero rows and one promise: every row walks in through the real path. Then we walked it ourselves, as a stranger would — and the door was jammed. The transcript of the first app going from nothing to live, and the five defects the walk surfaced.',
+  },
+  {
     slug: 'the-registry-starts-empty',
     title: 'The Registry Starts Empty',
     date: '2026-07-16',
