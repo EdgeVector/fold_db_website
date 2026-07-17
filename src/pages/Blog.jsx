@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'intent-campaign-tasks',
+    title: 'Destination, Campaign, Task',
+    date: '2026-07-17',
+    blurb:
+      'How we organize agent-driven work in three layers: North Stars for destinations, active programs for campaigns, and Kanban for tasks. Why chat is not the state machine, and when three layers is enough without inventing a fourth.',
+  },
+  {
     slug: 'kanban-factory',
     title: 'The Factory Floor',
     date: '2026-07-16',
