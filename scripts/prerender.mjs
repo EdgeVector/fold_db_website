@@ -99,6 +99,8 @@ async function main() {
     const priority = (url) => {
       if (url.endsWith('thelastdb.com/')) return '1.0';
       if (url.includes('/apps')) return '0.9';
+      if (url.endsWith('/docs')) return '0.82';
+      if (url.includes('/docs/')) return '0.7';
       if (url.includes('/start') || url.includes('/about') || url.includes('/developer')) return '0.85';
       if (url.includes('llms.txt')) return '0.7';
       if (url.endsWith('/blog')) return '0.75';
