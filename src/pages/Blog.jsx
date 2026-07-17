@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-registry-starts-empty',
+    title: 'The Registry Starts Empty',
+    date: '2026-07-16',
+    blurb:
+      'LastDB now has an app registry, and it launched with zero rows in it — on purpose. An app can only appear by walking the real path: check your schemas against the catalog, register the novel ones, publish signed. The empty shelf is the test suite.',
+  },
+  {
     slug: 'kanban-factory',
     title: 'The Factory Floor',
     date: '2026-07-16',
