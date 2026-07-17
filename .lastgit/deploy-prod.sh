@@ -33,7 +33,9 @@
 #     Sentry project DSN.
 #   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
 #   VERCEL_INSPECT_TIMEOUT / VERCEL_INSPECT_ATTEMPTS
-#     Wait for a no-wait deployment to become ready before promotion.
+#     Wait for a no-wait deployment to become ready before promotion. Vercel
+#     CLI 50.x can exit 0 after timing out with a still-Queued deployment, so
+#     the script validates the inspect output before promoting.
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
@@ -204,7 +206,7 @@ run_vercel_deploy_prebuilt
 
 echo "== vercel inspect --wait $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
 run_vercel_inspect_wait() {
-  local attempts="${VERCEL_INSPECT_ATTEMPTS:-3}"
+  local attempts="${VERCEL_INSPECT_ATTEMPTS:-4}"
   local retry_delay_secs="${VERCEL_INSPECT_RETRY_DELAY_SECS:-10}"
   local inspect_timeout="${VERCEL_INSPECT_TIMEOUT:-5m}"
   local attempt=1
@@ -223,7 +225,7 @@ run_vercel_inspect_wait() {
     rc="${PIPESTATUS[0]}"
     set -e
 
-    if [ "$rc" -eq 0 ]; then
+    if [ "$rc" -eq 0 ] && ! grep -Eqi 'WARNING! stopped waiting|status[[:space:]].*Queued|status[[:space:]].*Building|status[[:space:]].*Initializing' "$out"; then
       rm -f "$out"
       return 0
     fi
@@ -236,13 +238,26 @@ run_vercel_inspect_wait() {
       continue
     fi
 
+    if [ "$rc" -eq 0 ] && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: Vercel deployment is not ready yet; retrying inspect ($attempt/$attempts)" >&2
+      rm -f "$out"
+      sleep "$retry_delay_secs"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
     rm -f "$out"
+    if [ "$rc" -eq 0 ]; then
+      echo "FAIL: Vercel deployment was still not ready after $attempt/$attempts inspect attempts" >&2
+      return 1
+    fi
     return "$rc"
   done
 }
 run_vercel_inspect_wait
 
 echo "== vercel promote $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
+PROMOTE_CWD="${VERCEL_PROMOTE_CWD:-$HOME}"
 run_vercel_promote() {
   local attempts="${VERCEL_PROMOTE_ATTEMPTS:-3}"
   local retry_delay_secs="${VERCEL_PROMOTE_RETRY_DELAY_SECS:-10}"
@@ -258,8 +273,8 @@ run_vercel_promote() {
 
     out="$(mktemp "${TMPDIR:-/tmp}/vercel-promote-output.XXXXXX")"
     set +e
-    vercel promote "$VERCEL_DEPLOYMENT_REF" --yes --timeout="$promote_timeout" \
-      --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    ( cd "$PROMOTE_CWD" && vercel promote "$VERCEL_DEPLOYMENT_REF" --yes --timeout="$promote_timeout" \
+      --scope="$SCOPE" --global-config="$CFG" ) 2>&1 | tee "$out"
     rc="${PIPESTATUS[0]}"
     set -e
 
