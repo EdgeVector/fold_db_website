@@ -11,8 +11,8 @@ import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
 import BlogThinTipsAndHonestHistory from './pages/BlogThinTipsAndHonestHistory';
 import BlogTheThrashWasInTheOrder from './pages/BlogTheThrashWasInTheOrder';
 import BlogKanbanFactory from './pages/BlogKanbanFactory';
-import BlogTheRegistryStartsEmpty from './pages/BlogTheRegistryStartsEmpty';
-import BlogThroughTheFrontDoor from './pages/BlogThroughTheFrontDoor';
+import BlogHowAnAppGetsPublishedOnLastdb from './pages/BlogHowAnAppGetsPublishedOnLastdb';
+import BlogDogfoodingTheAppRegistry from './pages/BlogDogfoodingTheAppRegistry';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -43,8 +43,8 @@ export const PRERENDER_PATHS = [
   '/docs/daily-loop',
   '/docs/node-health',
   '/blog',
-  '/blog/through-the-front-door',
-  '/blog/the-registry-starts-empty',
+  '/blog/dogfooding-the-app-registry',
+  '/blog/how-an-app-gets-published-on-lastdb',
   '/blog/kanban-factory',
   '/blog/thin-tips-and-honest-history',
   '/blog/the-thrash-was-in-the-order',
@@ -85,8 +85,8 @@ export default function AppRoutes() {
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/kanban-factory" element={<BlogKanbanFactory />} />
-      <Route path="/blog/the-registry-starts-empty" element={<BlogTheRegistryStartsEmpty />} />
-      <Route path="/blog/through-the-front-door" element={<BlogThroughTheFrontDoor />} />
+      <Route path="/blog/how-an-app-gets-published-on-lastdb" element={<BlogHowAnAppGetsPublishedOnLastdb />} />
+      <Route path="/blog/dogfooding-the-app-registry" element={<BlogDogfoodingTheAppRegistry />} />
       <Route path="/blog/thin-tips-and-honest-history" element={<BlogThinTipsAndHonestHistory />} />
       <Route path="/blog/the-thrash-was-in-the-order" element={<BlogTheThrashWasInTheOrder />} />
       <Route path="/blog/how-an-app-runs-on-lastdb" element={<BlogHowAnAppRunsOnLastdb />} />

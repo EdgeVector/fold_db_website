@@ -5,15 +5,15 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
-    slug: 'through-the-front-door',
-    title: 'Through the Front Door',
+    slug: 'dogfooding-the-app-registry',
+    title: 'Dogfooding the App Registry',
     date: '2026-07-17',
     blurb:
       'We opened the registry with zero rows and one promise: every row walks in through the real path. Then we walked it ourselves, as a stranger would — and the door was jammed. The transcript of the first app going from nothing to live, and the five defects the walk surfaced.',
   },
   {
-    slug: 'the-registry-starts-empty',
-    title: 'The Registry Starts Empty',
+    slug: 'how-an-app-gets-published-on-lastdb',
+    title: 'How an App Gets Published on LastDB',
     date: '2026-07-17',
     blurb:
       'LastDB now has an app registry, and it launched with zero rows in it — on purpose. A row can only exist because a real registration produced it: check, publish, register, promote — with a gate at promote that rejects unregistered shapes by name. The empty shelf is the test suite.',

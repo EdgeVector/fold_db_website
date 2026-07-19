@@ -86,23 +86,23 @@ const THE_DOOR = `${SVG_OPEN('0 0 660 344')}
   <text x="508" y="335" fill="#928374" font-size="9">POCH&#201; = REAL ROWS</text>
 </svg>`;
 
-export default function BlogThroughTheFrontDoor() {
+export default function BlogDogfoodingTheAppRegistry() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>Through the Front Door - LastDB</title>
+        <title>Dogfooding the App Registry - LastDB</title>
         <meta name="description" content="The first walk through the LastDB app registry, with real CLI output — check, publish, register-schemas, promote — and the five defects it surfaced, including a circular deadlock that briefly made registration impossible." />
-        <meta property="og:title" content="Through the Front Door" />
+        <meta property="og:title" content="Dogfooding the App Registry" />
         <meta property="og:description" content="Dogfooding the LastDB app registry: the circular deadlock the first walk hit, the tier split that resolved it, and the walk replayed on the fixed path to tier live." />
-        <link rel="canonical" href="https://thelastdb.com/blog/through-the-front-door" />
+        <link rel="canonical" href="https://thelastdb.com/blog/dogfooding-the-app-registry" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">Through the Front Door</h1>
+      <h1 className="tagline">Dogfooding the App Registry</h1>
       <p className="post-meta dim">2026-07-17</p>
 
-      <p className="bold white">The first app we tried to put in the LastDB app registry could not get in. <span className="white">Registering a novel schema required the app to exist first. Publishing the app required its schemas to not be novel.</span> Two rules, each sensible alone, together a door locked from both sides: an app with any novel schema could never enter the registry at all. We found the deadlock the intended way &mdash; <Link to="/blog/the-registry-starts-empty">the registry starts empty</Link>, so somebody had to be first through the real path, with a fresh signing key and an app the catalog had never seen. Below: the fix, the other four defects the walk surfaced, and the walk replayed on the fixed path, ending at tier <span className="white">live</span>.</p>
+      <p className="bold white">The first app we tried to put in the LastDB app registry could not get in. <span className="white">Registering a novel schema required the app to exist first. Publishing the app required its schemas to not be novel.</span> Two rules, each sensible alone, together a door locked from both sides: an app with any novel schema could never enter the registry at all. We found the deadlock the intended way &mdash; <Link to="/blog/how-an-app-gets-published-on-lastdb">the registry starts empty</Link>, so somebody had to be first through the real path, with a fresh signing key and an app the catalog had never seen. Below: the fix, the other four defects the walk surfaced, and the walk replayed on the fixed path, ending at tier <span className="white">live</span>.</p>
 
       <Section variant="rose">
         <h2><span className="bold">Two rules, one circle</span></h2>
@@ -183,7 +183,7 @@ promoted: {
         <p>When the first app couldn&rsquo;t get in, the shortcut was obvious: insert the row by hand and move on. We fixed the registration path instead, and each fix above (the tier split, catalog-confirmed checks, client-side manifest validation, the lockfile, the fail-closed gate) now applies to every registration that follows. The premature-promote rejection in the transcript is asserted on every run of an automated dogfood rotation; a regression there fails the rotation. <span className="bold white">The pantry row is on the shelf, and it came through the same path everyone else will use.</span></p>
       </Section>
 
-      <p className="dim">Companion piece: <Link to="/blog/the-registry-starts-empty">The Registry Starts Empty</Link> for the design; <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> for how schema resolution works under it.</p>
+      <p className="dim">Companion piece: <Link to="/blog/how-an-app-gets-published-on-lastdb">How an App Gets Published on LastDB</Link> for the design; <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> for how schema resolution works under it.</p>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
     </article>

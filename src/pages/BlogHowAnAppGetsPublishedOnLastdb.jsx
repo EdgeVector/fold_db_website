@@ -100,20 +100,20 @@ const THE_ROW = `${SVG_OPEN('0 0 660 252')}
   <text x="189" y="242" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">THE LABEL IS THE DISCLOSURE</text>
 </svg>`;
 
-export default function BlogTheRegistryStartsEmpty() {
+export default function BlogHowAnAppGetsPublishedOnLastdb() {
   return (
     <article className="blog-post">
       <Helmet>
-        <title>The Registry Starts Empty - LastDB</title>
+        <title>How an App Gets Published on LastDB - LastDB</title>
         <meta name="description" content="LastDB's app registry launched with zero rows in it. Apps appear only by completing the real registration flow — check, publish, register, promote — and the gate at promote rejects any manifest that still carries an unregistered shape, by name, before the promote request leaves your machine." />
-        <meta property="og:title" content="The Registry Starts Empty" />
+        <meta property="og:title" content="How an App Gets Published on LastDB" />
         <meta property="og:description" content="Why the LastDB app registry launched with zero rows: a registry row is a schema-manifest disclosure, and a gate at promote keeps unregistered shapes off the visible shelf." />
-        <link rel="canonical" href="https://thelastdb.com/blog/the-registry-starts-empty" />
+        <link rel="canonical" href="https://thelastdb.com/blog/how-an-app-gets-published-on-lastdb" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
-      <h1 className="tagline">The Registry Starts Empty</h1>
+      <h1 className="tagline">How an App Gets Published on LastDB</h1>
       <p className="post-meta dim">2026-07-17</p>
 
       <p className="bold white">LastDB&rsquo;s app registry launched this week with <span className="white">zero rows in it</span>, and that was the design: a row can only exist because a real registration produced it. App stores usually open the other way &mdash; a seeded shelf, the first dozen rows typed in by hand so the place doesn&rsquo;t look abandoned, and from that day forward two kinds of entries, the ones the system produced and the ones somebody typed. <span className="white">The empty shelf is the test suite.</span></p>
