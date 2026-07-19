@@ -5,8 +5,8 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
-    slug: 'the-registry-starts-empty',
-    title: 'The Registry Starts Empty',
+    slug: 'how-an-app-gets-published-on-lastdb',
+    title: 'How an App Gets Published on LastDB',
     date: '2026-07-17',
     blurb:
       'LastDB now has an app registry, and it launched with zero rows in it — on purpose. A row can only exist because a real registration produced it: check, publish, register, promote — with a gate at promote that rejects unregistered shapes by name. The empty shelf is the test suite.',
