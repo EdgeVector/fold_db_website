@@ -91,9 +91,9 @@ export default function BlogThroughTheFrontDoor() {
     <article className="blog-post">
       <Helmet>
         <title>Through the Front Door - LastDB</title>
-        <meta name="description" content="We opened the app registry with zero rows and one promise: every row walks in through the real registration path. Then we walked it ourselves, as a stranger would — and the door was jammed. The full transcript of the first app going from nothing to live, and the five defects the walk surfaced." />
+        <meta name="description" content="The first walk through the LastDB app registry, with real CLI output — check, publish, register-schemas, promote — and the five defects it surfaced, including a circular deadlock that briefly made registration impossible." />
         <meta property="og:title" content="Through the Front Door" />
-        <meta property="og:description" content="Dogfooding the LastDB app registry: a circular deadlock, five papercuts, same-day fixes, and the transcript of the first app reaching the shelf." />
+        <meta property="og:description" content="Dogfooding the LastDB app registry: the circular deadlock the first walk hit, the tier split that resolved it, and the walk replayed on the fixed path to tier live." />
         <link rel="canonical" href="https://thelastdb.com/blog/through-the-front-door" />
       </Helmet>
 
@@ -102,11 +102,24 @@ export default function BlogThroughTheFrontDoor() {
       <h1 className="tagline">Through the Front Door</h1>
       <p className="post-meta dim">2026-07-17</p>
 
-      <p className="bold white">Last post, we said the <Link to="/blog/the-registry-starts-empty">app registry starts empty</Link> on purpose: a row can only exist because a real registration produced it. That promise has a corollary we didn&rsquo;t say out loud &mdash; <span className="white">somebody has to actually walk through the door.</span> So we did, the way a stranger would: fresh signing key, an app the catalog had never seen, no shortcuts. The door was jammed. This is the walk, the five defects it surfaced, and the transcript of the first app going from nothing to <span className="white">live</span>.</p>
+      <p className="bold white">The first app we tried to put in the LastDB app registry could not get in. <span className="white">Registering a novel schema required the app to exist first. Publishing the app required its schemas to not be novel.</span> Two rules, each sensible alone, together a door locked from both sides: an app with any novel schema could never enter the registry at all. We found the deadlock the intended way &mdash; <Link to="/blog/the-registry-starts-empty">the registry starts empty</Link>, so somebody had to be first through the real path, with a fresh signing key and an app the catalog had never seen. Below: the fix, the other four defects the walk surfaced, and the walk replayed on the fixed path, ending at tier <span className="white">live</span>.</p>
 
-      <h2>The walk</h2>
+      <Section variant="rose">
+        <h2><span className="bold">Two rules, one circle</span></h2>
+        <p>The register side, as captured on the first attempt:</p>
+        <Term>{`error: schema 'PantryItem': registration failed: … 403 Forbidden: {"reason":"app_not_registered"}`}</Term>
+        <p>The service refuses to register a schema for an app it has never heard of. Reasonable. The publish side refused with the mirror instruction: novel schemas present, register them first. Also reasonable. Together they closed the circle: an app whose schemas were genuinely new could not become an app, and its schemas could not stop being new until it did. Each error was individually correct; the sequencing was wrong. <span className="bold white">No error message can talk you out of a deadlock.</span></p>
+      </Section>
 
-      <p>The test subject: <span className="bold">pantry</span>, a small app that tracks what&rsquo;s in your kitchen, with two schemas the shared catalog genuinely didn&rsquo;t know. Setup is one command &mdash; <span className="bold">lastdb app dev-init</span> generates the key that signs everything you publish. Then you ask what the catalog already covers:</p>
+      <h2>Publish reserves, promote gates</h2>
+
+      <p>The fix used a distinction the registry already had: tiers. <span className="bold">Publish</span> now does one small thing: it reserves your app id, and the row lands in a <span className="bold">sandbox</span> tier (reachable by id, off the default shelf), so schema registration has an app to attach to. The hard no-novel-schemas rule moved to <span className="bold">promote</span>, the step that puts a row on the visible shelf. The invariant &mdash; nothing unregistered is ever visible &mdash; is preserved. The circle is gone.</p>
+
+      <ArchFigure svg={THE_DOOR} caption="Fig. 1 — the shipped flow: publish reserves a sandbox row; the gate sits at promote, not publish" />
+
+      <h2>The walk, replayed</h2>
+
+      <p>The test subject: <span className="bold">pantry</span>, a small app that tracks what&rsquo;s in your kitchen, with two schemas the shared catalog genuinely didn&rsquo;t know. Setup is one command; <span className="bold">lastdb app dev-init</span> generates the key that signs everything you publish. Here is the walk as it runs today, fixes landed, including our own attempts to skip ahead. First, ask what the catalog already covers:</p>
 
       <Term>{`$ lastdb app check --manifest pantry.json
 app: pantry
@@ -115,49 +128,59 @@ app: pantry
 note: 'RestockRule' is novel and will need field_descriptions to register
       — missing: item_name, min_quantity, reorder_amount, preferred_store`}</Term>
 
-      <p>Two things worth noticing, because both exist as scar tissue from this walk. The verdicts say <em>catalog-confirmed</em>: your own node&rsquo;s view of the catalog can lag, so <span className="bold">check</span> asks the catalog itself before calling anything novel &mdash; lag no longer masquerades as novelty. And the note about field descriptions arrives <em>now</em>, naming exact fields, instead of as a generic server error three steps later.</p>
-
-      <p>Then: reserve your name, register your shapes, promote.</p>
+      <p>Two details in that output exist because this run first failed without them: the <em>catalog-confirmed</em> verdicts and the named missing fields. Both are in the defect list at the end. Reserve the name, and try to skip ahead:</p>
 
       <Term>{`$ lastdb app publish --manifest pantry.json --env dev
-published (created): { "app_id": "pantry", "tier": "sandbox", ... }
-
-$ lastdb app register-schemas --manifest pantry.json --env dev
-registered: PantryItem → catalog identity 76ce8941…
-registered: RestockRule → catalog identity 76ce8941…
-lockfile updated: pantry.json.lock.json
-all manifest schemas are catalog identities — ready to publish
-
-$ lastdb app promote --manifest pantry.json --env dev
-promoted: { "app_id": "pantry", "tier": "live", ... }
+published (created): {
+  "app_id": "pantry",
+  "code_signature": null,
+  "env": "dev",
+  …
 
 $ lastdb app list --env dev
-pantry  Live  Pantry  Tracks what's in your kitchen: items, quantities, expiry…`}</Term>
+pantry	Sandbox	Pantry	Tracks what's in your kitchen: items, quantities, expiry dates, and restock rules.
 
-      <p>That&rsquo;s the whole developer surface: <span className="bold">check &#8594; publish &#8594; register-schemas &#8594; promote</span>, then your app is on the shelf next to the apps we build LastDB with. One subtlety the transcript shows honestly: the catalog is aggressive about reuse, so rather than mint duplicates it may fold your proposal into a shape it already knows &mdash; and the CLI says so, records the identity the catalog <em>actually stored</em> in a lockfile next to your manifest, and verifies that exact identity from then on. No guessing, no re-deriving.</p>
+$ lastdb app promote --manifest pantry.json --env dev
+error: promote rejected: novel schemas present (PantryItem, RestockRule) — register them first with \`lastdb app register-schemas\``}</Term>
 
-      <ArchFigure svg={THE_DOOR} caption="Fig. 1 — the door as shipped: three processes, one gate, one shelf" />
+      <p>The name is reserved, the row is listed at tier Sandbox, and the gate holds until the shapes are registered. Registering fails too, client-side and before any network call, because the manifest still lacks those four field descriptions:</p>
 
-      <Section variant="rose">
-        <h2><span className="bold">The jam: a door that locked from both sides</span></h2>
-        <p>Our first walk ended fast. Registering a novel schema required the app to exist first. Publishing the app required its schemas to not be novel. Each rule was individually sensible; together they formed a perfect circle &mdash; <span className="bold white">an app with any novel schema could never enter the registry at all.</span> No error message can talk you out of a deadlock; the sequencing itself was wrong.</p>
-        <p>The fix used a distinction the registry already had: tiers. <span className="bold">Publish</span> now just reserves your name &mdash; the row lands in a <em>sandbox</em> tier, reachable by id but off the default shelf &mdash; so schema registration has something to attach to. The hard no-novel-schemas rule moved to <span className="bold">promote</span>, the step that puts you on the <em>visible</em> shelf. Nothing unregistered is ever visible, which was always the point of the rule; and the circle is gone.</p>
-      </Section>
+      <Term>{`$ lastdb app register-schemas --manifest pantry.json --env dev
+error: schema 'RestockRule': novel registration requires a field_descriptions entry for every field — missing: item_name, min_quantity, reorder_amount, preferred_store. Add them to the manifest and re-run.`}</Term>
+
+      <p>Add the descriptions and register again:</p>
+
+      <Term>{`$ lastdb app register-schemas --manifest pantry.json --env dev
+registered: PantryItem → catalog identity 76ce8941… (folded into an expanded canonical; local shape was a4a49710…)
+registered: RestockRule → catalog identity 76ce8941… (folded into an expanded canonical; local shape was a73d8323…)
+lockfile updated: pantry.json.lock.json
+all manifest schemas are catalog identities — ready to publish
+(note: \`lastdb app check\` may keep reporting them novel until the next resolver pack propagates)`}</Term>
+
+      <p>One subtlety: both proposals came back with the same catalog identity. Rather than mint duplicates, the catalog may fold your proposal into a shape it already knows, so the identity it stores is not always the shape you computed locally. That is what the lockfile is for: a freshly stored identity is not yet resolvable from the node&rsquo;s own view, and on an earlier run every verification read reported the schemas missing seconds after the catalog accepted them. The CLI now records the identity the catalog actually stored and verifies that exact identity from then on. The trailing note is the same lag stated plainly: the node&rsquo;s local view can trail the catalog&rsquo;s answer for a while. Promote now passes the gate:</p>
+
+      <Term>{`$ lastdb app promote --manifest pantry.json --env dev
+promoted: {
+  …
+  "registered_at": "2026-07-17T15:49:21Z",
+  "tier": "live",
+  "uses": []
+}`}</Term>
+
+      <p>That is the whole developer surface: <span className="bold">check &#8594; publish &#8594; register-schemas &#8594; promote</span>, and the app sits on the shelf next to the apps we build LastDB with.</p>
 
       <h2>What else the walk shook loose</h2>
 
       <ul>
-        <li><span className="bold white">Registered but invisible.</span> Early on, a registered schema went in&#8230; somewhere. No read surface could see it. The registration path now writes entries every read surface agrees on.</li>
-        <li><span className="bold white">Lag dressed as novelty.</span> A fresh node called every schema novel &mdash; silently &mdash; because its local view hadn&rsquo;t caught up. Hence the catalog-confirmed verdicts above.</li>
-        <li><span className="bold white">Requirements you discover by failing.</span> Field descriptions were mandatory but only discoverable via a server rejection. Now the manifest is validated client-side, with the missing fields named, before a single network call.</li>
-        <li><span className="bold white">The gate trusted a laggy view.</span> The promote gate now checks the catalog&rsquo;s own answer &mdash; and when it can&rsquo;t reach the catalog at all, it fails <em>closed</em>. A gate that shrugs when its source of truth is unreachable is not a gate.</li>
+        <li><span className="bold white">Registration wrote where no reader looked.</span> Early on, two successful <em>registered:</em> lines were followed by &ldquo;error: schemas still not in the catalog after registration: PantryItem, RestockRule&rdquo; from the very next command. The write landed in a location no read surface checked; registration now writes entries every read surface agrees on.</li>
+        <li><span className="bold white">A stale local view reported as novel.</span> A fresh node called every schema novel because its own copy of the catalog had not caught up. <span className="bold">check</span> now confirms novelty with the catalog itself before saying the word; that is the <em>catalog-confirmed</em> in the first transcript.</li>
+        <li><span className="bold white">Field descriptions only surfaced server-side.</span> They were mandatory for novel schemas, and the only way to learn that was a rejection three steps into the flow. The refusal is now immediate and local, as in the transcript above, and <span className="bold">check</span> names the same gaps before you ever register.</li>
+        <li><span className="bold white">The promote gate trusted the local view.</span> The gate now re-checks the catalog&rsquo;s own answer before deciding, and when it cannot reach the catalog at all it fails closed: schemas the node considers novel stay novel, and the promote is refused.</li>
       </ul>
 
-      <p>Every one of these was found by walking the path, not by reading the code. And the premature-promote rejection &mdash; the gate doing its one job &mdash; is now asserted on every run of an automated dogfood rotation, so the door can&rsquo;t silently un-fix itself.</p>
-
       <Section variant="sage">
-        <h2><span className="bold">Fix the door, not the shelf</span></h2>
-        <p>The empty-shelf rule earned its keep in week one. When our own app couldn&rsquo;t get in, the temptation was obvious: insert the row, move on. Instead the jammed door became the work item &mdash; and every fix that came out of it (the tier split, the honest verdicts, the lockfile, the fail-closed gate) is now something <em>every</em> future developer walks through without knowing it was ever broken. That&rsquo;s the quiet payoff of refusing seed data: <span className="bold white">the only way to make the shelf fill up is to make the door actually work.</span></p>
+        <h2><span className="bold">What we didn&rsquo;t do</span></h2>
+        <p>When the first app couldn&rsquo;t get in, the shortcut was obvious: insert the row by hand and move on. We fixed the registration path instead, and each fix above (the tier split, catalog-confirmed checks, client-side manifest validation, the lockfile, the fail-closed gate) now applies to every registration that follows. The premature-promote rejection in the transcript is asserted on every run of an automated dogfood rotation; a regression there fails the rotation. <span className="bold white">The pantry row is on the shelf, and it came through the same path everyone else will use.</span></p>
       </Section>
 
       <p className="dim">Companion piece: <Link to="/blog/the-registry-starts-empty">The Registry Starts Empty</Link> for the design; <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> for how schema resolution works under it.</p>
