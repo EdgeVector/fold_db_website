@@ -105,60 +105,67 @@ export default function BlogTheRegistryStartsEmpty() {
     <article className="blog-post">
       <Helmet>
         <title>The Registry Starts Empty - LastDB</title>
-        <meta name="description" content="LastDB now has an app registry, and it launched with zero rows in it — on purpose. An app can only appear by walking the real registration path: check your schemas against the catalog, register the novel ones, then publish. Anything hand-inserted would be a lie the system can't catch." />
+        <meta name="description" content="LastDB's app registry launched with zero rows in it. Apps appear only by completing the real registration flow — check, publish, register, promote — and the gate at promote rejects any manifest that still carries an unregistered shape, by name, before the promote request leaves your machine." />
         <meta property="og:title" content="The Registry Starts Empty" />
-        <meta property="og:description" content="A registry row can only exist because a real registration produced it. The empty shelf is the test suite: if our own apps can't get in through the front door, that's a bug in the door — not a reason to use the loading dock." />
+        <meta property="og:description" content="Why the LastDB app registry launched with zero rows: a registry row is a schema-manifest disclosure, and a gate at promote keeps unregistered shapes off the visible shelf." />
         <link rel="canonical" href="https://thelastdb.com/blog/the-registry-starts-empty" />
       </Helmet>
 
       <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
 
       <h1 className="tagline">The Registry Starts Empty</h1>
-      <p className="post-meta dim">2026-07-16</p>
+      <p className="post-meta dim">2026-07-17</p>
 
-      <p className="bold white">Every app store opens the same way: with a seeded shelf. Somebody inserts the first dozen rows by hand so the place doesn&rsquo;t look abandoned, and from that day forward the registry contains two kinds of entries &mdash; the ones the system produced, and the ones somebody typed. LastDB&rsquo;s app registry launched this week with <span className="white">zero rows in it</span>, and that was the design. A row can only exist because a real registration produced it. <span className="white">The empty shelf is the test suite.</span></p>
+      <p className="bold white">LastDB&rsquo;s app registry launched this week with <span className="white">zero rows in it</span>, and that was the design: a row can only exist because a real registration produced it. App stores usually open the other way &mdash; a seeded shelf, the first dozen rows typed in by hand so the place doesn&rsquo;t look abandoned, and from that day forward two kinds of entries, the ones the system produced and the ones somebody typed. <span className="white">The empty shelf is the test suite.</span></p>
 
-      <h2>What the registry is</h2>
+      <p>The first useful thing the registry did was refuse us. We tried to skip a step &mdash; promote our demo app onto the visible shelf while two of its shapes were still unregistered &mdash; and the refusal is worth reading in full: <code>error: promote rejected: novel schemas present (PantryItem, RestockRule) &mdash; register them first with `lastdb app register-schemas`</code>. Rejected by name, with the instruction that fixes it, before the promote request leaves your machine. The row stayed off the live shelf. The rest of this post is the flow that ends at that gate.</p>
 
-      <p>LastDB apps &mdash; the calendar, the kanban board, the knowledge base, yours &mdash; are programs that keep their data in <em>your</em> database rather than a vendor&rsquo;s cloud. (If that sentence is new to you, start with <Link to="/blog/how-an-app-runs-on-lastdb">How an App Runs on LastDB</Link>.) The registry is where those apps get published so other people can find them: look one up, see who ships it, see what it does, and &mdash; the part we care most about &mdash; see <span className="bold white">exactly what shapes of your data it touches</span>, before it ever touches them.</p>
-
-      <p>That last part is the point. A conventional app store describes an app with marketing copy. A LastDB registry row describes an app with its <span className="bold">schema manifest</span>: the concrete, catalog-registered shapes it reads and writes. The description can exaggerate. The manifest can&rsquo;t &mdash; it&rsquo;s the same declaration the database itself enforces.</p>
-
-      <ArchFigure svg={THE_ROW} caption="Fig. 1 — a registry row is a disclosure, not an advertisement" />
-
-      <h2>Three steps in, no exceptions</h2>
-
-      <p>Publishing is a CLI flow &mdash; <span className="bold">lastdb app</span> &mdash; and it has exactly three steps:</p>
-
-      <ol>
-        <li><span className="bold white">Check.</span> <span className="bold">lastdb app check</span> takes your app&rsquo;s manifest and asks your own node which of its schemas the shared catalog already covers. Most of the time the answer is: more than you&rsquo;d think. Shapes get reused or composed out of existing pieces &mdash; the same resolution machinery we described in <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> &mdash; and anything covered needs no further ceremony.</li>
-        <li><span className="bold white">Register.</span> Whatever the catalog genuinely doesn&rsquo;t know &mdash; the novel shapes &mdash; gets registered with <span className="bold">lastdb app register-schemas</span>. Each new field wants a description, because the catalog matches shapes semantically, not just by name. This is the only step that adds anything new to the world, and it&rsquo;s deliberately the narrow one.</li>
-        <li><span className="bold white">Publish.</span> <span className="bold">lastdb app publish</span> mints a short-lived certificate against your developer account, signs the app record with your key, and writes it into the registry. First write wins the name. Re-publishing your own app is idempotent; publishing into somebody else&rsquo;s name is a 409.</li>
-      </ol>
-
-      <ArchFigure svg={THREE_STEPS} caption="Fig. 2 — check, register, publish — and the gate in front of the shelf" />
-
-      <Section variant="rose">
-        <h2><span className="bold">The gate: no novel shapes pass</span></h2>
-        <p>Publish has one hard rule, and it fails closed: <span className="bold white">if any schema in your manifest is not a catalog identity, the publish is rejected</span> &mdash; with the name of the offending shape and the instruction to register it first. No network call is made on your behalf; nothing half-lands. The rule exists because the schema manifest is the registry&rsquo;s honesty guarantee. The moment one unregistered shape slips through, &ldquo;see what this app touches&rdquo; becomes &ldquo;see what this app admitted to,&rdquo; and the whole disclosure model quietly dies.</p>
-      </Section>
+      <hr className="decorative-rule" aria-hidden="true" />
 
       <h2>Why zero seed rows</h2>
 
-      <p>Here is the uncomfortable question every registry has to answer: <em>how do you know registration works?</em> If you seed the shelf by hand, you don&rsquo;t. The seeded rows look identical to real ones, the listing page fills up, everyone moves on &mdash; and the first outside developer to try the front door discovers it was never actually opened.</p>
+      <p>How do you know registration works? If you seed the shelf by hand, you don&rsquo;t. The seeded rows look identical to real ones, the listing fills up, everyone moves on &mdash; and the first outside developer to try the front door discovers it was never actually opened. On launch day, <span className="bold">lastdb app list</span> returned zero rows. Zero was the correct reading: nothing had registered yet, and nothing had been typed in to disguise that.</p>
 
-      <p>So we inverted it. The registry&rsquo;s population <em>is</em> its acceptance test. Our own apps &mdash; the ones we build LastDB with every day &mdash; have to walk the same three steps as anyone else&rsquo;s, and when one of them can&rsquo;t get through, <span className="bold white">that&rsquo;s a bug in the door, not a reason to use the loading dock</span>. We fix the registration path and try again. A shelf that fills up slowly and honestly beats one that fills up instantly and means nothing.</p>
+      <p>Our own apps get no shortcut. They walk the same flow as anyone else&rsquo;s, and when one of them can&rsquo;t get through, we treat that as a bug in the registration path and fix it before the shelf grows.</p>
+
+      <h2>What a row discloses</h2>
+
+      <p>LastDB apps (the calendar, the kanban board, the knowledge base, yours) keep their data in <em>your</em> database rather than a vendor&rsquo;s cloud, and the registry is where they get published so other people can find them. A conventional app store describes an app with marketing copy. A registry row here answers with the app&rsquo;s <span className="bold">schema manifest</span> (Fig. 1): the concrete, catalog-registered shapes it reads and writes, visible before the app ever touches your data. The description can exaggerate. The manifest can&rsquo;t &mdash; it is the same declaration the database enforces. Which is why the gate fails closed: a manifest is only useful complete, and the moment one unregistered shape slips through, &ldquo;see what this app touches&rdquo; becomes &ldquo;see what this app admitted to.&rdquo;</p>
+
+      <ArchFigure svg={THE_ROW} caption="Fig. 1 — the fields of a registry row: id, publisher, manifest, tier" />
+
+      <h2>Four steps to the shelf</h2>
+
+      <p>Publishing is a CLI flow, <span className="bold">lastdb app</span>, with four verbs:</p>
+
+      <ol>
+        <li><span className="bold white">Check.</span> <span className="bold">lastdb app check</span> takes your app&rsquo;s manifest and asks your own node which of its schemas the shared catalog already covers, then prints a verdict per schema. The catalog may fold your proposal into a shape it already knows &mdash; the resolution behavior described in <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> &mdash; and anything covered needs no further ceremony.</li>
+        <li><span className="bold white">Publish.</span> <span className="bold">lastdb app publish</span> mints a short-lived certificate against your developer account, signs the app record with your key, and reserves the name as a <span className="bold">sandbox</span> row. Ours answered <code>published (created): {'{'} &quot;app_id&quot;: &quot;pantry&quot;, &quot;tier&quot;: &quot;sandbox&quot;, ... {'}'}</code> and the name was taken. First write wins the name; publishing the same app twice is an idempotent no-op, not an error.</li>
+        <li><span className="bold white">Register.</span> Whatever the catalog genuinely doesn&rsquo;t know gets registered with <span className="bold">lastdb app register-schemas</span>. Each new field requires a description, and the command refuses a novel shape without one. This is the only step that adds entries to the shared catalog, and it is deliberately the narrow one.</li>
+        <li><span className="bold white">Promote.</span> <span className="bold">lastdb app promote</span> moves the row from sandbox to <span className="bold">live</span>, the tier the shelf features. This is the step that refused us at the top of the post.</li>
+      </ol>
+
+      <p>Fig. 2 draws the path as its three movements &mdash; check what&rsquo;s covered, register what&rsquo;s novel, and a signed, gated write to the shelf. The CLI splits that last movement into publish and promote, and how the split came to be is the next post&rsquo;s story.</p>
+
+      <ArchFigure svg={THREE_STEPS} caption="Fig. 2 — the path in three movements: one gate between registration and the shelf" />
 
       <Section variant="sage">
-        <h2><span className="bold">What the door taught us on day one</span></h2>
-        <p>Dogfooding the flow immediately earned its keep. The catalog refused a novel shape whose fields lacked descriptions &mdash; correct, and now documented. And we found a timing seam: a schema registered seconds ago is a catalog identity <em>at the service</em> before your node&rsquo;s local resolver has caught up, so the gate now re-checks the source of truth rather than trusting the lagging local view &mdash; and still fails closed if it can&rsquo;t. Neither lesson would have surfaced from a seeded shelf.</p>
+        <h2><span className="bold">The gate, kept under test</span></h2>
+        <p>The refusal at the top of this post is now a regression assertion. An automated dogfood rotation replays the same premature promote on every run, and the assertion has two halves: the rejection string must appear, naming the still-novel shapes, and no promote call may reach the wire before it. Both halves have to hold for the run to pass.</p>
       </Section>
 
-      <h2>Browsing the shelf</h2>
+      <h2>Sandbox first, then live</h2>
 
-      <p><span className="bold">lastdb app list</span> shows what&rsquo;s published; <span className="bold">lastdb app info &lt;app&gt;</span> shows one app&rsquo;s full row &mdash; publisher, registration date, tier, and the schema manifest. New registrations land in a <span className="bold">sandbox</span> tier and graduate to <span className="bold">live</span>; the shelf distinguishes &ldquo;present&rdquo; from &ldquo;promoted&rdquo; so early apps are findable without being endorsed.</p>
+      <p><span className="bold">lastdb app list</span> shows the shelf; <span className="bold">lastdb app info &lt;app&gt;</span> shows one row in full: publisher, tier, and the schema manifest. While our demo row was still a reservation, the list read <code>pantry&nbsp;&nbsp;Sandbox&nbsp;&nbsp;Pantry&nbsp;&nbsp;Tracks what&#39;s in your kitchen: items, quantities, expiry dates, and restock rules.</code> &mdash; present and findable, not endorsed. After promote, the response ends <code>&hellip; &quot;tier&quot;: &quot;live&quot;, &quot;uses&quot;: [] {'}'}</code>.</p>
 
-      <p>The registry is young &mdash; publishing runs against our dev environment while the flow hardens, and the long-term shape (install counts, stars, and recommending apps by which of <em>your</em> schemas they know how to read) is still ahead of it. But the foundation rule is already load-bearing and won&rsquo;t change: <span className="bold white">every row arrived through the same door.</span> When the shelf fills up, you&rsquo;ll be able to believe it.</p>
+      <Section variant="rose">
+        <h2><span className="bold">Still hardening</span></h2>
+        <p>Publishing runs against our dev environment while the flow hardens, and the door still sticks: a later first-party run had <span className="bold">lastdb app check</span> fail with <code>error: failed to read response: Resource temporarily unavailable (os error 35)</code>. The longer-term surface (install counts, stars, recommending apps by which of <em>your</em> schemas they can read) is still ahead of it.</p>
+      </Section>
+
+      <h2>What an empty launch buys</h2>
+
+      <p>Nothing reaches the shelf except through the flow above: under a developer key, past the promote gate, one completed walk per row. The population of the shelf is the running total of successful registrations, zero included, and when the number moves, the path moved it. That made the first walk worth taking seriously, and we took it ourselves &mdash; fresh key, an app the catalog had never seen, no shortcuts. It did not go smoothly.</p>
 
       <p className="dim">Related: <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> on how schema resolution works, and <Link to="/blog/how-an-app-runs-on-lastdb">How an App Runs on LastDB</Link> for the app model itself.</p>
 

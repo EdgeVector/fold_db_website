@@ -7,9 +7,9 @@ const POSTS = [
   {
     slug: 'the-registry-starts-empty',
     title: 'The Registry Starts Empty',
-    date: '2026-07-16',
+    date: '2026-07-17',
     blurb:
-      'LastDB now has an app registry, and it launched with zero rows in it — on purpose. An app can only appear by walking the real path: check your schemas against the catalog, register the novel ones, publish signed. The empty shelf is the test suite.',
+      'LastDB now has an app registry, and it launched with zero rows in it — on purpose. A row can only exist because a real registration produced it: check, publish, register, promote — with a gate at promote that rejects unregistered shapes by name. The empty shelf is the test suite.',
   },
   {
     slug: 'kanban-factory',
