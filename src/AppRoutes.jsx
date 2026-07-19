@@ -4,6 +4,7 @@ import Start from './pages/Start';
 import Apps from './pages/Apps';
 import About from './pages/About';
 import Developer from './pages/Developer';
+import Docs, { DocsDailyLoop, DocsInstall, DocsNodeHealth } from './pages/Docs';
 import Blog from './pages/Blog';
 import BlogHowAnAppRunsOnLastdb from './pages/BlogHowAnAppRunsOnLastdb';
 import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
@@ -36,6 +37,10 @@ export const PRERENDER_PATHS = [
   '/start',
   '/apps',
   '/developer',
+  '/docs',
+  '/docs/install',
+  '/docs/daily-loop',
+  '/docs/node-health',
   '/blog',
   '/blog/the-registry-starts-empty',
   '/blog/kanban-factory',
@@ -71,6 +76,10 @@ export default function AppRoutes() {
       <Route path="/using" element={<Navigate to="/start" replace />} />
       <Route path="/apps" element={<Apps />} />
       <Route path="/developer" element={<Developer />} />
+      <Route path="/docs" element={<Docs />} />
+      <Route path="/docs/install" element={<DocsInstall />} />
+      <Route path="/docs/daily-loop" element={<DocsDailyLoop />} />
+      <Route path="/docs/node-health" element={<DocsNodeHealth />} />
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/kanban-factory" element={<BlogKanbanFactory />} />

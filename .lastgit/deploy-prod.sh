@@ -32,6 +32,10 @@
 #     reads lastsecrets://obs-sentry-dsn-javascript-react as the current web
 #     Sentry project DSN.
 #   LASTGIT_DEPLOY_SKIP_VERCEL=1 — build only
+#   VERCEL_INSPECT_TIMEOUT / VERCEL_INSPECT_ATTEMPTS
+#     Wait for a no-wait deployment to become ready before promotion. Vercel
+#     CLI 50.x can exit 0 after timing out with a still-Queued deployment, so
+#     the script validates the inspect output before promoting.
 #
 # Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
@@ -146,8 +150,18 @@ vercel link --yes --scope="$SCOPE" --project="$PROJECT" --global-config="$CFG" >
 vercel build --prod --yes --scope="$SCOPE" --global-config="$CFG"
 
 echo "== vercel deploy --prebuilt --prod (scope=$SCOPE project=$PROJECT) =="
+extract_vercel_deployment_ref() {
+  grep -Eo 'https://[^[:space:]]+\.vercel\.app' "$1" | tail -n 1
+}
+
+is_transient_vercel_failure() {
+  grep -Eqi 'read ETIMEDOUT|ETIMEDOUT|ECONNRESET|EAI_AGAIN|ENOTFOUND|socket hang up|network timeout|fetch failed' "$1"
+}
+
+VERCEL_DEPLOYMENT_REF=""
 run_vercel_deploy_prebuilt() {
-  local attempts="${VERCEL_DEPLOY_ATTEMPTS:-3}"
+  local attempts="${VERCEL_DEPLOY_ATTEMPTS:-6}"
+  local retry_delay_secs="${VERCEL_DEPLOY_RETRY_DELAY_SECS:-10}"
   local attempt=1
   local rc=0
   local out=""
@@ -159,19 +173,27 @@ run_vercel_deploy_prebuilt() {
 
     out="$(mktemp "${TMPDIR:-/tmp}/vercel-deploy-output.XXXXXX")"
     set +e
-    vercel deploy --prebuilt --prod --yes --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    vercel deploy --prebuilt --prod --yes --no-wait --skip-domain --archive=tgz \
+      --meta "lastgitOid=$OID" \
+      --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
     rc="${PIPESTATUS[0]}"
     set -e
 
     if [ "$rc" -eq 0 ]; then
+      VERCEL_DEPLOYMENT_REF="$(extract_vercel_deployment_ref "$out")"
+      if [ -z "$VERCEL_DEPLOYMENT_REF" ]; then
+        echo "FAIL: Vercel deploy succeeded but no deployment URL was found in output" >&2
+        rm -f "$out"
+        return 1
+      fi
       rm -f "$out"
       return 0
     fi
 
-    if grep -Eqi 'read ETIMEDOUT|ETIMEDOUT|ECONNRESET|EAI_AGAIN|ENOTFOUND|socket hang up|network timeout|fetch failed' "$out" \
-      && [ "$attempt" -lt "$attempts" ]; then
+    if is_transient_vercel_failure "$out" && [ "$attempt" -lt "$attempts" ]; then
       echo "WARN: transient Vercel deploy network failure; retrying ($attempt/$attempts)" >&2
       rm -f "$out"
+      sleep "$retry_delay_secs"
       attempt=$((attempt + 1))
       continue
     fi
@@ -181,5 +203,98 @@ run_vercel_deploy_prebuilt() {
   done
 }
 run_vercel_deploy_prebuilt
+
+echo "== vercel inspect --wait $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
+run_vercel_inspect_wait() {
+  local attempts="${VERCEL_INSPECT_ATTEMPTS:-4}"
+  local retry_delay_secs="${VERCEL_INSPECT_RETRY_DELAY_SECS:-10}"
+  local inspect_timeout="${VERCEL_INSPECT_TIMEOUT:-5m}"
+  local attempt=1
+  local rc=0
+  local out=""
+
+  while [ "$attempt" -le "$attempts" ]; do
+    if [ "$attempt" -gt 1 ]; then
+      echo "== retry vercel inspect --wait attempt $attempt/$attempts =="
+    fi
+
+    out="$(mktemp "${TMPDIR:-/tmp}/vercel-inspect-output.XXXXXX")"
+    set +e
+    vercel inspect "$VERCEL_DEPLOYMENT_REF" --wait --timeout="$inspect_timeout" \
+      --scope="$SCOPE" --global-config="$CFG" 2>&1 | tee "$out"
+    rc="${PIPESTATUS[0]}"
+    set -e
+
+    if [ "$rc" -eq 0 ] && ! grep -Eqi 'WARNING! stopped waiting|status[[:space:]].*Queued|status[[:space:]].*Building|status[[:space:]].*Initializing' "$out"; then
+      rm -f "$out"
+      return 0
+    fi
+
+    if is_transient_vercel_failure "$out" && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: transient Vercel inspect network failure; retrying ($attempt/$attempts)" >&2
+      rm -f "$out"
+      sleep "$retry_delay_secs"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    if [ "$rc" -eq 0 ] && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: Vercel deployment is not ready yet; retrying inspect ($attempt/$attempts)" >&2
+      rm -f "$out"
+      sleep "$retry_delay_secs"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    rm -f "$out"
+    if [ "$rc" -eq 0 ]; then
+      echo "FAIL: Vercel deployment was still not ready after $attempt/$attempts inspect attempts" >&2
+      return 1
+    fi
+    return "$rc"
+  done
+}
+run_vercel_inspect_wait
+
+echo "== vercel promote $VERCEL_DEPLOYMENT_REF (scope=$SCOPE project=$PROJECT) =="
+PROMOTE_CWD="${VERCEL_PROMOTE_CWD:-$HOME}"
+run_vercel_promote() {
+  local attempts="${VERCEL_PROMOTE_ATTEMPTS:-3}"
+  local retry_delay_secs="${VERCEL_PROMOTE_RETRY_DELAY_SECS:-10}"
+  local promote_timeout="${VERCEL_PROMOTE_TIMEOUT:-5m}"
+  local attempt=1
+  local rc=0
+  local out=""
+
+  while [ "$attempt" -le "$attempts" ]; do
+    if [ "$attempt" -gt 1 ]; then
+      echo "== retry vercel promote attempt $attempt/$attempts =="
+    fi
+
+    out="$(mktemp "${TMPDIR:-/tmp}/vercel-promote-output.XXXXXX")"
+    set +e
+    ( cd "$PROMOTE_CWD" && vercel promote "$VERCEL_DEPLOYMENT_REF" --yes --timeout="$promote_timeout" \
+      --scope="$SCOPE" --global-config="$CFG" ) 2>&1 | tee "$out"
+    rc="${PIPESTATUS[0]}"
+    set -e
+
+    if [ "$rc" -eq 0 ]; then
+      rm -f "$out"
+      return 0
+    fi
+
+    if is_transient_vercel_failure "$out" && [ "$attempt" -lt "$attempts" ]; then
+      echo "WARN: transient Vercel promote network failure; retrying ($attempt/$attempts)" >&2
+      rm -f "$out"
+      sleep "$retry_delay_secs"
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    rm -f "$out"
+    return "$rc"
+  done
+}
+run_vercel_promote
 
 echo "lastgit fold_db_website deploy-prod PASSED"
