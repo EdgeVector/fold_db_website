@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'checking-every-shelf',
+    title: 'Checking Every Shelf',
+    date: '2026-07-29',
+    blurb:
+      'Our own board and knowledge apps got slow. First theory: semantic search. Real bug: hot reads walked every hash group because their scan keys had no shelf label. What we measured, what we fixed, and the before/after — list ~11s → ~1s, card show ~8s → tens of ms.',
+  },
+  {
     slug: 'dogfooding-the-app-registry',
     title: 'Dogfooding the App Registry',
     date: '2026-07-17',
