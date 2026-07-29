@@ -108,7 +108,164 @@ const GROUPS = `${SVG_OPEN('0 0 660 240')}
   <line x1="60" y1="175" x2="572" y2="175" stroke="#928374" stroke-width="1"/>
   <text x="316" y="204" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NOT ONE LOCK ON THE WHOLE DISK · WORK CAN PARALLELIZE</text>
 
-  <text x="330" y="228" text-anchor="middle" fill="#928374" font-size="10">KEY SHAPE STILL MATTERS — SEE &ldquo;CHECKING EVERY SHELF&rdquo;</text>
+  <text x="330" y="228" text-anchor="middle" fill="#928374" font-size="10">KEY SHAPE STILL MATTERS — SEE THE LAYOUT STORY BELOW</text>
+</svg>`;
+
+// Fig 4 — full-key hash scatters one partition across every group
+const LAYOUT_SCATTER = `${SVG_OPEN('0 0 660 320')}
+  <text x="330" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">ACT 1 · FULL-KEY HASH</text>
+  <text x="330" y="46" text-anchor="middle" fill="#928374" font-size="10">one logical partition · siblings hashed by whole key</text>
+
+  <!-- collection frame -->
+  <rect x="40" y="64" width="580" height="150" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="56" y="84" fill="#ebdbb2" font-size="11" letter-spacing="1.5">HASH GROUPS</text>
+  <text x="560" y="84" text-anchor="end" fill="#928374" font-size="10">~1024 groups</text>
+
+  <!-- group cells row -->
+  <g stroke="#504945" stroke-width="1" fill="none">
+    <rect x="56" y="100" width="48" height="72"/>
+    <rect x="116" y="100" width="48" height="72"/>
+    <rect x="176" y="100" width="48" height="72"/>
+    <rect x="236" y="100" width="48" height="72"/>
+    <rect x="296" y="100" width="48" height="72"/>
+    <rect x="356" y="100" width="48" height="72"/>
+    <rect x="416" y="100" width="48" height="72"/>
+    <rect x="476" y="100" width="48" height="72"/>
+    <rect x="536" y="100" width="48" height="72"/>
+  </g>
+  <text x="80" y="188" text-anchor="middle" fill="#928374" font-size="9">G0</text>
+  <text x="140" y="188" text-anchor="middle" fill="#928374" font-size="9">G1</text>
+  <text x="200" y="188" text-anchor="middle" fill="#928374" font-size="9">G2</text>
+  <text x="260" y="188" text-anchor="middle" fill="#928374" font-size="9">G3</text>
+  <text x="320" y="188" text-anchor="middle" fill="#928374" font-size="9">G4</text>
+  <text x="380" y="188" text-anchor="middle" fill="#928374" font-size="9">G5</text>
+  <text x="440" y="188" text-anchor="middle" fill="#928374" font-size="9">G6</text>
+  <text x="500" y="188" text-anchor="middle" fill="#928374" font-size="9">G7</text>
+  <text x="560" y="188" text-anchor="middle" fill="#928374" font-size="9">…</text>
+
+  <!-- four sibling records (small squares) scattered — accent -->
+  <rect x="70" y="124" width="20" height="20" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <rect x="250" y="112" width="20" height="20" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <rect x="430" y="140" width="20" height="20" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <rect x="550" y="118" width="20" height="20" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <text x="80" y="138" text-anchor="middle" fill="#ebdbb2" font-size="9">R</text>
+  <text x="260" y="126" text-anchor="middle" fill="#ebdbb2" font-size="9">R</text>
+  <text x="440" y="154" text-anchor="middle" fill="#ebdbb2" font-size="9">R</text>
+  <text x="560" y="132" text-anchor="middle" fill="#ebdbb2" font-size="9">R</text>
+
+  <!-- dashed walk across whole row -->
+  <line x1="56" y1="210" x2="584" y2="210" stroke="#83a598" stroke-width="1" stroke-dasharray="3 3"/>
+  <rect x="54" y="208" width="4" height="4" fill="#83a598"/>
+  <rect x="582" y="208" width="4" height="4" fill="#83a598"/>
+  <text x="330" y="232" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">PARTITION READ → VISIT EVERY GROUP</text>
+
+  <line x1="56" y1="258" x2="56" y2="272" stroke="#928374" stroke-width="1"/>
+  <line x1="584" y1="258" x2="584" y2="272" stroke="#928374" stroke-width="1"/>
+  <line x1="56" y1="265" x2="584" y2="265" stroke="#928374" stroke-width="1"/>
+  <text x="330" y="298" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">LIMIT DOES NOT HELP — MERGE FIRST, TAKE LAST</text>
+</svg>`;
+
+// Fig 5 — partition-prefix + durable relayout co-locates siblings
+const LAYOUT_PIN = `${SVG_OPEN('0 0 660 340')}
+  <text x="330" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">ACT 2 · PARTITION PIN + RELAYOUT</text>
+  <text x="330" y="46" text-anchor="middle" fill="#928374" font-size="10">place by shelf prefix · rewrite the home so old keys move</text>
+
+  <rect x="40" y="64" width="580" height="150" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="56" y="84" fill="#ebdbb2" font-size="11" letter-spacing="1.5">HASH GROUPS</text>
+  <text x="480" y="84" fill="#83a598" font-size="10">layout epoch bumped</text>
+
+  <g stroke="#504945" stroke-width="1" fill="none">
+    <rect x="56" y="100" width="48" height="72"/>
+    <rect x="116" y="100" width="48" height="72"/>
+    <rect x="176" y="100" width="48" height="72"/>
+    <rect x="236" y="100" width="48" height="72"/>
+    <rect x="296" y="100" width="48" height="72"/>
+    <rect x="356" y="100" width="48" height="72"/>
+    <rect x="416" y="100" width="48" height="72"/>
+    <rect x="476" y="100" width="48" height="72"/>
+    <rect x="536" y="100" width="48" height="72"/>
+  </g>
+  <!-- neighborhood: two adjacent groups accent + poche -->
+  <rect x="296" y="100" width="48" height="72" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <rect x="356" y="100" width="48" height="72" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+
+  <!-- four siblings co-located -->
+  <rect x="304" y="118" width="16" height="16" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="324" y="140" width="16" height="16" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="364" y="118" width="16" height="16" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="384" y="140" width="16" height="16" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+
+  <text x="80" y="188" text-anchor="middle" fill="#928374" font-size="9">G0</text>
+  <text x="140" y="188" text-anchor="middle" fill="#928374" font-size="9">G1</text>
+  <text x="200" y="188" text-anchor="middle" fill="#928374" font-size="9">G2</text>
+  <text x="260" y="188" text-anchor="middle" fill="#928374" font-size="9">G3</text>
+  <text x="320" y="188" text-anchor="middle" fill="#83a598" font-size="9">G4</text>
+  <text x="380" y="188" text-anchor="middle" fill="#83a598" font-size="9">G5</text>
+  <text x="440" y="188" text-anchor="middle" fill="#928374" font-size="9">G6</text>
+  <text x="500" y="188" text-anchor="middle" fill="#928374" font-size="9">G7</text>
+  <text x="560" y="188" text-anchor="middle" fill="#928374" font-size="9">…</text>
+
+  <!-- dimension over neighborhood -->
+  <line x1="296" y1="210" x2="296" y2="224" stroke="#83a598" stroke-width="1"/>
+  <line x1="404" y1="210" x2="404" y2="224" stroke="#83a598" stroke-width="1"/>
+  <line x1="296" y1="217" x2="404" y2="217" stroke="#83a598" stroke-width="1"/>
+  <text x="350" y="244" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">~FANOUT GROUPS · SIBLINGS HOME</text>
+
+  <!-- cut-corner document: layout descriptor -->
+  <polygon points="56,262 150,262 164,276 164,302 56,302" fill="none" stroke="#928374" stroke-width="1"/>
+  <polyline points="150,262 150,276 164,276" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="110" y="288" text-anchor="middle" fill="#ebdbb2" font-size="9" letter-spacing="0.5">LAYOUT DESCRIPTOR</text>
+
+  <line x1="164" y1="282" x2="220" y2="282" stroke="#928374" stroke-width="1"/>
+  <rect x="218" y="280" width="4" height="4" fill="#928374"/>
+  <text x="360" y="276" fill="#ebdbb2" font-size="10">code alone is inert</text>
+  <text x="360" y="294" fill="#928374" font-size="10">migration rewrites placement on disk</text>
+  <text x="110" y="324" text-anchor="middle" fill="#928374" font-size="9">durable · not a runtime knob</text>
+</svg>`;
+
+// Fig 6 — shelf mark present or absent decides prune vs full sweep
+const LAYOUT_ANCHOR = `${SVG_OPEN('0 0 660 300')}
+  <text x="330" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">ACT 3 · THE SHELF-MARK RULE</text>
+  <text x="330" y="46" text-anchor="middle" fill="#928374" font-size="10">layout right · walk still wrong without a shelf mark in the key</text>
+
+  <!-- left: good prefix -->
+  <rect x="36" y="68" width="270" height="180" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="171" y="92" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1.5">SHELF MARK PRESENT</text>
+
+  <rect x="72" y="112" width="200" height="28" fill="none" stroke="#83a598" stroke-width="1"/>
+  <text x="172" y="130" text-anchor="middle" fill="#ebdbb2" font-size="10">PREFIX · · · | · · ·</text>
+  <line x1="172" y1="112" x2="172" y2="140" stroke="#83a598" stroke-width="1"/>
+  <text x="172" y="158" text-anchor="middle" fill="#83a598" font-size="9">MARK</text>
+
+  <g stroke="#504945" stroke-width="1" fill="none">
+    <rect x="64" y="176" width="32" height="24"/>
+    <rect x="104" y="176" width="32" height="24"/>
+    <rect x="144" y="176" width="32" height="24"/>
+    <rect x="184" y="176" width="32" height="24"/>
+    <rect x="224" y="176" width="32" height="24"/>
+  </g>
+  <rect x="144" y="176" width="32" height="24" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <rect x="184" y="176" width="32" height="24" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <text x="171" y="226" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">PRUNE TO NEIGHBORHOOD</text>
+
+  <!-- right: bad prefix -->
+  <rect x="354" y="68" width="270" height="180" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="489" y="92" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">NO SHELF MARK</text>
+
+  <rect x="390" y="112" width="200" height="28" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="490" y="130" text-anchor="middle" fill="#ebdbb2" font-size="10">PREFIX · · · · · · ·</text>
+  <text x="490" y="158" text-anchor="middle" fill="#928374" font-size="9">NO MARK</text>
+
+  <g stroke="#83a598" stroke-width="1" fill="none" stroke-dasharray="2 2">
+    <rect x="382" y="176" width="32" height="24"/>
+    <rect x="422" y="176" width="32" height="24"/>
+    <rect x="462" y="176" width="32" height="24"/>
+    <rect x="502" y="176" width="32" height="24"/>
+    <rect x="542" y="176" width="32" height="24"/>
+  </g>
+  <text x="489" y="226" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">FULL COLLECTION SWEEP</text>
+
+  <text x="330" y="278" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NO MIDDLE — ANCHORED OR ALL GROUPS</text>
 </svg>`;
 
 export default function BlogLastStore() {
@@ -118,12 +275,12 @@ export default function BlogLastStore() {
         <title>Last Store - LastDB</title>
         <meta
           name="description"
-          content="LastDB no longer sits on a single opaque embedded bag for local bytes. Last Store is our own local engine: segment files, named collections, hash groups, and compact that actually reclaims disk. Why we left the previous store, what we measured, and what that means for you."
+          content="LastDB no longer sits on a single opaque embedded bag for local bytes. Last Store is our own local engine: segment files, named collections, hash groups, and compact that reclaims disk — plus the layout story: full-key scatter, partition pin, and the shelf-mark rule."
         />
         <meta property="og:title" content="Last Store" />
         <meta
           property="og:description"
-          content="Storage v2, product name Last Store: a local engine built for LastDB’s real write path and reclaim story — not a drop-in swap for its own sake."
+          content="Storage v2, product name Last Store: segments, collections, hash groups, and how layout on disk decides whether a partition read is cheap."
         />
         <link rel="canonical" href="https://thelastdb.com/blog/last-store" />
       </Helmet>
@@ -241,8 +398,75 @@ export default function BlogLastStore() {
 
       <ArchFigure
         svg={GROUPS}
-        caption="Fig. 3 — Hash groups: many small homes. A well-shaped key hits a neighborhood; a bad scan still can walk the grid (we fixed that for our hot paths too)."
+        caption="Fig. 3 — Hash groups: many small homes. A well-shaped key hits a neighborhood; a bad scan still can walk the grid."
       />
+
+      <h2>The layout story</h2>
+
+      <p>
+        Hash groups only help if keys that belong together <em>live</em> together. Last Store
+        learned that the hard way. The layout story has three acts: a placement rule that
+        destroyed locality, a durable relayout that fixed it, and a second lesson that code can
+        still walk every shelf even after the home is right.
+      </p>
+
+      <p>
+        <span className="bold white">Act 1 &mdash; full-key hash.</span> Early on, each key&rsquo;s
+        group came from hashing the <em>entire</em> key. Rows in one logical partition share a
+        long common prefix and differ only in a suffix. Hash the whole string and those siblings
+        scatter across the grid. A &ldquo;partition read&rdquo; &mdash; the access pattern apps are
+        supposed to use instead of a table scan &mdash; still visited every group, merged, then
+        applied the page limit. Limit one paid like limit unbounded. The store was partitioned;
+        the walk was not.
+      </p>
+
+      <ArchFigure
+        svg={LAYOUT_SCATTER}
+        caption="Fig. 4 — Full-key hash: siblings of one logical partition land in many groups. A partition read still walks the whole row."
+      />
+
+      <p>
+        <span className="bold white">Act 2 &mdash; partition pin + relayout.</span> The better rule
+        places a key by a <em>shelf prefix</em> &mdash; everything through a reserved mark in the
+        key &mdash; so rows that share a shelf co-locate into a small neighborhood (fanout groups,
+        not the whole grid). That rule only matters on disk. Placement is durable: a new binary on
+        an old home still sits on the old map. Merged code without a migration is a no-op. The
+        fix was a real relayout of the home, a bumped layout epoch, and a layout descriptor that
+        names the rule. After that, a well-keyed partition read could prune.
+      </p>
+
+      <ArchFigure
+        svg={LAYOUT_PIN}
+        caption="Fig. 5 — Partition pin + relayout: siblings share a neighborhood. The layout descriptor is law until a migration rewrites it."
+      />
+
+      <p>
+        <span className="bold white">Act 3 &mdash; the shelf-mark rule.</span> Even with the home
+        relaid out, a prefix scan only prunes when the prefix already carries the shelf mark. No
+        mark, no middle ground: the engine falls back to every group in the collection. Some hot
+        paths used molecule-wide prefixes that never included that mark. Layout was right; the
+        walk was still a full sweep. Fixing those paths was software &mdash; reuse indexes, prefer
+        point keys, stop rediscovering what we already know &mdash; not a second rewrite of every
+        product row. That chapter is{' '}
+        <Link to="/blog/checking-every-shelf">Checking Every Shelf</Link>.
+      </p>
+
+      <ArchFigure
+        svg={LAYOUT_ANCHOR}
+        caption="Fig. 6 — Shelf mark present: prune to a neighborhood. Absent: full collection sweep. Layout alone is not enough."
+      />
+
+      <Section variant="sage">
+        <h2>
+          <span className="bold">Two different &ldquo;why are we slow?&rdquo; answers</span>
+        </h2>
+        <p>
+          <span className="bold white">Wrong placement</span> needs a durable migration &mdash;
+          rewrite where bytes live. <span className="bold white">Right placement, unanchored
+          walks</span> needs better keys and read paths. Confusing the two burns a week: you ship
+          the pin, the home looks correct, and the board is still checking every shelf.
+        </p>
+      </Section>
 
       <Section variant="sage">
         <h2>
@@ -280,10 +504,8 @@ export default function BlogLastStore() {
       </p>
 
       <p>
-        Owning the engine does not mean every read is free. Partitioned layouts only help when the
-        <em>key you scan with</em> can name a shelf. We spent a separate week learning that the hard
-        way when board and knowledge apps got slow even after the layout was right &mdash; that
-        story is{' '}
+        Owning the engine does not mean every read is free. Partitioned layouts only help when the{' '}
+        <em>key you scan with</em> can name a shelf &mdash; the layout story above, then{' '}
         <Link to="/blog/checking-every-shelf">Checking Every Shelf</Link>. Last Store gave us a
         place where that diagnosis is visible and fixable; it did not erase the need for access
         patterns.
