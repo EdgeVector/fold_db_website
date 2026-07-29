@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'last-store',
+    title: 'Last Store',
+    date: '2026-07-29',
+    blurb:
+      'LastDB no longer sits on a single opaque embedded bag for local bytes. Last Store is our own local engine: segment files, named collections, hash groups, and compact that actually reclaims disk. Why we left the previous store, what we measured, and what that means for you.',
+  },
+  {
     slug: 'checking-every-shelf',
     title: 'Checking Every Shelf',
     date: '2026-07-29',
