@@ -15,6 +15,7 @@ import BlogHowAnAppGetsPublishedOnLastdb from './pages/BlogHowAnAppGetsPublished
 import BlogDogfoodingTheAppRegistry from './pages/BlogDogfoodingTheAppRegistry';
 import BlogCheckingEveryShelf from './pages/BlogCheckingEveryShelf';
 import BlogLastStore from './pages/BlogLastStore';
+import BlogMemoryFirstDiskLater from './pages/BlogMemoryFirstDiskLater';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -45,6 +46,7 @@ export const PRERENDER_PATHS = [
   '/docs/daily-loop',
   '/docs/node-health',
   '/blog',
+  '/blog/memory-first-disk-later',
   '/blog/last-store',
   '/blog/checking-every-shelf',
   '/blog/dogfooding-the-app-registry',
@@ -88,6 +90,7 @@ export default function AppRoutes() {
       <Route path="/docs/node-health" element={<DocsNodeHealth />} />
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/memory-first-disk-later" element={<BlogMemoryFirstDiskLater />} />
       <Route path="/blog/last-store" element={<BlogLastStore />} />
       <Route path="/blog/checking-every-shelf" element={<BlogCheckingEveryShelf />} />
       <Route path="/blog/kanban-factory" element={<BlogKanbanFactory />} />
