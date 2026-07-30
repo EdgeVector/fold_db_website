@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'memory-first-disk-later',
+    title: 'Memory First, Disk Later',
+    date: '2026-07-30',
+    blurb:
+      'Our data measured under a gigabyte; reading one record took three seconds. In one working session we inverted the order of authority — memory becomes the primary, disk the diary. Point reads 2,970ms → 48ms, the write pipeline seconds → under twenty milliseconds, measured on clones of the real production database, incident included.',
+  },
+  {
     slug: 'last-store',
     title: 'Last Store',
     date: '2026-07-29',
