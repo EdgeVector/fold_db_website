@@ -12,7 +12,8 @@ curl -fsSL https://bun.sh/install | bash
 # open a new terminal after Bun installs, or:
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
-# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations, Dogfood Graph
+# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations,
+#    LastSecrets, Dogfood Graph, org
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
@@ -22,6 +23,7 @@ brew services start lastdb
 brain init --grant-consent
 kanban init
 situations init
+lastsecrets init
 
 # 3) Prove it
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
@@ -29,7 +31,8 @@ kanban list
 brain concept new hello --title "Hello" --body "my first note"
 brain get hello
 # semantic ask may lag a few seconds after create; use a term from the body
-brain ask "first note"`;
+brain ask "first note"
+lastsecrets list`;
 
 // Draftsman architecture figure: apps as outline clients, LastDB as poché store.
 const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +215,7 @@ export default function Home() {
         <div className="grid-2" style={{ marginTop: '1em' }}>
           <Card>
             <p><Label color="blue">WHAT THAT DID</Label></p>
-            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span>, start the daemon, init each app.</p>
+            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span>, start the daemon, init each app.</p>
           </Card>
           <Card>
             <p><Label color="blue">DATABASE ONLY</Label></p>
@@ -245,6 +248,10 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
           <Card>
             <p><Label color="purple">SITUATIONS</Label> <span className="dim">ops calm</span></p>
             <p>What&rsquo;s true right now before agents touch shared systems &mdash; freezes, preflights, clearance.</p>
+          </Card>
+          <Card>
+            <p><Label color="purple">LASTSECRETS</Label> <span className="dim">credentials that stay local</span></p>
+            <p>Store secrets in LastDB; keep only <span className="bold">lastsecrets://</span> refs in Brain, docs, and scripts.</p>
           </Card>
           <Card>
             <p><Label color="purple">LAST STACK</Label> <span className="dim">agent playbook</span></p>
