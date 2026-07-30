@@ -57,25 +57,17 @@ const READINESS_GROUPS = [
       },
       {
         rank: 6,
+        name: 'LastSecrets',
+        cmd: 'lastsecrets',
+        pct: 50,
+        note: 'Public CLI. Store secrets in LastDB; other tools keep lastsecrets:// refs only.',
+      },
+      {
+        rank: 7,
         name: 'Dogfood Graph',
         cmd: 'local web app',
         pct: 45,
         note: 'Manual UX evidence tool. Useful, not a polished product.',
-      },
-    ],
-  },
-  {
-    stage: 'Optional',
-    labelColor: 'blue',
-    stageClass: 'stage-optional',
-    blurb: 'Skip unless you need it — only when the repo is available to you.',
-    apps: [
-      {
-        rank: 7,
-        name: 'LastSecrets',
-        cmd: 'lastsecrets',
-        pct: 40,
-        note: 'Secret refs (lastsecrets://…). Not required for a first try.',
       },
     ],
   },
@@ -120,7 +112,6 @@ const READINESS_GROUPS = [
 const STAGE_LEGEND = [
   { stage: 'Alpha', color: 'green', text: 'Daily drivers. Sharp edges OK — start here.' },
   { stage: 'Dogfood', color: 'yellow', text: 'Ships in the installer; more papercuts.' },
-  { stage: 'Optional', color: 'blue', text: 'Only if you need that capability.' },
   { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer.' },
 ];
 
@@ -152,7 +143,7 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, and Situations." />
+        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, Situations, and LastSecrets." />
         <meta property="og:title" content="Apps - LastDB" />
         <meta property="og:description" content="What runs on LastDB, how rough each app is, and how to try the main ones." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
@@ -211,7 +202,8 @@ export default function Apps() {
           <p>
             <span className="bold white">First try:</span>{' '}
             install from the home page, then use <span className="bold">Brain</span> and{' '}
-            <span className="bold">Kanban</span> (and <span className="bold">Situations</span> if you run agents).
+            <span className="bold">Kanban</span> (and <span className="bold">Situations</span> /{' '}
+            <span className="bold">LastSecrets</span> when you need ops gates or credentials).
             Ignore Early apps until you&rsquo;re curious.
           </p>
         </div>
@@ -222,8 +214,8 @@ export default function Apps() {
         <h2><span className="bold">2 &mdash; TRY THE MAIN ONES</span> <span className="dim">after install</span></h2>
 
         <p>
-          After the home-page installer finishes, these three CLIs are the ones you actually type.
-          Last Stack was the installer itself; Dogfood Graph and LastSecrets are optional extras (see ranking above).
+          After the home-page installer finishes, these CLIs are the ones you actually type.
+          Last Stack was the installer itself; Dogfood Graph is a local web app (see below).
         </p>
 
         <div className="grid-2">
@@ -263,15 +255,35 @@ situations preflight --action enable-ci --repo my-org/my-repo`}</pre>
           </Card>
 
           <Card>
+            <p>
+              <Label color="yellow">DOGFOOD</Label>{' '}
+              <Label color="purple">LASTSECRETS</Label>{' '}
+              <span className="dim">credentials · <span className="bold">lastsecrets</span></span>
+            </p>
+            <p>
+              Keep raw secrets out of Brain, docs, and chat. Store once; reference with{' '}
+              <span className="bold">lastsecrets://…</span> everywhere else.
+            </p>
+            <pre>{`lastsecrets init
+# never put the value on the command line — stdin only
+printf '%s' "$TOKEN" | lastsecrets put my-api-token \\
+  --label "My API token" \\
+  --provider example \\
+  --purpose demo \\
+  --env dev \\
+  --value-stdin
+lastsecrets ref my-api-token
+# → lastsecrets://my-api-token
+lastsecrets list
+# list/search always print value=<redacted>`}</pre>
+          </Card>
+
+          <Card>
             <p><Label color="blue">ALSO IN THE INSTALLER</Label></p>
             <p>
               <span className="bold">Dogfood Graph</span> &mdash; local web app for manual product evidence:
             </p>
             <pre>{`cd ~/lastdb-apps/dogfood-graph && npm run dev`}</pre>
-            <p className="dim">
-              <span className="bold">LastSecrets</span> &mdash; only if you have access and need{' '}
-              <span className="bold">lastsecrets://</span> refs. Skip on a first try.
-            </p>
           </Card>
         </div>
 
@@ -311,6 +323,20 @@ kanban init`}</pre>
 bun install
 ln -snf "$PWD/bin/situations" ~/.local/bin/situations
 situations init`}</pre>
+          </Card>
+          <Card>
+            <p><Label color="blue">LASTSECRETS</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
+bun install && bun link
+lastsecrets init`}</pre>
+            <p className="dim">
+              Public repo:{' '}
+              <a href="https://github.com/EdgeVector/lastsecrets" target="_blank" rel="noreferrer">
+                github.com/EdgeVector/lastsecrets
+              </a>
+              . Retrieve plaintext only at the point of use with{' '}
+              <span className="bold">lastsecrets get &lt;slug&gt;</span>.
+            </p>
           </Card>
         </div>
 

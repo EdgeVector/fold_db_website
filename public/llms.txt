@@ -3,8 +3,9 @@
 > Build for your happiness. On a foundation you own.
 >
 > LastDB is a local database you build your own tool stack on
-> (Brain, Kanban, Situations, agent skills, and the apps you write — tools on one
-> foundation you own, not SaaS silos). Deliver slices of your database to others.
+> (Brain, Kanban, Situations, LastSecrets, agent skills, and the apps you write —
+> tools on one foundation you own, not SaaS silos). Deliver slices of your
+> database to others.
 >
 > Local use needs no account. Optional cloud backup/sync joins an account for
 > multi-device (`lastdb connect`).
@@ -22,6 +23,7 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
 # Last Stack installer: LastDB (via brew) + daily apps
+# (brain, kanban, situations, lastsecrets, dogfood-graph, org)
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
@@ -30,6 +32,7 @@ brew services start lastdb
 brain init --grant-consent
 kanban init
 situations init
+lastsecrets init
 
 # Health check — note path is /health (not /api/health)
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
@@ -43,10 +46,18 @@ brew install edgevector/lastdb/lastdb
 brew services start lastdb
 ```
 
+LastSecrets only (after LastDB is running):
+
+```bash
+git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
+bun install && bun link
+lastsecrets init
+```
+
 ## Mental model
 
 - **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
-- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, …)
+- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, …)
 - **The Last Stack** — installer + agent skills (not a second database)
 
 Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
@@ -59,11 +70,30 @@ brain concept new hello --title "Hello" --body "my first note"
 brain get hello
 # semantic ask may lag a few seconds after create; use a term from the body
 brain ask "first note"
+
+# LastSecrets — never put raw secret values on the command line
+printf '%s' "$TOKEN" | lastsecrets put my-api-token \
+  --label "My API token" \
+  --provider example \
+  --purpose demo \
+  --env dev \
+  --value-stdin
+lastsecrets ref my-api-token
+# → lastsecrets://my-api-token
+lastsecrets list
+# list/search always print value=<redacted>
 ```
+
+## Secrets policy (agents)
+
+- Store with `lastsecrets put <slug> … --value-stdin` (value on stdin only).
+- Persist only `lastsecrets://<slug>` locators in Brain, Kanban, docs, CI, and logs.
+- Retrieve with `lastsecrets get <slug>` only at the point of use; do not print or re-store the value.
+- If LastSecrets is unavailable, stop before handling raw secret material.
 
 ## App readiness (ranked high → low; judgment, not SLAs)
 
-Whole stack is product alpha. Stages: Alpha · Dogfood · Optional · Early.
+Whole stack is product alpha. Stages: Alpha · Dogfood · Early.
 
 | Rank | App | Stage | ~% |
 |------|-----|--------|-----|
@@ -72,15 +102,15 @@ Whole stack is product alpha. Stages: Alpha · Dogfood · Optional · Early.
 | 03 | Kanban | Alpha | ~70 |
 | 04 | Last Stack | Dogfood | ~60 |
 | 05 | Situations | Dogfood | ~55 |
-| 06 | Dogfood Graph | Dogfood | ~45 |
-| 07 | LastSecrets | Optional | ~40 |
+| 06 | LastSecrets | Dogfood | ~50 |
+| 07 | Dogfood Graph | Dogfood | ~45 |
 | 08 | Routines | Early | ~35 |
 | 09 | LastGit | Early | ~30 |
 | 10 | CodeRings | Early | ~25 |
 | 11 | Discovery | Early | ~25 |
 
-First try: ranks 01–03. Full notes: https://thelastdb.com/apps#readiness
-
+First try: ranks 01–03; use LastSecrets (#06) whenever credentials are involved.
+Full notes: https://thelastdb.com/apps#readiness
 
 ## Key pages
 
@@ -94,3 +124,4 @@ First try: ranks 01–03. Full notes: https://thelastdb.com/apps#readiness
 - https://thelastdb.com/docs/daily-loop — Brain/Kanban daily loop
 - https://thelastdb.com/docs/node-health — node health and socket checks
 - https://thelastdb.com/blog — engineering writing
+- https://github.com/EdgeVector/lastsecrets — LastSecrets public source

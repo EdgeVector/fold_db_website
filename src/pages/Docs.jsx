@@ -150,7 +150,8 @@ git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 brew services start lastdb
 brain init --grant-consent
 kanban init
-situations init`}</pre>
+situations init
+lastsecrets init`}</pre>
       </Section>
 
       <Section variant="sage">

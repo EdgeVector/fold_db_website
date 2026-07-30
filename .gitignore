@@ -24,3 +24,4 @@ Thumbs.db
 .env.local
 .env.*.local
 .vercel
+.portal-worktree
