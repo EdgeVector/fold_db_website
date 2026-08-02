@@ -26,20 +26,6 @@ const POSTS = [
       'Our own board and knowledge apps got slow. First theory: semantic search. Real bug: hot reads walked every hash group because their scan keys had no shelf label. What we measured, what we fixed, and the before/after — list ~11s → ~1s, card show ~8s → tens of ms.',
   },
   {
-    slug: 'dogfooding-the-app-registry',
-    title: 'Dogfooding the App Registry',
-    date: '2026-07-17',
-    blurb:
-      'We opened the registry with zero rows and one promise: every row walks in through the real path. Then we walked it ourselves, as a stranger would — and the door was jammed. The transcript of the first app going from nothing to live, and the five defects the walk surfaced.',
-  },
-  {
-    slug: 'how-an-app-gets-published-on-lastdb',
-    title: 'How an App Gets Published on LastDB',
-    date: '2026-07-17',
-    blurb:
-      'LastDB now has an app registry, and it launched with zero rows in it — on purpose. A row can only exist because a real registration produced it: check, publish, register, promote — with a gate at promote that rejects unregistered shapes by name. The empty shelf is the test suite.',
-  },
-  {
     slug: 'kanban-factory',
     title: 'The Factory Floor',
     date: '2026-07-16',
@@ -59,12 +45,6 @@ const POSTS = [
     date: '2026-07-15',
     blurb:
       'Re-enabled cloud sync after a memory incident; thrashed again. Status said download=0 and pending was thousands deep. We capped downloads, then the outbox — and never reached upload. Root cause: one tick downloaded every registered shared log before any personal upload, on a node with ~20 stale org registrations. What we changed (personal-first, per-tick scoped cap, no force-admit oversize) and the misreads to avoid next time.',
-  },
-  {
-    slug: 'how-an-app-runs-on-lastdb',
-    title: 'How an App Runs on LastDB',
-    date: '2026-07-14',
-    blurb: 'Running an app on LastDB is not a store install and not a single switch. It is three independent layers — process launch, app identity, and your consent — plus a firm rule for attributed apps: read broadly, write only your own namespace. What we learned by walking the path end to end instead of assuming the architecture sketch was enough.',
   },
   {
     slug: 'the-stop-work-order',
