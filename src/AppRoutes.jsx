@@ -6,13 +6,10 @@ import About from './pages/About';
 import Developer from './pages/Developer';
 import Docs, { DocsDailyLoop, DocsInstall, DocsNodeHealth } from './pages/Docs';
 import Blog from './pages/Blog';
-import BlogHowAnAppRunsOnLastdb from './pages/BlogHowAnAppRunsOnLastdb';
 import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
 import BlogThinTipsAndHonestHistory from './pages/BlogThinTipsAndHonestHistory';
 import BlogTheThrashWasInTheOrder from './pages/BlogTheThrashWasInTheOrder';
 import BlogKanbanFactory from './pages/BlogKanbanFactory';
-import BlogHowAnAppGetsPublishedOnLastdb from './pages/BlogHowAnAppGetsPublishedOnLastdb';
-import BlogDogfoodingTheAppRegistry from './pages/BlogDogfoodingTheAppRegistry';
 import BlogCheckingEveryShelf from './pages/BlogCheckingEveryShelf';
 import BlogLastStore from './pages/BlogLastStore';
 import BlogMemoryFirstDiskLater from './pages/BlogMemoryFirstDiskLater';
@@ -49,12 +46,9 @@ export const PRERENDER_PATHS = [
   '/blog/memory-first-disk-later',
   '/blog/last-store',
   '/blog/checking-every-shelf',
-  '/blog/dogfooding-the-app-registry',
-  '/blog/how-an-app-gets-published-on-lastdb',
   '/blog/kanban-factory',
   '/blog/thin-tips-and-honest-history',
   '/blog/the-thrash-was-in-the-order',
-  '/blog/how-an-app-runs-on-lastdb',
   '/blog/the-stop-work-order',
   '/blog/the-fix-was-subtraction',
   '/blog/read-me-dont-run-me',
@@ -94,11 +88,12 @@ export default function AppRoutes() {
       <Route path="/blog/last-store" element={<BlogLastStore />} />
       <Route path="/blog/checking-every-shelf" element={<BlogCheckingEveryShelf />} />
       <Route path="/blog/kanban-factory" element={<BlogKanbanFactory />} />
-      <Route path="/blog/how-an-app-gets-published-on-lastdb" element={<BlogHowAnAppGetsPublishedOnLastdb />} />
-      <Route path="/blog/dogfooding-the-app-registry" element={<BlogDogfoodingTheAppRegistry />} />
+      {/* Unlisted while app_registry announce_status=silent (design-product-feature-gates) */}
+      <Route path="/blog/how-an-app-gets-published-on-lastdb" element={<Navigate to="/blog" replace />} />
+      <Route path="/blog/dogfooding-the-app-registry" element={<Navigate to="/blog" replace />} />
       <Route path="/blog/thin-tips-and-honest-history" element={<BlogThinTipsAndHonestHistory />} />
       <Route path="/blog/the-thrash-was-in-the-order" element={<BlogTheThrashWasInTheOrder />} />
-      <Route path="/blog/how-an-app-runs-on-lastdb" element={<BlogHowAnAppRunsOnLastdb />} />
+      <Route path="/blog/how-an-app-runs-on-lastdb" element={<Navigate to="/blog" replace />} />
       <Route path="/blog/the-stop-work-order" element={<BlogTheStopWorkOrder />} />
       <Route path="/blog/the-fix-was-subtraction" element={<BlogTheFixWasSubtraction />} />
       <Route path="/blog/read-me-dont-run-me" element={<BlogReadMeDontRunMe />} />
