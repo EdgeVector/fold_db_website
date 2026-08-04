@@ -57,13 +57,20 @@ const READINESS_GROUPS = [
       },
       {
         rank: 6,
+        name: 'Search',
+        cmd: 'search',
+        pct: 50,
+        note: 'Semantic MiniLM plane outside Mini. brain/kanban prefer it for ask/search. Public MIT.',
+      },
+      {
+        rank: 7,
         name: 'LastSecrets',
         cmd: 'lastsecrets',
         pct: 50,
         note: 'Public CLI. Store secrets in LastDB; other tools keep lastsecrets:// refs only.',
       },
       {
-        rank: 7,
+        rank: 8,
         name: 'Dogfood Graph',
         cmd: 'local web app',
         pct: 45,
@@ -78,28 +85,28 @@ const READINESS_GROUPS = [
     blurb: 'Real for us — not in the one-command installer. Come back later.',
     apps: [
       {
-        rank: 8,
+        rank: 9,
         name: 'Routines',
         cmd: 'routines',
         pct: 35,
         note: 'Scheduled agent jobs. Our fleet tooling, not stranger onboarding.',
       },
       {
-        rank: 9,
+        rank: 10,
         name: 'LastGit',
         cmd: 'lastdb://…',
         pct: 30,
         note: 'Git on LastDB. Not in the public install bundle yet.',
       },
       {
-        rank: 10,
+        rank: 11,
         name: 'CodeRings',
         cmd: 'coderings',
         pct: 25,
         note: 'Repo size vs claimed complexity. No public install story yet.',
       },
       {
-        rank: 11,
+        rank: 12,
         name: 'Discovery',
         cmd: '—',
         pct: 25,
@@ -143,7 +150,7 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, Situations, and LastSecrets." />
+        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, Situations, Search, and LastSecrets." />
         <meta property="og:title" content="Apps - LastDB" />
         <meta property="og:description" content="What runs on LastDB, how rough each app is, and how to try the main ones." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
@@ -336,6 +343,23 @@ lastsecrets init`}</pre>
               </a>
               . Retrieve plaintext only at the point of use with{' '}
               <span className="bold">lastsecrets get &lt;slug&gt;</span>.
+            </p>
+          </Card>
+          <Card>
+            <p><Label color="blue">SEARCH</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/search && cd search
+bun install
+ln -snf "$PWD/bin/search" ~/.local/bin/search
+search init`}</pre>
+            <p className="dim">
+              Public MIT repo:{' '}
+              <a href="https://github.com/EdgeVector/search" target="_blank" rel="noreferrer">
+                github.com/EdgeVector/search
+              </a>
+              . Semantic MiniLM plane for{' '}
+              <span className="bold">brain ask/search</span> and{' '}
+              <span className="bold">kanban search</span>. Index is local-only; run{' '}
+              <span className="bold">search init</span> after install or cloud restore.
             </p>
           </Card>
         </div>

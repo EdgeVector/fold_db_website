@@ -3,7 +3,7 @@
 > Build for your happiness. On a foundation you own.
 >
 > LastDB is a local database you build your own tool stack on
-> (Brain, Kanban, Situations, LastSecrets, agent skills, and the apps you write —
+> (Brain, Kanban, Situations, LastSecrets, Search, agent skills, and the apps you write —
 > tools on one foundation you own, not SaaS silos). Deliver slices of your
 > database to others.
 >
@@ -23,7 +23,7 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
 # Last Stack installer: LastDB (via brew) + daily apps
-# (brain, kanban, situations, lastsecrets, dogfood-graph, org)
+# (brain, kanban, situations, lastsecrets, dogfood-graph, org, search)
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
@@ -33,6 +33,7 @@ brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
+search init
 
 # Health check — note path is /health (not /api/health)
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
@@ -54,10 +55,19 @@ bun install && bun link
 lastsecrets init
 ```
 
+Search only (semantic plane for brain/kanban ask/search; after LastDB is running):
+
+```bash
+git clone https://github.com/EdgeVector/search && cd search
+bun install
+ln -snf "$PWD/bin/search" ~/.local/bin/search
+search init
+```
+
 ## Mental model
 
 - **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
-- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, …)
+- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `search`, …)
 - **The Last Stack** — installer + agent skills (not a second database)
 
 Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
@@ -102,14 +112,15 @@ Whole stack is product alpha. Stages: Alpha · Dogfood · Early.
 | 03 | Kanban | Alpha | ~70 |
 | 04 | Last Stack | Dogfood | ~60 |
 | 05 | Situations | Dogfood | ~55 |
-| 06 | LastSecrets | Dogfood | ~50 |
-| 07 | Dogfood Graph | Dogfood | ~45 |
-| 08 | Routines | Early | ~35 |
-| 09 | LastGit | Early | ~30 |
-| 10 | CodeRings | Early | ~25 |
-| 11 | Discovery | Early | ~25 |
+| 06 | Search | Dogfood | ~50 |
+| 07 | LastSecrets | Dogfood | ~50 |
+| 08 | Dogfood Graph | Dogfood | ~45 |
+| 09 | Routines | Early | ~35 |
+| 10 | LastGit | Early | ~30 |
+| 11 | CodeRings | Early | ~25 |
+| 12 | Discovery | Early | ~25 |
 
-First try: ranks 01–03; use LastSecrets (#06) whenever credentials are involved.
+First try: ranks 01–03; use Search (#06) for semantic ask/search; LastSecrets (#07) for credentials.
 Full notes: https://thelastdb.com/apps#readiness
 
 ## Key pages
@@ -125,3 +136,4 @@ Full notes: https://thelastdb.com/apps#readiness
 - https://thelastdb.com/docs/node-health — node health and socket checks
 - https://thelastdb.com/blog — engineering writing
 - https://github.com/EdgeVector/lastsecrets — LastSecrets public source
+- https://github.com/EdgeVector/search — Search public source (semantic MiniLM plane)

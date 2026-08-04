@@ -151,7 +151,8 @@ brew services start lastdb
 brain init --grant-consent
 kanban init
 situations init
-lastsecrets init`}</pre>
+lastsecrets init
+search init`}</pre>
       </Section>
 
       <Section variant="sage">

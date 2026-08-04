@@ -24,6 +24,7 @@ brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
+search init
 
 # 3) Prove it
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
@@ -215,7 +216,7 @@ export default function Home() {
         <div className="grid-2" style={{ marginTop: '1em' }}>
           <Card>
             <p><Label color="blue">WHAT THAT DID</Label></p>
-            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span>, start the daemon, init each app.</p>
+            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span> / <span className="bold">search</span>, start the daemon, init each app.</p>
           </Card>
           <Card>
             <p><Label color="blue">DATABASE ONLY</Label></p>
