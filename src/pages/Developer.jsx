@@ -235,7 +235,7 @@ situations init`}</pre>
           </Card>
           <Card>
             <p><Label color="blue">GITHUB</Label></p>
-            <p><a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">github.com/EdgeVector</a> &mdash; public apps: brain, fkanban, situations, last-stack, &hellip;</p>
+            <p><a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">github.com/EdgeVector</a> &mdash; public apps: brain, fkanban, situations, lastsecrets, search, last-stack, &hellip;</p>
           </Card>
         </div>
       </Section>
