@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-backup-that-wouldnt-commit',
+    title: "The Backup That Wouldn't Commit",
+    date: '2026-08-04',
+    blurb:
+      'Every sealed chunk of our primary LastDB home was already in the cloud. Status still said the backup was degraded. Two layers of cloud backup (warehouse vs pin), a two-hour migration window left in prod, a canary weight that kept 100% of traffic on the bad build — and how the durability pin finally flipped.',
+  },
+  {
     slug: 'memory-first-disk-later',
     title: 'Memory First, Disk Later',
     date: '2026-07-30',
