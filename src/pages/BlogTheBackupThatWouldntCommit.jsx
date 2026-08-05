@@ -2,33 +2,29 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 
-// Technical figures on a white paper panel (site chrome is dark; black ink
-// needs white ground). Thin strokes, hatch for stored bytes, mono labels.
+// Gruvbox-on-transparent technical figures (match other blog posts).
+// Site chrome is dark gray — ink is light fg / dim / aqua; no filled background.
 function ArchFigure({ svg, caption }) {
   return (
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div
         style={{
-          background: '#ffffff',
-          color: '#000000',
-          padding: '22px 18px 18px',
+          background: 'transparent',
           maxWidth: 660,
           margin: '0 auto',
-          border: '1px solid #d5d5d5',
-          boxSizing: 'border-box',
         }}
         dangerouslySetInnerHTML={{ __html: svg }}
       />
       {caption && (
         <figcaption
           style={{
-            color: '#a89984',
+            color: '#928374',
             fontSize: '11px',
             letterSpacing: '0.06em',
             marginTop: '12px',
             textTransform: 'uppercase',
             fontFamily:
-              'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+              "ui-monospace, SFMono-Regular, Menlo, Consolas, 'IBM Plex Mono', monospace",
           }}
         >
           {caption}
@@ -38,142 +34,137 @@ function ArchFigure({ svg, caption }) {
   );
 }
 
+// fg #ebdbb2 · dim #928374 · aqua #83a598 · hatch #504945
 const SVG_DEFS = `
   <defs>
     <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#666666" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
     </pattern>
   </defs>`;
 
-// White full-bleed paper inside the SVG so ink reads even if the wrapper is skipped.
-const SVG_OPEN = (vb) => {
-  const parts = vb.trim().split(/\s+/);
-  const w = parts[2] || '660';
-  const h = parts[3] || '280';
-  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;background:#ffffff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"><rect x="0" y="0" width="${w}" height="${h}" fill="#ffffff"/>${SVG_DEFS}`;
-};
+const SVG_OPEN = (vb) =>
+  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;background:transparent" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">${SVG_DEFS}`;
 
 // Fig 1 — warehouse full; pin missing.
 const TWO_LAYERS = `${SVG_OPEN('0 0 660 280')}
-  <text x="36" y="28" fill="#666666" font-size="11" letter-spacing="1.5">CLOUD BACKUP HAS TWO LAYERS</text>
+  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">CLOUD BACKUP HAS TWO LAYERS</text>
 
   <!-- warehouse: hatched sealed chunks -->
-  <rect x="40" y="52" width="280" height="160" fill="url(#hatch)" stroke="#000000" stroke-width="1"/>
-  <text x="180" y="88" text-anchor="middle" fill="#000000" font-size="13" letter-spacing="1.5">SEALED CHUNKS</text>
-  <text x="180" y="110" text-anchor="middle" fill="#666666" font-size="11">payload in object storage</text>
+  <rect x="40" y="52" width="280" height="160" fill="url(#hatch)" stroke="#928374" stroke-width="1"/>
+  <text x="180" y="88" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">SEALED CHUNKS</text>
+  <text x="180" y="110" text-anchor="middle" fill="#928374" font-size="11">payload in object storage</text>
 
   <!-- small chunk squares -->
-  <rect x="70" y="130" width="28" height="28" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="108" y="130" width="28" height="28" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="146" y="130" width="28" height="28" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="184" y="130" width="28" height="28" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="222" y="130" width="28" height="28" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <text x="180" y="186" text-anchor="middle" fill="#666666" font-size="10">13,567 / 13,567 PRESENT</text>
+  <rect x="70" y="130" width="28" height="28" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="108" y="130" width="28" height="28" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="146" y="130" width="28" height="28" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="184" y="130" width="28" height="28" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="222" y="130" width="28" height="28" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <text x="180" y="186" text-anchor="middle" fill="#928374" font-size="10">13,567 / 13,567 PRESENT</text>
 
   <!-- dimension -->
-  <line x1="70" y1="230" x2="250" y2="230" stroke="#000000" stroke-width="1"/>
-  <line x1="70" y1="226" x2="70" y2="234" stroke="#000000" stroke-width="1"/>
-  <line x1="250" y1="226" x2="250" y2="234" stroke="#000000" stroke-width="1"/>
-  <text x="160" y="250" text-anchor="middle" fill="#666666" font-size="10">BYTES IN THE WAREHOUSE</text>
+  <line x1="70" y1="230" x2="250" y2="230" stroke="#928374" stroke-width="1"/>
+  <line x1="70" y1="226" x2="70" y2="234" stroke="#928374" stroke-width="1"/>
+  <line x1="250" y1="226" x2="250" y2="234" stroke="#928374" stroke-width="1"/>
+  <text x="160" y="250" text-anchor="middle" fill="#928374" font-size="10">BYTES IN THE WAREHOUSE</text>
 
   <!-- arrow -->
-  <polyline points="330,120 380,120 380,120" fill="none" stroke="#000000" stroke-width="1"/>
-  <line x1="330" y1="120" x2="390" y2="120" stroke="#000000" stroke-width="1"/>
-  <polygon points="390,120 381,116 381,124" fill="#000000"/>
-  <rect x="328" y="118" width="4" height="4" fill="#000000"/>
-  <rect x="388" y="118" width="4" height="4" fill="#000000"/>
-  <text x="360" y="108" text-anchor="middle" fill="#666666" font-size="10">PIN</text>
+  <line x1="330" y1="120" x2="390" y2="120" stroke="#83a598" stroke-width="1"/>
+  <polygon points="390,120 381,116 381,124" fill="#83a598"/>
+  <rect x="328" y="118" width="4" height="4" fill="#928374"/>
+  <rect x="388" y="118" width="4" height="4" fill="#83a598"/>
+  <text x="360" y="108" text-anchor="middle" fill="#83a598" font-size="10">PIN</text>
 
   <!-- pin document: cut corner, dashed = not landed -->
-  <polygon points="420,70 560,70 580,90 580,200 420,200" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="4 3"/>
-  <polyline points="560,70 560,90 580,90" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="500" y="120" text-anchor="middle" fill="#000000" font-size="13" letter-spacing="1.5">LATEST</text>
-  <text x="500" y="140" text-anchor="middle" fill="#666666" font-size="11">official tip pointer</text>
-  <text x="500" y="168" text-anchor="middle" fill="#666666" font-size="10">MANIFEST COUNTER</text>
-  <text x="500" y="186" text-anchor="middle" fill="#000000" font-size="12">STUCK</text>
+  <polygon points="420,70 560,70 580,90 580,200 420,200" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
+  <polyline points="560,70 560,90 580,90" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="500" y="120" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">LATEST</text>
+  <text x="500" y="140" text-anchor="middle" fill="#928374" font-size="11">official tip pointer</text>
+  <text x="500" y="168" text-anchor="middle" fill="#928374" font-size="10">MANIFEST COUNTER</text>
+  <text x="500" y="186" text-anchor="middle" fill="#83a598" font-size="12">STUCK</text>
 
-  <text x="330" y="268" text-anchor="middle" fill="#666666" font-size="11">FULL WAREHOUSE &middot; MISSING LABEL = NOT A RESTORABLE BACKUP</text>
+  <text x="330" y="268" text-anchor="middle" fill="#928374" font-size="11">FULL WAREHOUSE &middot; MISSING LABEL = NOT A RESTORABLE BACKUP</text>
 </svg>`;
 
 // Fig 2 — the two-hour window: bad middle revision in prod.
 const TWO_HOUR_WINDOW = `${SVG_OPEN('0 0 660 300')}
-  <text x="36" y="28" fill="#666666" font-size="11" letter-spacing="1.5">ONE MIGRATION, THREE REVISIONS</text>
+  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE MIGRATION, THREE REVISIONS</text>
 
   <!-- timeline base -->
-  <line x1="60" y1="160" x2="600" y2="160" stroke="#000000" stroke-width="1"/>
-  <line x1="60" y1="154" x2="60" y2="166" stroke="#000000" stroke-width="1"/>
-  <line x1="600" y1="154" x2="600" y2="166" stroke="#000000" stroke-width="1"/>
+  <line x1="60" y1="160" x2="600" y2="160" stroke="#928374" stroke-width="1"/>
+  <line x1="60" y1="154" x2="60" y2="166" stroke="#928374" stroke-width="1"/>
+  <line x1="600" y1="154" x2="600" y2="166" stroke="#928374" stroke-width="1"/>
 
   <!-- rev A -->
-  <circle cx="120" cy="160" r="8" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="70" y="70" width="100" height="56" fill="none" stroke="#000000" stroke-width="1"/>
-  <text x="120" y="94" text-anchor="middle" fill="#000000" font-size="11" letter-spacing="1">REV A</text>
-  <text x="120" y="112" text-anchor="middle" fill="#666666" font-size="10">old roots</text>
-  <line x1="120" y1="126" x2="120" y2="152" stroke="#000000" stroke-width="1"/>
-  <rect x="118" y="152" width="4" height="4" fill="#000000"/>
-  <text x="120" y="190" text-anchor="middle" fill="#666666" font-size="10">EARLIER</text>
+  <circle cx="120" cy="160" r="8" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="70" y="70" width="100" height="56" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="120" y="94" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">REV A</text>
+  <text x="120" y="112" text-anchor="middle" fill="#928374" font-size="10">old roots</text>
+  <line x1="120" y1="126" x2="120" y2="152" stroke="#928374" stroke-width="1"/>
+  <rect x="118" y="152" width="4" height="4" fill="#928374"/>
+  <text x="120" y="190" text-anchor="middle" fill="#928374" font-size="10">EARLIER</text>
 
-  <!-- rev B bad -->
-  <circle cx="330" cy="160" r="8" fill="#000000" stroke="#000000" stroke-width="1"/>
-  <rect x="270" y="52" width="120" height="72" fill="none" stroke="#000000" stroke-width="2"/>
-  <text x="330" y="76" text-anchor="middle" fill="#000000" font-size="11" letter-spacing="1">REV B</text>
-  <text x="330" y="94" text-anchor="middle" fill="#666666" font-size="10">new root for chunks</text>
-  <text x="330" y="110" text-anchor="middle" fill="#666666" font-size="10">PIN REJECTS NEW ROOT</text>
-  <line x1="330" y1="124" x2="330" y2="152" stroke="#000000" stroke-width="1"/>
-  <rect x="328" y="152" width="4" height="4" fill="#000000"/>
-  <text x="330" y="190" text-anchor="middle" fill="#000000" font-size="10">DEPLOYED TO PROD</text>
-  <text x="330" y="206" text-anchor="middle" fill="#666666" font-size="10">and left there</text>
+  <!-- rev B bad (emphasis) -->
+  <circle cx="330" cy="160" r="8" fill="#83a598" stroke="#83a598" stroke-width="1"/>
+  <rect x="270" y="52" width="120" height="72" fill="none" stroke="#83a598" stroke-width="2"/>
+  <text x="330" y="76" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">REV B</text>
+  <text x="330" y="94" text-anchor="middle" fill="#928374" font-size="10">new root for chunks</text>
+  <text x="330" y="110" text-anchor="middle" fill="#83a598" font-size="10">PIN REJECTS NEW ROOT</text>
+  <line x1="330" y1="124" x2="330" y2="152" stroke="#83a598" stroke-width="1"/>
+  <rect x="328" y="152" width="4" height="4" fill="#83a598"/>
+  <text x="330" y="190" text-anchor="middle" fill="#ebdbb2" font-size="10">DEPLOYED TO PROD</text>
+  <text x="330" y="206" text-anchor="middle" fill="#928374" font-size="10">and left there</text>
 
   <!-- rev C fix -->
-  <circle cx="540" cy="160" r="8" fill="#ffffff" stroke="#000000" stroke-width="1"/>
-  <rect x="490" y="70" width="100" height="56" fill="none" stroke="#000000" stroke-width="1"/>
-  <text x="540" y="94" text-anchor="middle" fill="#000000" font-size="11" letter-spacing="1">REV C</text>
-  <text x="540" y="112" text-anchor="middle" fill="#666666" font-size="10">pin accepts root</text>
-  <line x1="540" y1="126" x2="540" y2="152" stroke="#000000" stroke-width="1"/>
-  <rect x="538" y="152" width="4" height="4" fill="#000000"/>
-  <text x="540" y="190" text-anchor="middle" fill="#666666" font-size="10">MERGED +2H</text>
-  <text x="540" y="206" text-anchor="middle" fill="#666666" font-size="10">not deployed</text>
+  <circle cx="540" cy="160" r="8" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <rect x="490" y="70" width="100" height="56" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="540" y="94" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">REV C</text>
+  <text x="540" y="112" text-anchor="middle" fill="#928374" font-size="10">pin accepts root</text>
+  <line x1="540" y1="126" x2="540" y2="152" stroke="#928374" stroke-width="1"/>
+  <rect x="538" y="152" width="4" height="4" fill="#928374"/>
+  <text x="540" y="190" text-anchor="middle" fill="#928374" font-size="10">MERGED +2H</text>
+  <text x="540" y="206" text-anchor="middle" fill="#928374" font-size="10">not deployed</text>
 
   <!-- window dim line -->
-  <line x1="270" y1="240" x2="390" y2="240" stroke="#000000" stroke-width="1"/>
-  <line x1="270" y1="236" x2="270" y2="244" stroke="#000000" stroke-width="1"/>
-  <line x1="390" y1="236" x2="390" y2="244" stroke="#000000" stroke-width="1"/>
-  <text x="330" y="262" text-anchor="middle" fill="#666666" font-size="10">SELF-INCONSISTENT WINDOW &middot; CLIENT ALREADY ON C</text>
+  <line x1="270" y1="240" x2="390" y2="240" stroke="#83a598" stroke-width="1"/>
+  <line x1="270" y1="236" x2="270" y2="244" stroke="#83a598" stroke-width="1"/>
+  <line x1="390" y1="236" x2="390" y2="244" stroke="#83a598" stroke-width="1"/>
+  <text x="330" y="262" text-anchor="middle" fill="#928374" font-size="10">SELF-INCONSISTENT WINDOW &middot; CLIENT ALREADY ON C</text>
 </svg>`;
 
 // Fig 3 — canary weight: alias says new, traffic stays old.
 const CANARY_TRAP = `${SVG_OPEN('0 0 660 270')}
-  <text x="36" y="28" fill="#666666" font-size="11" letter-spacing="1.5">ALIAS VS TRAFFIC</text>
+  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ALIAS VS TRAFFIC</text>
 
   <!-- alias box -->
-  <rect x="40" y="56" width="200" height="88" fill="none" stroke="#000000" stroke-width="1"/>
-  <text x="140" y="88" text-anchor="middle" fill="#000000" font-size="12" letter-spacing="1.5">ALIAS &ldquo;LIVE&rdquo;</text>
-  <text x="140" y="110" text-anchor="middle" fill="#666666" font-size="11">function version = NEW</text>
-  <text x="140" y="128" text-anchor="middle" fill="#666666" font-size="11">looks promoted</text>
+  <rect x="40" y="56" width="200" height="88" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="140" y="88" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">ALIAS &ldquo;LIVE&rdquo;</text>
+  <text x="140" y="110" text-anchor="middle" fill="#928374" font-size="11">function version = NEW</text>
+  <text x="140" y="128" text-anchor="middle" fill="#928374" font-size="11">looks promoted</text>
 
-  <!-- weights -->
-  <rect x="280" y="56" width="160" height="88" fill="none" stroke="#000000" stroke-width="2"/>
-  <text x="360" y="88" text-anchor="middle" fill="#000000" font-size="12" letter-spacing="1.5">CANARY WEIGHT</text>
-  <text x="360" y="110" text-anchor="middle" fill="#000000" font-size="14">OLD = 1.0</text>
-  <text x="360" y="128" text-anchor="middle" fill="#666666" font-size="11">100% still on old</text>
+  <!-- weights (emphasis) -->
+  <rect x="280" y="56" width="160" height="88" fill="none" stroke="#83a598" stroke-width="2"/>
+  <text x="360" y="88" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">CANARY WEIGHT</text>
+  <text x="360" y="110" text-anchor="middle" fill="#83a598" font-size="14">OLD = 1.0</text>
+  <text x="360" y="128" text-anchor="middle" fill="#928374" font-size="11">100% still on old</text>
 
   <!-- clients -->
-  <circle cx="80" cy="210" r="18" fill="none" stroke="#000000" stroke-width="1"/>
-  <text x="80" y="214" text-anchor="middle" fill="#000000" font-size="10">NODE</text>
-  <line x1="98" y1="210" x2="200" y2="210" stroke="#000000" stroke-width="1"/>
-  <polygon points="200,210 191,206 191,214" fill="#000000"/>
-  <rect x="196" y="208" width="4" height="4" fill="#000000"/>
+  <circle cx="80" cy="210" r="18" fill="none" stroke="#ebdbb2" stroke-width="1"/>
+  <text x="80" y="214" text-anchor="middle" fill="#ebdbb2" font-size="10">NODE</text>
+  <line x1="98" y1="210" x2="200" y2="210" stroke="#928374" stroke-width="1"/>
+  <polygon points="200,210 191,206 191,214" fill="#928374"/>
+  <rect x="196" y="208" width="4" height="4" fill="#928374"/>
 
-  <rect x="210" y="188" width="120" height="44" fill="url(#hatch)" stroke="#000000" stroke-width="1"/>
-  <text x="270" y="208" text-anchor="middle" fill="#000000" font-size="11">OLD CODE</text>
-  <text x="270" y="224" text-anchor="middle" fill="#666666" font-size="10">rejects the pin</text>
+  <rect x="210" y="188" width="120" height="44" fill="url(#hatch)" stroke="#83a598" stroke-width="1"/>
+  <text x="270" y="208" text-anchor="middle" fill="#ebdbb2" font-size="11">OLD CODE</text>
+  <text x="270" y="224" text-anchor="middle" fill="#928374" font-size="10">rejects the pin</text>
 
-  <rect x="380" y="188" width="120" height="44" fill="none" stroke="#000000" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="440" y="208" text-anchor="middle" fill="#666666" font-size="11">NEW CODE</text>
-  <text x="440" y="224" text-anchor="middle" fill="#666666" font-size="10">0% traffic</text>
+  <rect x="380" y="188" width="120" height="44" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="440" y="208" text-anchor="middle" fill="#928374" font-size="11">NEW CODE</text>
+  <text x="440" y="224" text-anchor="middle" fill="#928374" font-size="10">0% traffic</text>
 
-  <line x1="330" y1="210" x2="380" y2="210" stroke="#000000" stroke-width="1" stroke-dasharray="3 3"/>
-  <text x="330" y="255" text-anchor="middle" fill="#666666" font-size="11">PUBLISHED &ne; SERVING</text>
+  <line x1="330" y1="210" x2="380" y2="210" stroke="#504945" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="330" y="255" text-anchor="middle" fill="#928374" font-size="11">PUBLISHED &ne; SERVING</text>
 </svg>`;
 
 export default function BlogTheBackupThatWouldntCommit() {
