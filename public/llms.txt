@@ -33,6 +33,7 @@ brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
+org init
 search init
 
 # Health check — note path is /health (not /api/health)
@@ -53,6 +54,18 @@ LastSecrets only (after LastDB is running):
 git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
 bun install && bun link
 lastsecrets init
+```
+
+Org only (after LastDB + LastSecrets; share orgs via public-key invite):
+
+```bash
+git clone https://github.com/EdgeVector/org && cd org
+bun install && bun link
+org init
+# create: org create friends --name "Friends"
+# invite: friend runs org receive → you: org invite friends --to 'orgpk1:…' --agent
+# join:   org join --sealed 'orgseal1:…'
+# docs:   https://github.com/EdgeVector/org/blob/main/docs/INVITE.md
 ```
 
 Search only (semantic plane for brain/kanban ask/search; after LastDB is running):
@@ -91,7 +104,8 @@ Source: https://github.com/EdgeVector/kanban-factory
 ## Mental model
 
 - **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
-- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `search`, …)
+- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `org`, `search`, …)
+- **Org** — separate app for shared org membership + named DBs; keys via LastSecrets
 - **Kanban Factory** — optional local animated UI over your board (not a second database)
 - **The Last Stack** — installer + agent skills (not a second database)
 
@@ -117,6 +131,10 @@ lastsecrets ref my-api-token
 # → lastsecrets://my-api-token
 lastsecrets list
 # list/search always print value=<redacted>
+
+# Org — create a shared org (invite path: docs/INVITE.md on the org repo)
+org create friends --name "Friends"
+org list
 ```
 
 ## Secrets policy (agents)
@@ -139,15 +157,17 @@ Whole stack is product alpha. Stages: Alpha · Dogfood · Early.
 | 05 | Situations | Dogfood | ~55 |
 | 06 | Search | Dogfood | ~50 |
 | 07 | LastSecrets | Dogfood | ~50 |
-| 08 | Dogfood Graph | Dogfood | ~45 |
-| 09 | Kanban Factory | Dogfood | ~45 |
-| 10 | Routines | Early | ~35 |
-| 11 | LastGit | Early | ~30 |
-| 12 | CodeRings | Early | ~25 |
-| 13 | Discovery | Early | ~25 |
+| 08 | Org | Dogfood | ~50 |
+| 09 | Dogfood Graph | Dogfood | ~45 |
+| 10 | Kanban Factory | Dogfood | ~45 |
+| 11 | Routines | Early | ~35 |
+| 12 | LastGit | Early | ~30 |
+| 13 | CodeRings | Early | ~25 |
+| 14 | Discovery | Early | ~25 |
 
-First try: ranks 01–03; use Search (#06) for semantic ask/search; LastSecrets (#07) for credentials.
-Optional eye candy after the board works: Kanban Factory (#09).
+First try: ranks 01–03; use Search (#06) for semantic ask/search; LastSecrets (#07) for credentials;
+Org (#08) for invite/join shared orgs (pubkey seal — no Exemem account required for join).
+Optional eye candy after the board works: Kanban Factory (#10).
 Full notes: https://thelastdb.com/apps#readiness
 
 ## Key pages
@@ -163,5 +183,7 @@ Full notes: https://thelastdb.com/apps#readiness
 - https://thelastdb.com/docs/node-health — node health and socket checks
 - https://thelastdb.com/blog — engineering writing
 - https://github.com/EdgeVector/lastsecrets — LastSecrets public source
+- https://github.com/EdgeVector/org — Org public source (shared org membership + invite/join)
+- https://github.com/EdgeVector/org/blob/main/docs/INVITE.md — Org invite handshake
 - https://github.com/EdgeVector/search — Search public source (semantic MiniLM plane)
 - https://github.com/EdgeVector/kanban-factory — Kanban Factory (animated local board theater)
