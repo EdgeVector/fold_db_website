@@ -92,10 +92,13 @@ kanban mcp`}</pre>
 
         <p className="section-subheading"><span className="bold">IF IT&rsquo;S NOT RESPONDING</span></p>
         <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-# expect {"status":"ok"}
-brew services restart lastdb    # only if health fails
+brew services restart lastdb
 kanban list`}</pre>
-        <p className="dim">Health is <span className="bold">/health</span> on the Unix socket (not <span className="bold">/api/health</span>, and not TCP port 9001).</p>
+        <p className="dim">
+          Expect <span className="bold">{`{"status":"ok"}`}</span>. Restart only if health fails.
+          Health is <span className="bold">/health</span> on the Unix socket (not <span className="bold">/api/health</span>, and not TCP port 9001).
+          Paste blocks omit <span className="bold">#</span> comments so default macOS zsh does not choke.
+        </p>
       </Section>
 
       <p className="dim">

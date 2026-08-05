@@ -7,31 +7,29 @@ import AsciiTitle from '../components/AsciiTitle';
 import ArchFigure from '../components/ArchFigure';
 import CopyBlock from '../components/CopyBlock';
 
-const INSTALL_SCRIPT = `# 0) Bun (skip if \`bun --version\` works)
-curl -fsSL https://bun.sh/install | bash
-# open a new terminal after Bun installs, or:
+// Paste-facing script: no `#` comment lines.
+// Default interactive zsh has interactivecomments OFF, so `# 0) …` is executed
+// as shell input → `parse error near ')'` / `command not found: #`.
+// Explanations live in the surrounding prose, not in the copy block.
+const INSTALL_SCRIPT = `curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
-# 1) Last Stack installer → LastDB (brew) + Brain, Kanban, Situations,
-#    LastSecrets, Dogfood Graph, org
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
 
-# 2) Start the database and init the apps
 brew services start lastdb
 brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
+org init
 search init
 
-# 3) Prove it
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 kanban list
 brain concept new hello --title "Hello" --body "my first note"
 brain get hello
-# semantic ask may lag a few seconds after create; use a term from the body
 brain ask "first note"
 lastsecrets list`;
 
@@ -209,8 +207,20 @@ export default function Home() {
             <Label color="yellow">RUN THIS</Label>{' '}
             <span className="dim">copy once → terminal or agent</span>
           </p>
+          <p className="dim" style={{ marginBottom: '0.75em' }}>
+            Skip the first line if <span className="bold">bun --version</span> already works.
+            Script has no shell comments on purpose &mdash; macOS zsh does not treat{' '}
+            <span className="bold">#</span> as a comment in an interactive paste.
+          </p>
           <CopyBlock text={INSTALL_SCRIPT} label="Copy" />
-          <p className="dim">If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span> (the Bun installer usually does this; open a new terminal if needed).</p>
+          <p className="dim">
+            If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and{' '}
+            <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span>{' '}
+            (the Bun installer usually does this; open a new terminal if needed).
+            Health should print <span className="bold">{`{"status":"ok"}`}</span>.
+            <span className="bold"> brain ask</span> may lag a few seconds after create &mdash;{' '}
+            <span className="bold">brain get hello</span> is immediate.
+          </p>
         </Card>
 
         <div className="grid-2" style={{ marginTop: '1em' }}>

@@ -271,8 +271,12 @@ situations preflight --action enable-ci --repo my-org/my-repo`}</pre>
               Keep raw secrets out of Brain, docs, and chat. Store once; reference with{' '}
               <span className="bold">lastsecrets://…</span> everywhere else.
             </p>
+            <p className="dim">
+              Never put the secret value on the command line &mdash; stdin only.
+              <span className="bold"> lastsecrets ref</span> prints a <span className="bold">lastsecrets://…</span> locator;
+              list/search always print <span className="bold">value=&lt;redacted&gt;</span>.
+            </p>
             <pre>{`lastsecrets init
-# never put the value on the command line — stdin only
 printf '%s' "$TOKEN" | lastsecrets put my-api-token \\
   --label "My API token" \\
   --provider example \\
@@ -280,9 +284,7 @@ printf '%s' "$TOKEN" | lastsecrets put my-api-token \\
   --env dev \\
   --value-stdin
 lastsecrets ref my-api-token
-# → lastsecrets://my-api-token
-lastsecrets list
-# list/search always print value=<redacted>`}</pre>
+lastsecrets list`}</pre>
           </Card>
 
           <Card>

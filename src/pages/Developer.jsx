@@ -53,12 +53,14 @@ brew services start lastdb`}</pre>
           <Card>
             <p><Label color="yellow">2. CONFIRM THE NODE</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-# → {"status":"ok"}
-
 lastdb status
 lastdb --version
 lastdbd --version`}</pre>
-            <p className="dim">Socket: <span className="bold">~/.lastdb/data/folddb.sock</span>. Health path is <span className="bold">/health</span> (not <span className="bold">/api/health</span>). TCP <span className="bold">:9001</span> is retired.</p>
+            <p className="dim">
+              Expect <span className="bold">{`{"status":"ok"}`}</span>.
+              Socket: <span className="bold">~/.lastdb/data/folddb.sock</span>. Health path is <span className="bold">/health</span> (not <span className="bold">/api/health</span>). TCP <span className="bold">:9001</span> is retired.
+              Paste blocks omit <span className="bold">#</span> comments (macOS zsh interactive default).
+            </p>
           </Card>
 
           <Card>
@@ -66,10 +68,8 @@ lastdbd --version`}</pre>
             <pre>{`brain init --grant-consent
 brain concept new local-search --title "Local search" --body "Embeddings stay on this machine."
 brain ask "what did I note about search?"
-
-# raw status from the daemon
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</pre>
-            <p className="dim">Apps are the happy path. Building a new app: talk HTTP to the same socket (query / mutation / schemas).</p>
+            <p className="dim">Apps are the happy path. Building a new app: talk HTTP to the same socket (query / mutation / schemas). Last line is raw daemon status.</p>
           </Card>
         </div>
       </Section>
@@ -186,13 +186,16 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
         <div className="grid-2">
           <Card>
             <p><Label color="purple">LASTDB (Homebrew)</Label></p>
-            <pre>{`lastdb status              # is the daemon up?
+            <pre>{`lastdb status
 lastdb --version
 lastdbd --version
-lastdb connect             # optional: join cloud backup/sync (account + recovery phrase)
+lastdb connect
 brew services start lastdb
 brew services restart lastdb`}</pre>
-            <p className="dim">Local use needs no account. <span className="bold">lastdb connect</span> joins an existing account for multi-device cloud backup/sync. App workflows live in app CLIs.</p>
+            <p className="dim">
+              Local use needs no account. <span className="bold">lastdb connect</span> is optional &mdash; joins an existing account for multi-device cloud backup/sync.
+              App workflows live in app CLIs.
+            </p>
           </Card>
 
           <Card>
