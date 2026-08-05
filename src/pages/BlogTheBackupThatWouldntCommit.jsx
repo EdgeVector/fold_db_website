@@ -2,19 +2,30 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 
-// Black-and-white technical figures (thin uniform strokes, hatch for stored
-// bytes, joint marks, mono labels). No colour accents.
+// Technical figures on a white paper panel (site chrome is dark; black ink
+// needs white ground). Thin strokes, hatch for stored bytes, mono labels.
 function ArchFigure({ svg, caption }) {
   return (
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
-      <div dangerouslySetInnerHTML={{ __html: svg }} />
+      <div
+        style={{
+          background: '#ffffff',
+          color: '#000000',
+          padding: '22px 18px 18px',
+          maxWidth: 660,
+          margin: '0 auto',
+          border: '1px solid #d5d5d5',
+          boxSizing: 'border-box',
+        }}
+        dangerouslySetInnerHTML={{ __html: svg }}
+      />
       {caption && (
         <figcaption
           style={{
-            color: '#666666',
+            color: '#a89984',
             fontSize: '11px',
             letterSpacing: '0.06em',
-            marginTop: '10px',
+            marginTop: '12px',
             textTransform: 'uppercase',
             fontFamily:
               'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
@@ -34,8 +45,13 @@ const SVG_DEFS = `
     </pattern>
   </defs>`;
 
-const SVG_OPEN = (vb) =>
-  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">${SVG_DEFS}`;
+// White full-bleed paper inside the SVG so ink reads even if the wrapper is skipped.
+const SVG_OPEN = (vb) => {
+  const parts = vb.trim().split(/\s+/);
+  const w = parts[2] || '660';
+  const h = parts[3] || '280';
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;background:#ffffff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"><rect x="0" y="0" width="${w}" height="${h}" fill="#ffffff"/>${SVG_DEFS}`;
+};
 
 // Fig 1 — warehouse full; pin missing.
 const TWO_LAYERS = `${SVG_OPEN('0 0 660 280')}
