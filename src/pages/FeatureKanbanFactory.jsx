@@ -311,30 +311,6 @@ export default function FeatureKanbanFactory() {
       <p className="section-subheading"><span className="bold">UPDATING</span></p>
       <CopyBlock text={UPDATE} />
 
-      <h2>Thirty seconds of it running</h2>
-      <figure style={{ margin: '34px 0', textAlign: 'center' }}>
-        <video
-          src="/kanban-factory-demo.mp4"
-          controls
-          playsInline
-          preload="metadata"
-          style={{
-            width: '100%',
-            maxWidth: '760px',
-            border: '1px solid #3c3836',
-            borderRadius: '6px',
-            background: '#1d2021',
-            display: 'block',
-            margin: '0 auto',
-          }}
-        >
-          Your browser does not support embedded video.
-        </video>
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
-          Fig. 3 &mdash; screen recording, compressed for the web
-        </figcaption>
-      </figure>
-
       <p className="dim">
         Why we built it, and the design argument behind the no-fake-motion rule:{' '}
         <Link to="/blog/kanban-factory">The Factory Floor</Link> on the Dev Blog.
