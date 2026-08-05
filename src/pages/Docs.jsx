@@ -139,8 +139,11 @@ export function DocsInstall() {
       <Section variant="amber">
         <h2><span className="bold">FULL STACK INSTALL</span></h2>
         <p>This path installs LastDB plus the common first-party app CLIs.</p>
-        <pre>{`# Bun (skip if already installed)
-curl -fsSL https://bun.sh/install | bash
+        <p className="dim">
+          Paste-safe for macOS zsh (no <span className="bold">#</span> comment lines — interactive zsh
+          does not treat them as comments). Skip the Bun line if already installed. Needs Homebrew + Apple Silicon.
+        </p>
+        <pre>{`curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
@@ -152,6 +155,7 @@ brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
+org init
 search init`}</pre>
       </Section>
 
@@ -168,8 +172,8 @@ brew services start lastdb`}</pre>
           <Card>
             <p><Label color="blue">HEALTH</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  http://localhost/health
-# expect: {"status":"ok"}`}</pre>
+  http://localhost/health`}</pre>
+            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>.</p>
           </Card>
           <Card>
             <p><Label color="blue">VERSIONS</Label></p>
@@ -264,9 +268,8 @@ export function DocsNodeHealth() {
       <Section variant="sage">
         <h2><span className="bold">FAST HEALTH CHECK</span></h2>
         <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  http://localhost/health
-# expect: {"status":"ok"}`}</pre>
-        <p>If this succeeds, the local node is up.</p>
+  http://localhost/health`}</pre>
+        <p>Expect <span className="bold">{`{"status":"ok"}`}</span>. If this succeeds, the local node is up.</p>
       </Section>
 
       <Section variant="slate">

@@ -15,15 +15,17 @@ Pages are prerendered at build time so agents and curl can read them without exe
 
 ## Install (macOS Apple Silicon)
 
-Needs Homebrew and Bun (https://bun.sh).
+Needs Homebrew and Bun (https://bun.sh). Apple Silicon only.
+
+Paste-safe for macOS zsh: the bash blocks below have **no `#` comment lines**.
+Default interactive zsh has `interactivecomments` off, so pasting `# 0) …`
+yields `parse error near ')'` / `command not found: #`. Put notes in markdown
+prose, not inside the fence. Skip the Bun line if `bun --version` already works.
 
 ```bash
-# Bun (skip if already installed)
 curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 
-# Last Stack installer: LastDB (via brew) + daily apps
-# (brain, kanban, situations, lastsecrets, dogfood-graph, org, search)
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
@@ -36,10 +38,10 @@ lastsecrets init
 org init
 search init
 
-# Health check — note path is /health (not /api/health)
 curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-# expect: {"status":"ok"}
 ```
+
+Health path is `/health` (not `/api/health`). Expect `{"status":"ok"}`.
 
 Database only:
 
@@ -56,16 +58,16 @@ bun install && bun link
 lastsecrets init
 ```
 
-Org only (after LastDB + LastSecrets; share orgs via public-key invite):
+Org only (after LastDB + LastSecrets; share orgs via public-key invite).
+After init: `org create friends --name "Friends"`; invite path is
+https://github.com/EdgeVector/org/blob/main/docs/INVITE.md
+(friend: `org receive` → you: `org invite friends --to 'orgpk1:…' --agent` →
+friend: `org join --sealed 'orgseal1:…'`).
 
 ```bash
 git clone https://github.com/EdgeVector/org && cd org
 bun install && bun link
 org init
-# create: org create friends --name "Friends"
-# invite: friend runs org receive → you: org invite friends --to 'orgpk1:…' --agent
-# join:   org join --sealed 'orgseal1:…'
-# docs:   https://github.com/EdgeVector/org/blob/main/docs/INVITE.md
 ```
 
 Search only (semantic plane for brain/kanban ask/search; after LastDB is running):
@@ -86,15 +88,18 @@ only. Needs `kanban` on PATH (from `last-stack-install-apps`) and Node 18+.
 `last-stack-install-apps` also clones this under `~/lastdb-apps/kanban-factory`
 when the public GitHub repo is reachable.
 
+Standalone (after kanban init works). Serves http://127.0.0.1:4177.
+
 ```bash
-# Standalone (after kanban init works)
 git clone https://github.com/EdgeVector/kanban-factory.git \
   ~/.local/share/edgevector/kanban-factory
 cd ~/.local/share/edgevector/kanban-factory
 node server.mjs
-# → http://127.0.0.1:4177
+```
 
-# macOS: auto-start on login
+macOS auto-start on login:
+
+```bash
 ./scripts/install-launchd.sh install
 open http://127.0.0.1:4177
 ```
@@ -113,14 +118,16 @@ Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
 
 ## Quick try after install
 
+Semantic ask may lag a few seconds after create; use a term from the body.
+`brain get` is immediate. LastSecrets: never put raw secret values on the command line;
+list/search always print `value=<redacted>`.
+
 ```bash
 kanban list
 brain concept new hello --title "Hello" --body "my first note"
 brain get hello
-# semantic ask may lag a few seconds after create; use a term from the body
 brain ask "first note"
 
-# LastSecrets — never put raw secret values on the command line
 printf '%s' "$TOKEN" | lastsecrets put my-api-token \
   --label "My API token" \
   --provider example \
@@ -128,14 +135,13 @@ printf '%s' "$TOKEN" | lastsecrets put my-api-token \
   --env dev \
   --value-stdin
 lastsecrets ref my-api-token
-# → lastsecrets://my-api-token
 lastsecrets list
-# list/search always print value=<redacted>
 
-# Org — create a shared org (invite path: docs/INVITE.md on the org repo)
 org create friends --name "Friends"
 org list
 ```
+
+`lastsecrets ref` prints a `lastsecrets://…` locator. Org invite path: docs/INVITE.md on the org repo.
 
 ## Secrets policy (agents)
 
