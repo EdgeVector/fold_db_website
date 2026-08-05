@@ -9,7 +9,7 @@ const POSTS = [
     title: "The Backup That Wouldn't Commit",
     date: '2026-08-04',
     blurb:
-      'Every sealed chunk of our primary LastDB home was already in the cloud. Status still said the backup was degraded. Two layers of cloud backup (warehouse vs pin), a two-hour migration window left in prod, a canary weight that kept 100% of traffic on the bad build — and how the durability pin finally flipped.',
+      'Every sealed piece of the primary database was already in the cloud, but restore had no official tip. One half-finished migration left production rejecting tip flips; the fix was merged and still not served until we cleared a canary that routed 100% of traffic to the old build.',
   },
   {
     slug: 'memory-first-disk-later',
