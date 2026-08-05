@@ -13,7 +13,8 @@ export default function Footer() {
         <Link to="/start">Use</Link>{'  '}
         <Link to="/about">About</Link>{'  '}
         <Link to="/developer">Developer</Link>{'  '}
-        <Link to="/blog">Blog</Link>{'  '}
+        <Link to="/features">Features</Link>{'  '}
+        <Link to="/blog">Dev Blog</Link>{'  '}
         <a href="https://thelastdb.com/llms.txt">llms.txt</a>{'  '}
         <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">GitHub</a>
       </p>

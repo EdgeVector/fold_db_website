@@ -6,6 +6,8 @@ import About from './pages/About';
 import Developer from './pages/Developer';
 import Docs, { DocsDailyLoop, DocsInstall, DocsNodeHealth } from './pages/Docs';
 import Blog from './pages/Blog';
+import Features from './pages/Features';
+import FeatureKanbanFactory from './pages/FeatureKanbanFactory';
 import BlogTheStopWorkOrder from './pages/BlogTheStopWorkOrder';
 import BlogThinTipsAndHonestHistory from './pages/BlogThinTipsAndHonestHistory';
 import BlogTheThrashWasInTheOrder from './pages/BlogTheThrashWasInTheOrder';
@@ -43,6 +45,8 @@ export const PRERENDER_PATHS = [
   '/docs/install',
   '/docs/daily-loop',
   '/docs/node-health',
+  '/features',
+  '/features/kanban-factory',
   '/blog',
   '/blog/the-backup-that-wouldnt-commit',
   '/blog/memory-first-disk-later',
@@ -85,6 +89,8 @@ export default function AppRoutes() {
       <Route path="/docs/daily-loop" element={<DocsDailyLoop />} />
       <Route path="/docs/node-health" element={<DocsNodeHealth />} />
       <Route path="/encryption" element={<Navigate to="/" replace />} />
+      <Route path="/features" element={<Features />} />
+      <Route path="/features/kanban-factory" element={<FeatureKanbanFactory />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/the-backup-that-wouldnt-commit" element={<BlogTheBackupThatWouldntCommit />} />
       <Route path="/blog/memory-first-disk-later" element={<BlogMemoryFirstDiskLater />} />
