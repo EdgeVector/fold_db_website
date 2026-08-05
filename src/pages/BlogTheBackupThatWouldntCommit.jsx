@@ -174,12 +174,12 @@ export default function BlogTheBackupThatWouldntCommit() {
         <title>The Backup That Wouldn&apos;t Commit - LastDB</title>
         <meta
           name="description"
-          content="Every sealed chunk of our primary LastDB home was already in the cloud. Status still said the backup was degraded. What two layers of cloud backup mean, how a two-hour deploy gap and a stuck traffic weight kept the official tip from flipping, and how we re-enabled a real durability pin."
+          content="Every sealed piece of our primary database was already in the cloud, but restore had no official tip. One half-finished migration plus a canary that never cleared traffic — and how we finally committed a real backup."
         />
         <meta property="og:title" content="The Backup That Wouldn't Commit" />
         <meta
           property="og:description"
-          content="Bytes in the warehouse are not a restorable backup. We filled the warehouse, then spent days failing to pin the tip — and nearly redeployed a fix that never received traffic."
+          content="Uploaded is not the same as committed. Chunks finished; the cloud tip refused. We fixed the code twice — once in git, once in traffic."
         />
         <link
           rel="canonical"
@@ -197,294 +197,205 @@ export default function BlogTheBackupThatWouldntCommit() {
       <p className="post-meta dim">2026-08-04</p>
 
       <p className="bold white">
-        Every sealed chunk of our daily-driver database was already in the
-        cloud. Upload progress read one hundred percent. Status still said the
-        backup was degraded &mdash; last good commit days old.{' '}
+        One job. Make the laptop&rsquo;s database restorable from the cloud.
+        We re-enabled backup, watched every sealed piece finish uploading, and
+        still woke up to{' '}
         <span className="white">
-          The warehouse was full. The official tip had never flipped.
-        </span>
+          durability: degraded &mdash; last good commit days old.
+        </span>{' '}
+        The files were in the warehouse. Nobody had stamped which set was the
+        official tip.
       </p>
 
       <p>
-        This is the story of re-enabling cloud backup on our primary LastDB
-        home, watching it finish uploading, and discovering that{' '}
-        <span className="bold white">&ldquo;uploaded&rdquo; is not the same
-        as &ldquo;committed.&rdquo;</span>{' '}
-        It is also a story about a two-hour window in a cloud migration, a
-        production service that never got the fix, and a traffic weight that
-        made a successful redeploy look like a failed one.
+        This is that story in order: what backup actually means here, what we
+        saw, the one server bug that caused it, the deploy mistake that almost
+        hid the fix, and the short checklist we are keeping.
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      <h2>Two layers</h2>
+      <h2>What &ldquo;backed up&rdquo; means here</h2>
 
       <p>
-        LastDB&rsquo;s cloud backup is not one bar. It is two jobs that
-        operators (and dashboards) like to collapse into one word.
+        Our cloud backup for a LastDB home is not a stream of every keystroke.
+        It freezes the sealed store into content-addressed{' '}
+        <span className="bold white">chunks</span>, uploads them, then updates a
+        single cloud pointer &mdash; the{' '}
+        <span className="bold white">official tip</span> &mdash; that says
+        &ldquo;this generation is what you restore.&rdquo; That tip write is a
+        compare-and-swap so two machines cannot clobber each other.
       </p>
 
-      <ol>
-        <li>
-          <span className="bold white">Sealed chunks</span> &mdash; the actual
-          payload. Local segments freeze into content-addressed pieces and go
-          to object storage under a stable root for that database home.
-        </li>
-        <li>
-          <span className="bold white">The durability pin</span> &mdash; a
-          single conditional write of the &ldquo;latest&rdquo; pointer. That
-          pointer names which generation is official: store identity, epoch,
-          manifest counter, manifest hash. Until it lands, restore has no tip
-          to trust, and durability scoring correctly stays degraded.
-        </li>
-      </ol>
-
       <p>
-        Chunks without a pin are boxes in a warehouse with no shipping label.
-        Useful if you already know which box is which. Not a backup you would
-        hand to a restore path.
+        Until the tip moves, you have paid for boxes in a warehouse with no
+        shipping label. Status durability ages the tip, not the last successful
+        chunk put. So a full warehouse and a stale tip can coexist.
       </p>
 
       <ArchFigure
         svg={TWO_LAYERS}
-        caption="Fig. 1 — Warehouse full, pin missing"
+        caption="Fig. 1 — Chunks in the warehouse; official tip still missing"
       />
 
-      <Section variant="sage">
-        <h2>
-          <span className="bold">Working definition</span>
-        </h2>
-        <p>
-          <span className="bold white">Durability pin</span> = the
-          compare-and-swap of the cloud &ldquo;latest&rdquo; pointer after
-          chunks (and the manifest that names them) are present. Age of that
-          pin is what our status line means by backup durability &mdash; not
-          &ldquo;bytes were uploaded recently.&rdquo;
-        </p>
-      </Section>
-
-      <h2>What we measured</h2>
+      <h2>What we saw</h2>
 
       <p>
-        After cloud sync came back on, the node did the hard part well. On the
-        primary home we watched:
-      </p>
-
-      <ul>
-        <li>
-          Chunks present equalled chunks total &mdash;{' '}
-          <span className="bold white">13,567 / 13,567</span>, nothing left to
-          drain.
-        </li>
-        <li>
-          Upload cycles reported already-present, zero new bytes, phase still
-          &ldquo;building.&rdquo;
-        </li>
-        <li>
-          Durability stayed over the age threshold on an old manifest counter
-          while a newer generation sat fully uploaded and unpinned.
-        </li>
-        <li>
-          Mutation sync could look idle and non-degraded at the same time. The
-          failure was not &ldquo;the pipe is dead.&rdquo; It was &ldquo;the
-          last step refuses.&rdquo;
-        </li>
-      </ul>
-
-      <p>
-        Earlier in the same arc, a busy home could thrash sealed chunks faster
-        than a cycle could drain them &mdash; we wrote about a related class of
-        thrash in{' '}
-        <Link to="/blog/the-thrash-was-in-the-order" className="link-btn">
-          The Thrash Was in the Order
-        </Link>
-        . By the time this story peaks, that race was over. The remaining error,
-        every quarter hour, was the pin: the cloud API rejected the
-        latest-pointer update for database-scoped backups.
-      </p>
-
-      <h2>The two-hour window</h2>
-
-      <p>
-        We had just moved cloud objects to root at the{' '}
-        <span className="bold white">identity of the database home</span>, not
-        only at the account principal. That is the right long-term shape for
-        multi-database and restore. The client started sending the new scope on
-        every backup call.
+        After we turned cloud backup back on, the node did the hard part.
+        Chunks present hit chunks total &mdash;{' '}
+        <span className="bold white">13,567 / 13,567</span>. Cycles reported
+        already-present, zero new bytes. And every fifteen minutes or so the
+        tip step failed the same way: the cloud API refused to flip{' '}
+        <span className="bold white">latest</span>, with a calm message about
+        personal backups only.
       </p>
 
       <p>
-        On the server, three revisions mattered:
+        The machine was not offline. Sync looked fine. The only honest line on
+        the dashboard was durability getting older. We were not failing to
+        upload. We were failing to{' '}
+        <span className="bold white">commit</span>.
       </p>
 
-      <ul>
-        <li>
-          <span className="bold">Before:</span> pin only for the old personal
-          shape.
-        </li>
-        <li>
-          <span className="bold">Middle (the landmine):</span> chunk paths
-          accept the new root; the pin path still treats that root as
-          &ldquo;not personal&rdquo; and returns a validation error.
-        </li>
-        <li>
-          <span className="bold">After (two hours later, in source control):</span>{' '}
-          pin resolves scope correctly and accepts a registered database root.
-        </li>
-      </ul>
+      <h2>Why the tip refused</h2>
 
       <p>
-        Production was running the middle revision. The fix had been merged the
-        same night &mdash; and never cut over. Clients were already on the new
-        scope. Result: every sealed chunk could upload, and every pin attempt
-        failed with a calm, permanent reason: only personal backups may flip
-        latest.
+        We had moved cloud object roots from the account principal to the{' '}
+        <span className="bold white">identity of the database home</span> &mdash;
+        the right long-term shape. Clients started sending that new scope on
+        every backup call, including the tip write.
+      </p>
+
+      <p>
+        On the server, three revisions of the storage function lined up like
+        this:
+      </p>
+
+      <ol>
+        <li>
+          <span className="bold white">Before</span> &mdash; tip only for the
+          old personal shape.
+        </li>
+        <li>
+          <span className="bold white">Middle (the landmine)</span> &mdash;
+          chunk paths accept the new database root; the tip path still treats
+          that root as forbidden and returns a validation error.
+        </li>
+        <li>
+          <span className="bold white">After (two hours later in git)</span>{' '}
+          &mdash; tip resolves the new root the same way chunks do.
+        </li>
+      </ol>
+
+      <p>
+        Production was still on the middle revision. The fix had merged the
+        same night and never shipped. Clients were already on the new world.
+        Chunks uploaded under the new root. Tip updates were rejected. Half a
+        migration: write path yes, commit path no.
       </p>
 
       <ArchFigure
         svg={TWO_HOUR_WINDOW}
-        caption="Fig. 2 — Self-inconsistent middle revision left in prod"
+        caption="Fig. 2 — The middle revision shipped; the fix stayed in main"
       />
 
       <Section variant="rose">
         <h2>
-          <span className="bold">The catch</span>
+          <span className="bold">The dangerous deploy</span>
         </h2>
         <p>
-          The dangerous deploy is not always the one that breaks uploads. It is
-          the one that <span className="bold white">half-adopts a new
-          identity</span>: writes succeed under the new root, the tip still
-          enforces the old world. Everything looks busy and healthy until you
-          ask whether restore has a tip.
+          Not always the one that breaks uploads. The one that{' '}
+          <span className="bold white">half-adopts a new identity</span>:
+          objects land under the new root, the official tip still enforces the
+          old rules. Busy looks healthy until you ask whether restore has a
+          label.
         </p>
       </Section>
 
-      <h2>Why it felt quiet</h2>
-
       <p>
-        Three independent silencers stacked on top of the real error:
+        Status made it quieter than it should have been. A successful
+        chunk-only cycle could clear the failure streak from the tip refusal.
+        The line that should print FAILING with a cause was gated off once the
+        cut looked complete. Durability only said how old the tip was, not why
+        it would not move. Correct numbers, wrong surface &mdash; a pattern we
+        keep relearning.
       </p>
 
-      <ol>
-        <li>
-          A successful chunk-only drain sample could clear the consecutive
-          failure streak that the pin failure had just set &mdash; so the
-          counter never accumulated where a human looks.
-        </li>
-        <li>
-          The status formatter that should print{' '}
-          <span className="bold white">FAILING</span> with a cause was gated on
-          &ldquo;show progress,&rdquo; and progress is off once the cut is
-          complete. The exact case the FAILING line was written for could not
-          render.
-        </li>
-        <li>
-          Durability intentionally reports age, not uploader state &mdash; so
-          the one unconditional line could only say &ldquo;stale,&rdquo; never
-          &ldquo;because the pin API rejects database scope.&rdquo;
-        </li>
-      </ol>
+      <h2>We shipped the fix &mdash; traffic did not</h2>
 
       <p>
-        The number that mattered was right. The presentation was the defect.
-        That pattern has bitten us before: a correct gauge, a wrong surface.
-      </p>
-
-      <h2>Redeploy, then the canary trap</h2>
-
-      <p>
-        Cutting over the cloud storage function to current main should have
-        been the whole story. We built the service, published a new version,
-        pointed the live alias at it &mdash; and the pin still failed.
+        So we built the storage service from current main, published a new
+        version, and pointed the live alias at it. The tip still failed.
       </p>
 
       <p>
-        The alias told a reassuring story: function version equals new. The
-        routing weight told a different one: an extra version weight of{' '}
+        The alias said function version equals new. The canary weight said
+        something else: an extra weight of{' '}
         <span className="bold white">1.0</span> still sent{' '}
         <span className="bold white">one hundred percent of traffic</span> to
-        the old build. Publish succeeded. Serve never moved.
+        the old build. We had published. We had not served.
       </p>
 
       <ArchFigure
         svg={CANARY_TRAP}
-        caption="Fig. 3 — Published is not serving"
+        caption="Fig. 3 — Alias looks new; canary still routes everything to old"
       />
 
       <p>
-        Clearing that weight &mdash; recreating the live alias without a canary
-        map, and restoring the gateway permission the recreate dropped &mdash;
-        put one hundred percent of traffic on the fixed build. The next forced
-        snapshot returned ok with a new manifest counter. Durability dropped
-        from days-stale to minutes-fresh. The warehouse finally got its label.
+        Clearing the weight (and restoring the gateway permission a clumsy
+        alias recreate had dropped) put all traffic on the fixed build. The
+        next forced snapshot returned ok. The tip counter advanced. Durability
+        went from days-stale to minutes-fresh. Same warehouse &mdash; now with
+        a label.
       </p>
 
-      <h2>What we changed in the product sense</h2>
+      <h2>What we are keeping</h2>
+
+      <p>
+        Three inequalities, one product rule:
+      </p>
 
       <ul>
         <li>
-          Cloud backup on the primary is on again, with a committed tip &mdash;
-          not only paid-for bytes under a root nobody could pin.
-        </li>
-        <li>
-          The storage path that issues and flips backup latest accepts
-          database-scoped homes the same way chunk upload already did.
-        </li>
-        <li>
-          Status work continues so a complete-but-failing pin cannot hide
-          behind a green-looking drain sample (a fix lands only when the
-          surface that renders it is checked too).
-        </li>
-        <li>
-          Deploy runbooks now treat &ldquo;alias points at N&rdquo; as
-          incomplete until routing weights are empty and a real pin probe
-          succeeds.
-        </li>
-      </ul>
-
-      <h2>Lessons we are keeping</h2>
-
-      <ol>
-        <li>
-          <span className="bold white">Bytes &ne; backup.</span> Count chunks
-          and the tip separately. Celebrate only when the pin advances.
+          <span className="bold white">Uploaded &ne; committed.</span> Celebrate
+          when the official tip moves, not when the chunk bar hits 100%.
         </li>
         <li>
           <span className="bold white">Merged &ne; deployed.</span> A two-hour
-          fix window is long enough to freeze production on the bad half of a
-          migration.
+          fix sitting only in git is how production freezes on the bad half of
+          a migration.
         </li>
         <li>
-          <span className="bold white">Deployed &ne; serving.</span> Canary
-          weights can leave one hundred percent of traffic on the previous
-          version while the alias metadata looks green.
+          <span className="bold white">Deployed &ne; serving.</span> Alias
+          version and canary weights are different knobs; promotion is not
+          done until a real tip probe succeeds.
         </li>
-        <li>
-          <span className="bold white">A health counter is not delivered
-          until its surface is.</span> If FAILING is written for a case the
-          UI cannot show, you will re-learn the outage by hand.
-        </li>
-      </ol>
+      </ul>
+
+      <p>
+        Same rule for status: a health counter is not delivered until the
+        surface that should show FAILING can actually show it for the case you
+        care about.
+      </p>
 
       <Section variant="sage">
         <h2>
-          <span className="bold">For operators of any stack</span>
+          <span className="bold">Anywhere you backup in two steps</span>
         </h2>
         <p>
-          If your backup pipeline has an upload phase and a tip phase, make
-          the tip a first-class metric. If your release path has an alias and
-          a weight map, make the weight map part of the promotion checklist.
-          And if a migration introduces a new scope for writes, never ship the
-          write path without the commit path in the same production cutover.
+          If you upload objects and then flip a tip, instrument the tip. If you
+          migrate write roots, ship the tip path in the same cutover. If you
+          promote with an alias and a weight map, check both &mdash; then poke
+          the real API.
         </p>
       </Section>
 
       <p>
-        We dogfood LastDB on LastDB. When the primary home cannot pin a cloud
-        tip, the notes app, the work board, and the rest of the stack share one
-        fate. Getting that pin green again is not a status-line nicety &mdash;
-        it is the difference between a laptop and an off-machine copy of
-        everything we are building.
+        We run LastDB on LastDB. Notes, the work board, and the rest of the
+        stack share one home. When that home has no cloud tip, the laptop is
+        still the only full copy. Getting the tip green was not a status-line
+        vanity project. It was the difference between &ldquo;the warehouse is
+        full&rdquo; and &ldquo;we can restore.&rdquo;
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
@@ -498,8 +409,6 @@ export default function BlogTheBackupThatWouldntCommit() {
         <Link to="/blog/last-store">Last Store</Link>
         {' · '}
         <Link to="/blog">Blog index</Link>
-        {' · '}
-        <Link to="/">LastDB home</Link>
       </p>
 
       <p>
