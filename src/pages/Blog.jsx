@@ -161,17 +161,21 @@ export default function Blog() {
   return (
     <>
       <Helmet>
-        <title>Blog - LastDB</title>
+        <title>Dev Blog - LastDB</title>
         <meta name="description" content="How we build LastDB: engineering notes on our autonomous, North-Star-steered AI development loop. A local-first database, built in the open." />
-        <meta property="og:title" content="Blog - LastDB" />
+        <meta property="og:title" content="Dev Blog - LastDB" />
         <meta property="og:description" content="Engineering notes on how we build LastDB with an autonomous agent loop." />
         <link rel="canonical" href="https://thelastdb.com/blog" />
       </Helmet>
 
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
 
-      <h1 className="tagline">Blog</h1>
+      <h1 className="tagline">Dev Blog</h1>
       <p>Notes on how we build LastDB &mdash; the process, in the open. <span className="dim">(We share how we work, not what&rsquo;s under the hood.)</span></p>
+      <p className="dim">
+        Looking for how to install and use a shipped feature? That&rsquo;s the{' '}
+        <Link to="/features">Feature Blog</Link>.
+      </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
 
