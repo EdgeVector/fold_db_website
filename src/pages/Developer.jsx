@@ -9,9 +9,9 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - LastDB</title>
-        <meta name="description" content="Build on LastDB: install Last Stack, describe a feature to your agent, watch the kanban board ship it. Socket API and access policies as reference." />
+        <meta name="description" content="Build on LastDB: install Last Stack, describe a feature to your agent, watch the kanban board ship it. Socket API as reference." />
         <meta property="og:title" content="Developer Guide - LastDB" />
-        <meta property="og:description" content="LastDB developer guide: the agent-driven build loop, plus socket API and policies underneath." />
+        <meta property="og:description" content="LastDB developer guide: the agent-driven build loop, plus the socket API underneath." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -179,52 +179,6 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
         <p className="dim">Exact request shapes evolve with the node; treat first-party apps and the TypeScript app SDK as the stable surface when in doubt. See <Link to="/apps">Apps</Link>.</p>
       </Section>
 
-      {/* ACCESS POLICIES */}
-      <Section variant="slate">
-        <h2 id="access-policies"><span className="bold">ACCESS POLICIES</span> <span className="dim">how access is enforced</span></h2>
-
-        <p>Each field can carry a value, a security label, a trust-distance policy (Wn Rm), and optional capability constraints. Queries are evaluated under an access context C&nbsp;=&nbsp;(user, &tau;, keys).</p>
-
-        <pre className="compare-table">{`
-  Query arrives with access context C = (user, τ, keys)
-       |
-       v
-  Check trust distance: τ ≤ m for each field's Wn Rm policy
-       |
-       v
-  Check capabilities: caller holds required key, quota > 0
-       |
-       v
-  Check payment: P(user, field) satisfied
-       |
-       v
-  Check security labels: ℓ_in ⊑ ℓ_out for all transforms
-       |
-       v
-  All pass? → Apply transforms → Return authorized projection
-  Any fail? → Return Nothing (no data, no error, no leakage)`}</pre>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="blue">TRUST DISTANCE</Label></p>
-            <pre>{`// Each field has a Wn Rm policy
-// W = max write distance, R = max read distance
-{
-  "fields": {
-    "name":        { "policy": "W0 R1" },
-    "diagnosis":   { "policy": "W1 R1" },
-    "lab_results": { "policy": "W1 R3" }
-  }
-}
-// τ=0: owner · τ=1: doctor · τ=3: researcher`}</pre>
-          </Card>
-          <Card>
-            <p><Label color="blue">TRANSFORMS</Label></p>
-            <p>Deterministic functions on structures. Outputs are written back under policies of their own &mdash; so derived data is not a side door around access control. Details: the papers below.</p>
-          </Card>
-        </div>
-      </Section>
-
       {/* CLI */}
       <Section variant="lavender">
         <h2 id="cli"><span className="bold">CLI SURFACE</span></h2>
@@ -259,32 +213,6 @@ kanban mcp
 situations list
 situations init`}</pre>
             <p className="dim">Full catalog: <Link to="/apps">Apps</Link>. Daily loop: <Link to="/start">How to use it</Link>.</p>
-          </Card>
-        </div>
-      </Section>
-
-      {/* DOCS */}
-      <Section variant="slate">
-        <h2 id="docs"><span className="bold">DOCUMENTATION</span></h2>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="blue">THE PAPER</Label></p>
-            <p>&ldquo;Fold DB: Compute Without Exposure&rdquo; &mdash; formal model and architecture.<br />
-              <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer">fold_db_paper.pdf</a></p>
-          </Card>
-          <Card>
-            <p><Label color="blue">ELI5 PAPER</Label></p>
-            <p>Plain-language walkthrough of the same ideas.<br />
-              <a href="/papers/fold_db_paper_eli5.pdf" target="_blank" rel="noreferrer">fold_db_paper_eli5.pdf</a></p>
-          </Card>
-          <Card>
-            <p><Label color="blue">HOMEBREW TAP</Label></p>
-            <p><a href="https://github.com/EdgeVector/homebrew-lastdb" target="_blank" rel="noreferrer">EdgeVector/homebrew-lastdb</a></p>
-          </Card>
-          <Card>
-            <p><Label color="blue">GITHUB</Label></p>
-            <p><a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">github.com/EdgeVector</a> &mdash; public apps: brain, fkanban, situations, lastsecrets, search, last-stack, &hellip;</p>
           </Card>
         </div>
       </Section>
