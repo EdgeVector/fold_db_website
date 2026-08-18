@@ -50,7 +50,7 @@ function DocsHeader({ title, description, path }) {
       <AsciiTitle text="DOCS" />
       <h1 className="tagline">{title}</h1>
       <p className="bold white">{description}</p>
-      <p className="dim docs-reviewed">Last reviewed: 2026-07-17. Product status: alpha.</p>
+      <p className="dim docs-reviewed">Last reviewed: 2026-08-18. Product status: alpha.</p>
       <p className="hero-cta">
         <Link to="/docs" className="link-btn">[Docs index]</Link>{'  '}
         <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
@@ -138,13 +138,15 @@ export function DocsInstall() {
 
       <Section variant="amber">
         <h2><span className="bold">FULL STACK INSTALL</span></h2>
-        <p>This path installs LastDB plus the common first-party app CLIs.</p>
+        <p>This path installs LastDB plus the common first-party app CLIs and the read-only LastDB Browser UI (its launcher is linked as <span className="bold">lastdb-browser</span>).</p>
         <p className="dim">
           Paste-safe for macOS zsh (no <span className="bold">#</span> comment lines — interactive zsh
-          does not treat them as comments). Skip the Bun line if already installed. Needs Homebrew + Apple Silicon.
+          does not treat them as comments). Skip the Bun line if already installed; skip the node line
+          if <span className="bold">npm --version</span> already works. Needs Homebrew + Apple Silicon.
         </p>
         <pre>{`curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
+brew install node
 
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup

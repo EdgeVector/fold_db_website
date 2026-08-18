@@ -76,6 +76,13 @@ const READINESS_GROUPS = [
         pct: 45,
         note: 'Manual UX evidence tool. Useful, not a polished product.',
       },
+      {
+        rank: 9,
+        name: 'LastDB Browser',
+        cmd: 'lastdb-browser',
+        pct: 40,
+        note: 'Read-only local UI for schemas, keys, records, and atoms over the local socket.',
+      },
     ],
   },
   {
@@ -85,28 +92,28 @@ const READINESS_GROUPS = [
     blurb: 'Real for us — not in the one-command installer. Come back later.',
     apps: [
       {
-        rank: 9,
+        rank: 10,
         name: 'Routines',
         cmd: 'routines',
         pct: 35,
         note: 'Scheduled agent jobs. Our fleet tooling, not stranger onboarding.',
       },
       {
-        rank: 10,
+        rank: 11,
         name: 'LastGit',
         cmd: 'lastdb://…',
         pct: 30,
         note: 'Git on LastDB. Not in the public install bundle yet.',
       },
       {
-        rank: 11,
+        rank: 12,
         name: 'CodeRings',
         cmd: 'coderings',
         pct: 25,
         note: 'Repo size vs claimed complexity. No public install story yet.',
       },
       {
-        rank: 12,
+        rank: 13,
         name: 'Discovery',
         cmd: '—',
         pct: 25,
