@@ -9,9 +9,9 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - LastDB</title>
-        <meta name="description" content="Build on LastDB: local Unix-socket API, access policies, and first-party apps. Homebrew installs a headless semantic daemon." />
+        <meta name="description" content="Build on LastDB: install Last Stack, describe a feature to your agent, watch the kanban board ship it. Socket API and access policies as reference." />
         <meta property="og:title" content="Developer Guide - LastDB" />
-        <meta property="og:description" content="LastDB developer guide: socket API, policies, and how apps talk to your local node." />
+        <meta property="og:description" content="LastDB developer guide: the agent-driven build loop, plus socket API and policies underneath." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -29,6 +29,8 @@ export default function Developer() {
 
       <p>Data is never accessed as a free-for-all dump. Queries and mutations go through the node; first-party apps (Brain, Kanban, &hellip;) are the usual interface. Building a new app uses the same socket contract.</p>
 
+      <p>You do not build here by hand-rolling scaffolding. Install <span className="bold">Last Stack</span> (LastDB + apps + agent skills), describe the feature to your agent, and the loop below carries it to shipped. Everything further down is the contract that loop runs on.</p>
+
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>{'  '}
         <Link to="/apps" className="link-btn">[Apps]</Link>
@@ -37,9 +39,53 @@ export default function Developer() {
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      {/* QUICK START */}
+      {/* BUILD WITH YOUR AGENT */}
       <Section variant="amber">
-        <h2 id="quickstart"><span className="bold">QUICK START</span></h2>
+        <h2 id="workflow"><span className="bold">BUILD WITH YOUR AGENT</span> <span className="dim">the loop, end to end</span></h2>
+
+        <p>This is the intended developer workflow. You state what you want; your agent does the scoping, the cards, and the PRs. You make the decisions.</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="yellow">1. INSTALL LAST STACK</Label></p>
+            <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack && ~/.last-stack/setup
+~/.last-stack/bin/last-stack-install-apps`}</pre>
+            <p className="dim">One clone installs LastDB, the apps (Brain, Kanban, Situations, &hellip;), and the agent skills + scheduled routines that run the loop below.</p>
+          </Card>
+
+          <Card>
+            <p><Label color="yellow">2. TELL YOUR AGENT THE FEATURE</Label></p>
+            <pre>{`"ship this feature: search results should show a snippet of the match"`}</pre>
+            <p className="dim">Plain language, to Claude Code or any agent with the skills installed. The <span className="bold">ship-feature</span> skill scopes the work, asks all its open questions in one batch, then files it: a North Star with a terminal proof, a milestone, and PR-sized cards on the board.</p>
+          </Card>
+
+          <Card>
+            <p><Label color="yellow">3. SHIP IT</Label></p>
+            <p>Agents claim cards from the board and drive each one in an isolated worktree to a <span className="bold">merged PR</span>. A card reaches done only when its outcome is proven &mdash; not when the diff exists.</p>
+            <p className="dim">Decisions land in Brain; status lands on the board. The <span className="bold">kanban-agent</span>, <span className="bold">wait-merge</span>, and <span className="bold">close-out</span> skills do the driving.</p>
+          </Card>
+
+          <Card>
+            <p><Label color="yellow">4. WATCH KANBAN</Label></p>
+            <pre>{`kanban list
+kanban list --column doing
+kanban show <slug>`}</pre>
+            <p className="dim">The board is the live status of your feature. Cards flow todo &rarr; doing &rarr; done as agents pick them up, and a blocked card says what it waits on.</p>
+          </Card>
+
+          <Card>
+            <p><Label color="yellow">5. MORNING SYNC TO UNBLOCK</Label></p>
+            <pre>{`"morning sync"`}</pre>
+            <p className="dim">Once a day, the <span className="bold">morning-sync</span> skill surfaces the short list of decisions only you can make, each with context and a recommendation. Answer them: every answer is written to Brain and moves cards on the board. That is the whole management surface.</p>
+          </Card>
+        </div>
+
+        <p className="dim">The human-and-agent daily loop in more detail: <Link to="/start">How to use it</Link>.</p>
+      </Section>
+
+      {/* QUICK START */}
+      <Section variant="lavender">
+        <h2 id="quickstart"><span className="bold">NODE QUICK START</span> <span className="dim">the database on its own</span></h2>
 
         <div className="card-stack">
           <Card>
