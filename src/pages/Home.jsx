@@ -13,6 +13,7 @@ import CopyBlock from '../components/CopyBlock';
 // Explanations live in the surrounding prose, not in the copy block.
 const INSTALL_SCRIPT = `curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
+brew install node
 
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
@@ -196,8 +197,9 @@ export default function Home() {
 
         <p>
           <span className="bold white">This is how you get started.</span>{' '}
-          Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a> and{' '}
-          <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a> on Apple Silicon.
+          Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a>,{' '}
+          <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a>, and Node 18+ with{' '}
+          <span className="bold">npm</span> on Apple Silicon.
           One installer puts <span className="bold">LastDB</span> and the starter apps on your machine.
           Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
         </p>
@@ -208,7 +210,8 @@ export default function Home() {
             <span className="dim">copy once → terminal or agent</span>
           </p>
           <p className="dim" style={{ marginBottom: '0.75em' }}>
-            Skip the first line if <span className="bold">bun --version</span> already works.
+            Skip the first line if <span className="bold">bun --version</span> already works;
+            skip the node line if <span className="bold">npm --version</span> already works.
             Script has no shell comments on purpose &mdash; macOS zsh does not treat{' '}
             <span className="bold">#</span> as a comment in an interactive paste.
           </p>

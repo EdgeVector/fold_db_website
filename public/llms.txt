@@ -15,16 +15,19 @@ Pages are prerendered at build time so agents and curl can read them without exe
 
 ## Install (macOS Apple Silicon)
 
-Needs Homebrew and Bun (https://bun.sh). Apple Silicon only.
+Needs Homebrew, Bun (https://bun.sh), and Node 18+ with npm (npm builds the
+LastDB Browser UI). Apple Silicon only.
 
 Paste-safe for macOS zsh: the bash blocks below have **no `#` comment lines**.
 Default interactive zsh has `interactivecomments` off, so pasting `# 0) …`
 yields `parse error near ')'` / `command not found: #`. Put notes in markdown
-prose, not inside the fence. Skip the Bun line if `bun --version` already works.
+prose, not inside the fence. Skip the Bun line if `bun --version` already works;
+skip the node line if `npm --version` already works.
 
 ```bash
 curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
+brew install node
 
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
@@ -79,6 +82,18 @@ ln -snf "$PWD/bin/search" ~/.local/bin/search
 search init
 ```
 
+LastDB Browser (read-only local UI for schemas, keys, records, and atoms;
+installed and built by `last-stack-install-apps`, which links the
+`lastdb-browser` launcher; needs Node 18+/npm). Open it after the node is
+running:
+
+```bash
+lastdb-browser
+```
+
+It reads `~/.lastdb/data/folddb.sock` by default; set `LASTDB_SOCKET` to point
+at another machine-local socket.
+
 ## Kanban Factory (optional animated board UI)
 
 Local theater for your real Kanban board: cards hop between lanes, routines show
@@ -111,6 +126,7 @@ Source: https://github.com/EdgeVector/kanban-factory
 - **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
 - **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `org`, `search`, …)
 - **Org** — separate app for shared org membership + named DBs; keys via LastSecrets
+- **LastDB Browser** — read-only local UI for schemas, keys, records, and atoms (`lastdb-browser`)
 - **Kanban Factory** — optional local animated UI over your board (not a second database)
 - **The Last Stack** — installer + agent skills (not a second database)
 
