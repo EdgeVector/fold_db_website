@@ -403,9 +403,9 @@ lastsecrets init`}</pre>
           <Card>
             <p><Label color="blue">SEARCH</Label></p>
             <pre>{`lastdb app install search
-cd ~/.lastdb/apps/search/source && bun install
+cd ~/.lastdb/apps/search/source && npm ci --omit=dev --no-audit --no-fund
 ln -snf "$PWD/bin/search" ~/.local/bin/search
-search init`}</pre>
+search init --quiet`}</pre>
             <p className="dim">
               Public MIT repo:{' '}
               <a href="https://github.com/EdgeVector/search" target="_blank" rel="noreferrer">
@@ -414,7 +414,7 @@ search init`}</pre>
               . Semantic MiniLM plane for{' '}
               <span className="bold">brain ask/search</span> and{' '}
               <span className="bold">kanban search</span>. Index is local-only; run{' '}
-              <span className="bold">search init</span> after install or cloud restore.
+              <span className="bold">search init --quiet</span> after install or cloud restore. Use npm for Search so its native runtime setup runs.
             </p>
           </Card>
         </div>

@@ -15,19 +15,25 @@ const INSTALL_SCRIPT = `curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 brew install node
 
+test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
+for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
+node --version
+git --version
+
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
 
 brew services start lastdb
+lastdb status
+curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
 org init
-search init
+search init --quiet
 
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 kanban list
 brain concept new hello --title "Hello" --body "my first note"
 brain get hello
@@ -221,6 +227,8 @@ export default function Home() {
             <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span>{' '}
             (the Bun installer usually does this; open a new terminal if needed).
             Health should print <span className="bold">{`{"status":"ok"}`}</span>.
+            The installer ends with <span className="bold">RESULT: PASS</span> or <span className="bold">RESULT: FAIL</span>.
+            Stop when it prints <span className="bold">RESULT: FAIL</span>.
             <span className="bold"> brain ask</span> may lag a few seconds after create &mdash;{' '}
             <span className="bold">brain get hello</span> is immediate.
           </p>
@@ -229,13 +237,14 @@ export default function Home() {
         <div className="grid-2" style={{ marginTop: '1em' }}>
           <Card>
             <p><Label color="blue">WHAT THAT DID</Label></p>
-            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span> / <span className="bold">search</span>, start the daemon, init each app.</p>
+            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span> / <span className="bold">search</span>, start the daemon, init each app. The installer prints a pass or fail result.</p>
           </Card>
           <Card>
             <p><Label color="blue">DATABASE ONLY</Label></p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
+lastdb status
+curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
             <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>. Add apps later from the same installer with <span className="bold">--no-brew</span>.</p>
           </Card>
         </div>

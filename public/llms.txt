@@ -29,22 +29,34 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 brew install node
 
+test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
+for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
+node --version
+git --version
+
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
 
 brew services start lastdb
+lastdb status
+curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
 org init
-search init
-
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+search init --quiet
+kanban list
 ```
 
 Health path is `/health` (not `/api/health`). Expect `{"status":"ok"}`.
+The installer ends with `RESULT: PASS` or `RESULT: FAIL`. Stop on `RESULT: FAIL`.
+The bundle installs Brain, Kanban, Situations, Routines, Dogfood Graph, Org,
+LastSecrets, Search, and LastDB Browser. Kanban Factory is optional.
+
+On the first LastDB start, save any recovery phrase in a password manager.
+Never put the phrase in chat, a source file, or a log.
 
 Apps install by proof (LastDB 0.23.5 and later). `last-stack-install-apps`
 asks `lastdb app resolve` for each app: the newest app commit that the LastDB
@@ -102,10 +114,13 @@ Search only (semantic plane for brain/kanban ask/search; after LastDB is running
 
 ```bash
 git clone https://github.com/EdgeVector/search && cd search
-bun install
+npm ci --omit=dev --no-audit --no-fund
 ln -snf "$PWD/bin/search" ~/.local/bin/search
-search init
+search init --quiet
 ```
+
+Use npm for Search runtime dependencies. It runs the native transformer setup
+that Bun can block as an untrusted postinstall script.
 
 LastDB Browser (read-only local UI for schemas, keys, records, and atoms;
 installed and built by `last-stack-install-apps`, which links the
