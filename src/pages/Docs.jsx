@@ -159,6 +159,16 @@ situations init
 lastsecrets init
 org init
 search init`}</pre>
+        <p className="dim">
+          Apps install by proof. <span className="bold">last-stack-install-apps</span> asks
+          <span className="bold"> lastdb app resolve</span> for each app: the newest app commit the
+          LastDB app registry proved with the LastDB build on your machine, read from a static signed
+          index (no account, no live service). It checks out that commit, not <span className="bold">main</span>.
+          <span className="bold"> lastdb app list</span> shows the shelf;
+          <span className="bold"> lastdb app upgrade brain kanban situations</span> moves to the newest
+          proved pair. If no row is proved with your build yet, install stops and names the remedy
+          (<span className="bold">brew upgrade lastdb</span>, or wait for the next proved set).
+        </p>
       </Section>
 
       <Section variant="sage">
