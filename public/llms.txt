@@ -46,6 +46,16 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 
 Health path is `/health` (not `/api/health`). Expect `{"status":"ok"}`.
 
+Apps install by proof. `last-stack-install-apps` asks `lastdb app resolve` for
+each app: the newest app commit that the LastDB app registry proved with the
+LastDB build on your machine (a static signed index, no account, no live
+service). It checks out that commit, not `main`. `lastdb app list` shows the
+shelf and the row for your node; `lastdb app upgrade brain kanban situations`
+moves to the newest proved pair. A `lastdb` older than the registry falls
+back to `main` and says so; `brew upgrade lastdb` fixes that. If no row is
+proved with your LastDB build yet, install stops and names the remedy
+(`brew upgrade lastdb`, or wait for the next proved set).
+
 Database only:
 
 ```bash
