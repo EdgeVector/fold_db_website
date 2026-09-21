@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
-# Install LaunchAgent: LastGit main → Vercel production for fold_db_website.
+# Install LaunchAgent: forge main → Vercel production for fold_db_website.
+#
+# Run it from a forge-tracking checkout (origin = http://localhost:3300/EdgeVector/
+# fold_db_website.git, branch main): the plist points at THIS checkout's
+# .lastgit/deploy-run.sh, and deploy-run.sh keeps that checkout fast-forwarded to
+# main and re-execs itself when it changes. Do not run it from a worktree that
+# will be removed, or from a clone that does not track the forge.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+origin="$(git -C "$ROOT" remote get-url origin 2>/dev/null || true)"
+case "$origin" in
+  *localhost:3300/EdgeVector/fold_db_website*|*127.0.0.1:3300/EdgeVector/fold_db_website*) ;;
+  *) echo "refusing: $ROOT origin is '$origin', not the forge repo (see header)" >&2; exit 2 ;;
+esac
 LABEL=com.edgevector.lastgit-deploy-fold-db-website
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 LOGDIR="$HOME/.lastgit/deploy-fold_db_website"
