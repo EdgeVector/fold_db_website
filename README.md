@@ -30,31 +30,40 @@ npm run preview
 
 ## Deploy
 
-**LastGit is the production deploy path** for `thelastdb.com`.
+**Forge main is the production deploy path** for `thelastdb.com`
+(`http://localhost:3300/EdgeVector/fold_db_website`, since 2026-09-06).
 
 | Step | Who |
 |------|-----|
-| Review + merge gate | LastGit CR + `.lastgit/ci.sh` (`npm ci` + `npm run build`) |
-| Production publish | LastGit watcher context **`deploy-prod`** → `.lastgit/deploy-prod.sh` → `vercel deploy --prod` of the **checked-out tree** |
-| Public mirror | GitHub (`EdgeVector/fold_db_website`) via `.lastgit/sync-github-mirror.sh` |
+| Review + merge gate | Forgejo PR + `Forge CI / ci-required` (`.lastgit/ci.sh`: `npm ci` + `npm run build`) |
+| Production publish | LaunchAgent `com.edgevector.lastgit-deploy-fold-db-website` runs `.lastgit/deploy-run.sh`, which polls forge `main`; on a new green tip it runs `.lastgit/deploy-prod.sh` → `vercel deploy --prod` of that tip, then posts a **`deploy-prod`** commit status on the forge |
+| Public mirror | GitHub (`EdgeVector/fold_db_website`, read-only) via the host mirror agent, config `~/.lastgit/github-mirrors.tsv` |
 
-Install the deploy watcher (once per machine that should publish):
+The watcher runs from a forge-tracking checkout at
+`~/.lastgit/deploy-checkouts/fold_db_website`. When `main` moves, the watcher
+fast-forwards that checkout and re-execs itself if `deploy-run.sh` changed, so a
+merged fix to the watcher takes effect on its own. Install or re-point it
+(once per machine that should publish):
 
 ```bash
 # Token in LastSecrets (not keychain): https://vercel.com/account/tokens
 export PATH="$HOME/.bun/bin:$PATH"
 printf '%s' "$(pbpaste)" | lastsecrets put lastgit-vercel-token \
-  --label "Vercel deploy token for LastGit fold_db_website" \
+  --label "Vercel deploy token for fold_db_website" \
   --provider vercel --purpose lastgit-fold-db-website-deploy-prod \
   --env prod --value-stdin
-.lastgit/install-deploy-launchd.sh   # com.edgevector.lastgit-deploy-fold-db-website
+git clone http://localhost:3300/EdgeVector/fold_db_website.git ~/.lastgit/deploy-checkouts/fold_db_website
+~/.lastgit/deploy-checkouts/fold_db_website/.lastgit/install-deploy-launchd.sh
 ```
 
-Optional env: `VERCEL_SCOPE` (default `shiba4lifes-projects`), `VERCEL_PROJECT` (default `fold_db_website`).
+The installer refuses a checkout whose `origin` is not the forge repo.
+
+Optional env: `VERCEL_SCOPE` (default `shiba4lifes-projects`), `VERCEL_PROJECT` (default `fold_db`, the project that owns thelastdb.com).
 
 `vercel.json` has `"git": { "deploymentEnabled": false }` — GitHub pushes do not
-trigger Vercel. Production deploys only via LastGit `deploy-prod`. Logs:
-`~/.lastgit/deploy-fold_db_website/`.
+trigger Vercel. Production deploys only via `deploy-prod`. A green `ci-required`
+is not a deploy; look for the `deploy-prod` status on the commit, or the log:
+`~/.lastgit/deploy-fold_db_website/deploy.log`.
 
 Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 
