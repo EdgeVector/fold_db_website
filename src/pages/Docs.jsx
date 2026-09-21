@@ -160,13 +160,16 @@ lastsecrets init
 org init
 search init`}</pre>
         <p className="dim">
-          Apps install by proof. <span className="bold">last-stack-install-apps</span> asks
+          Apps install by proof (LastDB 0.23.5+). <span className="bold">last-stack-install-apps</span> asks
           <span className="bold"> lastdb app resolve</span> for each app: the newest app commit the
           LastDB app registry proved with the LastDB build on your machine, read from a static signed
-          index (no account, no live service). It checks out that commit, not <span className="bold">main</span>.
-          <span className="bold"> lastdb app list</span> shows the shelf;
+          index on the Homebrew tap (no account, no live service). It checks out that commit, not
+          <span className="bold"> main</span>. <span className="bold">lastdb app list</span> shows the shelf;
+          <span className="bold"> lastdb app install brain</span> installs one app;
           <span className="bold"> lastdb app upgrade brain kanban situations</span> moves to the newest
-          proved pair. If no row is proved with your build yet, install stops and names the remedy
+          proved pair. Each night the release loop installs every app at a fixed commit in an isolated
+          home and runs this path; after a 24 h clean soak it publishes that set to brew stable and to
+          the index together. If no row is proved with your build yet, install stops and names the remedy
           (<span className="bold">brew upgrade lastdb</span>, or wait for the next proved set).
         </p>
       </Section>
