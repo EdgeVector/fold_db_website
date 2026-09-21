@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'the-lastdb-app-registry',
+    title: 'The LastDB App Registry: Install by Proof',
+    date: '2026-09-21',
+    blurb:
+      'LastDB now has an app registry. lastdb app install <name> gives you the newest app commit that was proved with the LastDB build on your machine, read from one static signed file. What a proved pair is, how a row gets written, why install stops rather than falls back, and the commands to start.',
+  },
+  {
     slug: 'rows-that-expire',
     title: 'Rows That Expire',
     date: '2026-09-21',
