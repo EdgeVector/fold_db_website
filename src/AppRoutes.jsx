@@ -16,6 +16,7 @@ import BlogCheckingEveryShelf from './pages/BlogCheckingEveryShelf';
 import BlogLastStore from './pages/BlogLastStore';
 import BlogMemoryFirstDiskLater from './pages/BlogMemoryFirstDiskLater';
 import BlogTheBackupThatWouldntCommit from './pages/BlogTheBackupThatWouldntCommit';
+import BlogRowsThatExpire from './pages/BlogRowsThatExpire';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -48,6 +49,7 @@ export const PRERENDER_PATHS = [
   '/features',
   '/features/kanban-factory',
   '/blog',
+  '/blog/rows-that-expire',
   '/blog/the-backup-that-wouldnt-commit',
   '/blog/memory-first-disk-later',
   '/blog/last-store',
@@ -92,6 +94,7 @@ export default function AppRoutes() {
       <Route path="/features" element={<Features />} />
       <Route path="/features/kanban-factory" element={<FeatureKanbanFactory />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/rows-that-expire" element={<BlogRowsThatExpire />} />
       <Route path="/blog/the-backup-that-wouldnt-commit" element={<BlogTheBackupThatWouldntCommit />} />
       <Route path="/blog/memory-first-disk-later" element={<BlogMemoryFirstDiskLater />} />
       <Route path="/blog/last-store" element={<BlogLastStore />} />
