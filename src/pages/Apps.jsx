@@ -4,7 +4,11 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 
-/** Ranked high → low. Stage is the product signal; pct is only a gut sort key. */
+/**
+ * Ranked high → low. Stage is the product signal; pct is only a gut sort key.
+ * `shelf: true` = on the LastDB app registry `stable` index: the installer
+ * checks it out at the exact commit that was proved with your LastDB build.
+ */
 const READINESS_GROUPS = [
   {
     stage: 'Alpha',
@@ -17,6 +21,7 @@ const READINESS_GROUPS = [
         name: 'Brain',
         cmd: 'brain',
         pct: 75,
+        shelf: true,
         note: 'Long-term memory. Public CLI + MCP. Still alpha edges.',
       },
       {
@@ -24,13 +29,14 @@ const READINESS_GROUPS = [
         name: 'LastDB',
         cmd: 'brew · lastdbd',
         pct: 70,
-        note: 'The database itself. Everything below talks to this process.',
+        note: 'The database itself (brew stable 0.23.5). Everything below talks to this process.',
       },
       {
         rank: 3,
         name: 'Kanban',
         cmd: 'kanban',
         pct: 70,
+        shelf: true,
         note: 'Work board + MCP. Public repo is still named fkanban.',
       },
     ],
@@ -53,6 +59,7 @@ const READINESS_GROUPS = [
         name: 'Situations',
         cmd: 'situations',
         pct: 55,
+        shelf: true,
         note: 'Ops posture for agents. Critical for us; thinner stranger story.',
       },
       {
@@ -60,6 +67,7 @@ const READINESS_GROUPS = [
         name: 'Search',
         cmd: 'search',
         pct: 50,
+        shelf: true,
         note: 'Semantic MiniLM plane outside Mini. brain/kanban prefer it for ask/search. Public MIT.',
       },
       {
@@ -67,21 +75,40 @@ const READINESS_GROUPS = [
         name: 'LastSecrets',
         cmd: 'lastsecrets',
         pct: 50,
+        shelf: true,
         note: 'Public CLI. Store secrets in LastDB; other tools keep lastsecrets:// refs only.',
       },
       {
         rank: 8,
-        name: 'Dogfood Graph',
-        cmd: 'local web app',
+        name: 'Org',
+        cmd: 'org',
         pct: 45,
-        note: 'Manual UX evidence tool. Useful, not a polished product.',
+        shelf: true,
+        note: 'Invite and join an org. Needed for the "join my org" onboarding path.',
       },
       {
         rank: 9,
+        name: 'Dogfood Graph',
+        cmd: 'local web app',
+        pct: 45,
+        shelf: true,
+        note: 'Manual UX evidence tool. Useful, not a polished product.',
+      },
+      {
+        rank: 10,
         name: 'LastDB Browser',
         cmd: 'lastdb-browser',
         pct: 40,
+        shelf: true,
         note: 'Read-only local UI for schemas, keys, records, and atoms over the local socket.',
+      },
+      {
+        rank: 11,
+        name: 'Routines',
+        cmd: 'routines',
+        pct: 35,
+        shelf: true,
+        note: 'Scheduled agent jobs. Installs with the stack; our fleet tooling more than stranger onboarding.',
       },
     ],
   },
@@ -92,28 +119,21 @@ const READINESS_GROUPS = [
     blurb: 'Real for us — not in the one-command installer. Come back later.',
     apps: [
       {
-        rank: 10,
-        name: 'Routines',
-        cmd: 'routines',
-        pct: 35,
-        note: 'Scheduled agent jobs. Our fleet tooling, not stranger onboarding.',
-      },
-      {
-        rank: 11,
+        rank: 12,
         name: 'LastGit',
         cmd: 'lastdb://…',
         pct: 30,
         note: 'Git on LastDB. Not in the public install bundle yet.',
       },
       {
-        rank: 12,
+        rank: 13,
         name: 'CodeRings',
         cmd: 'coderings',
         pct: 25,
         note: 'Repo size vs claimed complexity. No public install story yet.',
       },
       {
-        rank: 13,
+        rank: 14,
         name: 'Discovery',
         cmd: '—',
         pct: 25,
@@ -129,7 +149,7 @@ const STAGE_LEGEND = [
   { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer.' },
 ];
 
-function ReadinessRow({ rank, name, cmd, pct, note, stageClass }) {
+function ReadinessRow({ rank, name, cmd, pct, note, stageClass, shelf }) {
   return (
     <div className="readiness-row">
       <span className="readiness-rank" aria-label={`rank ${rank}`}>
@@ -139,6 +159,7 @@ function ReadinessRow({ rank, name, cmd, pct, note, stageClass }) {
         <p className="readiness-title-line">
           <span className="readiness-name">{name}</span>
           <span className="readiness-cmd">{cmd}</span>
+          {shelf ? <Label color="blue">ON THE SHELF</Label> : null}
         </p>
         <p className="readiness-note">{note}</p>
       </div>
@@ -187,6 +208,15 @@ export default function Apps() {
           Whole product is still <span className="bold">alpha</span> (macOS Apple Silicon).
           Rank <span className="bold">#01</span> is what we&rsquo;d hand you first; lower ranks are rougher or not in the default installer.
           Stage labels are the real signal. The <span className="bold">~%</span> bars are only a gut ranking &mdash; not SLAs or failure rates.
+        </p>
+
+        <p>
+          <span className="bold">ON THE SHELF</span> means the app is on the LastDB app registry:
+          the installer checks it out at the exact commit that was proved with the LastDB build
+          on your machine, not at <span className="bold">main</span>. A row gets there only one way:
+          each night the release loop installs every app at a fixed commit in a fresh home, runs the
+          public install path, and after a 24 h clean soak publishes that set to brew stable and to
+          the registry together.
         </p>
 
         <div className="readiness-legend" role="list">
@@ -295,6 +325,20 @@ lastsecrets list`}</pre>
           </Card>
 
           <Card>
+            <p>
+              <Label color="blue">THE SHELF</Label>{' '}
+              <span className="dim">registry · <span className="bold">lastdb app</span></span>
+            </p>
+            <p>
+              Which apps were proved with your LastDB build, and the exact commit each one installs at.
+              No account, no live service &mdash; one signed index on the Homebrew tap.
+            </p>
+            <pre>{`lastdb app list
+lastdb app install brain
+lastdb app upgrade brain kanban situations`}</pre>
+          </Card>
+
+          <Card>
             <p><Label color="blue">ALSO IN THE INSTALLER</Label></p>
             <p>
               <span className="bold">Dogfood Graph</span> &mdash; local web app for manual product evidence:
@@ -314,7 +358,9 @@ lastsecrets list`}</pre>
         <h2><span className="bold">3 &mdash; MANUAL INSTALL</span> <span className="dim">advanced · skip if you used Home</span></h2>
 
         <p>
-          Prefer not to use the Last Stack installer? Install the database, then only the apps you want:
+          Prefer not to use the Last Stack installer? Install the database, then only the apps you want.
+          <span className="bold"> lastdb app install</span> puts the proved commit under{' '}
+          <span className="bold">~/.lastdb/apps/&lt;app&gt;/source</span>; the bun step and the link are yours.
         </p>
         <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb`}</pre>
@@ -322,28 +368,28 @@ brew services start lastdb`}</pre>
         <div className="card-stack">
           <Card>
             <p><Label color="blue">BRAIN</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/brain && cd brain
-bun install && bun link
+            <pre>{`lastdb app install brain
+cd ~/.lastdb/apps/brain/source && bun install && bun link
 brain init --grant-consent`}</pre>
           </Card>
           <Card>
             <p><Label color="blue">KANBAN</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/fkanban && cd fkanban
-bun install && bun run install-cli
+            <pre>{`lastdb app install kanban
+cd ~/.lastdb/apps/kanban/source && bun install && bun run install-cli
 kanban init`}</pre>
             <p className="dim">Repo name is still <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
           </Card>
           <Card>
             <p><Label color="blue">SITUATIONS</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/situations && cd situations
-bun install
+            <pre>{`lastdb app install situations
+cd ~/.lastdb/apps/situations/source && bun install
 ln -snf "$PWD/bin/situations" ~/.local/bin/situations
 situations init`}</pre>
           </Card>
           <Card>
             <p><Label color="blue">LASTSECRETS</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
-bun install && bun link
+            <pre>{`lastdb app install lastsecrets
+cd ~/.lastdb/apps/lastsecrets/source && bun install && bun link
 lastsecrets init`}</pre>
             <p className="dim">
               Public repo:{' '}
@@ -356,8 +402,8 @@ lastsecrets init`}</pre>
           </Card>
           <Card>
             <p><Label color="blue">SEARCH</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/search && cd search
-bun install
+            <pre>{`lastdb app install search
+cd ~/.lastdb/apps/search/source && bun install
 ln -snf "$PWD/bin/search" ~/.local/bin/search
 search init`}</pre>
             <p className="dim">
@@ -372,6 +418,12 @@ search init`}</pre>
             </p>
           </Card>
         </div>
+
+        <p className="dim">
+          Unproved <span className="bold">main</span> instead (older <span className="bold">lastdb</span>, or a commit nobody smoked yet):{' '}
+          <span className="bold">git clone https://github.com/EdgeVector/&lt;repo&gt;</span> and the same bun step.
+          The installer does this itself, and says so, when your <span className="bold">lastdb</span> predates 0.23.5.
+        </p>
 
         <p className="dim">
           <Link to="/#install" className="link-btn">[Recommended install (home)]</Link>{'  '}
