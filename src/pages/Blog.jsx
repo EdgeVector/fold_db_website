@@ -5,6 +5,13 @@ import Label from '../components/Label';
 
 const POSTS = [
   {
+    slug: 'rows-that-expire',
+    title: 'Rows That Expire',
+    date: '2026-09-21',
+    blurb:
+      'LastDB can now give any schema a lifetime, set on the node and never on the published schema. Why the lifetime is a local setting, how one sweep pass selects and purges without a scan, why the first pass reaped zero rows, and the three-plane shape that lets telemetry, health samples, and job history live in LastDB without growing it forever.',
+  },
+  {
     slug: 'the-backup-that-wouldnt-commit',
     title: "The Backup That Wouldn't Commit",
     date: '2026-08-04',
