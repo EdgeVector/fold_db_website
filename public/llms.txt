@@ -46,15 +46,30 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 
 Health path is `/health` (not `/api/health`). Expect `{"status":"ok"}`.
 
-Apps install by proof. `last-stack-install-apps` asks `lastdb app resolve` for
-each app: the newest app commit that the LastDB app registry proved with the
-LastDB build on your machine (a static signed index, no account, no live
-service). It checks out that commit, not `main`. `lastdb app list` shows the
-shelf and the row for your node; `lastdb app upgrade brain kanban situations`
-moves to the newest proved pair. A `lastdb` older than the registry falls
-back to `main` and says so; `brew upgrade lastdb` fixes that. If no row is
-proved with your LastDB build yet, install stops and names the remedy
-(`brew upgrade lastdb`, or wait for the next proved set).
+Apps install by proof (LastDB 0.23.5 and later). `last-stack-install-apps`
+asks `lastdb app resolve` for each app: the newest app commit that the LastDB
+app registry proved with the LastDB build on your machine. The registry is one
+static signed index on the Homebrew tap
+(https://raw.githubusercontent.com/EdgeVector/homebrew-lastdb/main/registry/stable.json,
+signature checked with the key inside `lastdb`). No account, no live service.
+Install checks out that exact commit, not `main`.
+
+```bash
+lastdb app list                              # the shelf, with the row for your node
+lastdb app install brain                     # one app, at its proved commit
+lastdb app upgrade brain kanban situations   # move to the newest proved pair
+```
+
+Each night the release loop builds LastDB main, installs every app at a fixed
+commit in an isolated home, runs this install path, and cuts its own primary
+over. After a 24 h clean soak it publishes that pair set to brew stable and
+to the index together. So a row is on the shelf only because a fresh install
+of it passed, with the node you get from brew.
+
+A `lastdb` older than 0.23.5 has no `app resolve`: the installer falls back to
+`main` and says so; `brew upgrade lastdb` fixes that. If no row is proved with
+your LastDB build yet, install stops and names the remedy (`brew upgrade
+lastdb`, or wait for the next proved set).
 
 Database only:
 
