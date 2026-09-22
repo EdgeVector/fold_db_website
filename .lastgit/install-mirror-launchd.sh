@@ -33,5 +33,11 @@ cat > "$PLIST" <<PL
 PL
 launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null || true
 launchctl unload "$PLIST" 2>/dev/null || true
+# A label left disabled by an earlier `launchctl disable` rejects bootstrap with
+# an opaque "5: Input/output error"; enable BEFORE bootstrap. bootout is
+# asynchronous, so give the old instance a moment to go away. The `load -w`
+# fallback stays for older macOS.
+launchctl enable "gui/$(id -u)/$LABEL" 2>/dev/null || true
+sleep 2
 launchctl bootstrap "gui/$(id -u)" "$PLIST" 2>/dev/null || launchctl load -w "$PLIST"
 echo "installed $LABEL"
