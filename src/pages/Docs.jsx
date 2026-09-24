@@ -148,17 +148,25 @@ export function DocsInstall() {
 export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
 brew install node
 
+test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
+for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
+node --version
+git --version
+
 git clone https://github.com/EdgeVector/last-stack ~/.last-stack
 ~/.last-stack/setup
 ~/.last-stack/bin/last-stack-install-apps
 
 brew services start lastdb
+lastdb status
+curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 brain init --grant-consent
 kanban init
 situations init
 lastsecrets init
 org init
-search init`}</pre>
+search init --quiet`}</pre>
+        <p className="dim">The installer prints <span className="bold">RESULT: PASS</span> or <span className="bold">RESULT: FAIL</span>. Stop on a failure.</p>
         <p className="dim">
           Apps install by proof (LastDB 0.23.5+). <span className="bold">last-stack-install-apps</span> asks
           <span className="bold"> lastdb app resolve</span> for each app: the newest app commit the
