@@ -71,7 +71,7 @@ forge_curl_auth_config() {
   printf '%s' "$file"
 }
 
-AUTH_CONFIG="$(forge_curl_auth_config)"
+AUTH_CONFIG="$(forge_curl_auth_config)" || exit 1
 trap 'rm -rf "$(dirname "$AUTH_CONFIG")" 2>/dev/null; exit' EXIT INT TERM
 
 api() { curl -sS --max-time 30 -K "$AUTH_CONFIG" -H "Accept: application/json" "$@"; }
