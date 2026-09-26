@@ -58,7 +58,24 @@ export GIT_CONFIG_COUNT=1
 export GIT_CONFIG_KEY_0="http.${FORGE_ROOT}/.extraHeader"
 export GIT_CONFIG_VALUE_0="Authorization: token ${TOKEN}"
 export LASTGIT_DEPLOY_TIP_URL="${LASTGIT_DEPLOY_TIP_URL:-${FORGE_ROOT}/${FORGE_OWNER}/${REPO}.git}"
-api() { curl -sS --max-time 30 -H "Authorization: token $TOKEN" -H "Accept: application/json" "$@"; }
+
+forge_curl_auth_config() {
+  local dir file old_umask
+  old_umask="$(umask)"
+  umask 077
+  dir="$(mktemp -d "${TMPDIR:-/tmp}/deploy-run-forge-auth.XXXXXX")" || { umask "$old_umask"; return 1; }
+  file="$dir/auth.conf"
+  printf 'header = "Authorization: token %s"\n' "$TOKEN" >"$file"
+  umask "$old_umask"
+  chmod 600 "$file" 2>/dev/null || true
+  printf '%s' "$file"
+}
+
+AUTH_CONFIG="$(forge_curl_auth_config)" || exit 1
+[ -n "$AUTH_CONFIG" ] || { echo "deploy-run: AUTH_CONFIG is empty" >&2; exit 1; }
+trap 'rm -rf "$(dirname "$AUTH_CONFIG")" 2>/dev/null; exit' EXIT INT TERM
+
+api() { curl -sS --max-time 30 -K "$AUTH_CONFIG" -H "Accept: application/json" "$@"; }
 log() { printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" | tee -a "$LOG"; }
 self_sum() { shasum -a 256 "$SELF" 2>/dev/null | awk '{print $1}'; }
 # Fast-forward the checkout this script runs from to the forge tip. git replaces
