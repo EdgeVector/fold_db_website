@@ -1,28 +1,12 @@
 #!/usr/bin/env bash
-# Supervise the post-merge deploy-prod deploy for fold_db_website (main only) — Forgejo edition.
+# Supervise the LastGit post-merge deploy-prod watcher for fold_db_website.
 #
-# Until 2026-09-06 this ran `lastgit ci watch --context deploy-prod`, which fired
-# when LastGit recorded a green ci-required for a new main tip. The gate of
-# record is Forgejo now (brain: decision-2026-09-06-all-repos-venue-forgejo-no-lastgit-default),
-# so this polls refs/heads/main on the forge instead. When the tip changes and
-# its Forge CI combined status is success, it clones that tip into a scratch
-# dir and runs .lastgit/deploy-prod.sh there, one deploy at a time, then posts a
-# `deploy-prod` commit status back to the forge so the deploy outcome stays visible
-# on the commit the way the LastGit context row did.
-#
-# Deliberately NOT a Forge CI job: Forgejo cancels an in-progress push run when
-# the next merge lands, and a production deploy must never be cut off mid-flight.
-#
-# The LaunchAgent runs this file from a forge-tracking checkout of the repo
-# (install-deploy-launchd.sh points the plist at its own checkout). Whenever
-# forge main moves past that checkout, the loop fast-forwards the checkout and,
-# if this file's bytes changed, re-execs itself so a merged fix to the watcher
-# takes effect without a hand copy. Until 2026-09-21 the agent ran a frozen
-# LastGit mirror clone and fixes on main never reached it.
+# LastGit owns the complete deploy cycle: it watches refs/heads/main, leases
+# each deploy-prod run, clones the exact commit, runs .lastgit/deploy-prod.sh,
+# and stores the deploy-prod status in LastDB. This wrapper only keeps the
+# watcher alive under launchd.
 set -euo pipefail
-SELF="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ORIG_ARGS=("$@")
+
 REPO="${1:-fold_db_website}"
 case "$REPO" in
   -*|"")
@@ -30,115 +14,45 @@ case "$REPO" in
     exit 2
     ;;
 esac
+
 CONTEXT="${LASTGIT_DEPLOY_CONTEXT:-deploy-prod}"
-SCRIPT="${LASTGIT_DEPLOY_SCRIPT:-.lastgit/deploy-prod.sh}"
 REF="${LASTGIT_DEPLOY_REF:-refs/heads/main}"
-FORGE_ROOT="${FORGE_ROOT:-http://localhost:3300}"
-FORGE_OWNER="${FORGE_OWNER:-EdgeVector}"
-POLL_S="${LASTGIT_DEPLOY_POLL_S:-30}"
-export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH}"
+TIMEOUT_MS="${LASTGIT_DEPLOY_TIMEOUT_MS:-1800000}"
+
+# Prefer the installed host-track binary. A checkout-local lastgit can be
+# incomplete while its source tree changes and can fail before it starts CI.
+export PATH="${HOME}/.local/bin:${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH}"
 export LASTGIT_SOCKET="${LASTGIT_SOCKET:-${HOME}/.lastdb/data/folddb.sock}"
 export LASTGIT_SCHEMA_MAP="${LASTGIT_SCHEMA_MAP:-$HOME/.lastgit/schema-map.json}"
+
 LOG_DIR="${LASTGIT_DEPLOY_LOG_DIR:-$HOME/.lastgit/deploy-$REPO}"
 mkdir -p "$LOG_DIR"
-LOG="$LOG_DIR/deploy.log"
-STATE="$LOG_DIR/forge-deploy.last-oid"
+export LASTGIT_CI_SCRATCH="${LASTGIT_CI_SCRATCH:-$LOG_DIR/scratch}"
+echo "deploy-run: repo=$REPO context=$CONTEXT ref=$REF logs=$LOG_DIR"
 
-forge_token() {
-  if [ -n "${FORGE_TOKEN:-}" ]; then printf '%s' "$FORGE_TOKEN"; return 0; fi
-  if [ -f "$HOME/.last-stack/lib/forge-token.sh" ]; then
-    # shellcheck disable=SC1091
-    . "$HOME/.last-stack/lib/forge-token.sh"
-    last_stack_forge_token && return 0
-  fi
-  security find-generic-password -s forgejo-token -w 2>/dev/null
+WATCH_PID=""
+stop() {
+  [ -n "$WATCH_PID" ] && kill "$WATCH_PID" 2>/dev/null || true
 }
-TOKEN="$(forge_token || true)"
-if [ -z "$TOKEN" ]; then
-  echo "deploy-run: no forge token (keychain forgejo-token / lastsecrets://forgejo-token)" | tee -a "$LOG" >&2
-  exit 1
-fi
-# Every child git (including the deploy script's own ls-remote against the
-# forge) authenticates through GIT_CONFIG_* — no per-call header plumbing.
-export GIT_CONFIG_COUNT=1
-export GIT_CONFIG_KEY_0="http.${FORGE_ROOT}/.extraHeader"
-export GIT_CONFIG_VALUE_0="Authorization: token ${TOKEN}"
-export LASTGIT_DEPLOY_TIP_URL="${LASTGIT_DEPLOY_TIP_URL:-${FORGE_ROOT}/${FORGE_OWNER}/${REPO}.git}"
+trap 'stop; exit 0' INT TERM
 
-forge_curl_auth_config() {
-  local dir file old_umask
-  old_umask="$(umask)"
-  umask 077
-  dir="$(mktemp -d "${TMPDIR:-/tmp}/deploy-run-forge-auth.XXXXXX")" || { umask "$old_umask"; return 1; }
-  file="$dir/auth.conf"
-  printf 'header = "Authorization: token %s"\n' "$TOKEN" >"$file"
-  umask "$old_umask"
-  chmod 600 "$file" 2>/dev/null || true
-  printf '%s' "$file"
+start_watch() {
+  # --keep-alive matches the launchd supervisor contract. Current LastGit
+  # exits a ref watcher after all matching change requests close; this flag
+  # keeps the single watcher attached to main between deploys.
+  lastgit ci watch --repo "$REPO" --context "$CONTEXT" --ref "$REF" \
+    --timeout-ms "$TIMEOUT_MS" --max-concurrency 1 --keep-alive \
+    --state-file "$LOG_DIR/deploy.cursor" \
+    >>"$LOG_DIR/deploy.log" 2>&1 &
+  WATCH_PID=$!
 }
 
-AUTH_CONFIG="$(forge_curl_auth_config)" || exit 1
-[ -n "$AUTH_CONFIG" ] || { echo "deploy-run: AUTH_CONFIG is empty" >&2; exit 1; }
-trap 'rm -rf "$(dirname "$AUTH_CONFIG")" 2>/dev/null; exit' EXIT INT TERM
-
-api() { curl -sS --max-time 30 -K "$AUTH_CONFIG" -H "Accept: application/json" "$@"; }
-log() { printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" | tee -a "$LOG"; }
-self_sum() { shasum -a 256 "$SELF" 2>/dev/null | awk '{print $1}'; }
-# Fast-forward the checkout this script runs from to the forge tip. git replaces
-# files by rename, so the running bash keeps its old inode; re-exec picks up the
-# new bytes. Skipped when ROOT is not a git checkout (ad-hoc runs).
-refresh_checkout() {
-  local want="$1" have before after
-  [ -d "$ROOT/.git" ] || return 0
-  have="$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || true)"
-  [ -n "$have" ] && [ "$have" != "$want" ] || return 0
-  before="$(self_sum)"
-  if ! timeout 120 git -C "$ROOT" pull -q --ff-only origin "${REF#refs/heads/}" >>"$LOG" 2>&1; then
-    log "deploy-run: checkout refresh failed at $have (keeping it); see $LOG"
-    return 0
-  fi
-  after="$(self_sum)"
-  log "deploy-run: checkout $have -> $(git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo '?')"
-  if [ "$before" != "$after" ]; then
-    log "deploy-run: script changed; re-exec $SELF"
-    exec "$SELF" "${ORIG_ARGS[@]}"
-  fi
-}
-
-log "deploy-run: repo=$REPO context=$CONTEXT venue=forgejo ref=$REF script=$SCRIPT root=$ROOT logs=$LOG_DIR poll=${POLL_S}s"
-trap 'log "deploy-run: stopping"; exit 0' INT TERM
+start_watch
+echo "pid=$WATCH_PID"
 while true; do
-  tip="$(timeout 60 git ls-remote "${FORGE_ROOT}/${FORGE_OWNER}/${REPO}.git" "$REF" 2>>"$LOG" | awk '{print $1}' | head -1 || true)"
-  [ -n "$tip" ] && refresh_checkout "$tip"
-  last="$(cat "$STATE" 2>/dev/null || true)"
-  if [ -n "$tip" ] && [ "$tip" != "$last" ]; then
-    state="$(api "${FORGE_ROOT}/api/v1/repos/${FORGE_OWNER}/${REPO}/commits/${tip}/status" 2>>"$LOG" | jq -r '.state // empty' 2>/dev/null || true)"
-    if [ "$state" = "success" ]; then
-      scratch="$(mktemp -d "${TMPDIR:-/tmp}/forge-deploy-${REPO}.XXXXXX")"
-      log "deploy start oid=$tip context=$CONTEXT scratch=$scratch"
-      rc=0
-      (
-        set -euo pipefail
-        git clone -q --no-checkout "${FORGE_ROOT}/${FORGE_OWNER}/${REPO}.git" "$scratch"
-        git -C "$scratch" checkout -q --detach "$tip"
-        cd "$scratch"
-        LASTGIT_CI_OID="$tip" LASTGIT_CI_CONTEXT="$CONTEXT" LASTGIT_CI_REPO="$REPO" bash "$SCRIPT"
-      ) >>"$LOG" 2>&1 || rc=$?
-      printf '%s\n' "$tip" > "$STATE"
-      st=failure; [ "$rc" -eq 0 ] && st=success
-      log "deploy $st oid=$tip rc=$rc"
-      # Forgejo's create-status endpoint is /statuses/{sha}; the GitHub-shaped
-      # /commits/{sha}/statuses answers 405 here. Keep the HTTP code visible so a
-      # rejected post-back lands in the log instead of vanishing.
-      code="$(api -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
-        -d "{\"state\":\"$st\",\"context\":\"$CONTEXT\",\"description\":\"$CONTEXT rc=$rc (forge deploy watcher)\",\"target_url\":\"\"}" \
-        "${FORGE_ROOT}/api/v1/repos/${FORGE_OWNER}/${REPO}/statuses/${tip}" 2>>"$LOG" || true)"
-      case "$code" in 2*) ;; *) log "deploy status post-back failed http=$code oid=$tip context=$CONTEXT" ;; esac
-      rm -rf "$scratch"
-    elif [ -n "$state" ] && [ "$state" != "pending" ]; then
-      log "tip $tip has Forge CI state=$state; not deploying"
-      printf '%s\n' "$tip" > "$STATE"
-    fi
-  fi
-  sleep "$POLL_S"
+  watch_status=0
+  wait "$WATCH_PID" || watch_status=$?
+  echo "deploy-run: watch pid=$WATCH_PID exited status=$watch_status; restarting" >>"$LOG_DIR/deploy.log"
+  sleep 2
+  start_watch
 done
