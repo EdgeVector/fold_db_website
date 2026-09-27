@@ -24,6 +24,12 @@ SELF="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ORIG_ARGS=("$@")
 REPO="${1:-fold_db_website}"
+case "$REPO" in
+  -*|"")
+    echo "deploy-run: invalid repo arg '$REPO' (expected a bare repo name, got a flag or empty string)" >&2
+    exit 2
+    ;;
+esac
 CONTEXT="${LASTGIT_DEPLOY_CONTEXT:-deploy-prod}"
 SCRIPT="${LASTGIT_DEPLOY_SCRIPT:-.lastgit/deploy-prod.sh}"
 REF="${LASTGIT_DEPLOY_REF:-refs/heads/main}"
