@@ -1,0 +1,45 @@
+# Merge gate of record for EdgeVector/fold_db_website: GitHub Actions.
+# Moved from LastGit on 2026-09-30 (decision-2026-09-29-retire-lastgit-all-repos-to-github).
+# The gate body is .lastgit/ci.sh (npm ci + npm run build). Branch protection on
+# main requires the final job, named exactly `ci-required`.
+name: ci-required
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-required-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Merge gate (.lastgit/ci.sh)
+        env:
+          NO_COLOR: "1"
+          FORCE_COLOR: "0"
+        run: bash .lastgit/ci.sh
+
+  ci-required:
+    name: ci-required
+    if: always()
+    needs: [build]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every job to succeed
+        run: |
+          test "${{ needs.build.result }}" = "success"
