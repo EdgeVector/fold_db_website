@@ -30,20 +30,19 @@ npm run preview
 
 ## Deploy
 
-**Forge main is the production deploy path** for `thelastdb.com`
-(`http://localhost:3300/EdgeVector/fold_db_website`, since 2026-09-06).
+**GitHub `main` is the production deploy path** for `thelastdb.com`
+(`https://github.com/EdgeVector/fold_db_website`, since 2026-09-30).
 
 | Step | Who |
 |------|-----|
-| Review + merge gate | Forgejo PR + `Forge CI / ci-required` (`.lastgit/ci.sh`: `npm ci` + `npm run build`) |
-| Production publish | LaunchAgent `com.edgevector.lastgit-deploy-fold-db-website` runs `.lastgit/deploy-run.sh`, which polls forge `main`; on a new green tip it runs `.lastgit/deploy-prod.sh` → `vercel deploy --prod` of that tip, then posts a **`deploy-prod`** commit status on the forge |
-| Public mirror | GitHub (`EdgeVector/fold_db_website`, read-only) via the host mirror agent, config `~/.lastgit/github-mirrors.tsv` |
+| Review + merge gate | GitHub PR + `ci-required` (`.github/workflows/ci-required.yml`; body `.lastgit/ci.sh`: `npm ci` + `npm run build`) |
+| Production publish | LaunchAgent `com.edgevector.github-deploy-fold-db-website` runs `.lastgit/deploy-run.sh`. It polls GitHub `main`. On a new tip with a green `ci-required` check run it runs `.lastgit/deploy-prod.sh` (`vercel deploy --prod` of that tip) |
 
-The watcher runs from a forge-tracking checkout at
-`~/.lastgit/deploy-checkouts/fold_db_website`. When `main` moves, the watcher
-fast-forwards that checkout and re-execs itself if `deploy-run.sh` changed, so a
-merged fix to the watcher takes effect on its own. Install or re-point it
-(once per machine that should publish):
+The watcher runs from a dedicated deploy checkout at
+`~/.local/state/edgevector/fold-db-website-deploy/checkout`. When `main` moves,
+the watcher advances that checkout and re-execs itself if `deploy-run.sh`
+changed. Install or re-point it (once per machine that should publish). This
+STARTS the watcher, and its first poll deploys `main` if `ci-required` is green:
 
 ```bash
 # Token in LastSecrets (not keychain): https://vercel.com/account/tokens
@@ -52,18 +51,18 @@ printf '%s' "$(pbpaste)" | lastsecrets put lastgit-vercel-token \
   --label "Vercel deploy token for fold_db_website" \
   --provider vercel --purpose lastgit-fold-db-website-deploy-prod \
   --env prod --value-stdin
-git clone http://localhost:3300/EdgeVector/fold_db_website.git ~/.lastgit/deploy-checkouts/fold_db_website
-~/.lastgit/deploy-checkouts/fold_db_website/.lastgit/install-deploy-launchd.sh
+bash .lastgit/install-deploy-launchd.sh
 ```
 
-The installer refuses a checkout whose `origin` is not the forge repo.
+Manual deploy from a checkout of the commit you want: `bash .lastgit/deploy-prod.sh`.
+Dry run (decide only): `FOLD_DB_WEBSITE_DEPLOY_ONCE=1 FOLD_DB_WEBSITE_DEPLOY_DRY_RUN=1 bash .lastgit/deploy-run.sh`.
 
 Optional env: `VERCEL_SCOPE` (default `shiba4lifes-projects`), `VERCEL_PROJECT` (default `fold_db`, the project that owns thelastdb.com).
 
 `vercel.json` has `"git": { "deploymentEnabled": false }` — GitHub pushes do not
 trigger Vercel. Production deploys only via `deploy-prod`. A green `ci-required`
-is not a deploy; look for the `deploy-prod` status on the commit, or the log:
-`~/.lastgit/deploy-fold_db_website/deploy.log`.
+is not a deploy; look at the watcher log:
+`~/.local/state/edgevector/fold-db-website-deploy/logs/launchd.log`.
 
 Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 
@@ -71,7 +70,7 @@ Static prerendered routes under `dist/<path>/index.html` are served before the S
 
 The site initializes Sentry only when `VITE_SENTRY_DSN` is present at build time.
 Keep the DSN in LastSecrets and inject it into the deploy environment at the
-point of use. The LastGit production deploy script defaults to
+point of use. The production deploy script defaults to
 `lastsecrets://obs-sentry-dsn-javascript-react` when `VITE_SENTRY_DSN` is not
 already set.
 
@@ -99,13 +98,9 @@ Deploy that preview and open `/?sentry-smoke=1`; Sentry should receive
 
 ## Source of truth
 
-This repository is homed at `http://localhost:3300/EdgeVector/fold_db_website.git`. LastGit change requests
-and `.lastgit/ci.sh` are the merge gate; GitHub is a read-only public mirror for
-clone and browse workflows. Repo-local GitHub Actions are intentionally inert.
-
-Mirror sync is handled by `.lastgit/sync-github-mirror.sh`, optionally installed
-as `com.edgevector.lastgit-mirror-fold-db-website` with
-`.lastgit/install-mirror-launchd.sh`.
+GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
+(`ci-required`). The LastGit and Forgejo copies are frozen. The scheduled
+`download-counts.yml` workflow runs daily on GitHub Actions.
 
 ## Related
 

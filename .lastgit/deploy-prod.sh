@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# LastGit post-merge production deploy for fold_db_website (context: deploy-prod).
-# Watches refs/heads/main only via deploy-run.sh — never runs on feature branches.
+# Post-merge production deploy for fold_db_website, run by .lastgit/deploy-run.sh after
+# ci-required is green on GitHub main.
+# Runs from deploy-run.sh, which watches GitHub main only — never runs on feature branches.
 #
 # Auth (first match wins for the token value):
 #   1. $VERCEL_TOKEN
@@ -37,7 +38,7 @@
 #     CLI 50.x can exit 0 after timing out with a still-Queued deployment, so
 #     the script validates the inspect output before promoting.
 #
-# Deploys the checked-out LastGit CI tree via vercel CLI (not GitHub auto-deploy).
+# Deploys the checked-out commit via vercel CLI (not GitHub auto-deploy).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -297,4 +298,4 @@ run_vercel_promote() {
 }
 run_vercel_promote
 
-echo "lastgit fold_db_website deploy-prod PASSED"
+echo "fold_db_website deploy-prod PASSED"

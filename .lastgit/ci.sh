@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LastGit merge gate for fold_db_website.
+# Merge gate body for fold_db_website. Run by .github/workflows/ci-required.yml (job `build`).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -11,4 +11,4 @@ npm ci
 echo "== build =="
 npm run build
 
-echo "lastgit ci gate PASSED"
+echo "ci gate PASSED"
