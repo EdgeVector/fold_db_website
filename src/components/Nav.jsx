@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { to: '/apps', label: 'Apps' },
   { to: '/about', label: 'About' },
   { to: '/developer', label: 'Developer' },
+  { to: '/explore/#diagram', label: 'Explore', document: true },
   { to: '/features', label: 'Features' },
   { to: '/blog', label: 'Dev Blog' },
 ];
@@ -32,7 +33,9 @@ export default function Nav() {
       </button>
       <div className={`nav-links${menuOpen ? ' open' : ''}`}>
         {NAV_LINKS.map(link => (
-          link.to === pathname ? (
+          link.document ? (
+            <a key={link.to} href={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</a>
+          ) : link.to === pathname ? (
             <span key={link.to} className="link-btn active" aria-current="page">[{link.label}]</span>
           ) : (
             <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>

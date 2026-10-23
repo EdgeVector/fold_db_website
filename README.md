@@ -7,6 +7,7 @@ Marketing site for **LastDB** — the local database you build your own tool sta
 | Path | Purpose |
 |------|---------|
 | `/` | What it is + **install** (primary CTA) |
+| `/explore/` | Interactive system guide and layer diagram |
 | `/apps` | What each app does |
 | `/start` | Daily loop + agent MCP/skills (after install) |
 | `/about` | Product thesis |
@@ -107,3 +108,24 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 - Install: https://thelastdb.com/#install
 - Homebrew: `brew install edgevector/lastdb/lastdb` — [homebrew-lastdb](https://github.com/EdgeVector/homebrew-lastdb)
 - Public apps: [EdgeVector on GitHub](https://github.com/EdgeVector)
+
+## Interactive guide
+
+`public/explore/` contains the standalone guide from Sites source revision
+`4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
+revision `c70e6fdc7810bb6291a2564ad8157d7938de0494` from 21 October 2026.
+The guide includes 58 parts and 74 named connections.
+
+Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
+and does not use the React router. Vite copies these public assets into the
+website output. The explicit Vercel routes preserve direct entry with or
+without the final slash. Asset paths are absolute under `/explore/`.
+
+The public copy replaces local owner notes with a public design summary.
+It excludes local database measurements, internal agent instructions, Sites
+identity, and deployment receipts. The source date remains visible; publication
+does not imply a new architecture review or enabled cloud delivery.
+
+For changes, update the source files here and use the normal PR build gate.
+Check the diagram and a selected part in the browser at desktop and mobile sizes.
+Keep raw browser output outside this repository.

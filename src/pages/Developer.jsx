@@ -39,6 +39,12 @@ export default function Developer() {
 
       <hr className="decorative-rule" aria-hidden="true" />
 
+      <Section variant="sage">
+        <h2><span className="bold">LOOK INSIDE LASTDB</span></h2>
+        <p>The interactive guide shows the layers, their parts, and their connections. Each part explains its purpose with an example.</p>
+        <p><a href="/explore/#diagram" className="link-btn">[Explore the system &rarr;]</a></p>
+      </Section>
+
       {/* BUILD WITH YOUR AGENT */}
       <Section variant="amber">
         <h2 id="workflow"><span className="bold">BUILD WITH YOUR AGENT</span> <span className="dim">the loop, end to end</span></h2>
