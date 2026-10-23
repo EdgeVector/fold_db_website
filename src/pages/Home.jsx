@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Follow the connections between 58 parts, or follow one request through the layers.</p>
+        <p>Follow the connections between 60 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 21 October 2026. The guide marks cloud design paths separately from implemented behavior.</p>
+        <p className="dim">Source review: 23 October 2026. The guide marks release-disabled cloud code separately from future design.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
