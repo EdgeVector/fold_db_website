@@ -95,6 +95,7 @@ async function main() {
     const sitemapUrls = [
       ...paths.map((p) => (p === '/' ? 'https://thelastdb.com/' : `https://thelastdb.com${p}`)),
       'https://thelastdb.com/llms.txt',
+      'https://thelastdb.com/explore/',
     ];
     const priority = (url) => {
       if (url.endsWith('thelastdb.com/')) return '1.0';

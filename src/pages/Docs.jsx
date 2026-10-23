@@ -89,6 +89,13 @@ export default function Docs() {
         description="Stable LastDB reference pages for installing, using, and operating the local node."
       />
 
+      <Section variant="sage">
+        <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
+        <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
+        <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
+        <p className="dim">The guide describes source from 21 October 2026. It marks future cloud designs and source limits.</p>
+      </Section>
+
       <Section variant="amber">
         <h2><span className="bold">START HERE</span></h2>
         <div className="docs-list">

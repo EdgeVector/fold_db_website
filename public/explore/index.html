@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <meta name="description" content="Explore LastDB, one part at a time. Follow data through memory, disk and cloud, with clear explanations of what each part does and why.">
+  <link rel="canonical" href="https://thelastdb.com/explore/">
+  <link rel="icon" href="/favicon.png">
+  <meta property="og:title" content="Inside LastDB — an interactive guide">
+  <meta property="og:description" content="Explore the whole system. Zoom into memory, disk, and cloud. Select a part to learn what it does and why.">
+  <meta property="og:url" content="https://thelastdb.com/explore/">
+  <meta property="og:type" content="website">
+  <title>Inside LastDB — an interactive guide</title>
+  <link rel="stylesheet" href="/explore/style.css">
+  <link rel="stylesheet" href="/explore/diagram.css">
+  <script defer src="/explore/content.js"></script>
+  <script defer src="/explore/diagram.js"></script>
+  <script defer src="/explore/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the guide</a>
+  <aside class="sidebar">
+    <a class="brand" href="#overview" aria-label="Inside LastDB home"><span class="brandmark" aria-hidden="true"><i></i><i></i><i></i></span><span>LastDB<span class="brand-sub">An inside view</span></span></a>
+    <button class="search-launch" data-action="search"><span>Find a part or a word</span><kbd>⌘ K</kbd></button>
+    <div class="nav-label">THE GUIDE</div>
+    <nav id="nav" aria-label="Guide chapters"></nav>
+    <div class="sidebar-bottom"><div class="progress-label"><span>Your progress</span><span id="progress-text">0 / 7 areas</span></div><div class="progress-track"><i id="progress-fill"></i></div><p>Explore at your own pace.<br>Each part explains the next.</p><button class="text-button" data-action="sources">About this guide ↗</button></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><a class="website-return" href="/">← LastDB website</a><span id="breadcrumb">System diagram</span><span class="edition"><i></i> Source review · 21 Oct 2026</span><button class="mobile-search" data-action="search" aria-label="Search the guide">⌕</button></header>
+    <main id="main" tabindex="-1"><h1>Inside LastDB</h1><p>Explore memory, disk, and cloud. Select a part to see what it does and why.</p><p>The guide covers 58 parts and the connections between them. The source review dates from 21 October 2026.</p><noscript><p>Enable JavaScript to use the interactive diagram.</p><p><a href="https://github.com/EdgeVector/lastdb/blob/c70e6fdc7810bb6291a2564ad8157d7938de0494/docs/lastdb-canonical-model.md">Read the data model</a> · <a href="/explore/sources/design-notes.html">Read the cloud design notes</a> · <a href="/docs">LastDB documentation</a></p></noscript></main>
+    <footer>Inside LastDB <span>Illustrative examples · No connection to your database</span><button class="text-button" data-action="sources">Sources &amp; limits ↗</button></footer>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-head"><h2 id="search-heading">Find your way</h2><button class="icon-button" data-action="close-search" aria-label="Close search">×</button></div><label class="sr-only" for="search-input">Search parts and definitions</label><input id="search-input" type="search" placeholder="Try “flush”, “protein”, or “cloud”…" autocomplete="off"><div id="search-results"></div></dialog>
+</body>
+</html>

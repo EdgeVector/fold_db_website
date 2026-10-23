@@ -10,6 +10,8 @@
     { "source": "/using", "destination": "/start", "permanent": true }
   ],
   "rewrites": [
+    { "source": "/explore", "destination": "/explore/index.html" },
+    { "source": "/explore/", "destination": "/explore/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
