@@ -113,8 +113,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 `public/explore/` contains the standalone guide from Sites source revision
 `4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `c70e6fdc7810bb6291a2564ad8157d7938de0494` from 21 October 2026.
-The guide includes 58 parts and 74 named connections.
+revision `b835926846e2746a16a1ba41f245a0c8f694a37a` from 23 October 2026.
+The guide includes 60 parts and 89 named connections.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the

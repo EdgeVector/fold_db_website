@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Cloud design notes · Inside LastDB</title>
-  <meta name="description" content="The October 2026 cloud design behind the interactive LastDB guide. Proposed behavior is separate from implemented behavior.">
+  <title>Cloud source and future design · Inside LastDB</title>
+  <meta name="description" content="The October 23 source review separates native backup and restore code from future shared-data designs.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -14,39 +14,55 @@
 <body>
 <main>
   <a href="/explore/#sources">← Back to the guide</a>
-  <h1>Cloud design notes</h1>
-  <p class="date">Design recorded: 6 October 2026. Guide review: 21 October 2026.</p>
-  <p class="notice"><strong>This page describes intended behavior.</strong>The native cloud activation check is disabled in the reviewed source. These notes do not establish a working backup or a deployed service.</p>
+  <h1>Cloud source and future design</h1>
+  <p class="date">Source review: 23 October 2026. Earlier shared-data design: 6 October 2026.</p>
+  <p class="notice"><strong>Native backup code exists. Its release flag stays off by default.</strong>New backup work also needs account readiness. This review does not establish a deployed backup service or a successful recovery.</p>
 
   <h2>One data model across the layers</h2>
-  <p>Memory holds current logical records. A flush saves accepted changes to disk. The cloud design adds a later encrypted copy.</p>
+  <p>Memory serves current logical records. A native write saves a complete disk snapshot before memory publication and the ack.</p>
+  <p>Cloud backup is a separate operation. A local ack does not confirm a cloud copy.</p>
   <p>The layers preserve the same data relationships. Their files and completion times differ.</p>
 
-  <h2>A backup base and later changes</h2>
-  <p>A snapshot supplies a complete backup base from a consistent disk state. A frontier identifies the changes that the snapshot covers.</p>
-  <p>A mutation log supplies later changes. A sync queue retains work that still needs cloud delivery.</p>
-  <p>A restore uses the snapshot first, then later log entries. It preserves the original write facts so delayed data cannot replace newer data.</p>
-  <p>The cloud must retain files that a valid restore still needs. Local reference counts alone do not authorize cloud removal.</p>
+  <h2>The native backup path in current code</h2>
+  <ol>
+    <li>Capture one exact disk snapshot before any backup file upload. Retain its required files while local writes continue.</li>
+    <li>Check every required external file. Transfer its protected bytes and obtain verified service receipts.</li>
+    <li>Publish an encrypted manifest that lists the exact files and receipts. Save the accepted result in the backup job.</li>
+    <li>Release the source hold only after a confirmed terminal result permits it.</li>
+  </ol>
+  <p>The saved job can resume the same source after a process exit. It must not silently choose a newer disk state.</p>
+  <p>The native path copies an exact snapshot. It does not add the later mutation log described in the older cloud proposal.</p>
+
+  <h2>A checked restore to a fresh destination</h2>
+  <ol>
+    <li>Select one accepted backup. Save its exact identity before file requests.</li>
+    <li>Check the manifest and each required file’s identity, length, and protected content.</li>
+    <li>Check the complete snapshot, atoms, file references, and saved-state boundary.</li>
+    <li>Publish the verified destination. Keep cloud sync off.</li>
+  </ol>
+  <p>Restore refuses an existing destination. The walkthrough in the guide describes source behavior; it does not perform a recovery.</p>
 
   <h2>Large files travel separately</h2>
   <p>An atom can reference a file blob. The file content uses its own encryption key.</p>
   <p>The atom carries the file reference and the protected key material. A small field read does not require the large file bytes.</p>
+  <p>Backup needs exact coverage for each main file, thumbnail, and poster. Bytes already inside packed files need no second copy.</p>
+  <p>External bytes need a verified source and a backup-owned copy. A local file reference alone does not establish a complete backup.</p>
 
-  <h2>A shared database</h2>
+  <h2>Future design: a shared database</h2>
   <p>The design gives authorized members access to shared encrypted data. A copied schema can reference the same molecules and atoms.</p>
   <p>Members need the correct keys and access grants. A schema copy alone does not deliver files or grant another device access.</p>
   <p>Simultaneous cloud writers need a defined frontier, conflict rules, and retention rules. The guide treats this behavior as future design.</p>
 
-  <h2>A guaranteed write</h2>
-  <p>A proposed guaranteed write requires a cloud grant before the app receives success. This success point differs from a memory ack or disk completion.</p>
+  <h2>Future design: a guaranteed write</h2>
+  <p>A proposed guaranteed write requires a cloud grant before success. Current local writes confirm disk completion without that grant.</p>
   <p>The exact cloud acceptance and recovery contract needs implementation and proof. The guide does not present it as an available write mode.</p>
 
   <h2>Services around the database</h2>
   <ul>
     <li>The schema service supplies definitive schema definitions.</li>
     <li>Cloud access authorizes remote delivery.</li>
-    <li>Protected messages carry invitations, key grants, and share notices.</li>
-    <li>A shared file service holds encrypted file bytes for authorized members.</li>
+    <li>Future design: protected messages carry invitations, key grants, and share notices.</li>
+    <li>Future design: a shared file service holds encrypted file bytes for authorized members.</li>
     <li>The app registry describes releases and their LastDB compatibility.</li>
   </ul>
   <p>Each guide part states whether its explanation describes reviewed source or future design.</p>
@@ -61,11 +77,13 @@
   </ul>
 
   <h2>Public source references</h2>
-  <p>The interactive guide pins its implementation claims to LastDB revision <code>c70e6fdc</code>. Later source can differ.</p>
+  <p>The guide pins its implementation claims to LastDB revision <code>b8359268</code>. Later source can differ.</p>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/c70e6fdc7810bb6291a2564ad8157d7938de0494/docs/lastdb-canonical-model.md">Data model</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/c70e6fdc7810bb6291a2564ad8157d7938de0494/docs/lastdb-rehydrate.md">Memory, disk, and reads</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/c70e6fdc7810bb6291a2564ad8157d7938de0494/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Cloud activation check</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b835926846e2746a16a1ba41f245a0c8f694a37a/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b835926846e2746a16a1ba41f245a0c8f694a37a/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b835926846e2746a16a1ba41f245a0c8f694a37a/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b835926846e2746a16a1ba41f245a0c8f694a37a/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b835926846e2746a16a1ba41f245a0c8f694a37a/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
   </ul>
   <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
 </main>

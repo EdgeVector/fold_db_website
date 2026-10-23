@@ -16,9 +16,9 @@ Pages are prerendered at build time so agents and curl can read them without exe
 ## Understand LastDB
 
 Interactive system guide: https://thelastdb.com/explore/#diagram
-Explore 58 parts across memory, disk, cloud, the data model, protection, data lifetime, and services.
+Explore 60 parts across memory, disk, cloud, the data model, protection, data lifetime, and services.
 Each part explains its purpose, connections, example, and limits.
-The guide describes source from 21 October 2026 and marks future cloud designs.
+The guide describes source from 23 October 2026 and marks future cloud designs.
 JavaScript enables the diagram. Public design notes: https://thelastdb.com/explore/sources/design-notes.html
 
 ## Install (macOS Apple Silicon)

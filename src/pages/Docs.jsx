@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 21 October 2026. It marks future cloud designs and source limits.</p>
+        <p className="dim">The guide describes source from 23 October 2026. It marks future cloud designs and source limits.</p>
       </Section>
 
       <Section variant="amber">
