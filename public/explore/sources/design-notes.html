@@ -35,7 +35,8 @@
 
   <h2>Automatic backup needs explicit consent</h2>
   <p>The release flag, account permission, and saved automatic consent must all permit the work. Manual backup does not require automatic consent.</p>
-  <p>The controller compares saved logical changes with the last confirmed backup. Compaction alone and unchanged data do not start another upload.</p>
+  <p>The controller checks whether a confirmed backup covers the saved data. It can start the first backup without another write.</p>
+  <p>After confirmed coverage, unchanged data and compaction alone need no new upload.</p>
   <p>Compatible unfinished work resumes the same saved job. Temporary failures can retry. Identity, permission, quota, and source problems need attention.</p>
   <p>Auto Off blocks future automatic work. It does not close a job already admitted. Close also turns automatic consent off.</p>
 
