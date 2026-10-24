@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cloud source and future design · Inside LastDB</title>
-  <meta name="description" content="The October 23 source review separates native backup and restore code from future shared-data designs.">
+  <meta name="description" content="The October 24 source review separates native backup and restore code from future shared-data designs.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -15,7 +15,7 @@
 <main>
   <a href="/explore/#sources">← Back to the guide</a>
   <h1>Cloud source and future design</h1>
-  <p class="date">Source review: 23 October 2026. Earlier shared-data design: 6 October 2026.</p>
+  <p class="date">Source review: 24 October 2026. Earlier shared-data design: 6 October 2026.</p>
   <p class="notice"><strong>Native backup code exists. Its release flag stays off by default.</strong>New backup work also needs account readiness. Automatic backup requires separate consent. This review does not establish a deployed service or a successful recovery.</p>
 
   <h2>One data model across the layers</h2>
@@ -93,17 +93,17 @@
   </ul>
 
   <h2>Public source references</h2>
-  <p>The guide pins its implementation claims to LastDB revision <code>166e36fe</code>. Later source can differ.</p>
+  <p>The guide pins its implementation claims to LastDB revision <code>b7c0bfcc</code>. Later source can differ.</p>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/lastdb_node/src/native_cloud_backup/automatic/plan.rs">Automatic backup decisions</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/lastdb_node/src/bin/lastdb/cloud_cmds/native_backup/setup/files/restored.rs">Restored account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/fold_db/crates/core/src/sync/auth/byte_backup/mod.rs">Separate V2 byte client</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/166e36fecaffa2263e72cb5bf390ee1134960eba/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/lastdb_node/src/native_cloud_backup/automatic/plan.rs">Automatic backup decisions</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/lastdb_node/src/bin/lastdb/cloud_cmds/native_backup/setup/files/restored.rs">Restored account checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/fold_db/crates/core/src/sync/auth/byte_backup/mod.rs">Separate V2 byte client</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/b7c0bfcc43fedd4ea270a16d4d2cb4e4c6fdd9c9/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
   </ul>
   <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
 </main>
