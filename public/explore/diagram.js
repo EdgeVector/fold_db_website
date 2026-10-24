@@ -4,6 +4,19 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["ttl", "retention-backfill", "can include older records through"],
+    ["schema", "retention-backfill", "supplies the active policy for"],
+    ["tip", "retention-backfill", "supplies original write ages to"],
+    ["retention-backfill", "snapshot-commit", "saves each page through"],
+    ["delete-purge", "replay-cutoff", "can retire old barriers after"],
+    ["replay-cutoff", "write-order", "rejects older replay before"],
+    ["replay-cutoff", "disk-root", "saves its rule in"],
+    ["restore", "replay-cutoff", "recovers the selected backup’s rule for", "design"],
+    ["offline-recount", "molecule-counter", "repairs counts from complete records for"],
+    ["offline-recount", "replay-cutoff", "can execute the owner’s explicit"],
+    ["node", "offline-recount", "must stop before"],
+    ["offline-recount", "disk-root", "saves explicit repairs in"],
+    ["delete-purge", "time-queue", "keeps unfinished conflict cleanup in"],
     ["key", "keyed-conditions", "selects candidate records for"],
     ["read-view", "keyed-conditions", "keeps field values consistent for"],
     ["keyed-conditions", "record", "can reuse checked fields in"],
