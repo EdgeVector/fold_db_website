@@ -4,6 +4,9 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["key", "keyed-conditions", "selects candidate records for"],
+    ["read-view", "keyed-conditions", "keeps field values consistent for"],
+    ["keyed-conditions", "record", "can reuse checked fields in"],
     ["range-pages", "record", "can reuse checked range values in"],
     ["disk-root", "record-transfer", "supplies one stopped saved state to"],
     ["record-transfer", "packed-files", "rebuilds records in new"],
