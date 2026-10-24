@@ -18,6 +18,10 @@
     ['accepted-writes','flush','retain changes until completion of'],['memory-budget','warm-set','account for bytes in'],
     ['complete-keys','key','keep the complete selected set of'],['read-view','core-state','captures matching state from'],
     ['read-view','disk-root','captures a complete state from'],['read-view','warm-set','admits successful fetches into'],
+    ['key','range-pages','sets the hash and range for'],['complete-keys','range-pages','supply prepared keys for'],
+    ['range-pages','read-view','fetch selected values through'],['range-protection','range-pages','preserves the order used by'],
+    ['compaction','compaction-memory','reuse checked facts through'],['compaction-memory','packed-files','keeps checked pages and file access for'],
+    ['compaction-memory','memory-budget','uses extra memory outside the warm set described by'],
     ['flush','snapshot-commit','submits complete changes to'],['snapshot-commit','disk-root','publishes the new'],
     ['read-view','key-directory','finds missing records through'],['key-directory','locator','finds the hash group’s'],
     ['locator','packed-files','finds record bytes in'],['receipt','packed-files','counts and lists required parts from'],['snapshot-commit','receipt','writes the required file list in'],['snapshot-commit','packed-files','writes changed bytes into'],
@@ -60,8 +64,8 @@
   const meta={
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → field → molecule → atom'},
-    memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · holds · byte limits'},
-    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Complete saved work and recovery.',preview:'Commit · files · holds · backup'},
+    memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
+    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Complete saved work and recovery.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A later encrypted copy.',preview:'Capture · manifest · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Keep data while it still has a use.',preview:'Counters · expiry · safe removal'}
