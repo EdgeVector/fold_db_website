@@ -4,6 +4,12 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["range-pages", "record", "can reuse checked range values in"],
+    ["disk-root", "record-transfer", "supplies one stopped saved state to"],
+    ["record-transfer", "packed-files", "rebuilds records in new"],
+    ["content-encryption", "record-transfer", "remains on the stored values during"],
+    ["node", "record-transfer", "must stop before its source enters"],
+
     ["accepted-writes", "write-queue", "places complete prepared changes in"],
     ["write-queue", "snapshot-commit", "shares immediate disk work through"],
     ["compaction", "snapshot-commit", "can join a write in"],
