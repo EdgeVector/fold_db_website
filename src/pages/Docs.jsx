@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 24 October 2026. It explains offline record transfer, range-field reuse, and backup controls. Inactive paths have explicit labels.</p>
+        <p className="dim">The guide describes source from 24 October 2026. It explains conditions after a key, reuse within a read, and offline record transfer. Inactive paths have explicit labels.</p>
       </Section>
 
       <Section variant="amber">
