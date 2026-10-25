@@ -4,6 +4,41 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["accepted-writes","retry-receipts","checks prior results through"],
+    ["retry-receipts","tip","checks the current values selected by"],
+    ["retry-receipts","snapshot-commit","saves its results through"],
+    ["disk-format","content-encryption","preserves atom protection from"],
+    ["disk-format","record-transfer","can convert a separate target after"],
+    ["disk-format","replay-cutoff","must preserve"],
+    ["disk-format","disk-root","defines readable control records in"],
+    ["extended-keys","disk-root","require an explicit format feature in"],
+    ["extended-keys","space-reservation","need larger bounds in"],
+    ["extended-keys","compaction","use the full copy in"],
+    ["range-candidate","extended-keys","needs capacity from","design"],
+    ["range-candidate","range-protection","is a separate candidate for","design"],
+    ["range-candidate","shared-database","supplies a separate grant design for","design"],
+    ["restore","restore-checks","must pass before normal use","design"],
+    ["restore-checks","atom-counter","checks exact uses against"],
+    ["restore-checks","molecule-counter","checks exact uses against"],
+    ["restore-checks","blob-counter","checks files against"],
+    ["write-order","restore-checks","requires complete counted writes as described by"],
+    ["byte-backup-client","snapshot","retains one exact","design"],
+    ["byte-backup-client","byte-packing","transfers files through","design"],
+    ["byte-backup-client","disk-holds","keeps uncertain work protected by","design"],
+    ["byte-backup-client","backup-manifest","publishes its encrypted file list as","design"],
+    ["byte-backup-client","restore","supplies accepted bytes to","design"],
+    ["restore-checks","byte-backup-client","must pass before a restored source enters","design"],
+    ["byte-packing","packed-files","copies unchanged bytes from","design"],
+    ["byte-packing","backup-manifest","records file positions in","design"],
+    ["byte-packing","restore","supplies exact byte positions to","design"],
+    ["standalone-backup","disk-root","captures existing files selected by","design"],
+    ["standalone-backup","disk-holds","retains the selected files through","design"],
+    ["standalone-backup","byte-backup-client","uses the manual transfer path in","design"],
+    ["cloud-access","standalone-backup","supplies separate permission for","design"],
+    ["app-compatibility","app","states version needs for"],
+    ["app-registry","app-compatibility","checks the LastDB requirement from"],
+    ["node","app-compatibility","reports supported versions for"],
+    ["change-notices","app-compatibility","defines a separate format described by"],
     ["ttl", "retention-backfill", "can include older records through"],
     ["schema", "retention-backfill", "supplies the active policy for"],
     ["tip", "retention-backfill", "supplies original write ages to"],
@@ -108,7 +143,7 @@
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → field → molecule → atom'},
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
     disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Complete saved work and recovery.',preview:'Commit · files · compaction'},
-    cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A later encrypted copy.',preview:'Capture · manifest · restore'},
+    cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A separate copy for recovery.',preview:'Capture · manifest · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Keep data while it still has a use.',preview:'Counters · expiry · safe removal'}
   };
@@ -138,7 +173,7 @@
   function zoom(factor){state.scale=Math.min(4,Math.max(.65,state.scale*factor));setView();}
   function updateToolbar(){host.querySelector('#diagram-current-area').textContent=state.area==='all'?'Whole system':meta[state.area].title;host.querySelector('#diagram-location').textContent=state.area==='all'?`7 areas · ${Object.keys(parts).length} parts`:`${meta[state.area].title} · ${layers[state.area].parts.length} parts`;host.querySelector('#diagram-area-select').value=state.area;host.querySelector('#diagram-overview').disabled=state.area==='all';host.querySelector('#diagram-clear').hidden=!state.selected;host.querySelector('.diagram-stage').classList.toggle('in-layer',state.area!=='all');}
   const partStatus=p=>p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
-  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · NOT CONNECTED TO NATIVE BACKUP':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':' · RELEASE OFF';
+  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · NOT ACTIVE IN THE STORAGE PATH':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':' · RELEASE OFF';
   function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
   function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is a separate, release-disabled path.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>One data model.</strong><p>The areas show different duties. They do not represent separate databases.</p></div><div class="diagram-note cloud-note"><strong>Cloud release stays disabled.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it is release disabled, DEV-only, not connected, or future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(meta[p.layer].title)}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(meta[parts[other].layer].title)} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
