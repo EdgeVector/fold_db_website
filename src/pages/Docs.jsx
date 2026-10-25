@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 25 October 2026. It explains manual V2 backup, retired cloud paths, local exports, and app compatibility checks. Inactive paths have explicit labels.</p>
+        <p className="dim">The guide describes source from 25 October 2026. It explains optional run files, block encryption, date fields, and marker cleanup. Current cloud backup requires packed storage.</p>
       </Section>
 
       <Section variant="amber">
