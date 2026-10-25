@@ -4,6 +4,25 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["disk-root","run-home","uses an encrypted file list in"],
+    ["disk-format","run-home","is the default alternative to"],
+    ["run-home","run-files","stores logical records in"],
+    ["run-home","run-lookup","serves keyed reads through"],
+    ["run-home","run-merge","combines old files through"],
+    ["run-home","run-encryption","protects blocks through"],
+    ["snapshot-commit","run-files","adds a new file in the optional format through"],
+    ["read-view","run-lookup","uses the optional format through"],
+    ["run-lookup","run-files","finds the newest key in"],
+    ["run-lookup","warm-set","supplies fetched logical records to"],
+    ["run-merge","disk-holds","retains old read files through"],
+    ["run-merge","run-files","combines older files from"],
+    ["content-encryption","run-encryption","receives extra block protection from"],
+    ["run-encryption","disk-root","protects the run file list selected by"],
+    ["extended-keys","run-files","has different key limits from"],
+    ["molecule","delete-marker-cleanup","can lose redundant generation markers through"],
+    ["delete-marker-cleanup","snapshot-commit","saves explicit marker removal through"],
+    ["delete-marker-cleanup","replay-cutoff","leaves logical Delete rules to"],
+    ["run-merge","delete-purge","keeps physical marker removal separate from"],
     ["backup-job","byte-backup-client","checks older work before","design"],
     ["backup-job","disk-holds","requires old source release from"],
     ["node","local-export","serves owner requests for"],
@@ -102,7 +121,7 @@
     ['compaction-memory','memory-budget','uses extra memory outside the warm set described by'],
     ['flush','snapshot-commit','submits complete changes to'],['snapshot-commit','disk-root','publishes the new'],
     ['read-view','key-directory','finds missing records through'],['key-directory','locator','finds the hash group’s'],
-    ['locator','packed-files','finds record bytes in'],['receipt','packed-files','counts and lists required parts from'],['snapshot-commit','receipt','writes the required file list in'],['snapshot-commit','packed-files','writes changed bytes into'],
+    ['locator','packed-files','finds record bytes in'],['receipt','packed-files','counts and lists required parts from'],['snapshot-commit','receipt','lists packed files through'],['snapshot-commit','packed-files','writes the default layout into'],
     ['disk-root','receipt','names required files through'],['disk-holds','disk-root','protect captured states of'],
     ['compaction','packed-files','rewrites live records into'],['disk-holds','compaction','protect files during cleanup by'],['compaction','disk-root','publishes a checked replacement for'],
     ['local-backup','disk-root','captures a complete state from'],['local-backup','disk-holds','protects its files through'],
@@ -139,7 +158,7 @@
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → field → molecule → atom'},
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
-    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Complete saved work and recovery.',preview:'Commit · files · compaction'},
+    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Packed files, or optional run files.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A separate copy for recovery.',preview:'Capture · manifest · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Keep data while it still has a use.',preview:'Counters · expiry · safe removal'}
@@ -178,7 +197,7 @@
   function choosePart(id){const p=parts[id];if(!p)return;state.area=p.layer;state.selected=id;hideResults();history.replaceState(null,'',`#diagram/${p.layer}/${p.id}`);draw();announce(`${p.name} selected. Its purpose and connections appear beside the diagram.`);}
   function announce(text){host.querySelector('#diagram-announcement').textContent=text;}
   function hideResults(){const el=host.querySelector('#diagram-search-results');if(el){el.hidden=true;el.innerHTML='';}}
-  function search(q){state.filter=q;const el=host.querySelector('#diagram-search-results');if(!q.trim()){hideResults();return;}const hits=Object.values(parts).filter(p=>[p.name,p.short,meta[p.layer].title].join(' ').toLowerCase().includes(q.toLowerCase())).slice(0,12);el.hidden=false;el.innerHTML=hits.length?hits.map(p=>`<button data-diagram-part="${p.id}"><strong>${esc(p.name)}</strong><small>${esc(meta[p.layer].title)} · ${esc(p.short)}</small></button>`).join(''):'<p>No part matches. Try “atom” or “snapshot”.</p>';}
+  function search(q){state.filter=q;const el=host.querySelector('#diagram-search-results');if(!q.trim()){hideResults();return;}const hits=Object.values(parts).filter(p=>[p.name,p.short,p.what,p.why,p.example,p.limit,meta[p.layer].title].join(' ').toLowerCase().includes(q.toLowerCase())).slice(0,12);el.hidden=false;el.innerHTML=hits.length?hits.map(p=>`<button data-diagram-part="${p.id}"><strong>${esc(p.name)}</strong><small>${esc(meta[p.layer].title)} · ${esc(p.short)}</small></button>`).join(''):'<p>No part matches. Try “atom” or “snapshot”.</p>';}
   function expand(){state.expanded=!state.expanded;host.querySelector('#diagram-shell').classList.toggle('expanded',state.expanded);document.body.classList.toggle('diagram-is-expanded',state.expanded);host.querySelector('#diagram-expand').textContent=state.expanded?'Close expanded view ↙':'Expand ↗';host.querySelector('#diagram-expand').setAttribute('aria-pressed',String(state.expanded));}
   function pointerDown(e){if(e.button!==0)return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const [a,b]=[...pointers.values()];pinch={distance:Math.hypot(a.x-b.x,a.y-b.y),scale:state.scale};drag=null;e.preventDefault();return;}drag={id:e.pointerId,x:e.clientX,y:e.clientY,startX:state.x,startY:state.y,moved:false};}
   function pointerMove(e){if(pointers.has(e.pointerId))pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pinch&&pointers.size===2){const[a,b]=[...pointers.values()];state.scale=Math.min(4,Math.max(.65,pinch.scale*Math.hypot(a.x-b.x,a.y-b.y)/Math.max(1,pinch.distance)));setView();suppressClick=true;return;}if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5){drag.moved=true;suppressClick=true;svg.setPointerCapture(e.pointerId);svg.classList.add('is-dragging');const rect=svg.getBoundingClientRect();const units=Math.max(layoutBox.w/state.scale/rect.width,layoutBox.h/state.scale/rect.height);state.x=drag.startX-dx*units;state.y=drag.startY-dy*units;setView();}}
