@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cloud source and future design · Inside LastDB</title>
-  <meta name="description" content="The October 24 source review separates native backup and restore code from future shared-data designs.">
+  <meta name="description" content="The October 25 source review separates native backup and restore code from future shared-data designs.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -15,7 +15,7 @@
 <main>
   <a href="/explore/#sources">← Back to the guide</a>
   <h1>Cloud source and future design</h1>
-  <p class="date">Source review: 24 October 2026. Earlier shared-data design: 6 October 2026.</p>
+  <p class="date">Source review: 25 October 2026. Earlier shared-data design: 6 October 2026.</p>
   <p class="notice"><strong>Native backup code exists. Its release flag stays off by default.</strong>New backup work also needs account readiness. Automatic backup requires separate consent. This review does not establish a deployed service or a successful recovery.</p>
 
   <h2>One data model across the layers</h2>
@@ -34,6 +34,7 @@
   <p>The native path copies an exact snapshot. It does not add the later mutation log described in the older cloud proposal.</p>
 
   <h2>Automatic backup needs explicit consent</h2>
+  <p>This controller uses the original backup path. The new V2 path remains manual.</p>
   <p>The release flag, account permission, and saved automatic consent must all permit the work. Manual backup does not require automatic consent.</p>
   <p>The controller checks whether a confirmed backup covers the saved data. It can start the first backup without another write.</p>
   <p>After confirmed coverage, unchanged data and compaction alone need no new upload.</p>
@@ -60,9 +61,31 @@
   <p>Backup needs exact coverage for each main file, thumbnail, and poster. Bytes already inside packed files need no second copy.</p>
   <p>External bytes need a verified source and a backup-owned copy. A local file reference alone does not establish a complete backup.</p>
 
-  <h2>The separate V2 byte client is not connected</h2>
-  <p>A new client can send exact bytes and check service receipts. LastDB remains responsible for its disk format, encryption keys, and complete recovery.</p>
-  <p>The native backup worker still uses V1. The V2 client has no connected native worker or route, and its construction starts no cloud work.</p>
+  <h2>Manual V2 byte backup now has a complete path</h2>
+  <p>A manual job retains one exact saved state. It checks transfer receipts before it publishes an accepted backup.</p>
+  <p>Small files share transfer packs. Large files can use several byte pieces. An encrypted file list records their exact positions.</p>
+  <p>Native file bytes keep their existing protection. The transfer adds no whole-file encryption. Structural metadata can remain readable.</p>
+  <p>V2 currently requires external file dependencies to have coverage inside the native file set. Unsupported dependencies refuse.</p>
+  <p>Resume keeps the exact saved request and capture. Uncertain remote work retains its file hold until a confirmed result permits release.</p>
+  <p>The V2 release switch stays off by default. Account permission is separate. Automatic backup does not start V2 jobs.</p>
+
+  <h2>Backup without another node</h2>
+  <p>The standalone command uses existing native files. It creates no second daemon or database writer.</p>
+  <p>Progress stays in a separate private directory. A durable file hold is the permitted source change.</p>
+  <p>A separate credentials-only setup can register the same account for an explicit environment. Credentials remain paused; registration alone does not enable backup.</p>
+
+  <h2>Restore counters before normal use</h2>
+  <p>Both restore paths select an exact accepted backup and refuse an existing destination.</p>
+  <p>Normal writes and cleanup remain blocked until complete checks match records, references, counters, and files.</p>
+  <p>An interrupted record restore keeps its marker after restart. Counter checks do not silently repair a mismatch.</p>
+
+  <h2>Encryption and disk format now have separate checks</h2>
+  <p>Format 6 retains atom content encryption. Only local file blob records receive an extra storage encryption layer.</p>
+  <p>Tips, counters, and schema definitions can remain readable. A small protected record checks the account key before use.</p>
+  <p>Startup refuses older formats. A separate inactive transfer target can convert supported format 4 or 5 records.</p>
+  <p>The converter refuses format 5 with a replay cutoff. It needs a converter that preserves that cutoff.</p>
+  <p>The new private-key range implementation remains separate from active storage. Its ordered terms reveal order, equality, length, and other information.</p>
+  <p>An optional larger-key format supports future conversion targets. Existing homes do not select it automatically.</p>
 
   <h2>Future design: a shared database</h2>
   <p>The design gives authorized members access to shared encrypted data. A copied schema can reference the same molecules and atoms.</p>
@@ -93,17 +116,19 @@
   </ul>
 
   <h2>Public source references</h2>
-  <p>The guide pins its implementation claims to LastDB revision <code>0272e618</code>. Later source can differ.</p>
+  <p>The guide pins its implementation claims to LastDB revision <code>17c9e7c6</code>. Later source can differ.</p>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/lastdb_node/src/native_cloud_backup/automatic/plan.rs">Automatic backup decisions</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/lastdb_node/src/bin/lastdb/cloud_cmds/native_backup/setup/files/restored.rs">Restored account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/fold_db/crates/core/src/sync/auth/byte_backup/mod.rs">Separate V2 byte client</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/0272e61807662b3493180e76e4f1fce0cbef882a/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/automatic/plan.rs">Automatic backup decisions</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/bin/lastdb/cloud_cmds/native_backup/setup/files/restored.rs">Restored account checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/storage/disk_pack/byte_backup/standalone.rs">Standalone source and file holds</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
   </ul>
   <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
 </main>

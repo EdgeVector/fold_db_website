@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 24 October 2026. It explains retention for existing records, offline counter repair, and the cutoff for old writes. Inactive paths have explicit labels.</p>
+        <p className="dim">The guide describes source from 25 October 2026. It explains manual byte backup, restore counter checks, disk format changes, and app compatibility. Inactive paths have explicit labels.</p>
       </Section>
 
       <Section variant="amber">
