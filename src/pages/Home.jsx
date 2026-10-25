@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 80 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 25 October 2026. Explore manual byte backup, restore counter checks, disk format changes, and app compatibility. Inactive paths have explicit labels.</p>
+        <p className="dim">Source review: 25 October 2026. Explore manual V2 backup, retired cloud paths, local exports, and app compatibility checks. Inactive paths have explicit labels.</p>
       </Section>
 
       {/* GET IT — primary CTA */}

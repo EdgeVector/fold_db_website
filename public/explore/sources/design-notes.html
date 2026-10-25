@@ -16,58 +16,57 @@
   <a href="/explore/#sources">← Back to the guide</a>
   <h1>Cloud source and future design</h1>
   <p class="date">Source review: 25 October 2026. Earlier shared-data design: 6 October 2026.</p>
-  <p class="notice"><strong>Native backup code exists. Its release flag stays off by default.</strong>New backup work also needs account readiness. Automatic backup requires separate consent. This review does not establish a deployed service or a successful recovery.</p>
+  <p class="notice"><strong>Native backup code exists. Its release flag stays off by default.</strong> New V2 backup work also needs account readiness. Older cloud clients and automatic backup are removed. This review does not establish a deployed service or a successful recovery.</p>
 
   <h2>One data model across the layers</h2>
   <p>Memory serves current logical records. A native write saves a complete disk snapshot before memory publication and the ack.</p>
   <p>Cloud backup is a separate operation. A local ack does not confirm a cloud copy.</p>
   <p>The layers preserve the same data relationships. Their files and completion times differ.</p>
 
-  <h2>The native backup path in current code</h2>
+  <h2>The V2 backup path in current code</h2>
   <ol>
     <li>Capture one exact disk snapshot before any backup file upload. Retain its required files while local writes continue.</li>
-    <li>Check every required external file. Transfer its protected bytes and obtain verified service receipts.</li>
+    <li>Check every required file inside the captured native files. Transfer byte pieces and obtain verified service receipts.</li>
     <li>Publish an encrypted manifest that lists the exact files and receipts. Save the accepted result in the backup job.</li>
     <li>Release the source hold only after a confirmed terminal result permits it.</li>
   </ol>
   <p>The saved job can resume the same source after a process exit. It must not silently choose a newer disk state.</p>
   <p>The native path copies an exact snapshot. It does not add the later mutation log described in the older cloud proposal.</p>
 
-  <h2>Automatic backup needs explicit consent</h2>
-  <p>This controller uses the original backup path. The new V2 path remains manual.</p>
-  <p>The release flag, account permission, and saved automatic consent must all permit the work. Manual backup does not require automatic consent.</p>
-  <p>The controller checks whether a confirmed backup covers the saved data. It can start the first backup without another write.</p>
-  <p>After confirmed coverage, unchanged data and compaction alone need no new upload.</p>
-  <p>Compatible unfinished work resumes the same saved job. Temporary failures can retry. Identity, permission, quota, and source problems need attention.</p>
-  <p>Auto Off blocks future automatic work. It does not close a job already admitted. Close also turns automatic consent off.</p>
+  <h2>Older cloud paths are removed</h2>
+  <p>V2 is the current manual backup and restore path. The older upload, restore, replay, and automatic backup workers are removed.</p>
+  <p>V2 first checks retained V1 job and capture records. Incomplete work or unreleased source bytes refuse a new backup.</p>
+  <p>The check only reads those old records. It cannot resume, close, or repair the retired job.</p>
+  <p>Startup also refuses saved state from an interrupted retired cloud repair. It leaves recovery as a separate explicit action.</p>
+  <p>The old Cloud Off action pauses a credential file. It does not cancel an explicit V2 job; that job has its own Close action.</p>
 
   <h2>A checked restore to a fresh destination</h2>
   <ol>
     <li>Select one accepted backup. Save its exact identity before file requests.</li>
     <li>Check the manifest and each required file’s identity, length, and protected content.</li>
     <li>Check the complete snapshot, atoms, file references, and saved-state boundary. Read each atom and its encryption key from that same selected state.</li>
-    <li>Publish the verified destination. Keep cloud sync and automatic backup off.</li>
+    <li>Publish the verified destination without cloud activation.</li>
   </ol>
   <p>Restore refuses an existing destination. The walkthrough in the guide describes source behavior; it does not perform a recovery.</p>
 
   <h2>Restored account access is a separate DEV action</h2>
   <p>The reconnect action checks the completed restore receipt and existing account identity. The restored home must be inactive.</p>
   <p>It obtains access to the same account without a new identity or a change to recovered data. It refuses primary and archive homes.</p>
-  <p>The saved credentials remain paused. Reconnect does not enable cloud sync or automatic backup.</p>
+  <p>The saved credentials remain paused. Reconnect does not start a backup. It can recognize a retained V1 receipt or a current V2 receipt.</p>
 
-  <h2>Large files travel separately</h2>
+  <h2>Large files need complete local coverage</h2>
   <p>An atom can reference a file blob. New file keys depend on the private account key and original file hash.</p>
   <p>The protected atom carries the file key. The file address identifies the encrypted bytes. Supported older files keep their original keys.</p>
   <p>Backup needs exact coverage for each main file, thumbnail, and poster. Bytes already inside packed files need no second copy.</p>
-  <p>External bytes need a verified source and a backup-owned copy. A local file reference alone does not establish a complete backup.</p>
+  <p>V2 requires those bytes inside the captured native files. Remote-only files refuse; the old external-file transfer path is removed.</p>
 
-  <h2>Manual V2 byte backup now has a complete path</h2>
+  <h2>Manual V2 byte backup</h2>
   <p>A manual job retains one exact saved state. It checks transfer receipts before it publishes an accepted backup.</p>
   <p>Small files share transfer packs. Large files can use several byte pieces. An encrypted file list records their exact positions.</p>
   <p>Native file bytes keep their existing protection. The transfer adds no whole-file encryption. Structural metadata can remain readable.</p>
   <p>V2 currently requires external file dependencies to have coverage inside the native file set. Unsupported dependencies refuse.</p>
   <p>Resume keeps the exact saved request and capture. Uncertain remote work retains its file hold until a confirmed result permits release.</p>
-  <p>The V2 release switch stays off by default. Account permission is separate. Automatic backup does not start V2 jobs.</p>
+  <p>The V2 release switch stays off by default. Account permission is separate. No automatic backup scheduler remains.</p>
 
   <h2>Backup without another node</h2>
   <p>The standalone command uses existing native files. It creates no second daemon or database writer.</p>
@@ -75,7 +74,7 @@
   <p>A separate credentials-only setup can register the same account for an explicit environment. Credentials remain paused; registration alone does not enable backup.</p>
 
   <h2>Restore counters before normal use</h2>
-  <p>Both restore paths select an exact accepted backup and refuse an existing destination.</p>
+  <p>V2 restore selects an exact accepted backup and refuses an existing destination.</p>
   <p>Normal writes and cleanup remain blocked until complete checks match records, references, counters, and files.</p>
   <p>An interrupted record restore keeps its marker after restart. Counter checks do not silently repair a mismatch.</p>
 
@@ -99,12 +98,22 @@
   <h2>Services around the database</h2>
   <ul>
     <li>The schema service supplies definitive schema definitions.</li>
-    <li>Cloud access authorizes remote delivery.</li>
+    <li>Cloud access authorizes explicit V2 backup work.</li>
     <li>Future design: protected messages carry invitations, key grants, and share notices.</li>
     <li>Future design: a shared file service holds encrypted file bytes for authorized members.</li>
     <li>The app registry describes releases and their LastDB compatibility.</li>
   </ul>
   <p>Each guide part states whether its explanation describes reviewed source or future design.</p>
+
+  <h2>Local encrypted export remains available</h2>
+  <p>An owner request selects records by keys and includes their required local file bytes. LastDB signs and encrypts the result for the supplied recipient.</p>
+  <p>The response contains the protected package. The caller handles delivery. This route sends no message and uploads no object.</p>
+  <p>Recipient enrollment, new delivery staging, and the old message sender are removed. Missing local bytes cannot use a cloud fetch fallback.</p>
+
+  <h2>App compatibility now checks declared formats</h2>
+  <p>JSON app manifests can declare request and notice format versions. The installer checks those versions against the node’s supported range.</p>
+  <p>The optional LastDB version requirement remains. The TOML path checks that requirement. An absent declaration does not prove compatibility.</p>
+  <p>The signed registry can select a release by supported formats. It prefers an exact build match; entries without format declarations still need that match.</p>
 
   <h2>Questions that remain in the design</h2>
   <ul>
@@ -116,19 +125,20 @@
   </ul>
 
   <h2>Public source references</h2>
-  <p>The guide pins its implementation claims to LastDB revision <code>17c9e7c6</code>. Later source can differ.</p>
+  <p>The guide pins its implementation claims to LastDB revision <code>8074a5cd</code>. Later source can differ.</p>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/mod.rs">Native backup and its release flag</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/setup.rs">Account readiness for new backup work</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_restore/session.rs">Native restore selection and destination</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/native_cloud_backup/automatic/plan.rs">Automatic backup decisions</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/bin/lastdb/cloud_cmds/native_backup/setup/files/restored.rs">Restored account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/storage/disk_pack/byte_backup/standalone.rs">Standalone source and file holds</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/17c9e7c6ebfebd6560b329a0cdc705ac616ee5ce/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Disabled legacy cloud sync</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/docs/lastdb-snapshot-commits.md">Complete local snapshot commits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/byte_cloud_backup/mod.rs">Native backup and its release flag</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/byte_cloud_backup/worker.rs">Account readiness for new backup work</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/byte_cloud_restore/session.rs">Native restore selection and destination</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/native_cloud_backup/v2_cleanup.rs">Read-only retired backup check</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/bin/lastdb/cloud_cmds/byte_backup/setup/files/restored.rs">Restored account checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/fold_db/crates/core/src/storage/disk_pack/byte_backup/standalone.rs">Standalone source and file holds</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Retired legacy cloud sync</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/8074a5cd7283a91707776ccb42cf4a526f240d7e/lastdb_node/src/deliver/publish.rs">Local encrypted snapshot export</a></li>
   </ul>
   <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
 </main>
