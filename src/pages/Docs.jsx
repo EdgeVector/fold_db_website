@@ -183,7 +183,7 @@ search init --quiet`}</pre>
           <span className="bold"> lastdb app install brain</span> installs one app;
           <span className="bold"> lastdb app upgrade brain kanban situations</span> moves to the newest
           proved pair. Each night the release loop installs every app at a fixed commit in an isolated
-          home and runs this path; after a 24 h clean soak it publishes that set to brew stable and to
+          home and runs this path; after a 1 hour clean soak it publishes that set to brew stable and to
           the index together. If no row is proved with your build yet, install stops and names the remedy
           (<span className="bold">brew upgrade lastdb</span>, or wait for the next proved set).
         </p>

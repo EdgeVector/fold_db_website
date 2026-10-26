@@ -215,7 +215,7 @@ export default function Apps() {
           the installer checks it out at the exact commit that was proved with the LastDB build
           on your machine, not at <span className="bold">main</span>. A row gets there only one way:
           each night the release loop installs every app at a fixed commit in a fresh home, runs the
-          public install path, and after a 24 h clean soak publishes that set to brew stable and to
+          public install path, and after a 1 hour clean soak publishes that set to brew stable and to
           the registry together.
         </p>
 
