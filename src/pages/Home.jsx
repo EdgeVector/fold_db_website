@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Follow the connections between 92 parts, or follow one request through the layers.</p>
+        <p>Follow the connections between 96 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 25 October 2026. Explore separate file blob storage, checked disk conversion, page checks, and manual backup status. Current cloud backup requires packed storage.</p>
+        <p className="dim">Source review: 26 October 2026. Explore record backup, R2 and B2 destinations, base compaction, and range conversion inspection. Current cloud backup requires packed storage.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
