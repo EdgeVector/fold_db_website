@@ -4,6 +4,11 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["atom","run-values","uses the run representation in"],
+    ["run-values","run-files","supply compact or original values to"],
+    ["run-values","run-encryption","receive disk protection from"],
+    ["run-lookup","run-values","restores original bytes from"],
+    ["disk-conversion","run-values","prepares atom records for"],
     ["run-merge","run-base","moves older records into"],
     ["run-merge","stale-byte-count","selects work with"],
     ["stale-byte-count","run-files","counts obsolete record bytes in"],
@@ -54,7 +59,7 @@
     ["run-lookup","warm-set","supplies fetched logical records to"],
     ["run-merge","disk-holds","retains old read files through"],
     ["run-merge","run-files","combines older files from"],
-    ["content-encryption","run-encryption","receives extra block protection from"],
+    ["content-encryption","run-encryption","uses block protection in run homes through"],
     ["run-encryption","disk-root","protects the run file list selected by"],
     ["extended-keys","run-files","has different key limits from"],
     ["molecule","delete-marker-cleanup","can lose redundant generation markers through"],
@@ -188,7 +193,7 @@
     ["change-notices","search-service","can inform later updates in"],
     ['guaranteed-write','cloud-access','requires a cloud grant through','design'],
     ['hash-protection','key','protects exact-key representation for'],['range-protection','key','preserves range order for'],
-    ['content-encryption','atom','protects the content of'],['file-encryption','file-blob','protects the bytes of'],
+    ['content-encryption','atom','sets the protection used for'],['file-encryption','file-blob','protects the bytes of'],
     ['write-order','tip','chooses the current write for'],['conditions','accepted-writes','check current facts before'],
     ['holds','read-view','retain values used by'],['protein','accepted-writes','contributes related tip changes to']
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||'current'}));

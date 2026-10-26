@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 26 October 2026. It explains record backup, R2 and B2 destinations, base compaction, and range conversion inspection. Current cloud backup requires packed storage.</p>
+        <p className="dim">The guide describes source from 26 October 2026. It explains compact record values, atom protection, checked disk conversion, and base compaction. Current cloud backup requires packed storage.</p>
       </Section>
 
       <Section variant="amber">
