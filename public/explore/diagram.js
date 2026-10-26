@@ -190,7 +190,7 @@
     ['compaction-memory','memory-budget','uses extra memory outside the warm set described by'],
     ['flush','snapshot-commit','submits complete changes to'],['snapshot-commit','disk-root','publishes the new'],
     ['read-view','key-directory','finds missing records through'],['key-directory','locator','finds the hash group’s'],
-    ['locator','packed-files','finds record bytes in'],['receipt','packed-files','counts and lists required parts from'],['snapshot-commit','receipt','lists packed files through'],['snapshot-commit','packed-files','writes the default layout into'],
+    ['locator','packed-files','finds record bytes in'],['receipt','packed-files','counts and lists required parts from'],['snapshot-commit','receipt','lists packed files through'],['snapshot-commit','packed-files','writes packed layouts into'],
     ['disk-root','receipt','names required files through'],['disk-holds','disk-root','protect captured states of'],
     ['compaction','packed-files','rewrites live records into'],['disk-holds','compaction','protect files during cleanup by'],['compaction','disk-root','publishes a checked replacement for'],
     ['local-backup','disk-root','captures a complete state from'],['local-backup','disk-holds','protects its files through'],
