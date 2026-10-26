@@ -4,7 +4,7 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
-    ["node","home-creation","creates a new database through"],
+    ["node","home-creation","sets up a new node through"],
     ["home-creation","run-home","prepares both disk homes in"],
     ["home-creation","run-encryption","requires the node key for"],
     ["home-creation","disk-root","completes setup before normal use of"],
@@ -209,7 +209,7 @@
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → field → molecule → atom'},
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
-    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'New homes use run files; existing packed homes stay packed.',preview:'Commit · files · compaction'},
+    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'New nodes use run files; existing packed nodes stay packed.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A separate copy for recovery.',preview:'Capture · manifest · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Keep data while it still has a use.',preview:'Counters · expiry · safe removal'}
