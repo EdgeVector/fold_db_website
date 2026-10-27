@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 91 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 26 October 2026. LastDB uses two run homes for records and file blobs. Manual cloud backup preserves their encrypted run files.</p>
+        <p className="dim">Source review: 26 October 2026. LastDB uses two run homes. An explicit offline conversion enables typed range order. Backup preserves the saved range rules and encrypted files.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
