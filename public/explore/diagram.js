@@ -4,6 +4,12 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["typed-range-plan","restore-checks","checks copied references through"],
+    ["typed-range-plan","run-home","creates a separate typed"],
+    ["range-protection","run-encryption","protects typed values through"],
+    ["range-protection","molecule","stores one range rule for"],
+    ["run-backup-files","typed-range-plan","preserves the range format selected by","design"],
+    ["restore","range-context","recovers the saved rules for","design"],
     ["node","manual-cloud-connection","accepts the owner request through","design"],
     ["manual-cloud-connection","cloud-access","checks the existing account through","design"],
     ["manual-cloud-connection","byte-backup-client","permits a separate request to","design"],
@@ -40,7 +46,7 @@
     ["run-base","disk-root","save step progress through"],
     ["run-base","disk-holds","retain earlier read files through"],
     ["run-lookup","run-base","opens one range file at a time in"],
-    ["range-inventory","typed-range-plan","checks source keys for","design"],
+    ["range-inventory","typed-range-plan","checks source keys before"],
     ["range-inventory","schema","reads declared types from"],
     ["range-inventory","molecule","checks current and retained keys for"],
     ["range-inventory","disk-root","holds one stopped state from"],
@@ -57,8 +63,8 @@
     ["range-pages","range-context","carry next-page rules through"],
     ["range-context","schema","captures the declaration from"],
     ["range-context","read-view","keeps comparison separate from"],
-    ["typed-range-plan","range-context","would require new stored order in","design"],
-    ["typed-range-plan","range-protection","keeps order separate from","design"],
+    ["typed-range-plan","range-context","supplies converted range rules to"],
+    ["typed-range-plan","range-protection","stores ordered values under"],
     ["node","backup-status","reports manual work through"],
     ["backup-status","byte-backup-client","observes local work in"],
     ["app-registry","local-app-install","has a separate development alternative in"],
