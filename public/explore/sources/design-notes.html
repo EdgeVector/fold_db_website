@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cloud source and future design · Inside LastDB</title>
-  <meta name="description" content="The October 26 source review separates native backup and restore code from future shared-data designs.">
+  <meta name="description" content="The October 27 source review separates native backup and restore code from future shared-data designs.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -15,7 +15,7 @@
 <main>
   <a href="/explore/#sources">← Back to the guide</a>
   <h1>Cloud source and future design</h1>
-  <p class="date">Source review: 26 October 2026. Earlier shared-data design: 6 October 2026.</p>
+  <p class="date">Source review: 27 October 2026. Earlier shared-data design: 6 October 2026.</p>
   <p class="notice"><strong>Manual backup preserves run files.</strong> An owner connection or release-switch setup must permit new work. Restore still needs the release switch. Older cloud clients and automatic backup are removed. This review does not establish a deployed service or a successful recovery.</p>
 
   <h2>One data model across the layers</h2>
@@ -24,8 +24,8 @@
   <p>The layers preserve the same data relationships. Their files and completion times differ.</p>
 
   <h2>Latest source review</h2>
-  <p>The review covers 223 commits after October 21, through <code>170b2667</code>. This pass examines 26 commits since the last publication.</p>
-  <p>It covers optional Search delivery, explicit disk cleanup, private write memory, query rules, deletion, encryption, backup, restore, and registry reads.</p>
+  <p>The review covers 239 commits after October 21, through <code>de11ae80</code>. This pass examines 16 commits since the last publication.</p>
+  <p>It covers delete markers, compaction, warm-set size reports, schema checks, encryption, nightly releases, and removed unused helpers. Backup and restore retain their run-file path.</p>
 
   <h2>Two run homes, one logical model</h2>
   <p>A home is a folder of disk files. LastDB uses disk-run for records and disk-cas for file blobs.</p>
@@ -67,15 +67,24 @@
   <p>A private write reserves memory until disk publication. Warm records then use their normal allowance; they do not retain the private write allowance.</p>
   <p>The warm set still defaults to 256 MiB. That limit is not a total process cap.</p>
 
+  <h2>Warm-set status reports real charges</h2>
+  <p>Status now reports the actual warm-set byte charge instead of zero. The warm-set section also reports its own limit.</p>
+  <p>The older process-budget field is separate. It is not the warm-set limit or a total process-memory guarantee.</p>
+
   <h2>Base compaction uses counted bytes</h2>
   <p>The worker counts older values hidden by new records and physical delete markers. Counts include encoded keys and stored values before block compression.</p>
-  <p>Base work starts when newer files exceed one sixteenth of record bytes, or obsolete bytes exceed one eighth. Each trigger also exceeds 1 MiB.</p>
+  <p>Newer files trigger base work above both 1 MiB and one sixteenth of record bytes. Obsolete bytes trigger it above both 64 KiB and one eighth.</p>
   <p>Each step replaces a small part of the base and saves its progress in CURRENT. The next step uses that saved boundary.</p>
   <p>Old readers retain their files. New writes, reader holds, and delayed compaction can use extra space. These thresholds are not a filesystem-size guarantee.</p>
 
   <p>Base file targets range from 256 KiB to 1 GiB. A large record can exceed a target.</p>
   <p>The worker waits up to two seconds when reads retain more than one sixteenth of current file bytes, with a 1 MiB minimum.</p>
   <p>Long reads can retain files after that wait. No fixed total disk-size guarantee follows from these controls.</p>
+
+  <h2>The disk-size gate is a CI check</h2>
+  <p>The performance workflow now requires database files to stay at or below 1.5 times logical data bytes at each settled checkpoint.</p>
+  <p>It uses the larger of file lengths and allocated disk bytes. Its workload disables Search and checks again after deletes.</p>
+  <p>This is a release check on that workload. It is not an enforced runtime cap or a guarantee about temporary peaks.</p>
 
   <h2>Compact records before block encryption</h2>
   <p>Run homes try shorter forms for repeated field names, IDs, integers, and timestamps. Reads reconstruct the exact original record bytes.</p>
@@ -216,10 +225,11 @@
   <h2>Three different delete markers</h2>
   <ul>
     <li>A logical Delete barrier blocks old replay. Its removal requires an explicit saved replay cutoff.</li>
-    <li>A molecule generation marker hides an older generation entry. Explicit cleanup can remove it when no active or prepared generation needs it.</li>
+    <li>A molecule generation marker hides an older generation entry. New deletes omit it when no generation needs it and a lock prevents one from appearing.</li>
     <li>A run-file marker hides an older physical value. Base compaction removes it when no older value can return.</li>
   </ul>
-  <p>Molecule marker cleanup reviews one named molecule in pages of at most 256 markers. Execution is explicit and does not change the replay cutoff.</p>
+  <p>A delete keeps the marker if an active generation exists or another operation holds the generation lock. Logical Delete barriers remain independent.</p>
+  <p>Explicit cleanup can remove redundant generation markers in pages of at most 256. An active or prepared generation blocks cleanup. Replay cutoffs stay unchanged.</p>
 
   <h2>Future design: a shared database</h2>
   <p>The design gives authorized members access to shared encrypted data. A copied schema can reference the same molecules and atoms.</p>
@@ -229,6 +239,15 @@
   <h2>Future design: a guaranteed write</h2>
   <p>A proposed guaranteed write requires a cloud grant before success. Current local writes confirm disk completion without that grant.</p>
   <p>The old mutation cloud-publication option and cloud receipt are removed. The exact cloud acceptance and recovery contract needs implementation and proof. The guide does not present it as an available write mode.</p>
+
+  <h2>Schema checks keep a separate read-only path</h2>
+  <p>A schema check resolves the proposed fields and keys without saving definitions or changing local schemas. Synchronization can register and load the result.</p>
+  <p>Both paths now share explicit decision rules. Different keys still require a new schema proposal; the node does not invent a service identity.</p>
+
+  <h2>Older encrypted values remain readable</h2>
+  <p>The older value decoder now rejects bytes without an encrypted-format marker. Supported older encrypted forms remain readable.</p>
+  <p>This decoder is separate from ordinary atom records inside encrypted run blocks. Those records do not require another encryption wrapper.</p>
+  <p>The file-blob value status now reports the actual compression and encryption switches. These switches do not control run-block encryption.</p>
 
   <h2>Services around the database</h2>
   <ul>
@@ -250,6 +269,11 @@
   <p>The optional LastDB version requirement remains. The TOML path checks that requirement. An absent declaration does not prove compatibility.</p>
   <p>The signed registry can select a release by supported formats. It prefers an exact build match; entries without format declarations still need that match.</p>
 
+  <h2>Nightly packages remain separate from the app registry</h2>
+  <p>The nightly workflow builds a fixed LastDB revision for Apple silicon and Linux x64. It checks required gates and verifies the uploaded release bytes.</p>
+  <p>It publishes a GitHub prerelease. It does not update installed nodes, Homebrew, or the app registry.</p>
+  <p>The registry connection remains a proposal. This source review does not confirm a successful nightly release or a deployed registry change.</p>
+
   <h2>Local development app installs</h2>
   <p>The install command accepts --from, --rev, and --dev together. It reads the chosen commit’s manifest and checks declared format versions.</p>
   <p>The installer clones the origin URL when available, or the local repository otherwise. The selected commit must exist at that source.</p>
@@ -264,60 +288,64 @@
     <li>What result does a read return when a key is absent locally and the cloud is unavailable?</li>
   </ul>
 
+  <p>Latest source: <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/atom_store/molecules/delete.rs">Delete marker admission</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/ops/self_metrics/snapshot_build.rs">Warm-set byte status</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/scripts/benchmarks/disk_budget.py">CI disk-size check</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/crypto/at_rest/mod.rs">Older encrypted value decoding</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/.github/workflows/nightly-release.yml">Nightly release workflow</a>.</p>
+
+  <p>Related source: <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/exec/schema_declare/execute.rs">Schema check and synchronization</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/ops/self_metrics/at_rest.rs">File-blob value status</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/transaction/leases.rs">Generation protection through publication</a>.</p>
+
   <h2>Public source references</h2>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/atom/molecule_key_codec/profile.rs">Typed range encoding inside encrypted blocks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/run_restore/proof/ranges.rs">Restore range-rule checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/app_release_host/registry.rs">Separate compatibility-signature helper</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/atom/molecule_key_codec/profile.rs">Typed range encoding inside encrypted blocks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/run_restore/proof/ranges.rs">Restore range-rule checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/app_release_host/registry.rs">Separate compatibility-signature helper</a></li>
   </ul>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/value/mod.rs">Compact record values and exact reconstruction</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/db_operations/atom_store/codec.rs">Atom records inside encrypted blocks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/home/plan.rs">Base compaction and exact byte counts</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/cloud_backup_protocol/src/v2/transfer/api.rs">Provider-specific upload grants</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/offline_range_inventory.rs">Stopped-home range inspection</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/physical_v2.rs">Separate record and file blob homes</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_host/src/handlers/query/rules.rs">Next-page compatibility checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/offline_range_conversion.rs">Explicit separate-home typed range conversion</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/ops/self_metrics/durability.rs">Manual backup status</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/bin/lastdb/app_cmds/local_install.rs">Local development install</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/run_node.rs">Run-home creation, recovery, and key</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Run commits and background compaction</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/home/commit.rs">Run publication and merge limits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/home/read.rs">Run file lookup</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/frame.rs">Block encryption</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/db_operations/atom_store/delete_marker_cleanup.rs">Molecule generation marker cleanup</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/ops/ttl_sweep/discovery.rs">Paged expiry discovery</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/schema_service/crates/schema_types/src/declarative_schemas/key_types.rs">Date range support and hash refusal</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/value/mod.rs">Compact record values and exact reconstruction</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/atom_store/codec.rs">Atom records inside encrypted blocks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/home/plan.rs">Base compaction and exact byte counts</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/cloud_backup_protocol/src/v2/transfer/api.rs">Provider-specific upload grants</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/offline_range_inventory.rs">Stopped-home range inspection</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/physical_v2.rs">Separate record and file blob homes</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_host/src/handlers/query/rules.rs">Next-page compatibility checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/offline_range_conversion.rs">Explicit separate-home typed range conversion</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/ops/self_metrics/durability.rs">Manual backup status</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/bin/lastdb/app_cmds/local_install.rs">Local development install</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/run_node.rs">Run-home creation, recovery, and key</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Run commits and background compaction</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/home/commit.rs">Run publication and merge limits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/home/read.rs">Run file lookup</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/frame.rs">Block encryption</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/atom_store/delete_marker_cleanup.rs">Molecule generation marker cleanup</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/ops/ttl_sweep/discovery.rs">Paged expiry discovery</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/schema_service/crates/schema_types/src/declarative_schemas/key_types.rs">Date range support and hash refusal</a></li>
   </ul>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/byte_backup/planner.rs">Native file pieces and small-file bundles</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_restore/closure.rs">Run-only restore admission</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/home/cleanup.rs">Run-home cleanup steps</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/schema_service/crates/core/src/app_release/compat_write.rs">Verifier-signed compatibility records</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/byte_backup/planner.rs">Native file pieces and small-file bundles</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_restore/closure.rs">Run-only restore admission</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/home/cleanup.rs">Run-home cleanup steps</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/schema_service/crates/core/src/app_release/compat_write.rs">Verifier-signed compatibility records</a></li>
   </ul>
-  <p>Additional source: <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/mod.rs">New and existing home access</a>; <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/db_operations/search_index/search_rebuild.rs">Offline search rebuild</a>; <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/disk_run/reader.rs">Run-file read counts</a>.</p>
-  <p>New source: <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/cleanup/worker.rs">Resumable node cleanup</a>; <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/db_operations/search_index/queue_policy.rs">Optional Search queue</a>; <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/db_operations/search_index/inbox_fields.rs">Search field and file rules</a>; <a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/resident/core_set/model.rs">Write allowance release</a>.</p>
-  <p>The guide pins its implementation claims to LastDB revision <code>170b2667</code>. Later source can differ.</p>
+  <p>Additional source: <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/mod.rs">New and existing home access</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/search_index/search_rebuild.rs">Offline search rebuild</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/disk_run/reader.rs">Run-file read counts</a>.</p>
+  <p>New source: <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/cleanup/worker.rs">Resumable node cleanup</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/search_index/queue_policy.rs">Optional Search queue</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/db_operations/search_index/inbox_fields.rs">Search field and file rules</a>; <a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/resident/core_set/model.rs">Write allowance release</a>.</p>
+  <p>The guide pins its implementation claims to LastDB revision <code>de11ae80</code>. Later source can differ.</p>
   <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Complete local snapshot commits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_backup/mod.rs">Native backup and its release flag</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_backup/worker.rs">Account readiness for new backup work</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_restore/session.rs">Native restore selection and destination</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/native_cloud_backup/v2_cleanup.rs">Read-only retired backup check</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/bin/lastdb/cloud_cmds/byte_backup/setup/files/restored.rs">Restored account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Retired legacy cloud sync</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/deliver/publish.rs">Local encrypted snapshot export</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_backup/connection.rs">Owner connection and exact account binding</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/byte_backup/run_capture.rs">Paired run capture</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/fold_db/crates/core/src/storage/disk_pack/run_restore/proof.rs">Run account and file dependency checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/byte_cloud_restore/runs/install.rs">Run restore publication checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/vendor/laststore/src/frame/stream/gcm.rs">Buffers sized to encrypted content</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/lastdb_node/src/ops/ttl_sweep/erase/rounds.rs">One expiry page across schemas</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/170b26675fe71e86f74f351436348ab992b57638/schema_service/crates/schema_service_s3/src/per_record.rs">Conditional registry record changes</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Complete local snapshot commits</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_backup/mod.rs">Native backup and its release flag</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_backup/worker.rs">Account readiness for new backup work</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_restore/session.rs">Native restore selection and destination</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/native_cloud_backup/v2_cleanup.rs">Read-only retired backup check</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/bin/lastdb/cloud_cmds/byte_backup/setup/files/restored.rs">Restored account checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/fold_db_core/fold_db/sync.rs">Retired legacy cloud sync</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/deliver/publish.rs">Local encrypted snapshot export</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_backup/connection.rs">Owner connection and exact account binding</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/byte_backup/run_capture.rs">Paired run capture</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/fold_db/crates/core/src/storage/disk_pack/run_restore/proof.rs">Run account and file dependency checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/byte_cloud_restore/runs/install.rs">Run restore publication checks</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/vendor/laststore/src/frame/stream/gcm.rs">Buffers sized to encrypted content</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/lastdb_node/src/ops/ttl_sweep/erase/rounds.rs">One expiry page across schemas</a></li>
+    <li><a href="https://github.com/EdgeVector/lastdb/blob/de11ae805d3355261dac1163cff5e09c3e26de08/schema_service/crates/schema_service_s3/src/per_record.rs">Conditional registry record changes</a></li>
   </ul>
   <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
 </main>
