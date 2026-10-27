@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 94 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 27 October 2026. LastDB uses two run homes. Deletes avoid unnecessary generation markers, and compaction starts sooner for obsolete bytes. Backup preserves encrypted run files.</p>
+        <p className="dim">Source review: 27 October 2026. New homes default to typed range order. Existing homes keep their saved rules. Explore conversion space checks, current memory limits, and bounded backup reads.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
