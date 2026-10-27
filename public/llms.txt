@@ -82,7 +82,7 @@ lastdb app upgrade brain kanban situations   # move to the newest proved pair
 
 Each night the release loop builds LastDB main, installs every app at a fixed
 commit in an isolated home, runs this install path, and cuts its own primary
-over. After a 24 h clean soak it publishes that pair set to brew stable and
+over. After a 1 hour clean soak it publishes that pair set to brew stable and
 to the index together. So a row is on the shelf only because a fresh install
 of it passed, with the node you get from brew.
 
