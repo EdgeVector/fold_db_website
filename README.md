@@ -67,35 +67,23 @@ is not a deploy; look at the watcher log:
 
 Static prerendered routes under `dist/<path>/index.html` are served before the SPA rewrite.
 
-## Browser Error Reporting
+## Browser privacy
 
-The site initializes Sentry only when `VITE_SENTRY_DSN` is present at build time.
-Keep the DSN in LastSecrets and inject it into the deploy environment at the
-point of use. The production deploy script defaults to
-`lastsecrets://obs-sentry-dsn-javascript-react` when `VITE_SENTRY_DSN` is not
-already set.
+The website has no signup form or payment form. Local LastDB use needs no account.
+The browser sends no PostHog events or Sentry reports. The source excludes both SDKs.
+The site uses local font fallbacks and sends no Google Fonts requests.
+The guide stores only the IDs of opened sections in browser local storage.
 
-Recommended deploy env:
+The daily download-count routine sends aggregate GitHub release asset counts to PostHog.
+Its identifiers name release assets, not visitors or accounts.
+It does not receive browser requests, checkout data, or visitor identifiers.
 
-```bash
-VITE_SENTRY_DSN=<from LastSecrets>
-VITE_SENTRY_ENVIRONMENT=production
-VITE_SENTRY_RELEASE=<deployed commit sha>
-```
+The site host still receives network requests. Provider access logs and their retention
+need a separate operational review before a claim of no personal information storage.
+The source alone does not prove the deployed site's behavior.
 
-The browser SDK is configured with `sendDefaultPii=false`; event payloads also
-strip user fields, cookies, headers, request bodies, query strings, and URL
-fragments before send.
-
-Preview smoke:
-
-```bash
-VITE_SENTRY_DSN=<from LastSecrets> VITE_SENTRY_ENVIRONMENT=preview \
-VITE_SENTRY_RELEASE=<preview commit sha> VITE_SENTRY_SMOKE=1 npm run build
-```
-
-Deploy that preview and open `/?sentry-smoke=1`; Sentry should receive
-`fold_db_website.sentry_smoke` for the preview environment.
+The deploy script still resolves legacy Sentry environment values. The browser source
+does not read those values and cannot start either SDK from them.
 
 ## Source of truth
 
