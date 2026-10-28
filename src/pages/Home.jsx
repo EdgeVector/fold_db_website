@@ -200,7 +200,7 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Follow the connections between 102 parts, or follow one request through the layers.</p>
+        <p>Follow the connections between 103 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
         <p className="dim">Source review: 28 October 2026. Explore backup after a clean stop, stored file record encryption, and registry generations. Each part explains its purpose and limits.</p>
       </Section>
