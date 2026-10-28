@@ -269,7 +269,7 @@
   <h2>File pointers and local export use current formats</h2>
   <p>Only the current $lastdb_file pointer receives file handling. The old embedded $file and bare $blob_ref forms are removed.</p>
   <p>Selected-data export still signs and encrypts a package for its recipient. It requires the local file bytes.</p>
-  <p>The staged-delivery list, reject routes, and outbox store are removed. The app chooses how to deliver the returned package.</p>
+  <p>The staged-delivery list, reject routes, and access to their saved records are removed. The app chooses how to deliver the returned package.</p>
 
   <h2>Counter work can share one disk read</h2>
   <p>A counter update can check its counter and conditional atom-body presence with one decoded block. It still uses one saved view.</p>
