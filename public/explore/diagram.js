@@ -4,6 +4,23 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["stopped-backup","node","requires a clean stop of","design"],
+    ["stopped-backup","manual-cloud-connection","requires a saved","design"],
+    ["stopped-backup","automatic-backup","requires disabled and settled","design"],
+    ["stopped-backup","snapshot","captures a","design"],
+    ["stopped-backup","byte-backup-client","uploads through","design"],
+    ["stopped-backup","disk-root","checks unchanged file lists in","design"],
+    ["stopped-backup","disk-holds","retains exact files through","design"],
+    ["stopped-backup","cloud-byte-pieces","reads back and verifies","design"],
+    ["file-encryption","blob-storage-encryption","protects file contents before"],
+    ["blob-storage-encryption","run-blob-home","protects each complete file record in"],
+    ["blob-storage-encryption","run-encryption","precedes"],
+    ["blob-storage-encryption","run-backup-files","is checked by","design"],
+    ["registry","registry-generation","can select a"],
+    ["registry-generation","canonical-vocabulary","selects its own"],
+    ["registry-generation","registry-records","separates releases but shares app ownership in"],
+    ["registry-generation","app-registry","selects the release set for"],
+    ["registry-generation","app-compatibility","separates saved records for"],
     ["automatic-backup","mutation-log","enables local retention in","design"],
     ["snapshot-commit","mutation-log","retains complete backup changes in","design"],
     ["mutation-log","run-files","retain original encrypted files from","design"],
