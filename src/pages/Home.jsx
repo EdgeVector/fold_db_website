@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Follow the connections between 94 parts, or follow one request through the layers.</p>
+        <p>Follow the connections between 99 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 27 October 2026. New homes default to typed range order. Existing homes keep their saved rules. Explore conversion space checks, current memory limits, and bounded backup reads.</p>
+        <p className="dim">Source review: 28 October 2026. Explore opt-in automatic backup, full snapshots, saved changes, and checked recovery. The schema service now requires approved field definitions.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
