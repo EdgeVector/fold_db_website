@@ -4,6 +4,16 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["snapshot-identity","snapshot-plan","extends the checks described by","design"],
+    ["snapshot-identity","device-identity","preserves the receiver identity from","design"],
+    ["snapshot-identity","snapshot-positions","records retained peer bases in","design"],
+    ["snapshot-identity","restore-checks","requires complete file checks through","design"],
+    ["snapshot-identity","restore","does not enable","design"],
+    ["snapshot-identity","disk-holds","keeps source files protected through","design"],
+    ["read-metadata","run-lookup","reuses checked lookup blocks for"],
+    ["read-metadata","read-view","lasts only for one"],
+    ["read-metadata","memory-budget","uses a separate bounded allowance from"],
+    ["read-metadata","warm-set","keeps temporary lookup blocks outside"],
     ["field","protein","shares its canonical identity through"],
     ["snapshot-plan","local-snapshot","requires an active held state from"],
     ["snapshot-plan","snapshot-positions","compares exact device positions from"],
@@ -225,8 +235,6 @@
     ["accepted-writes","retry-receipts","checks prior results through"],
     ["retry-receipts","tip","require current values selected by"],
     ["retry-receipts","snapshot-commit","reach disk through"],
-    ["range-candidate","range-protection","is a separate candidate for","design"],
-    ["range-candidate","shared-database","supplies a separate grant design for","design"],
     ["restore","restore-checks","must pass","design"],
     ["restore-checks","atom-counter","preserves saved counts from"],
     ["restore-checks","molecule-counter","preserves saved counts from"],
