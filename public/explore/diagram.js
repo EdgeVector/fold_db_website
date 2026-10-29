@@ -4,6 +4,12 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["field","protein","shares its canonical identity through"],
+    ["snapshot-plan","local-snapshot","requires an active held state from"],
+    ["snapshot-plan","snapshot-positions","compares exact device positions from"],
+    ["snapshot-plan","device-exchange","can require original changes from","design"],
+    ["snapshot-plan","device-identity","requires preservation of","design"],
+    ["snapshot-plan","restore","does not enable","design"],
     ["field","field-history","can keep previous values through","design"],
     ["tip","field-history","can preserve its previous value in","design"],
     ["field-history","atom-counter","retains atoms through","design"],
@@ -277,7 +283,7 @@
     ["key","molecule","addresses"],
     ["molecule","tip","selects by key"],
     ["tip","atom","names the current"],
-    ["protein","molecule","binds shared fields across"],
+    ["protein","molecule","connects equal canonical fields across"],
     ["atom","record","supplies a field value for"],
     ["atom","file-blob","can reference"],
     ["record","app","returns requested fields to"],
