@@ -4,6 +4,13 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["accepted-writes","write-read-reuse","avoid repeated reads through"],
+    ["write-read-reuse","read-view","uses one saved state from"],
+    ["write-read-reuse","run-lookup","reuses exact results from"],
+    ["write-read-reuse","atom-counter","can reuse disk values for"],
+    ["write-read-reuse","warm-set","keeps its results separate from"],
+    ["write-read-reuse","memory-budget","has a separate bounded allowance from"],
+    ["hash-protection","molecule","uses a separate secret key for each"],
     ["file-delete-recovery","run-blob-home","finishes saved removals in"],
     ["file-delete-recovery","snapshot-commit","checks completed record changes from"],
     ["file-delete-recovery","disk-root","checks both saved positions in"],
@@ -70,8 +77,8 @@
     ["home-creation","range-context","sets the default typed rules used by"],
     ["run-backup-files","backup-key-selection","use","design"],
     ["restore-checks","backup-key-selection","use"],
-    ["backup-key-selection","run-lookup","reuses selected keys for"],
-    ["backup-key-selection","backup-read-buffers","reads selected values through"],
+    ["backup-key-selection","run-lookup","reuses verified keys and blocks from"],
+    ["backup-key-selection","backup-read-buffers","verifies blocks through"],
     ["backup-key-selection","memory-budget","uses a separate bounded allowance from"],
     ["node","disk-cleanup","accepts an owner request for"],
     ["disk-cleanup","run-home","cleans record files in"],
