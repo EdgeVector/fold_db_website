@@ -140,11 +140,46 @@ export function DocsInstall() {
       <DocsHeader
         title="Install LastDB"
         path="/docs/install"
-        description="Install the local LastDB node and the daily apps on macOS."
+        description="Install the alpha release, or the local LastDB node and the daily apps on macOS."
       />
 
+      <Section variant="slate">
+        <h2><span className="bold">ALPHA</span></h2>
+        <p>
+          The alpha program is the GitHub release{' '}
+          <a href="https://github.com/EdgeVector/lastdb/releases/tag/alpha">tag alpha</a>.
+          That page names one commit after the job Automatic DEV backup and recovery passes.
+          The page links the archives after the nightly build for that same commit exists.
+          Until both exist, the page can be absent.
+        </p>
+        <p>
+          Apple Silicon archive: <span className="bold">lastdb-aarch64-apple-darwin.tar.gz</span>.
+          Linux x64 archive: <span className="bold">lastdb-x86_64-unknown-linux-gnu.tar.gz</span>.
+          Each archive contains only <span className="bold">lastdb</span> and <span className="bold">lastdbd</span>.
+        </p>
+        <p>
+          Put both programs on <span className="bold">PATH</span>. Run <span className="bold">lastdbd</span> with no flags.
+          It serves <span className="bold">~/.lastdb/data/folddb.sock</span>. In a second terminal, run <span className="bold">lastdb status</span>.
+        </p>
+        <p>
+          Local use needs no account. Backup is optional. A new backup account needs an invite.
+          This page has no invite code. The flag <span className="bold">--dev</span> selects the current backup service.
+        </p>
+        <pre>{`lastdb cloud backup-v2 connect --dev --invite-code-stdin
+lastdb cloud backup-v2 enable-automatic --log-interval-seconds 60 --snapshot-interval-seconds 86400`}</pre>
+        <p className="dim">
+          The connect command reads the invite on stdin. Keep the recovery phrase.
+          <span className="bold"> lastdb status</span> names automatic on or off, the last accepted log time, and the next snapshot time.
+          The line does not print a key, a phrase, or an object name.
+        </p>
+        <p>One machine writes. A second machine restores a backup into an absent home. The restored home starts with automatic backup off.</p>
+        <pre>{`lastdb cloud backup-v2 discover --recovery-phrase-stdin
+lastdb cloud backup-v2 restore --recovery-phrase-stdin --stream STREAM --into /ABSENT/HOME`}</pre>
+        <p className="dim">Replace STREAM with the stream id from discover. Send the recovery phrase on stdin. Do not put the phrase in the command.</p>
+      </Section>
+
       <Section variant="amber">
-        <h2><span className="bold">FULL STACK INSTALL</span></h2>
+        <h2><span className="bold">FULL STACK INSTALL</span> <span className="dim">not the alpha program</span></h2>
         <p>This path installs LastDB plus the common first-party app CLIs and the read-only LastDB Browser UI (its launcher is linked as <span className="bold">lastdb-browser</span>).</p>
         <p className="dim">
           Paste-safe for macOS zsh (no <span className="bold">#</span> comment lines — interactive zsh
@@ -190,7 +225,7 @@ search init --quiet`}</pre>
       </Section>
 
       <Section variant="sage">
-        <h2><span className="bold">DATABASE ONLY</span></h2>
+        <h2><span className="bold">DATABASE ONLY</span> <span className="dim">Homebrew; not the alpha program</span></h2>
         <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb`}</pre>
         <p>The Homebrew package ships <span className="bold">lastdbd</span>, the local daemon, and <span className="bold">lastdb</span>, the control CLI.</p>

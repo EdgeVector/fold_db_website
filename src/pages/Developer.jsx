@@ -191,16 +191,17 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
 
         <div className="grid-2">
           <Card>
-            <p><Label color="purple">LASTDB (Homebrew)</Label></p>
+            <p><Label color="purple">LASTDB ALPHA</Label></p>
             <pre>{`lastdb status
-lastdb --version
-lastdbd --version
-lastdb connect
-brew services start lastdb
-brew services restart lastdb`}</pre>
+lastdb cloud backup-v2 connect --dev --invite-code-stdin
+lastdb cloud backup-v2 enable-automatic --log-interval-seconds 60 --snapshot-interval-seconds 86400
+lastdb cloud backup-v2 discover --recovery-phrase-stdin
+lastdb cloud backup-v2 restore --recovery-phrase-stdin --stream STREAM --into /ABSENT/HOME`}</pre>
             <p className="dim">
-              Local use needs no account. <span className="bold">lastdb connect</span> is optional &mdash; joins an existing account for multi-device cloud backup/sync.
-              App workflows live in app CLIs.
+              Local use needs no account. Backup is optional. A new backup account needs an invite. This page has no invite code.
+              The flag <span className="bold">--dev</span> selects the current backup service.
+              One machine writes. A second machine restores a backup into an absent home.
+              Keep the recovery phrase. Homebrew <span className="bold">brew services</span> is not the alpha program.
             </p>
           </Card>
 

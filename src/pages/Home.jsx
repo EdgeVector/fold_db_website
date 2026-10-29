@@ -205,9 +205,41 @@ export default function Home() {
         <p className="dim">Source review: 29 October 2026. Explore optional field history, restore of one field, and exact snapshot device positions. Each part explains its purpose and limits.</p>
       </Section>
 
+      <Section variant="slate" id="alpha">
+        <h2><span className="bold">ALPHA</span></h2>
+        <p>
+          The alpha program is the GitHub release{' '}
+          <a href="https://github.com/EdgeVector/lastdb/releases/tag/alpha">tag alpha</a>.
+          That page names one commit after Automatic DEV backup and recovery passes.
+          The page links the archives after the nightly build for that same commit exists.
+          Until both exist, the page can be absent.
+        </p>
+        <p>
+          Apple Silicon: <span className="bold">lastdb-aarch64-apple-darwin.tar.gz</span>.
+          Linux x64: <span className="bold">lastdb-x86_64-unknown-linux-gnu.tar.gz</span>.
+          Each archive contains only <span className="bold">lastdb</span> and <span className="bold">lastdbd</span>.
+          Put both on <span className="bold">PATH</span>. Run <span className="bold">lastdbd</span> with no flags.
+          It serves <span className="bold">~/.lastdb/data/folddb.sock</span>. Then run <span className="bold">lastdb status</span>.
+        </p>
+        <p>
+          Local use needs no account. Backup is optional. A new backup account needs an invite.
+          This page has no invite code. The flag <span className="bold">--dev</span> selects the current backup service.
+          One machine writes. A second machine restores a backup into an absent home.
+        </p>
+        <pre>{`lastdb cloud backup-v2 connect --dev --invite-code-stdin
+lastdb cloud backup-v2 enable-automatic --log-interval-seconds 60 --snapshot-interval-seconds 86400
+lastdb cloud backup-v2 discover --recovery-phrase-stdin
+lastdb cloud backup-v2 restore --recovery-phrase-stdin --stream STREAM --into /ABSENT/HOME`}</pre>
+        <p className="dim">
+          The connect command reads the invite on stdin. Keep the recovery phrase.
+          Replace STREAM with the stream id from discover. Send the recovery phrase on stdin.
+          <span className="bold"> lastdb status</span> names automatic on or off, the last accepted log time, and the next snapshot time.
+        </p>
+      </Section>
+
       {/* GET IT — primary CTA */}
       <Section variant="amber" id="install">
-        <h2><span className="bold">INSTALL</span> <span className="dim">the main call to action</span></h2>
+        <h2><span className="bold">APP STACK</span> <span className="dim">not the alpha program</span></h2>
 
         <p>
           <span className="bold white">This is how you get started.</span>{' '}
@@ -248,7 +280,7 @@ export default function Home() {
             <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span> / <span className="bold">search</span>, start the daemon, init each app. The installer prints a pass or fail result.</p>
           </Card>
           <Card>
-            <p><Label color="blue">DATABASE ONLY</Label></p>
+            <p><Label color="blue">DATABASE ONLY</Label> <span className="dim">Homebrew; not the alpha program</span></p>
             <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 lastdb status
