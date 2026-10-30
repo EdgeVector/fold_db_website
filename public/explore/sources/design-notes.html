@@ -493,8 +493,8 @@
   <p>This temporary work adds no cache between calls and does not change the warm set.</p>
 
   <h2>Future design: a shared database</h2>
-  <p>The design gives authorized members access to shared encrypted data. A copied schema can reference the same molecules and atoms.</p>
-  <p>Members need the correct keys and access grants. A schema copy alone does not deliver files or grant another device access.</p>
+  <p>The design gives authorized members access to shared encrypted data. The app reads the shared records through authorized schemas. Each schema owns its records; a schema does not reference the molecules or atoms of another schema.</p>
+  <p>Members need the correct keys and access grants. A schema alone does not deliver files or grant another device access.</p>
   <p>Simultaneous cloud writers need a defined frontier, conflict rules, and retention rules. The guide treats this behavior as future design.</p>
 
   <h2>Future design: a guaranteed write</h2>
