@@ -4,12 +4,23 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["field","field-reuse","has a reusable definition through","design"],
+    ["field-reuse","schema","keeps record values owned by","design"],
+    ["field-reuse","canonical-vocabulary","uses checked definitions from","design"],
+    ["field-reuse","alternate-keys","keeps field meaning separate from","design"],
+    ["schema-conversion","schema","publishes verified ownership for","design"],
+    ["schema-conversion","field-reuse","preserves canonical definitions for","design"],
+    ["schema-conversion","alternate-keys","creates checked routes through","design"],
+    ["schema-conversion","alternate-entries","checks complete membership for","design"],
+    ["schema-conversion","tip","preserves original atoms and author clocks in","design"],
+    ["schema-conversion","snapshot-commit","publishes verified declarations through","design"],
+    ["schema-conversion","alternate-format","requires the compatible release described by","design"],
+    ["schema-conversion","write-order","preserves original facts for","design"],
     ["schema","alternate-keys","can declare"],
     ["alternate-keys","alternate-entries","store routes through"],
     ["alternate-keys","record","find the same"],
     ["alternate-keys","key","retain the primary mutation"],
     ["alternate-keys","alternate-format","require compatible"],
-    ["alternate-keys","protein","replace, in new app designs,"],
     ["alternate-entries","read-view","check entries and fields in one"],
     ["alternate-entries","record","point to the primary key of a"],
     ["alternate-entries","snapshot-commit","shares the record\u2019s"],
@@ -18,7 +29,6 @@
     ["delete-purge","alternate-entries","remove affected"],
     ["alternate-key-change","schema","blocks during backfill"],
     ["alternate-key-change","alternate-entries","builds before publication"],
-    ["alternate-key-change","protein","refuses sources with"],
     ["alternate-key-change","device-exchange","requires matching peer declarations for"],
     ["alternate-format","run-home","activates format 5 on a stopped"],
     ["home-creation","alternate-format","uses the same format as"],
@@ -41,7 +51,6 @@
     ["read-metadata","read-view","lasts only for one"],
     ["read-metadata","memory-budget","uses a separate bounded allowance from"],
     ["read-metadata","warm-set","keeps temporary lookup blocks outside"],
-    ["field","protein","can retain shared values in existing schemas through"],
     ["snapshot-plan","local-snapshot","requires an active held state from"],
     ["snapshot-plan","snapshot-positions","compares exact device positions from"],
     ["snapshot-plan","device-exchange","can require original changes from","design"],
@@ -83,11 +92,6 @@
     ["device-exchange","change-notices","saves notices for accepted winners through","design"],
     ["device-exchange","search-delivery","can notify after commit through","design"],
     ["device-identity","run-backup-files","keeps its private signer outside","design"],
-    ["protein","protein-backfill","needs explicit older-record keys for"],
-    ["protein-backfill","molecule","adds target tips to"],
-    ["protein-backfill","tip","preserves the original author facts in"],
-    ["protein-backfill","snapshot-commit","saves target tips through"],
-    ["protein-backfill","write-order","respects newer target writes through"],
     ["schema-registration","registry","controls new definitions in"],
     ["schema-registration","registry-records","checks the saved app owner in"],
     ["schema-registration","canonical-vocabulary","requires permission before changes to"],
@@ -105,7 +109,6 @@
     ["delete-purge","file-delete-recovery","protects file removal through"],
     ["run-backup-files","file-delete-recovery","requires no unfinished work in","design"],
     ["run-merge","space-reservation","reserves each output through"],
-    ["protein","range-context","keeps distinct key routes under"],
     ["backup-dependencies","recovery-chain","checks the earlier links of","design"],
     ["backup-dependencies","backup-manifest","verifies accepted identities in","design"],
     ["backup-dependencies","snapshot","identifies required earlier","design"],
@@ -318,7 +321,6 @@
     ["key","molecule","addresses"],
     ["molecule","tip","selects by key"],
     ["tip","atom","names the current"],
-    ["protein","molecule","keeps legacy shared values across"],
     ["atom","record","supplies a field value for"],
     ["atom","file-blob","can reference"],
     ["record","app","returns requested fields to"],
@@ -378,7 +380,6 @@
     ["write-order","tip","chooses the current write for"],
     ["conditions","accepted-writes","check current facts before"],
     ["holds","read-view","retain values used by"],
-    ["protein","accepted-writes","contributes related tip changes to"],
     ["key","run-lookup","finds stored values through"],
     ["tip","run-files","names atoms stored in"],
     ["write-queue","run-merge","starts background file work through"],
@@ -390,7 +391,7 @@
     ["cloud-byte-pieces","cloud-destinations","keeps each file in its chosen","design"],
     ["cloud-byte-pieces","backup-manifest","records file positions in","design"],
     ["cloud-byte-pieces","restore","supplies original file bytes to","design"]
-  ].map(([from,to,label,kind])=>({from,to,label,kind:kind||'current'}));
+  ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(part=>part?.status==='candidate')?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → field → molecule → atom'},
@@ -419,16 +420,16 @@
   function overview(){nodes={};const boxes=narrowLayout?{services:{x:20,y:20,w:610,h:160},model:{x:20,y:280,w:610,h:160},memory:{x:20,y:580,w:290,h:170},disk:{x:340,y:580,w:290,h:170},protection:{x:20,y:920,w:290,h:190},cloud:{x:340,y:920,w:290,h:170},lifetime:{x:20,y:1240,w:610,h:160}}:overviewBoxes;layoutBox=narrowLayout?{x:0,y:0,w:650,h:1490}:{x:0,y:0,w:1245,h:870};let html='';html+=overviewEdges.map(([a,b,label,kind])=>arrow(boxes[a],boxes[b],label,kind==='design',!narrowLayout||a==='services'||a==='disk')).join('');html+=Object.entries(boxes).map(([id,b])=>{const m=meta[id];return `<g class="diagram-area ${id==='cloud'?'design':''}" data-diagram-area="${id}" tabindex="0" role="button" aria-label="Zoom into ${esc(m.title)}, ${layers[id].parts.length} parts" style="--area-color:${m.color}"><rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="16" fill="${m.fill}"/><text x="${b.x+23}" y="${b.y+32}" class="diagram-area-count">${layers[id].number} / ${layers[id].parts.length} PARTS${id==='cloud'?' · OWNER OPT-IN':''}</text><text x="${b.x+23}" y="${b.y+70}" class="diagram-area-title">${m.title}</text>${textLines(m.summary,b.x+23,b.y+106,25,'diagram-area-summary',26)}<text x="${b.x+b.w-28}" y="${b.y+35}" class="diagram-area-open" text-anchor="end">↗</text></g>`;}).join('');return html;}
   function layerGraph(){const area=layers[state.area],cols=3,nodeW=210,nodeH=87,gapX=74,gapY=51,startX=72,startY=96;const rows=Math.ceil(area.parts.length/cols);const boundaryX=1000;nodes={};area.parts.forEach((p,i)=>nodes[p.id]={x:startX+(i%cols)*(nodeW+gapX),y:startY+Math.floor(i/cols)*(nodeH+gapY),w:nodeW,h:nodeH,part:p});const selected=parts[state.selected];const connected=selected?edges.filter(e=>e.from===selected.id||e.to===selected.id):[];const outside=selected?[...new Set(connected.flatMap(e=>[e.from,e.to]).filter(id=>parts[id].layer!==state.area))]:[];outside.forEach((id,i)=>nodes[id]={x:boundaryX,y:96+i*115,w:220,h:87,part:parts[id],outside:true});layoutBox={x:20,y:0,w:outside.length?1235:870,h:Math.max(rows*138+80,outside.length*115+90,390)};if(narrowLayout){const ids=selected?[selected.id,...new Set(connected.flatMap(e=>[e.from,e.to]).filter(id=>id!==selected.id))]:area.parts.map(p=>p.id);nodes={};ids.forEach((id,i)=>{const k=selected?i-1:i;nodes[id]={x:selected&&i===0?155:20+(k%2)*270,y:selected?(i===0?90:250+Math.floor(k/2)*145):96+Math.floor(k/2)*145,w:240,h:102,part:parts[id],outside:parts[id].layer!==state.area};});layoutBox={x:0,y:0,w:550,h:(selected?250+Math.ceil((ids.length-1)/2)*145:96+Math.ceil(ids.length/2)*145)+80};}let html=`<text x="72" y="32" class="diagram-layer-heading">${esc(meta[state.area].title)}</text><text x="72" y="59" class="diagram-map-note">${area.parts.length} PARTS · ${selected?'SELECTED CONNECTIONS':'SELECT A PART TO SEE ITS CONNECTIONS'}</text>`;if(outside.length&&!narrowLayout)html+=`<line x1="950" y1="65" x2="950" y2="${layoutBox.h-20}" class="diagram-boundary"/><text x="1000" y="32" class="diagram-map-note">OTHER AREAS</text>`;
     if(!selected){const internal=edges.filter(e=>parts[e.from].layer===state.area&&parts[e.to].layer===state.area);html+=internal.map(e=>arrow(nodes[e.from],nodes[e.to],e.label,e.kind==='design',false)).join('');}else html+=connected.map(e=>arrow(nodes[e.from],nodes[e.to],e.label,e.kind==='design',false)).join('');
-    const related=new Set(connected.flatMap(e=>[e.from,e.to]));html+=Object.entries(nodes).map(([id,n])=>{const p=parts[id],m=meta[p.layer],chosen=id===state.selected,muted=selected&&!related.has(id)&&!chosen;return `<g class="diagram-node ${chosen?'selected':''} ${muted?'muted':''} ${p.design?'design':''}" data-diagram-part="${id}" tabindex="0" role="button" aria-label="${esc(p.name)}${n.outside?', in '+esc(meta[p.layer].title):''}. ${esc(p.short)}" aria-pressed="${chosen}" style="--area-color:${m.color}"><rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="10" fill="${chosen?m.fill:'#fff'}"/><circle cx="${n.x+17}" cy="${n.y+20}" r="3.5" fill="${m.color}"/>${textLines(p.name,n.x+28,n.y+27,18,'diagram-node-title',24)}<text class="diagram-node-caption" x="${n.x+16}" y="${n.y+n.h-16}">${n.outside?esc(meta[p.layer].title)+' ↗':p.design?partStatus(p):'Select to understand'}</text></g>`;}).join('');
+    const related=new Set(connected.flatMap(e=>[e.from,e.to]));html+=Object.entries(nodes).map(([id,n])=>{const p=parts[id],m=meta[p.layer],chosen=id===state.selected,muted=selected&&!related.has(id)&&!chosen;return `<g class="diagram-node ${chosen?'selected':''} ${muted?'muted':''} ${p.design||p.status==='candidate'?'design':''}" data-diagram-part="${id}" tabindex="0" role="button" aria-label="${esc(p.name)}${n.outside?', in '+esc(meta[p.layer].title):''}. ${esc(p.short)}" aria-pressed="${chosen}" style="--area-color:${m.color}"><rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="10" fill="${chosen?m.fill:'#fff'}"/><circle cx="${n.x+17}" cy="${n.y+20}" r="3.5" fill="${m.color}"/>${textLines(p.name,n.x+28,n.y+27,18,'diagram-node-title',24)}<text class="diagram-node-caption" x="${n.x+16}" y="${n.y+n.h-16}">${n.outside?esc(meta[p.layer].title)+' ↗':p.design?partStatus(p):'Select to understand'}</text></g>`;}).join('');
     if(!selected&&!narrowLayout)html+=`<text x="72" y="${layoutBox.h-12}" class="diagram-map-note">LINES SHOW DIRECT CONNECTIONS WITHIN THIS AREA. SELECT A PART TO SEE CROSS-LAYER LINKS.</text>`;return html;}
   function draw(fit=true){if(!host)return;svg=host.querySelector('#diagram-svg');if(!svg)return;narrowLayout=host.querySelector('.diagram-stage').clientWidth<520;svg.innerHTML=`${defs()}<g id="diagram-content">${state.area==='all'?overview():layerGraph()}</g>`;if(fit){state.scale=1;state.x=0;state.y=0;}setView();updateToolbar();inspect();}
   function setView(){if(!svg)return;const w=layoutBox.w/state.scale,h=layoutBox.h/state.scale,cx=layoutBox.x+layoutBox.w/2+state.x,cy=layoutBox.y+layoutBox.h/2+state.y;svg.setAttribute('viewBox',`${cx-w/2} ${cy-h/2} ${w} ${h}`);const v=host.querySelector('#diagram-zoom-value');if(v)v.textContent=`${Math.round(state.scale*100)}%`;}
   function zoom(factor){state.scale=Math.min(4,Math.max(.65,state.scale*factor));setView();}
   function updateToolbar(){host.querySelector('#diagram-current-area').textContent=state.area==='all'?'Whole system':meta[state.area].title;host.querySelector('#diagram-location').textContent=state.area==='all'?`7 areas · ${Object.keys(parts).length} parts`:`${meta[state.area].title} · ${layers[state.area].parts.length} parts`;host.querySelector('#diagram-area-select').value=state.area;host.querySelector('#diagram-overview').disabled=state.area==='all';host.querySelector('#diagram-clear').hidden=!state.selected;host.querySelector('.diagram-stage').classList.toggle('in-layer',state.area!=='all');}
-  const partStatus=p=>p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
-  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · NOT ACTIVE IN THE STORAGE PATH':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
-  function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore still needs the release switch.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>One data model.</strong><p>The areas show different duties. They do not represent separate databases.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; separate restore gate.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission, remains release disabled, is DEV-only, or is future design.</p></div>`}</div>`;return;}
+  const partStatus=p=>p.status==='candidate'?'Unreleased source':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
+  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · NOT ACTIVE IN THE STORAGE PATH':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
+  function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore still needs the release switch.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>One data model.</strong><p>The areas show different duties. They do not represent separate databases.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; separate restore gate.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission, remains release disabled, is DEV-only, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(meta[p.layer].title)}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(meta[parts[other].layer].title)} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function choosePart(id){const p=parts[id];if(!p)return;state.area=p.layer;state.selected=id;hideResults();history.replaceState(null,'',`#diagram/${p.layer}/${p.id}`);draw();announce(`${p.name} selected. Its purpose and connections appear beside the diagram.`);}

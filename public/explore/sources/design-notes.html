@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Cloud source and future design · Inside LastDB</title>
-  <meta name="description" content="The October 30 source review separates native backup and restore code from future shared-data designs.">
+  <title>Source notes and release limits · Inside LastDB</title>
+  <meta name="description" content="Source notes distinguish the base release from unreleased schema ownership and explicit app conversion. Cloud restore retains its separate release gate.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -14,8 +14,8 @@
 <body>
 <main>
   <a href="/explore/#sources">← Back to the guide</a>
-  <h1>Cloud source and future design</h1>
-  <p class="date">Source review: 30 October 2026. Earlier shared-data design: 6 October 2026.</p>
+  <h1>Source notes and release limits</h1>
+  <p class="date">Base source review: 30 October 2026. Ownership candidate: <a href="https://github.com/EdgeVector/lastdb/pull/803">b693ab46</a>, unreleased.</p>
   <p class="notice"><strong>Backup preserves run files.</strong> The owner can request a full snapshot or explicitly enable automatic backup. Automatic work requires a saved account connection. Restore combines a snapshot with accepted changes and still needs its release switch. This review does not establish a deployed service or a successful recovery.</p>
 
   <h2>Named alternate keys keep one record</h2>
@@ -33,8 +33,8 @@
   <p>Encrypted data files stay unchanged. Backups retain format 4 or 5, and restore checks alternate declarations against the saved format and molecule rules.</p>
   <p>The owner can begin an alternate-key change for an eligible schema. The schema stays blocked while exact primary keys arrive in pages of 1–64.</p>
   <p>Saved page receipts permit resume. Complete counts must agree before the new declaration appears. Cleanup retires the old alternate entries afterward.</p>
-  <p>Existing protein relationships are excluded from this conversion. Equal identities or field values do not prove which old records correspond.</p>
-  <p>Old protein behavior and keys remain until an explicit app and data conversion. A repeat declaration never performs that conversion.</p>
+  <p>This single-schema key change requires an independent schema. Older app data uses the separate explicit conversion below.</p>
+  <p>An explicit app conversion preserves the existing records before the removal release starts. A repeated declaration leaves record ownership unchanged.</p>
 
   <h2>Parallel disk work still precedes success</h2>
   <p>LastStore overlaps the new run file’s durable save with preparation of its private CURRENT list. Both must succeed before CURRENT changes.</p>
@@ -95,13 +95,13 @@
 
   <p><a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/bin/lastdb/db_snapshot_identity_cmds.rs">Offline preparation and inspection</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/snapshot_identity/proof.rs">Identity and peer-history checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/identity_prepared.rs">Prepared identity refuses startup</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/snapshot_identity/controls.rs">Prepared control records</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/vendor/laststore/src/disk_run/reader/metadata.rs">Read-call lookup allowance</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/vendor/laststore/src/frame/compression.rs">Compression thresholds</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/atom_history.rs">Dormant expiry worker</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/client/src/live_resolver.rs">Live schema resolution</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/server_shared/src/schema_config.rs">Server configuration</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/server_shared/src/blocking_runtime.rs">Server runtime</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/server_shared/src/resolver_pack_cache.rs">Resolver-pack disk adapter</a></p>
 
-  <h2>Compatibility: existing canonical fields share one protein</h2>
-  <p>The following behavior applies to existing protein schemas. Independent schemas skip it; new app designs use named alternate keys.</p>
-  <p>Each canonical field shares independently across schemas. App ownership, key differences, declarations, and the earlier schema-overlap rule do not restrict membership.</p>
-  <p>A matching name alone does not establish equal identity. An explicit field map resolves its source identity.</p>
-  <p>Schema load joins existing memberships and molecule references in one native batch. It preserves current tips and author clocks.</p>
-  <p>Writes establish membership before they select related tips. They need the required key fields for each related molecule.</p>
-  <p>Older keys do not fill automatically. Backfill still needs exact source keys, shared target-key identities, and valid existing protein membership.</p>
+  <h2 id="field-reuse">Field reuse and schema-owned values</h2>
+  <p class="notice"><strong>Unreleased ownership source.</strong> This section uses candidate b693ab46. It describes the proposed removal release, not an installed-node check.</p>
+  <p>One canonical field definition supplies the field’s name, description, type, and identity version.</p>
+  <p>Each schema owns its record values and field molecules. A shared definition keeps the meaning consistent across those schemas.</p>
+  <p>A photo title can be “Morning light” while a note title is “Budget review”, even when both use the same definition.</p>
+  <p>Several lookups of one record use named alternate keys in that record’s schema. A result retains the primary key for later mutations.</p>
+  <p><a href="https://github.com/EdgeVector/lastdb/blob/b693ab461b24fa0bf595190c354a70657b3b05df/lastdb_node/src/exec/schema_declare/owned.rs">Owned schema declaration source</a> · <a href="https://github.com/EdgeVector/lastdb/blob/b693ab461b24fa0bf595190c354a70657b3b05df/docs/multi-key-schema-conversion.md">Record ownership and conversion</a></p>
 
   <h2>A snapshot adoption plan does not replace data</h2>
   <p>The owner sends a held snapshot request and candidate metadata through <code>snapshot_plan</code> on <code>/api/sync/logical-v1</code>. Node API version 10 adds this action.</p>
@@ -125,7 +125,7 @@
   <p>Local file-record encryption uses the account content key directly. The unused alternative keyring and its factory option are removed.</p>
   <p>Aggregate, expiry-queue, S3, and telemetry helpers retain their earlier behavior. CI adds bounded diagnostics and operational checks, not new guide parts.</p>
 
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/schema/core/load/coherence.rs">Canonical membership</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/protein/ops/field_identity.rs">Native membership change</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/fold_db/protein_backfill/plan.rs">Backfill requirements</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/compare.rs">Adoption comparison</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/requirements.rs">Required replacement work</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/exec/logical_sync_routes.rs">Owner route</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/db_operations/atom_store/molecules/write_load.rs">Batched write fetch</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/allocator/linux_pages.rs">Linux page policy</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/factory/local/store_stack.rs">Account-key construction</a></p>
+  <p><a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/compare.rs">Adoption comparison</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/requirements.rs">Required replacement work</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/exec/logical_sync_routes.rs">Owner route</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/db_operations/atom_store/molecules/write_load.rs">Batched write fetch</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/allocator/linux_pages.rs">Linux page policy</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/factory/local/store_stack.rs">Account-key construction</a></p>
 
   <h2>Optional history keeps earlier field values</h2>
   <p>History is off by default. The owner chooses Off, Keep, or an expiry duration for a canonical field within one database scope.</p>
@@ -167,7 +167,7 @@
   <h2>Optional signed device changes</h2>
   <p>A home can opt into capture with <code>LASTDB_LOGICAL_CAPTURE=1</code>. Once enrolled, its saved identity and event position remain required on later opens.</p>
   <p>Accepted field values, their signed event, and the device position share the data commit.</p>
-  <p>This first version accepts personal create and update requests only. It refuses deletes, proteins, mapped fields, shared data, aggregates, and file blobs.</p>
+  <p>This first version accepts personal create and update requests only. It refuses deletes, mapped fields, shared data, aggregates, and file blobs.</p>
   <p>Local requests are limited to 128 mutations and 256 KiB. An event has at most 1,024 field outcomes and less than 1 MiB.</p>
   <p>The event backlog has a 64 MiB cap and no cleanup. A full backlog refuses the complete write. Ordinary reads do not replay these events.</p>
   <p>The separate device signing key is outside the native backup file list. Missing or inconsistent identity state refuses open.</p>
@@ -179,11 +179,17 @@
   <p>A page holds at most four events and 1 MiB of event data. The home supports 32 trusted devices and 65,536 saved event receipts.</p>
   <p>The same limited field rules apply. No automatic delivery worker connects this operation to cloud backup or restore.</p>
 
-  <h2>Existing records need explicit backfill keys</h2>
-  <p>The owner supplies source keys to <code>POST /api/db/backfill-protein-keys</code>. Schema load does not discover or backfill historical records.</p>
-  <p>One request accepts 1–64 keys and at most 4,096 source tips. It copies current visible tips between existing personal protein members with shared canonical identities.</p>
-  <p>Original atoms and author clocks stay intact. Newer target tips and Delete barriers keep priority. Ambiguous target slots are refused.</p>
-  <p>The operation does not replay historical source Delete barriers. A capture-enabled home refuses this unsupported writer.</p>
+  <h2 id="schema-conversion">Explicit app conversion preserves existing records</h2>
+  <p class="notice"><strong>Unreleased conversion source.</strong> The app conversion and the removal release require their compatible programs and final CI evidence.</p>
+  <p>The app supplies exact source schema identities, target named keys, membership rules, and expected record counts.</p>
+  <p>The compatible release freezes schema access while bounded pages visit the saved source keys.</p>
+  <p>Each page copies selected current atom references, key metadata, and original author clocks into schema-owned molecules.</p>
+  <p>Every frozen field count and expected member count must agree. Unique values without a selected app member refuse publication.</p>
+  <p>One native transaction publishes the verified target declarations. The app saves its config before the node restores schema access.</p>
+  <p>A restart retains the request pause and saved cursor. Abort remains available before publication; a published change resumes forward.</p>
+  <p>The compatible release must finish before the removal release opens the home. Format 6 supports compound alternate keys and independent relationship schemas.</p>
+  <p>Complete logical records, field values, and body bytes remain required. Physical size can fall when obsolete copies leave the database.</p>
+  <p><a href="https://github.com/EdgeVector/lastdb/blob/b693ab461b24fa0bf595190c354a70657b3b05df/docs/compound-alternate-keys.md">Compound key and conversion contract</a> · <a href="https://github.com/EdgeVector/lastdb/blob/b693ab461b24fa0bf595190c354a70657b3b05df/fold_db/crates/core/src/fold_db_core/fold_db/app_schema_conversion/begin.rs">Conversion admission</a> · <a href="https://github.com/EdgeVector/lastdb/blob/b693ab461b24fa0bf595190c354a70657b3b05df/fold_db/crates/core/src/fold_db_core/fold_db/app_schema_conversion/finish.rs">Conversion completion</a></p>
 
   <h2>New definitions need a verified developer owner</h2>
   <p>New schemas, expansions, and declared fields require an Exemem developer certificate with publication permission and the registered app owner’s signature.</p>
@@ -197,7 +203,7 @@
   <p>A resumed check requires the same facts. The CI recovery check keeps its selected backup fixed while later automatic backups can continue.</p>
   <p>The complete restore checks and release switch still apply. These changes do not establish a successful production recovery.</p>
 
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/mutation_manager/logical_capture/admission.rs">Local event admission</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/store.rs">Durable device events</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/identity.rs">Device identity</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/peer/import.rs">Trusted peer positions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/admission.rs">Peer field rules</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/fold_db/protein_backfill/records.rs">Explicit backfill</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/app_identity/claim.rs">Developer authorization</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/state/lookup.rs">Saved public definitions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/schema_expansion_commit.rs">Expansion commit</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/byte_cloud_restore/logs/routing.rs">Restore link diagnostics</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/scripts/cloud_backup/automatic_source.py">Fixed CI recovery selection</a></p>
+  <p><a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/mutation_manager/logical_capture/admission.rs">Local event admission</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/store.rs">Durable device events</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/identity.rs">Device identity</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/storage/disk_pack/logical_capture/peer/import.rs">Trusted peer positions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/admission.rs">Peer field rules</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/app_identity/claim.rs">Developer authorization</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/state/lookup.rs">Saved public definitions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/schema_service/crates/core/src/schema_expansion_commit.rs">Expansion commit</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/lastdb_node/src/byte_cloud_restore/logs/routing.rs">Restore link diagnostics</a> · <a href="https://github.com/EdgeVector/lastdb/blob/79b6c49ad6c8415559b65be26ab7064e3bf70dce/scripts/cloud_backup/automatic_source.py">Fixed CI recovery selection</a></p>
 
   <h2>Reuse stays inside one write preparation</h2>
   <p>A private write can remember an exact disk result, including confirmed absence. Later steps reuse that result from the same saved state.</p>
@@ -230,9 +236,11 @@
   <p>The protocol can distinguish a full snapshot from its required change backups. New declarations await service support; automatic deletion for normal production backups remains unavailable.</p>
   <p>The command has a 90-second limit, a 32 MiB metadata limit, and a 32,768-backup limit. It still requires the release switch and recovery credentials.</p>
 
-  <h2>Compatibility: protein keys keep separate molecules</h2>
-  <p>Existing protein schemas keep separate molecules for different keys. Named alternate entries instead point to one schema’s primary record.</p>
-  <p>Only matching key names and types can share a molecule. Conflicting existing molecule mappings cause an error; they do not change silently.</p>
+  <h2>Named keys read the same record</h2>
+  <p>An alternate entry contains the primary record address. A read follows that address to the record’s field molecules and atoms.</p>
+  <p>The response keeps the primary mutation key and the matched alternate coordinates.</p>
+  <p>A title-only write changes the title atom. An album-key change updates the affected entry in the same native transaction.</p>
+  <p>App relationships, tags, and links retain their own schemas when they represent separate data.</p>
 
   <h2>Fault reports keep private details local</h2>
   <p>External fault reports retain a fixed category, severity, operating system, and permitted version and environment fields.</p>
