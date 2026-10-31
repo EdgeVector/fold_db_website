@@ -113,11 +113,10 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 `public/explore/` contains the standalone guide from Sites source revision
 `4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `79b6c49ad6c8415559b65be26ab7064e3bf70dce` from 30 October 2026.
-The guide includes 123 parts and 386 named connections.
-The schema-ownership and explicit app-conversion sections use candidate
-`b693ab461b24fa0bf595190c354a70657b3b05df`. Their parts and connections carry
-an unreleased-source label and link to that exact revision.
+revision `0706f0b12acc34f6a2e81ba7fc3fe5cae54dd9d3` from 31 October 2026.
+The guide includes 127 parts and 398 named connections.
+The review covers merged schema ownership, compound keys, local org database scopes,
+format 6 admission, and signed app release checks. In-place app conversion is removed.
 The disk view describes run homes only. Cloud backup preserves their native files.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
