@@ -113,11 +113,11 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 `public/explore/` contains the standalone guide from Sites source revision
 `4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `ad6fb7bb8bd78eb00d707b47eab3e937b9426930` from 31 October 2026.
-The guide includes 130 parts and 412 named connections.
-Format 6 remains the default. Three DEV parts explain the incomplete format 7
-record model. The old registry compatibility-record route is removed; signed
-release-log checks remain. Moved source links point to the new model crate.
+revision `f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4` from 1 November 2026.
+The guide includes 134 parts and 436 named connections.
+Format 6 remains the default. Seven DEV parts explain the format 7 record model, memory, history, deletion,
+conflicts, and explicit device exchange. Required-file checks cover records and
+history. Normal cloud restore retains its separate release switch.
 The disk view describes run homes only. Cloud backup preserves their native files.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
