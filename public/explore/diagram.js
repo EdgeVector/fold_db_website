@@ -4,6 +4,20 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["schema","schema-removal","can be removed through"],
+    ["schema-removal","record-home","releases personal records from"],
+    ["schema-removal","record-history","releases saved values in"],
+    ["schema-removal","record-conflicts","removes retained losses from"],
+    ["schema-removal","alternate-entries","removes the declared"],
+    ["schema-removal","blob-counter","lowers file references through"],
+    ["schema-removal","disk-holds","leaves physical retention to"],
+    ["ttl","expiry-progress","remembers checked deleted keys through"],
+    ["accepted-writes","expiry-progress","clear a skipped position after an older live write in"],
+    ["record-sync","expiry-progress","clears a skipped position after an older live import in","design"],
+    ["expiry-progress","range-pages","continues from the last checked key through"],
+    ["local-export","range-pages","continues simple keyed selections with"],
+    ["storage-reports","record-home","count live records in"],
+    ["storage-reports","node","provide owner reports through"],
     ["record-pages","query-replies","returns its continuation through"],
     ["home-creation","mutation-log","sets private folder access required by"],
     ["search-rebuild","record-pages","continues past deleted records with"],
