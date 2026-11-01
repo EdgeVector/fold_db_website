@@ -4,6 +4,9 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["record-pages","query-replies","returns its continuation through"],
+    ["home-creation","mutation-log","sets private folder access required by"],
+    ["search-rebuild","record-pages","continues past deleted records with"],
     ["record-value","record-history","can retain earlier fields in","design"],
     ["field-history","record-history","keeps copied values through","design"],
     ["record-history","blob-counter","protects saved files through","design"],
