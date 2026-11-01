@@ -113,11 +113,11 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 `public/explore/` contains the standalone guide from Sites source revision
 `4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `07f9483ac27b194ee8d7d911c9efc0e8a1d52531` from 1 November 2026.
-The guide includes 124 parts and 408 named connections.
+revision `3e71c2a3f46c83bf3de8988b986ba17f2c0b8945` from 1 November 2026.
+The guide includes 127 parts and 422 named connections.
 Format 7 is the only supported home format. Whole records replace field atoms and tips.
 The guide explains the 64 KiB record limit, metadata, received data, owner pages, history,
-and explicit peer exchange. Normal cloud restore retains its separate release switch.
+and explicit peer exchange. Schema removal, expiry progress, and storage report limits have separate parts. Normal cloud restore retains its separate release switch.
 The disk view describes run homes only. Cloud backup preserves their native files.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
