@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 124 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 1 November 2026. Explore whole-record memory, disk, deletion, backup, and restore. Each part explains its purpose and limits.</p>
+        <p className="dim">Source review: 1 November 2026. Explore whole records, pages past deleted records, private disk homes, backup, and restore. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
