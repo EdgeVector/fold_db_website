@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Source notes and release limits · Inside LastDB</title>
-  <meta name="description" content="Source notes separate the default format 6 from the DEV record model. They cover record reads, writes, deletion, and signed release checks.">
+  <meta name="description" content="Current whole-record storage, memory, deletion, backup, and restore limits in LastDB format 7.">
   <link rel="canonical" href="https://thelastdb.com/explore/sources/design-notes.html">
   <link rel="icon" href="/favicon.png">
   <style>
@@ -13,689 +13,85 @@
 </head>
 <body>
 <main>
-  <a href="/explore/#sources">← Back to the guide</a>
-  <h1>Source notes and release limits</h1>
-  <p class="date">Source review: 1 November 2026. Merged LastDB revision <code>f7f0860b</code>.</p>
-  <p class="notice"><strong>Backup preserves run files.</strong> The owner can request a full snapshot or explicitly enable automatic backup. Automatic work requires a saved account connection. Restore combines a snapshot with accepted changes and still needs its release switch. This review does not establish a deployed service or a successful recovery.</p>
-
-  <h2>Named alternate keys keep one record</h2>
-  <p>New app designs use one schema with independent values. Shared field definitions supply meaning; they do not share record values.</p>
-  <p>Up to 16 alternate keys can refer to the same records. Each alternate contains the primary hash field.</p>
-  <p>For example, a photo schema has primary key photo-42 and an album route coast / photo-42. The latter stores a reference to photo-42.</p>
-  <p>Record writes and deletes update affected alternate entries in the same native transaction. Title-only changes need no new album entry.</p>
-  <p>Reads select entries and original fields in one captured view, then verify their agreement. Replies keep the primary mutation key and matched alternate key.</p>
-  <p>Pages require a known hash and ascending order. Their cursor binds the schema, alternate declaration revision, name, and filter.</p>
-  <p>Alternate keys support personal and org database scopes. Historical reads, alternate watches, and compound primary keys remain unavailable. Active received-data senders block alternate reads and counts.</p>
-
-  <h2>Saved formats and schema ownership</h2>
-  <p>New homes default to format 6. The disk reader also recognizes formats 4, 5, and the DEV format 7. Format 5 retains simple alternate keys.</p>
-  <p>Startup requires schema-owned values. It refuses the retired shared-value layout. The in-place format activation and app conversion commands are removed.</p>
-  <p>After all schemas pass admission, the node saves a home-level ownership marker. Without that marker, each schema needs ownership evidence.</p>
-  <p>Backup format readers recognize formats 4 to 7. Format recognition alone does not establish complete DEV record backup and recovery. Restore checks the saved key declarations and native encrypted files. A recovered home still needs to pass startup admission.</p>
-  <p>In formats 5 and 6, an eligible schema can change its alternate keys through explicit backfill. Access stays blocked while exact primary keys arrive in pages of 1–64.</p>
-  <p>Saved page receipts permit resume. Complete counts must agree before the new declaration appears. Cleanup retires the old alternate entries afterward.</p>
-
-  <h2>Compound keys and local org databases</h2>
-  <p>An alternate range can join two to eight declared fields. Each part uses text, padded text, or reversed time.</p>
-  <p>The separator cannot occur inside a part. Each alternate retains the primary field unchanged. Its hash comes from a field or a declared constant.</p>
-  <p>Compound declarations require format 6 or the DEV format 7. The primary key remains hash-only. Separate relationship schemas can use HashRange keys without alternates.</p>
-  <p>Org databases keep their own record and alternate-entry storage scopes. This local support does not enable multi-device cloud delivery.</p>
-
-  <h2>Parallel disk work still precedes success</h2>
-  <p>LastStore overlaps the new run file’s durable save with preparation of its private CURRENT list. Both must succeed before CURRENT changes.</p>
-  <p>The directory flush and memory publication still precede the ack. An uncertain CURRENT replacement stops further writes.</p>
-  <p>The unused unflushed memory model and disabled periodic mutation flusher are removed. Ordinary reads retain a saved disk view.</p>
-  <p>A private write can reuse a clean schema definition only when its exact sources and captured revision remain unchanged.</p>
-
-  <h2>Native account payments and private diagnostics</h2>
-  <p>The native CLI uses an explicit home and its saved account credentials for payment status, checkout, and account management.</p>
-  <p>It first compares the service account with the home identity. Hosted links must use the expected Stripe HTTPS host.</p>
-  <p>A payment command creates no identity and starts no backup. This review does not verify production payment configuration.</p>
-  <p>Daemon output now retains fixed categories and selected numbers. New panic reports omit arbitrary messages, paths, stack details, and previous log text.</p>
-  <p>Historical reports can still contain raw text. CLI product replies remain separate from daemon diagnostics.</p>
-
-  <h2>Recovery checks do not enable PROD restore</h2>
-  <p>The CI operation now requires a selected automatic snapshot with a multi-file cloud bundle and fuller change-prefix checks.</p>
-  <p>Its daily driver requires recent successful DEV recovery work or requests the existing operation. A successful dispatch alone proves no recovery.</p>
-  <p>These are cloud transfer bundles of run files, not a return to packed disk homes. Normal restore still requires its release switch.</p>
-  <p>This guide review runs no recovery operation and changes no primary data. It does not establish a successful PROD recovery.</p>
-  <p>Schema service now receives random IDs and time formatting through server adapters. Its field-rejection comparison cache belongs to that service instance.</p>
-  <p>Aggregate helper changes preserve their earlier checks and order. They add no guide part.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/schema_types/src/alternate_keys.rs">Named declarations</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/schema_declare/owned.rs">Owned app schemas</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/alternate_keys/write.rs">Alternate writes</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/query/query_executor/alternate.rs">Alternate reads</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/fold_db/alternate_key_changes.rs">Explicit changes</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/format_upgrade.rs">Home format requirements</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/parallel_publication.rs">Parallel disk prerequisites</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/read/memory.rs">Schema reuse</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/cloud_cmds/payments.rs">Payments</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/lastdbd/private_diagnostics.rs">Private output</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/observability/src/crash.rs">Panic reports</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/scripts/cloud_backup/daily_driver.py">Daily DEV recovery driver</a></p>
-
-  <h2>Prepare snapshot identity without activation</h2>
-  <p>The offline commands <code>lastdb db snapshot-identity-prepare</code> and <code>snapshot-identity-inspect</code> operate on a stopped receiver and an inactive candidate snapshot.</p>
-  <p>Both need the same account content key and exactly the same known devices. Original device identities must match.</p>
-  <p>The receiver’s own event position must match exactly. An advanced peer needs the common event hash in retained candidate metadata.</p>
-  <p>The command verifies native files and their signed device map. It preserves the receiver’s signer and original identity in a separate inactive control file.</p>
-  <p>The donor becomes a peer. Map version 2 records the retained base for each device; ordinary map version 1 remains unchanged.</p>
-  <p>One native commit saves the prepared control metadata and peer bases. The source stays unchanged and its exclusive file locks stay held.</p>
-  <p>The commands refuse the primary, archives, active destinations, and overlapping paths. Inspection exposes no private key.</p>
-  <p>Every prepared result reports <code>startup_allowed: false</code> and <code>replacement_allowed: false</code>. Normal startup refuses the prepared identity.</p>
-  <p>Activation still needs proof of a common starting state, another check of the local state, exclusive source retirement, and one atomic replacement.</p>
-  <p>Missing local event replay and an active import path remain future work. Equal device positions alone do not prove equal data before device enrollment.</p>
-  <p>This does not enable cloud restore or establish a successful production recovery.</p>
-
-  <h2>Reuse lookup blocks within one held read</h2>
-  <p>A normal held read can reuse authenticated lookup blocks. The allowance holds at most 64 blocks within 256 KiB or one-sixteenth of the read budget, whichever is smaller.</p>
-  <p>Entry storage counts toward that allowance. Older entries leave first. An oversized block uses the normal read path.</p>
-  <p>The allowance ends with the held read. It adds no warm-set entry or cache between calls. Bounded backup readers disable it.</p>
-
-  <h2>Compress only when the saving is useful</h2>
-  <p>Block compression skips inputs below 256 bytes or above the existing decompression limit. Compressed bytes must save at least 64 bytes and 10%.</p>
-  <p>The comparison includes the eight-byte original-length header. Otherwise the original payload enters encryption.</p>
-  <p>This rule applies to run-block frames. Optional file-record compression is separate and remains off by default.</p>
-
-  <h2>History expiry waits until history is used</h2>
-  <p>An unused home starts no expiry timer or storage work in its history worker. The first Keep or expiry-policy attempt wakes it.</p>
-  <p>An already enabled home starts expiry at boot. The worker checks the activation marker before it removes anything.</p>
-
-  <h2>Current range protection and schema resolution</h2>
-  <p>The unused portable range-encryption prototype is removed. The guide removes that part and its connections. Old links lead to current range protection.</p>
-  <p>Typed ranges remain inside encrypted run blocks. A comparison now requires its stored range rule directly; no alternate old-format path remains.</p>
-  <p>The node resolves proposed schemas through the live service. The removed local-first client facade never supplied its normal path.</p>
-  <p>Schema service now receives its configuration, clock, dedicated runtime, and resolver-pack cache from the server. The environment is read once at startup.</p>
-  <p>The server adapters preserve clock behavior, cache paths, and dedicated-thread execution. Separate resolver-pack facilities do not make node resolution work offline.</p>
-  <p>Aggregate lock, grant, receipt, and error helpers keep their existing order and checks. Source file splits and API documentation add no system parts.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/db_snapshot_identity_cmds.rs">Offline preparation and inspection</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/snapshot_identity/proof.rs">Identity and peer-history checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/identity_prepared.rs">Prepared identity refuses startup</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/snapshot_identity/controls.rs">Prepared control records</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/reader/metadata.rs">Read-call lookup allowance</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/frame/compression.rs">Compression thresholds</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/atom_history.rs">Dormant expiry worker</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/client/src/live_resolver.rs">Live schema resolution</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/server_shared/src/schema_config.rs">Server configuration</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/server_shared/src/blocking_runtime.rs">Server runtime</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/server_shared/src/resolver_pack_cache.rs">Resolver-pack disk adapter</a></p>
-
-  <h2 id="field-reuse">Field reuse and schema-owned values</h2>
-  <p>One canonical field definition supplies the field’s name, description, type, and identity version.</p>
-  <p>Each schema owns its record values and field molecules. A shared definition keeps the meaning consistent across those schemas.</p>
-  <p>A photo title can be “Morning light” while a note title is “Budget review”, even when both use the same definition.</p>
-  <p>Several lookups of one record use named alternate keys in that record’s schema. A result retains the primary key for later mutations.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/schema_declare/owned.rs">Owned schema declaration source</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/docs/multi-key-schemas.md">Record ownership and older data</a></p>
-
-  <h2>A snapshot adoption plan does not replace data</h2>
-  <p>The owner sends a held snapshot request and candidate metadata through <code>snapshot_plan</code> on <code>/api/sync/logical-v1</code>. Node API version 10 adds this action.</p>
-  <p>Both snapshots need enabled, certified device coverage. Disabled or unknown coverage fails. The existing local snapshot requirements still apply.</p>
-  <p>The plan compares at most 33 device positions. Unknown devices, changed original device identities, or different hashes at equal positions fail.</p>
-  <p>A candidate behind the local state needs its common event hash in retained local metadata. A candidate ahead needs separate proof of that shared history.</p>
-  <p>A missing device entry does not prove an empty database. The plan names the original local or peer events still needed.</p>
-  <p>Every result sets <code>replacement_allowed: false</code>. The comparison reads bounded metadata; it replays no event bodies and publishes no replacement.</p>
-  <p>Replacement still needs a common starting-state proof, complete candidate file checks, and another check of the local state.</p>
-  <p>The separate offline preparation now preserves identity and records peer bases for an exact local-head match. Event replay and active replacement remain unavailable.</p>
-  <p>The response has a 32 KiB limit. This operation does not enable ordinary cloud restore or prove a production recovery.</p>
-
-  <h2>Write preparation batches exact field reads</h2>
-  <p>Changed fields share bounded header and tip reads within each database scope. Each fetch holds at most 10,000 exact keys.</p>
-  <p>The same reader resolves current private changes, generation state, and Delete barriers. A missing exact-scope header retains the existing full-load fallback.</p>
-  <p>Prepared values leave with the request. This fetch limit is separate from the small-result reuse allowance. Disk still precedes the ack.</p>
-
-  <h2>Linux memory and account encryption</h2>
-  <p>The Linux allocator disables large memory pages by default. An explicit <code>MIMALLOC_ALLOW_THP</code> value keeps the caller’s choice.</p>
-  <p>The process reports the actual kernel state or an error. This policy reduces retained memory; it adds no total process cap.</p>
-  <p>Local file-record encryption uses the account content key directly. The unused alternative keyring and its factory option are removed.</p>
-  <p>Aggregate, expiry-queue, S3, and telemetry helpers retain their earlier behavior. CI adds bounded diagnostics and operational checks, not new guide parts.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/compare.rs">Adoption comparison</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/adoption/requirements.rs">Required replacement work</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/logical_sync_routes.rs">Owner route</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/molecules/write_load.rs">Batched write fetch</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/allocator/linux_pages.rs">Linux page policy</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/factory/local/store_stack.rs">Account-key construction</a></p>
-
-  <h2>Optional history keeps earlier field values</h2>
-  <p>History is off by default. The owner chooses Off, Keep, or an expiry duration for a canonical field within one database scope.</p>
-  <p>A changed value or Delete saves the previous visible atom and its original write facts. References keep its atom and required file bytes.</p>
-  <p>Expiry starts when the value enters history. Later policy changes affect future entries. Expired entries disappear from reads before the worker releases them.</p>
-  <p>The history worker handles 32 entries per expiry page. Purge and record expiry also remove selected history, including keys without current tips.</p>
-  <p>History activation advances the logical key marker. Off does not reverse that change; older programs that do not recognize history must refuse the home.</p>
-
-  <h2>Restore one field is a new conditional write</h2>
-  <p>The owner can list and read history for an exact schema, field, and key through <code>/api/atom-history</code>.</p>
-  <p>Restore requires an unexpired history entry and either the expected current mutation or an absent-value condition. It creates a fresh normal write.</p>
-  <p>A concurrent change fails the condition. This operation does not rewind the database or enable cloud restore.</p>
-
-  <h2>Snapshots record exact device positions</h2>
-  <p>New snapshot metadata uses version 5. It records disabled device capture or a signed map from the exact held disk state.</p>
-  <p>The map includes the local device and up to 32 trusted peers, within 32 KiB. Restore checks the map against restored native files before publication.</p>
-  <p>Older version 3 snapshots remain readable with unknown device coverage. Unknown does not mean disabled.</p>
-  <p>The map grants no device trust, restores no private signer, and removes no device events. Cloud change-backup metadata remains version 4.</p>
-
-  <h2>A held local snapshot uploads nothing</h2>
-  <p>The owner can prepare, inspect, resume, and release a snapshot through the logical-sync route. Its saved request retains exact files in both homes.</p>
-  <p>Automatic backup must be off and remote work settled. An unreleased snapshot blocks new cloud work and retains local disk files.</p>
-  <p>This operation uses the real backup planner. It creates no independent backup or cloud publication.</p>
-
-  <h2>Query replies can omit unused detail</h2>
-  <p>Full detail remains the default. Values mode retains keys, values, and the record conflict signal while it removes field metadata.</p>
-  <p>Count mode requires supported live keyed reads without conditions, value ordering, offset, or continuation. An unavailable exact count fails.</p>
-  <p>Each request reads and checks a shared atom once, then reuses it across selected tips. This adds no cache between requests.</p>
-  <p>Ordinary record writes no longer rewrite unchanged schema definitions. Actual schema changes still update their definitions and key bindings.</p>
-
-  <h2>DEV backup cleanup stays within its CI account</h2>
-  <p>The CI recovery workflow registers its exact run and stream before uploads. It resumes saved cleanup identities after uncertain replies.</p>
-  <p>Cleanup protects the baseline and latest successful recovery. Unknown or unverified uploads remain protected.</p>
-  <p>The workflow checks recovery of the retained snapshot after cleanup and requires enough space before the next upload.</p>
-  <p>This source path does not enable automatic deletion for normal production backups or prove a successful production recovery.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/atom_history/capture.rs">History capture</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/atom_history/policy.rs">History policy</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/atom_history/purge.rs">History expiry</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/atom_history.rs">Field restore</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/snapshot.rs">Snapshot positions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/byte_backup/codec.rs">Snapshot metadata</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/local_snapshot/mod.rs">Local snapshots</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_host/src/handlers/query/execute.rs">Query reply choices</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/atoms/read.rs">Shared atom reads</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/scripts/cloud_backup/preflight.py">DEV cleanup</a></p>
-
-  <h2>Optional signed device changes</h2>
-  <p>A home can opt into capture with <code>LASTDB_LOGICAL_CAPTURE=1</code>. Once enrolled, its saved identity and event position remain required on later opens.</p>
-  <p>Accepted field values, their signed event, and the device position share the data commit.</p>
-  <p>Formats 4 to 6 use version 1 field events. That path accepts personal create and update requests only. It refuses deletes, mapped fields, shared data, aggregates, and file blobs. DEV format 7 uses version 2 record events with separate rules below.</p>
-  <p>Local requests are limited to 128 mutations and 256 KiB. An event has at most 1,024 field outcomes and less than 1 MiB.</p>
-  <p>The event backlog has a 64 MiB cap and no cleanup. A full backlog refuses the complete write. Ordinary reads do not replay these events.</p>
-  <p>The separate device signing key is outside the native backup file list. Missing or inconsistent identity state refuses open.</p>
-
-  <h2>Device exchange is an explicit owner operation</h2>
-  <p>The owner trusts another device’s initial position, then exports or imports pages through <code>POST /api/sync/logical-v1</code>.</p>
-  <p>The receiver checks signatures, event order, and installed schema, field, and molecule identities. Gaps and different chains are refused.</p>
-  <p>Data and the peer position share one disk commit. Matching saved event hashes make repeat delivery safe. Imports do not create new local authored events.</p>
-  <p>A page holds at most four events and 1 MiB of event data. The home supports 32 trusted devices and 65,536 saved event receipts.</p>
-  <p>Version 1 field events and version 2 record events cannot mix. Each path keeps its own limits. No automatic delivery worker connects this operation to cloud backup or restore.</p>
-
-  <h2 id="schema-conversion">Schema changes and older data</h2>
-  <p>A repeat declaration can add fields without a record copy. Existing molecules stay in place. Old records read the new fields as absent.</p>
-  <p>An older app can declare a subset with equal field definitions. A changed field meaning, primary key, or alternate declaration is refused.</p>
-  <p>Changed meanings or primary keys need a new schema name and explicit record copies. Alternate declarations use the separate checked backfill operation.</p>
-  <p>The in-place app conversion is removed. An older shared-value home needs its compatible reader and a fresh destination.</p>
-  <p>This guide performs no data move. Equal field identities do not establish record correspondence.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/schema_declare/owned.rs">Schema declaration source</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/docs/multi-key-schemas.md">Existing-data boundary</a></p>
-
-  <h2>Definition registration differs in DEV and production</h2>
-  <p>Production requires an Exemem developer certificate and the registered app owner’s signature for new definitions. DEV open registration can omit the developer account check. Proof of work, quotas, and vocabulary rules remain.</p>
-  <p>Local namespace claims use the same rule. The app IDs std, system, and templates are reserved. A repeat request that only returns an existing public definition can remain a read.</p>
-  <p>The service resolves that read from saved definitions and follows valid successor links. Broken or ambiguous links fail.</p>
-  <p>An expansion saves its predecessor marker and successor together before it updates memory. Competing expansions cannot silently replace the same predecessor.</p>
-  <p>This review checks source behavior. It does not confirm the deployed schema service.</p>
-
-  <h2>Restore diagnostics keep the exact selected chain</h2>
-  <p>After a log link passes its checks, restore saves its identity, record and file roles, byte totals, and event boundaries.</p>
-  <p>A resumed check requires the same facts. The CI recovery check keeps its selected backup fixed while later automatic backups can continue.</p>
-  <p>The complete restore checks and release switch still apply. These changes do not establish a successful production recovery.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/logical_capture/admission.rs">Local event admission</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/store.rs">Durable device events</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/identity.rs">Device identity</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/logical_capture/peer/import.rs">Trusted peer positions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/admission.rs">Peer field rules</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/app_identity/claim.rs">Developer authorization</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/state/lookup.rs">Saved public definitions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/schema_expansion_commit.rs">Expansion commit</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_restore/logs/routing.rs">Restore link diagnostics</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/scripts/cloud_backup/automatic_source.py">Fixed CI recovery selection</a></p>
-
-  <h2>Reuse stays inside one write preparation</h2>
-  <p>A private write can remember an exact disk result, including confirmed absence. Later steps reuse that result from the same saved state.</p>
-  <p>Private changes take precedence. A counter change therefore cannot read an older saved value after the same write updates it.</p>
-  <p>The allowance is 1 MiB, with at most 16 KiB per value. It has no result-count limit. It retains no decoded storage blocks.</p>
-  <p>Results leave memory when preparation ends. Ordinary reads use no such store. Disk publication still precedes the ack.</p>
-
-  <h2>Each molecule supplies its hash protection key</h2>
-  <p>Each molecule has its own secret key for non-empty hash tokens and a required rule for typed ranges.</p>
-  <p>There is no plain-hash option. The removed account-level hash key was unused; the account content key still protects disk and backup bytes.</p>
-  <p>This change does not alter the current disk format or open client cursor identity.</p>
-
-  <h2>One data model across the layers</h2>
-  <p>Memory serves current logical records. A native write saves a complete disk snapshot before memory publication and the ack.</p>
-  <p>Cloud backup is a separate operation. A local ack does not confirm a cloud copy.</p>
-  <p>The layers preserve the same data relationships. Their files and completion times differ.</p>
-
-  <h2>Interrupted file deletion completes before normal use</h2>
-  <p>A saved request names the exact file removals and both homes’ saved positions. It reaches disk before the related change begins.</p>
-  <p>If the record change reached disk, startup completes the saved file removal. If the record change did not reach disk, the file stays.</p>
-  <p>An unexpected position or identity stops recovery. Backup refuses an unfinished request. This local recovery does not enable cloud restore.</p>
-
-  <h2>Compaction reserves output space</h2>
-  <p>Before each output, compaction checks the disk cap and the free-space reserve. Unfinished writes in both homes share the filesystem allowance.</p>
-  <p>Insufficient space leaves the previous saved state in force. The worker retries later. Active reads can still retain replaced files.</p>
-
-  <h2>Backup dependencies do not authorize deletion</h2>
-  <p>The explicit dependency command follows accepted backup links and checks their identities and hashes. It creates no destination and deletes no provider files.</p>
-  <p>Current uploads omit the new dependency declaration. The command therefore keeps the earlier accepted chain conservatively.</p>
-  <p>The protocol can distinguish a full snapshot from its required change backups. New declarations await service support; automatic deletion for normal production backups remains unavailable.</p>
-  <p>The command has a 90-second limit, a 32 MiB metadata limit, and a 32,768-backup limit. It still requires the release switch and recovery credentials.</p>
-
-  <h2>Named keys read the same record</h2>
-  <p>An alternate entry contains the primary record address. A read follows that address to the record’s field molecules and atoms.</p>
-  <p>The response keeps the primary mutation key and the matched alternate coordinates.</p>
-  <p>A title-only write changes the title atom. An album-key change updates the affected entry in the same native transaction.</p>
-  <p>App relationships, tags, and links retain their own schemas when they represent separate data.</p>
-
-  <h2>Fault reports keep private details local</h2>
-  <p>External fault reports retain a fixed category, severity, operating system, and permitted version and environment fields.</p>
-  <p>Crash text, paths, stack details, and previous log lines stay out of those reports. This review does not verify a deployed report.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/cas_delete.rs">Interrupted file deletion</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/space.rs">Compaction space checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/cloud_cmds/byte_backup/offline/dependencies.rs">Backup dependency inspection</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/cloud_backup_protocol/src/v2/retention.rs">Conservative dependency rules</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/vocabulary_admission.rs">Shared field checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/vocabulary_commit.rs">Concurrent definition checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/schema_service_s3/src/definitions.rs">Atomic schema definitions</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/schema/core/load/owned.rs">Separate molecules for different keys</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/observability/src/layers/error/privacy.rs">Private fault details stay local</a></p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/read/write_reads.rs">Private write result reuse</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/reader/stream/proof.rs">Checked backup blocks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_restore/proof.rs">Restore check fallback</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/error/native_proof.rs">Fixed restore diagnostics</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/molecule_key_store/bundle.rs">Molecule hash keys</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/crypto/e2e.rs">Account content key</a></p>
-
-  <h2>Signed app release checks</h2>
-  <p>The app release installer now requires a verifier pass for the node’s contract version. The signed log must have a head no older than 24 hours.</p>
-  <p>The node checks the log chain, release identity, publisher key, manifest, and downloaded file bytes before it selects the new release.</p>
-  <p>A stale head blocks new installs and updates. It does not itself stop an installed app. A revoked release cannot serve as a rollback target.</p>
-  <p>A revoked active release returns to an eligible prior verified release. Without one, the host deactivates it.</p>
-  <p>The registry-index resolver and explicit local development installs remain separate paths. This source review does not verify a deployed verifier.</p>
-  <p>The schema service Lambda sends accepted publish and owner-revoke requests to its configured verifier queue. A missing queue or send error leaves the saved record intact.</p>
-  <p>The publisher declares supported contract versions. A new-release limit counts 20 releases per developer key per day within that service instance.</p>
-  <p>Release and channel reads check saved storage first. A storage error fails the read; an absent stored record can fall back to the instance’s memory.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/app_release_host/activation.rs">Release installation checks</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/server_lambda/src/verifier_queue.rs">Verifier queue</a></p>
-
-
-  <h2>Whole records: DEV format 7</h2>
-  <p>Format 6 remains the default. The incomplete format 7 is an explicit development option for a new home. Existing homes do not convert.</p>
-  <p>One stored record holds fields, per-field write facts, record metadata, and an optional delete marker. The complete encoded record has a 64 KiB cap.</p>
-  <p>A newer field write wins by time, logical counter, device ID, then mutation ID. Equal facts leave the field unchanged.</p>
-  <p>The record write updates alternate entries and file blob counts in the same native request. It creates no atom, field tip, or atom counter.</p>
-  <p>Reads check whole-record memory reuse, then fetch missing records from disk before field selection. Named alternate reads return the primary key. Received-data reads refuse, and alternate-key backfill is unavailable.</p>
-  <p>Delete removes fields at or below its write facts and keeps a delete marker. Newer values survive. Purge requires an existing record and also releases its saved history and conflicts. A delete marker remains.</p>
-  <p>Local record writes refuse caller-supplied import metadata, active share rules, and aggregates. Checked peer exchange uses a separate record path. Retention policies, field history, and conflict retention now have record support.</p>
-  <p>The backup file check now reads format 7 records and history copies to verify required file bytes. This source support does not establish PROD recovery. Normal restore still needs its release switch.</p>
-  <p>Models now live in a separate crate. Core still supplies clocks, random IDs, signatures, and storage operations. The default warm-set limit and disk-before-ack rule stay unchanged.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/model/src/record_value.rs">Stored value and delete rules</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/write/records.rs">Record write limits</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/record_reads.rs">Record reads</a></p>
-  <h2>DEV whole-record memory and size</h2>
-  <p>Format 7 keeps decoded records in the warm set. It shares the 256 MiB default byte limit and recency order with logical field paths.</p>
-  <p>A hit updates recency. Purge removes least recently used entries that no call holds. Storage objects do not stay in this warm set.</p>
-  <p>Writes publish after durable commit. Private writes and older read views bypass shared record reuse. A disk fetch enters only for its matching revision.</p>
-  <p>The schema size report now includes live record counts and encoded value bytes. Deleted records do not contribute. This is not physical disk size.</p>
-  <h2>DEV record history, expiry, and Purge</h2>
-  <p>Optional history copies the old field value and write facts. A changed value or Delete can add history; an equal value or Purge does not.</p>
-  <p>Saved history retains file references. Expiry and history purge release them in the same disk change. Field restore keeps its current-value condition.</p>
-  <p>History copies omit record metadata. A whole-record Purge refuses above 1,024 history entries. Separate field-history purge removes at most 32 entries per call.</p>
-  <p>Hash and Single expiry uses the newest field or metadata time. A record at or after the cutoff survives. HashRange expiry uses the range time.</p>
-  <p>The record delete marker uses the cutoff for Hash and Single expiry. This protects a newer peer write from an older expiry event.</p>
-  <p>Delete audit records join the native request. Retention backfill uses exact keys and the record’s original write facts.</p>
-  <h2>DEV record exchange keeps each field’s order</h2>
-  <p>Format 7 signs version 2 record events. Both peers need that format, matching schema identities, field definitions, and alternate declarations.</p>
-  <p>The receiver merges the delete marker, fields, and record metadata by their write facts. Equal facts leave the stored value unchanged.</p>
-  <p>Data, alternate entries, history, conflicts, retention facts, and the peer position share one native commit. Notices follow the commit.</p>
-  <p>Only personal Hash and HashRange schemas qualify. Shared scopes, share rules, aggregates, and file blobs are refused. No automatic cloud transport exists.</p>
-  <p>Local Create, Update, Delete, Purge, and TTL deletion can produce record events. A receiver treats Purge as Delete and keeps its own history.</p>
-  <p>A different value from another device can remain as a conflict copy with both writes’ facts. Equal values and same-device changes add no conflict.</p>
-  <p>This rule does not prove simultaneous edits. Query flags and selected-key reads expose unexpired conflicts. A failed read reports unknown.</p>
-  <p>Delete leaves conflicts until expiry. Purge removes the conflict copies, expiry entries, and record marker in the same request.</p>
-  <h2>DEV required-file checks cover records and history</h2>
-  <p>Backup and restore derive required files from record fields and copied history values. They check the corresponding encrypted file bytes.</p>
-  <p>Record-metadata-only references remain under blob counts and the full native file copy. They do not receive the same field-pointer check.</p>
-  <p>Blob recount includes records and history copies. Unreadable input prevents an exact reduction. Disk encryption and the normal restore release switch remain unchanged.</p>
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/record_warm.rs">Whole-record reuse</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/resident/core_set/records.rs">Record memory charge and purge</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/atom_history/records.rs">Record history</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/write/record_effects.rs">Record effects and TTL</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/records/merge.rs">Peer field merge</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/records/admission.rs">Peer limits</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/record_conflicts/stage.rs">Conflict copies</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/record_conflicts/purge.rs">Conflict Purge</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_restore/proof/records.rs">Required files</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/counter/recount/blobs.rs">Blob recount</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/storage_breakdown/record_rows.rs">Record size report</a></p>
-  <h2>Latest source review</h2>
-  <p>The completed reviews cover 612 commits after October 21, through <code>f7f0860b</code>. This pass examines 16 commits since the last completed review.</p>
-  <p>This pass reviews DEV whole-record memory, history, expiry, conflict retention, peer exchange, required files, and logical size reports. Schema-service reply refactors preserve their response rules. Memory, disk-before-ack, encryption, backup, restore, and vendored LastStore remain in scope. Cloud restore still needs its release switch.</p>
-
-  <h2>Two run homes, one logical model</h2>
-  <p>A home is a folder of disk files. LastDB uses disk-run for records and disk-cas for file blobs.</p>
-  <p>Each home has an encrypted CURRENT file list and ordered run files. A native write saves before memory publication and the ack.</p>
-  <p>Reads check newer files before the compact base. Small filters can rule out absent keys. A match still needs the actual key check.</p>
-  <p>One worker combines files in both homes after commits. Startup also resumes needed work. Eight files in a level trigger a merge.</p>
-  <p>Encoded keys must fit 64 KiB, including the collection prefix. Values must fit below 32 MiB.</p>
-  <p>CAUTION: The disk reader recognizes formats 4 to 7. New homes default to format 6; format 7 is an incomplete DEV option. Startup also checks schema ownership. Retired shared-value layouts need an explicit copy into a fresh home. No in-place converter remains.</p>
-  <p>Some module and marker names still contain “pack”. They do not enable the old disk format.</p>
-
-  <h2>New-home setup can resume</h2>
-  <p>A folder lock protects creation. A new home saves its account and key-format checks before the format marker. Normal use verifies those checks.</p>
-  <p>Before the marker exists, a restart removes only recognized partial creation files and starts again. An unexpected entry prevents removal.</p>
-  <p>Every supported home uses typed range order. Earlier key-format switches no longer select another home format. Startup never converts an existing home.</p>
-  <p>Run-file read reports now count file opens, file checks, lookup bytes, and data bytes. These counts describe work, not a speed guarantee.</p>
-
-  <h2>Search delivery is optional</h2>
-  <p>The daemon sends Search batches only when enabled. It sends them after disk publication to a local inbox for the separate search app.</p>
-  <p>The live queue defaults to 64 MiB and 4,096 files. A reached limit pauses delivery and marks the inbox for a rebuild.</p>
-  <p>Existing files remain. That limit does not fail the database write, but disk errors can still fail a request.</p>
-  <p>CAUTION: The inbox contains plain JSON outside the encrypted run files. For a schema with classifications, only word fields qualify.</p>
-  <p>Fields marked secret or no_index stay out. A schema without field classifications makes every field eligible.</p>
-  <p>A file reference retains only its name and media type. File keys, file identities, bytes, and thumbnails do not enter the inbox.</p>
-
-  <h2>Offline search rebuild uses the node key</h2>
-  <p>With the daemon stopped, the command opens a complete run database with its node key.</p>
-  <p>It writes batches with the same field rules as live delivery. Results change only after the search app consumes them.</p>
-  <p>The command refuses incomplete creation. It does not create a database, finish setup, or change the disk format.</p>
-  <p>The offline command does not enforce live queue limits or clear the rebuild marker. A completed export does not resume live delivery by itself.</p>
-
-  <h2>Explicit disk cleanup can resume</h2>
-  <p>The owner can request cleanup of both run homes. The node saves the request and resumes an active request after a restart.</p>
-  <p>Small steps combine files even below normal thresholds. Active readers can retain replaced files, so the job waits for their release.</p>
-  <p>New writes continue between steps and can delay completion. Status reports progress without another disk walk.</p>
-  <p>Completion covers the saved local boundary. It does not cover future writes, backup copies, or file blobs that still appear live.</p>
-  <p>A client timeout does not cancel the saved job. An uncertain disk publication stops cleanup until recovery.</p>
-
-  <h2>Private write memory ends at publication</h2>
-  <p>A private write reserves memory until disk publication. Warm records then use their normal allowance; they do not retain the private write allowance.</p>
-  <p>The warm set still defaults to 256 MiB. That limit is not a total process cap.</p>
-
-  <h2>Warm-set status reports real charges</h2>
-  <p>Status now reports the actual warm-set byte charge instead of zero. The warm-set section also reports its own limit.</p>
-  <p>The process estimate now uses the configured warm-set limit alone. Removed cache allowances no longer reserve extra space. An estimate is not measured process memory.</p>
-
-  <h2>Base compaction uses counted bytes</h2>
-  <p>The worker counts older values hidden by new records and physical delete markers. Counts include encoded keys and stored values before block compression.</p>
-  <p>Newer files trigger base work above both 1 MiB and one sixteenth of record bytes. Obsolete bytes trigger it above both 64 KiB and one eighth.</p>
-  <p>Each step replaces a small part of the base and saves its progress in CURRENT. The next step uses that saved boundary.</p>
-  <p>Old readers retain their files. New writes, reader holds, and delayed compaction can use extra space. These thresholds are not a filesystem-size guarantee.</p>
-
-  <p>Base file targets range from 256 KiB to 1 GiB. A large record can exceed a target.</p>
-  <p>The worker waits up to two seconds when reads retain more than one sixteenth of current file bytes, with a 1 MiB minimum.</p>
-  <p>Long reads can retain files after that wait. No fixed total disk-size guarantee follows from these controls.</p>
-
-  <h2>The disk-size gate is a CI check</h2>
-  <p>The CI disk-size check runs separately from speed measurements. It requires database files at or below 1.5 times logical data bytes at settled checkpoints.</p>
-  <p>It uses the larger of file lengths and allocated disk bytes. Its workload disables Search and checks again after deletes.</p>
-  <p>This is a release check on that workload. It is not an enforced runtime cap or a guarantee about temporary peaks.</p>
-
-  <h2>Compact records before block encryption</h2>
-  <p>Run homes try shorter forms for repeated field names, IDs, integers, and timestamps. Reads reconstruct the exact original record bytes.</p>
-  <p>The encoder checks its output before use. Only compact JSON objects or arrays up to 1 MiB qualify.</p>
-  <p>Other values keep their original bytes plus a format byte. Run values must fit below 32 MiB before compact encoding.</p>
-  <p>The file block can then use compression before encryption. Earlier run homes with untagged values are refused; no automatic upgrade occurs.</p>
-
-  <h2>File bytes reach disk before their references</h2>
-  <p>A split commit saves new file blobs, then other record changes, then file blob deletes. Memory publication follows the required disk work.</p>
-  <p>The two homes do not share one atomic disk commit. A crash or failed file delete can leave unused file bytes.</p>
-  <p>This order protects required files. Run backup now sends file blob run files to B2 and record run files to R2.</p>
-
-  <h2>Explicit cleanup in the storage library</h2>
-  <p>The storage library supplies one compaction step below automatic size thresholds. The node cleanup job repeats these steps and saves its request.</p>
-  <p>The call reuses existing file and input limits. It removes obsolete stored values; atom counters still control logical deletion.</p>
-  <p>One completed call does not promise zero retained bytes. Reads, backup file links, and failed file removal can retain space.</p>
-
-  <h2>The V2 backup path in current code</h2>
-  <p>Capture waits for the flush, then briefly stops writes while it retains both run homes at one state.</p>
-  <ol>
-    <li>Retain both CURRENT file lists and every required run file.</li>
-    <li>Check account keys, atom records, and required file bytes.</li>
-    <li>Copy the encrypted native bytes and check the service receipts.</li>
-    <li>Publish the encrypted manifest and save the accepted result.</li>
-    <li>Release source holds only after a confirmed final result permits it.</li>
-  </ol>
-  <p>Extra local file links retain the exact bytes without another full data copy. Local writes continue after capture.</p>
-  <p>A resumed job uses that same source. It must not select a newer state. The old standalone backup command is removed. The current stopped-home command below uses native run files.</p>
-
-  <h2>Manual connection for an existing account</h2>
-  <p>The owner can supply an existing account credential through the local node. The node checks account identity and permission for R2 and B2.</p>
-  <p>The saved connection binds the credential to this node and account. A manual request or explicit automatic enable command follows separately. The connection alone uploads no database files.</p>
-  <p>This connection permits owner backup requests without the release switch. Restore still requires that switch and account credentials.</p>
-  <p>Account credentials use the paused credential file. The DEV restored-account enrollment path stays separate. Legacy cloud configuration files no longer select a cloud mode.</p>
-  <h2>Bounded encrypted reads</h2>
-  <p>The run reader authenticates a complete encrypted frame before it exposes decoded bytes. A second read verifies the bytes and exact end again.</p>
-  <p>Small frames use buffers sized to their encrypted content, up to the stream allowance. Large uncompressed data uses bounded pieces.</p>
-  <p>Both homes share a metadata allowance. File lists, record decode work, and compressed data still have limits. A size refusal does not skip verification.</p>
-  <h2>Backup checks can reuse verified blocks</h2>
-  <p>Backup and restore checks retain the next key from each relevant run file. They can also retain an authenticated decoded block.</p>
-  <p>Later keys and values can reuse that block. Equal keys select the newer file, and the value comes from that exact file.</p>
-  <p>Keys, blocks, and temporary copies share a 1 MiB allowance. Optional block reuse retains at most 32 file handles.</p>
-  <p>Insufficient memory or file handles returns to the original path. Restore can repeat the complete check after it releases optional handles.</p>
-  <p>Changed files and failed integrity checks still cause refusal. The check retains its value-size limits. This reuse does not enter the warm set.</p>
-  <p>Restore errors name a fixed check stage and cause. Private paths, keys, and record contents stay out of these diagnostics.</p>
-  <h2>Older cloud paths are removed</h2>
-  <p>V2 supports manual snapshots, explicit automatic policy, and checked restore. The retired V1 upload, restore, replay, and automatic workers remain removed.</p>
-  <p>The retired V1 job reader and completion check are removed. V2 no longer uses old job records to admit a new request.</p>
-  <p>This removal does not convert old jobs or make older packed backups readable.</p>
-  <p>An unfinished V2 job still needs its own confirmed result before a new V2 job can start.</p>
-  <p>The old Cloud Off action is removed. An explicit V2 job has its own Close action.</p>
-
-  <h2>A checked restore to a fresh destination</h2>
-  <ol>
-    <li>Select one accepted state. Save its exact identity and check the chain to its full snapshot before file requests.</li>
-    <li>Check the encrypted manifest, destinations, lengths, and hashes. Recover the original native run files named by the manifest.</li>
-    <li>Replay accepted changes in order. Check both run file lists, account keys, atoms, and required file bytes.</li>
-    <li>Publish the verified destination without cloud activation. Run restore creates fresh local lock files.</li>
-  </ol>
-  <p>Restore refuses an existing destination. A partial record import needs a fresh session; a completed checked import can resume. The walkthrough performs no recovery.</p>
-
-  <h2>Restored account access is a separate DEV action</h2>
-  <p>The reconnect action checks the completed restore receipt and existing account identity. The restored home must be inactive.</p>
-  <p>It obtains access to the same account without a new identity or a change to recovered data. It refuses primary and archive homes.</p>
-  <p>The saved credentials remain paused. Reconnect does not start a backup. The home must pass current run-format checks. A retained receipt cannot make an older packed home usable.</p>
-
-  <h2>Large files need complete local coverage</h2>
-  <p>An atom can reference a file blob. New file keys depend on the private account key and original file hash.</p>
-  <p>The protected atom carries the file key. The file address identifies the encrypted bytes. Only the current account-based file encryption format is accepted. Older encryption formats and plaintext fallbacks are removed.</p>
-  <p>Backup needs exact coverage for each main file, thumbnail, and poster. Bytes inside the saved native files need no separate external copy.</p>
-  <p>V2 requires those bytes inside the captured native files. Remote-only files refuse; the old external-file transfer path is removed.</p>
-
-  <h2>V2 byte backup</h2>
-  <p>A snapshot or change job retains one exact saved source. It checks transfer receipts before it publishes an accepted backup.</p>
-  <p>Run jobs send file blob run files to B2. Record run files, both CURRENT lists, home descriptors, and backup metadata use R2.</p>
-  <p>V2 currently requires external file dependencies to have coverage inside the native file set. Unsupported dependencies refuse.</p>
-  <p>Resume keeps the exact saved request and capture. Uncertain remote work retains its file hold until a confirmed result permits release.</p>
-  <p>Manual online backup uses the existing node. Stopped-home backup uses a separate command. Automatic policy requires a saved connection and a separate explicit enable command.</p>
-
-  <h2>Two destinations, one accepted backup</h2>
-  <p>New jobs require account access to both Cloudflare R2 and Backblaze B2. The client selects a destination for each object.</p>
-  <p>R2 uses a create-once upload. B2 grants one temporary upload part; the service owns completion. Receipts bind the destination, hash, and length.</p>
-  <p>The public client descriptor contains no native layout details. The encrypted root holds the recovery identity. A snapshot names both file lists; a change backup names its base and predecessor.</p>
-  <p>Large native files split into pieces of at most 64 MiB. Files smaller than 64 KiB can share an object for the same destination.</p>
-  <p>A small-file bundle holds at most 8 MiB and 512 files. The manifest records byte positions to reconstruct each original file.</p>
-
-  <h2>Backup status does not promise current coverage</h2>
-  <p>Node status reports V2 work, the automatic schedule, retries, pauses, local change positions, and the accepted cloud boundary.</p>
-  <p>A historical receipt does not prove that current writes reached the cloud. The health check keeps unmeasured freshness unknown.</p>
-  <p>An enabled policy does not prove current coverage. An automatic pause appears as blocked work. Unmeasured freshness remains unknown.</p>
-
-  <h2>Each V2 job keeps its own saved state</h2>
-  <p>V2 uses its own job records and source holds. It does not read or repair the retired V1 job records.</p>
-  <p>The disk format v1 recovery reader is also removed. Local file reads need local bytes.</p>
-  <p>An unfinished previous V2 job blocks a new request. It must reach a confirmed final state before its source holds can leave.</p>
-  <p>Protocol version and disk format describe different things. Neither old path enables packed-home recovery.</p>
-
-  <h2>Restore preserves the saved state</h2>
-  <p>V2 restore selects an exact accepted snapshot or change backup and refuses an existing destination. Older packed backups are unsupported.</p>
-  <p>It checks both run file lists, account keys, atoms, required file bytes, and saved range rules before publication. Typed rules must agree with the schemas.</p>
-  <p>The restored files retain their saved counters. Restore does not recount or repair them. A pending restore marker refuses normal use.</p>
-
-  <h2>Atom records use encrypted run blocks</h2>
-  <p>Run atoms use plain records inside encrypted blocks. The records have no separate content encryption or molecule key bundle name.</p>
-  <p>This permits compact record values before block encryption. Reads reconstruct the exact original record bytes.</p>
-  <p>The node key derives separate keys for records and file blobs. Data blocks, lookup blocks, and CURRENT use encryption.</p>
-  <p>File blob protection remains separate. Block checks bind bytes to their file identity and position.</p>
-  <p>File sizes, clear footers, and some layout facts remain visible. This does not hide every storage detail.</p>
-  <p>The new private-key range implementation remains separate from active storage. Its ordered terms reveal order, equality, length, and other information.</p>
-
-  <h2>Date values and retention</h2>
-  <p>Date fields require valid YYYY-MM-DD text. DateTime fields require an explicit offset and at most nine fractional digits.</p>
-  <p>The field value stays as supplied. Date and DateTime can serve as range keys in a typed home. Neither can be a hash key.</p>
-  <p>Retention backfill can replace an old arrival-time age with the current tips’ original write time. Existing records can then expire.</p>
-  <p>Expiry holds one key page across all schemas. The default is 16 keys; the configured maximum is 64. Record width can reduce that count.</p>
-
-  <p>The worker empties and releases each page before the next schema. Short or filtered pages do not end discovery. Schema metadata uses separate memory.</p>
-  <h2>Range order and next-page checks</h2>
-  <p>A read captures its schema, field types, and stored key format. Its next-page cursor includes a compatibility tag for those facts and query options.</p>
-  <p>Return the whole cursor unchanged. A missing or mismatched tag refuses continuation and requires a new first page.</p>
-  <p>Integer ranges put 2 before 10. Text ranges keep text order. Earlier text-order homes are no longer supported.</p>
-  <p>The tag does not grant access or hold a saved data snapshot across pages.</p>
-  <p>A typed home saves one range rule per molecule. The query uses that rule for key selection, result order, and cursor checks.</p>
-  <p>Typed values stay inside encrypted run blocks. Typed homes use no separate order-preserving range encryption. Prefix queries require text ranges.</p>
-
-  <p>Range decoding uses the selected molecule format. Plain text stays plain; malformed encoded text refuses the read. Missing molecule keys load in batches.</p>
-  <h2>Current node replies only</h2>
-  <p>The app SDK expects the current query, mutation, version, and notice replies. Older reply formats no longer receive compatibility conversion.</p>
-  <p>Batch queries require the batch route. The SDK no longer retries them as individual queries when that route is missing.</p>
-  <h2>Registry ownership and stored releases</h2>
-  <p>The S3 backend stores apps, releases, and channels in separate records. It reads saved ownership before a protected change.</p>
-  <p>A conditional create protects the first app owner. Channel updates check the prior version. Release updates preserve revocation. Legacy bulk records remain readable.</p>
-  <p>Public routes expose apps and releases. The older compatibility-record read and write routes are removed. Stored compatibility objects remain unused.</p>
-  <p>The old signature helper and APP_REGISTRY_VERIFIER_PUBKEY setting are removed. The app release installer uses the signed release log. The separate static app index retains its own compatibility facts.</p>
-  <p>The local development schema service now uses memory only. A restart loses local changes. This source review does not verify the deployed service.</p>
-  <h2>Three different delete markers</h2>
-  <ul>
-    <li>A logical Delete barrier blocks old replay. Its removal requires an explicit saved replay cutoff.</li>
-    <li>A molecule generation marker hides an older generation entry. New deletes omit it when no generation needs it and a lock prevents one from appearing.</li>
-    <li>A run-file marker hides an older physical value. Base compaction removes it when no older value can return.</li>
-  </ul>
-  <p>A delete keeps the marker if an active generation exists or another operation holds the generation lock. Logical Delete barriers remain independent.</p>
-  <p>Explicit cleanup can remove redundant generation markers in pages of at most 256. An active or prepared generation blocks cleanup. Replay cutoffs stay unchanged.</p>
-
-  <p><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/automatic/policy.rs">Automatic policy</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/mutation_log/recording.rs">Native change retention</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/log_capture/planner.rs">Change capture</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_restore/logs/plan.rs">Recovery chain</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/state/vocabulary_validation.rs">Approved vocabulary</a> · <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/core/src/vocabulary_commit.rs">Checked definition commit</a></p>
-
-  <h2>Automatic backup requires an explicit choice</h2>
-  <p>The policy starts disabled. The owner must first save a checked account connection, then enable automatic backup.</p>
-  <p>Defaults check new changes every minute and request a full snapshot daily. Each interval can range from one minute to seven days.</p>
-  <p>One job runs at a time. A retry keeps its request and exact source. Some errors pause the policy for attention.</p>
-  <p>No new changes means no change upload. The daily snapshot remains due even without new writes.</p>
-  <p>Disable stops new requests and retries. An active job can finish. Local metadata cleanup does not delete remote backups.</p>
-
-  <h2>Saved changes connect snapshots</h2>
-  <p>A full snapshot establishes the start of a local mutation log. The enabled log retains original encrypted run files through local file links.</p>
-  <p>A complete change saves file additions, record updates, then file removals. Sequence and hash checks protect the recorded order.</p>
-  <p>A change backup captures up to 128 complete entries after the accepted boundary. Its encrypted manifest names the base snapshot and previous accepted change backup.</p>
-  <p>The log has resource limits. Missing retained work records a gap and requires a new full snapshot. Cloud completion does not delay the local ack.</p>
-  <p>Restore recovers the base, then replays the accepted chain in order. It saves progress for resume and checks the complete data before publication.</p>
-  <p>This log supports cloud recovery. Local restart still opens the committed native state without replay of this backup log.</p>
-
-  <h2>Shared field names keep one meaning</h2>
-  <p>Ordinary schema and field declarations can add a definition after common code checks. The separate field-publisher key and publication route are removed.</p>
-  <p>Names use lowercase words with underscores. Descriptions must be specific. Existing definitions stay fixed, and duplicate meanings must reuse the existing field.</p>
-  <p>The checks use names, descriptions, types, and available meaning comparisons. They preserve different units and key roles.</p>
-  <p>Supplied field identities must match canonical definitions or permitted declared fields. Imports use the same definition checks.</p>
-  <p>Schemas, canonical fields, and declared fields save together in one conditional S3 record. A concurrent vocabulary change requires another check before save.</p>
-  <p>CAUTION: The new definition record requires an empty namespace or explicit conversion. Older stored definitions do not convert automatically.</p>
-  <p>App identities and release records stay separate. This source review does not establish a service deployment.</p>
-
-  <h2>File pointers and local export use current formats</h2>
-  <p>Only the current $lastdb_file pointer receives file handling. The old embedded $file and bare $blob_ref forms are removed.</p>
-  <p>Selected-data export still signs and encrypts a package for its recipient. It requires the local file bytes.</p>
-  <p>The staged-delivery list, reject routes, and access to their saved records are removed. The app chooses how to deliver the returned package.</p>
-
-  <h2>Counter work can share one disk read</h2>
-  <p>A counter update can check its counter and conditional atom-body presence with one decoded block. It still uses one saved view.</p>
-  <p>The normal read checks a body when needed. Private changes, limited memory, or streamed blocks use the existing fallback.</p>
-  <p>This temporary work adds no cache between calls and does not change the warm set.</p>
-
-  <h2>Future design: a shared database</h2>
-  <p>The design gives authorized members access to shared encrypted data. The app reads the shared records through authorized schemas. Each schema owns its records; a schema does not reference the molecules or atoms of another schema.</p>
-  <p>Members need the correct keys and access grants. A schema alone does not deliver files or grant another device access.</p>
-  <p>Simultaneous cloud writers need a defined frontier, conflict rules, and retention rules. The guide treats this behavior as future design.</p>
-
-  <h2>Future design: a guaranteed write</h2>
-  <p>A proposed guaranteed write requires a cloud grant before success. Current local writes confirm disk completion without that grant.</p>
-  <p>The old mutation cloud-publication option and cloud receipt are removed. The exact cloud acceptance and recovery contract needs implementation and proof. The guide does not present it as an available write mode.</p>
-
-  <h2>Schema checks keep a separate read-only path</h2>
-  <p>A schema check resolves the proposed fields and keys without saving definitions or changing local schemas. Synchronization can register and load the result.</p>
-  <p>Both paths now share explicit decision rules. Different keys still require a new schema proposal; the node does not invent a service identity.</p>
-
-  <h2>Stored file records require binary encryption</h2>
-  <p>The file key protects file contents. Account encryption also protects the complete local file blob record, including its metadata.</p>
-  <p>Every stored file blob record requires the binary ENB: format, even when its file bytes already have encryption. Run-block encryption surrounds that record.</p>
-  <p>CAUTION: Older ENC:, ENZ:, and unprotected file blob records cause an error. They are not silently treated as missing.</p>
-  <p>Optional record compression defaults off. A read can still open compressed ENB: records when that write option is off.</p>
-  <p>The old reseal and reap-unsealed commands are removed. There is no automatic conversion at this boundary.</p>
-  <p>Other raw-key helpers still accept ENC: where their callers use it. Atom records inside run blocks need no separate record encryption.</p>
-
-  <h2>Services around the database</h2>
-  <ul>
-    <li>The schema service supplies definitive schema definitions.</li>
-    <li>Cloud access authorizes explicit V2 backup work.</li>
-    <li>Future design: protected messages carry invitations, key grants, and share notices.</li>
-    <li>Future design: a shared file service holds encrypted file bytes for authorized members.</li>
-    <li>The app registry describes releases and their LastDB compatibility.</li>
-  </ul>
-  <p>Each guide part states whether its explanation describes reviewed source or future design.</p>
-
-  <h2>Local encrypted export remains available</h2>
-  <p>An owner request selects records by keys and includes their required local file bytes. LastDB signs and encrypts the result for the supplied recipient.</p>
-  <p>The response contains the protected package. The caller handles delivery. This route sends no message and uploads no object.</p>
-  <p>The old slice importer, staged-delivery writer, recipient enrollment, and message sender are removed. Missing local bytes cannot use a cloud fetch fallback.</p>
-
-  <h2>App compatibility now checks declared formats</h2>
-  <p>JSON app manifests can declare request and notice format versions. The installer checks those versions against the node’s supported range.</p>
-  <p>The optional LastDB version requirement remains. The TOML path checks that requirement. An absent declaration does not prove compatibility.</p>
-  <p>The signed registry can select a release by supported formats. It prefers an exact build match; entries without format declarations still need that match.</p>
-
-  <h2>Nightly packages remain separate from the app registry</h2>
-  <p>The nightly workflow builds a fixed LastDB revision for Apple silicon and Linux x64. It checks required gates and verifies the uploaded release bytes.</p>
-  <p>It publishes a GitHub prerelease. It does not update installed nodes, Homebrew, or the app registry.</p>
-  <p>The separate app release installer now checks the signed verifier log. This source review does not confirm a successful nightly release or a deployed registry change.</p>
-
-  <h2>Local development app installs</h2>
-  <p>The install command accepts --from, --rev, and --dev together. It reads the chosen commit’s manifest and checks declared format versions.</p>
-  <p>The installer clones the origin URL when available, or the local repository otherwise. The selected commit must exist at that source.</p>
-  <p>The saved receipt records the exact commit and development status. Uncommitted edits and signed-release status do not come with this path.</p>
-
-  <h2>Questions that remain in the design</h2>
-  <ul>
-    <li>How does one atom use keys when it belongs to databases with different encryption keys?</li>
-    <li>Which range, recipient, and file metadata can the cloud see?</li>
-    <li>Which frontier and retention rules permit simultaneous writers?</li>
-    <li>What permits cloud file removal after a member leaves or a device stays offline?</li>
-    <li>What result does a read return when a key is absent locally and the cloud is unavailable?</li>
-  </ul>
-
-  <p>Latest source: <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/molecules/delete.rs">Delete marker admission</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/jobs/self_metrics/snapshot_build.rs">Warm-set byte status</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/scripts/benchmarks/disk_budget.py">CI disk-size check</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/crypto/at_rest/mod.rs">File and delivery encryption</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/.github/workflows/nightly-release.yml">Nightly release workflow</a>.</p>
-
-  <p>Related source: <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/exec/schema_declare/execute.rs">Schema check and synchronization</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/ops/self_metrics/at_rest.rs">File-blob value status</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/transaction/leases.rs">Generation protection through publication</a>.</p>
-
-  <h2>Backup after a clean stop</h2>
-  <p>Before an upgrade, the owner can request a full backup of the final cleanly stopped state. The command does not stop the daemon itself.</p>
-  <p>It checks the exact stopped session and shutdown flush receipt. A saved owner connection is required. Automatic backup must be off, with no unfinished job.</p>
-  <p>The command locks both native homes and retains their files without a daemon, full database copy, or logical database boot. Archives are refused.</p>
-  <p>After acceptance, it reads every remote object. It checks lengths and hashes, including the original files reconstructed from cloud pieces.</p>
-  <p>It checks both CURRENT file lists again. Local job metadata can change; the native data and file lists must remain unchanged.</p>
-  <p>Success verifies backup bytes. It does not perform a restore or upgrade.</p>
-
-  <h2>Registry generations preserve app identity</h2>
-  <p>The optional SCHEMA_DEFINITION_NAMESPACE selects a separate set of schema and field definitions, releases, and channels.</p>
-  <p>App identities, ownership, and quota state remain shared. A new generation copies no app identities or definitions.</p>
-  <p>An empty generation stays empty. The service does not fall back to older definitions.</p>
-  <p>The name must start with canonical-. The configuration also requires a matching separate search store for derived schema data.</p>
-  <p>Without the setting, the existing layout remains. This review does not confirm which configuration is deployed.</p>
-
-  <h2>Reuse within one write or batch read</h2>
-  <p>A write can reuse its checked schema metadata within its current memory allowance. Changed source state invalidates that reuse.</p>
-  <p>A run reader can reuse its encryption-key setup. One batch lookup can also reuse a decompression workspace.</p>
-  <p>Each block still receives its own integrity and size checks. Bounded backup reads keep their separate decoder path.</p>
-  <p>This work does not add a cache between requests or change the warm-set limit. The guide makes no measured speed claim.</p>
-
-  <h2>Public source references</h2>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_node/creation.rs">Typed defaults and creation checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_admission.rs">Current home admission</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/memory_budget/process_budget.rs">Current process memory estimate</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/range/memo.rs">Bounded backup key selection</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_app_sdk/src/client.ts">Current node client contracts</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/sharing/query_slice/file_bytes.rs">Local file reads</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/model/src/atom/molecule_key_codec/profile.rs">Typed range encoding inside encrypted blocks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_restore/proof/ranges.rs">Restore range-rule checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/app_release_host/registry.rs">Registry release reads</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/value/mod.rs">Compact record values and exact reconstruction</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/codec.rs">Atom records inside encrypted blocks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/plan.rs">Base compaction and exact byte counts</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/cloud_backup_protocol/src/v2/transfer/api.rs">Provider-specific upload grants</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/physical_v2.rs">Separate record and file blob homes</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_host/src/handlers/query/rules.rs">Next-page compatibility checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_admission.rs">Typed home and account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/ops/self_metrics/durability.rs">Backup status</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/app_cmds/local_install.rs">Local development install</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_node.rs">Run-home creation, recovery, and key</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Run commits and background compaction</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/commit.rs">Run publication and merge limits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/read.rs">Run file lookup</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/frame.rs">Block encryption</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/atom_store/delete_marker_cleanup.rs">Molecule generation marker cleanup</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/jobs/ttl_sweep/discovery.rs">Paged expiry discovery</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/schema_types/src/declarative_schemas/key_types.rs">Date range support and hash refusal</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/byte_backup/planner.rs">Native file pieces and small-file bundles</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_restore/closure.rs">Run-only restore admission</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/home/cleanup.rs">Run-home cleanup steps</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/app_release_host/release_log/rules.rs">Signed release-log checks</a></li>
-  </ul>
-  <p>Additional source: <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/mod.rs">New and existing home access</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/search_index/search_rebuild.rs">Offline search rebuild</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/disk_run/reader.rs">Run-file read counts</a>.</p>
-  <p>New source: <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/cleanup/worker.rs">Resumable node cleanup</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/search_index/queue_policy.rs">Optional Search queue</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/search_index/inbox_fields.rs">Search field and file rules</a>; <a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/resident/core_set/model.rs">Write allowance release</a>.</p>
-  <p>The guide pins its implementation claims to LastDB revision <code>f7f0860b</code>. Later source can differ.</p>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_commit.rs">Complete local snapshot commits</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/mod.rs">Native backup and its release flag</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/worker.rs">Account readiness for new backup work</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_restore/session.rs">Native restore selection and destination</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/cloud_cmds/byte_backup/setup/files/restored.rs">Restored account checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/sharing/file_blob_seal.rs">Account-specific file keys</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/mod.rs">Manual V2 backup and its release switch</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/bin/lastdb/cloud_cmds/recovery_home/native_registration.rs">Separate account registration</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/deliver/publish.rs">Local encrypted snapshot export</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/connection.rs">Owner connection and exact account binding</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/byte_backup/run_capture.rs">Paired run capture</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/disk_pack/run_restore/proof.rs">Run account and file dependency checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_restore/runs/install.rs">Run restore publication checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/frame/stream/gcm.rs">Buffers sized to encrypted content</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/jobs/ttl_sweep/erase/rounds.rs">One expiry page across schemas</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/schema_service_s3/src/per_record.rs">Conditional registry record changes</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/stopped/mod.rs">Stopped-home backup</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/stopped/guard.rs">Stopped session and home checks</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/lastdb_node/src/byte_cloud_backup/stopped/verify/plan.rs">Remote byte verification</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/schema_service/crates/schema_service_s3/src/definition_namespace.rs">Registry generation configuration</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/storage/encrypting_store/mod.rs">Required file record encryption</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/fold_db/crates/core/src/db_operations/schema_store/native_memory.rs">Prepared schema metadata</a></li>
-    <li><a href="https://github.com/EdgeVector/lastdb/blob/f7f0860b707a7de02a1da8ebb73fc0c0b24fd9d4/vendor/laststore/src/frame/decode.rs">Bounded batch decode reuse</a></li>
-  </ul>
-  <footer>These notes summarize the design used for the guide. They contain no local database measurements or account information.</footer>
+<a href="/explore/#sources">← Back to the guide</a>
+<h1>Source notes and release limits</h1>
+<p class="date">Source review: 1 November 2026. Merged LastDB revision <code>7053eb5a</code>.</p>
+<p class="notice"><strong>Whole records are the current model.</strong> The guide describes 124 parts and 405 connections. This review covers 20 new commits, and 632 commits after October 21.</p>
+<section id="field-reuse">
+<h2>One schema owns its records</h2>
+<p>A schema names fields, a primary key, and optional named alternate keys. Each schema owns its record values.</p>
+<p>Canonical field reuse shares meaning and type. It does not connect records in different schemas.</p>
+<p>One stored record holds fields, their write facts, record metadata, and any delete marker. The final encoded record must fit within 64 KiB.</p>
+<p>Large files stay in a separate file home. A record holds their small references.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/model/src/record_value.rs">src/record_value.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/schema_service/crates/schema_types/src/alternate_keys.rs">src/alternate_keys.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/db_operations/atom_store/record_cap.rs">atom_store/record_cap.rs</a></p>
+</section>
+<section id="schema-conversion">
+<h2>Only format 7 homes</h2>
+<p>Every new home uses format 7. This release opens and restores only that format.</p>
+<p>Formats 4 to 6 require the older program to read their records into a fresh home. The current program has no older-home reader or in-place conversion.</p>
+<p>Field atom and molecule read and write paths are removed. Aggregate writes and signed imported field writes are refused.</p>
+<p>The old alternate-key change routes are removed. Changed keys need a separate schema and an explicit record copy.</p>
+<p>A repeated schema declaration can add fields with unchanged keys and meanings. Existing records read added fields as absent.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/run_admission.rs">disk_pack/run_admission.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/run_node/creation.rs">run_node/creation.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/byte_backup/run_codec.rs">byte_backup/run_codec.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/write/records.rs">write/records.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/lastdb_node/src/exec/schema_declare/owned.rs">schema_declare/owned.rs</a></p>
+</section>
+<section id="memory">
+<h2>Whole-record memory and reads</h2>
+<p>A read by key checks memory first. A disk fetch can keep one complete decoded record in the warm set.</p>
+<p>The default warm limit is 256 MiB. Least recently used records leave first; a record that a call holds stays.</p>
+<p>A write publishes its record to memory only after the flush. Older read views and private writes use their own disk state.</p>
+<p>A range page names one hash and fetches bounded key pages. Owner pages across a schema follow protected stored-key order.</p>
+<p>An owner cursor continues from the previous stored key. Offset plus requested records is limited to 8,192. Conditions and counts can require broader reads.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/record_warm.rs">disk_pack/record_warm.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/resident/core_set/records.rs">core_set/records.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/db_operations/atom_store/record_walk.rs">atom_store/record_walk.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/query/hash_range_query/records/received_range.rs">records/received_range.rs</a></p>
+</section>
+<section id="write">
+<h2>One complete saved change</h2>
+<p>A native request saves its records, alternate entries, file counts, history, and notices together. Memory publication and the ack follow disk completion.</p>
+<p>Ready requests can share a flush. There is no flush interval.</p>
+<p>Each field keeps its own write order. Local metadata updates replace only supplied keys and preserve omitted keys.</p>
+<p>An alternate entry belongs to the primary key it names. A departing record removes it only while that ownership still matches.</p>
+<p>Repeated changes to one record must leave a final value within 64 KiB. A failed final size check refuses the request.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/transaction/request.rs">transaction/request.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/write/record_effects.rs">write/record_effects.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/model/src/record_value/meta.rs">record_value/meta.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/alternate_keys/write.rs">alternate_keys/write.rs</a></p>
+</section>
+<section id="lifetime">
+<h2>History, deletion, and files</h2>
+<p>Field history is off by default. An enabled policy saves the previous field value and write facts as a copy.</p>
+<p>A history copy omits record metadata. Its file references still keep the required file bytes available.</p>
+<p>Delete keeps a marker against older writes. Purge also removes retained history and conflicts. A whole-record Purge refuses above 1,024 history entries.</p>
+<p>The owner can first remove field history in pages of at most 32 entries. The delete marker remains after Purge.</p>
+<p>File counts cover current record references and saved history. A zero count starts a one-hour wait by default; a new reference cancels removal.</p>
+<p>Backup checks file pointers in records and history. Metadata-only file references use file counts and the full native file copy.</p>
+<p>Compaction and physical file holds remain separate from logical deletion. Older cloud copies do not disappear because a local record is deleted.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/db_operations/atom_store/atom_history/records.rs">atom_history/records.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/write/record_effects.rs">write/record_effects.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/db_operations/atom_store/blob_counter/deltas.rs">blob_counter/deltas.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/run_restore/proof/records.rs">proof/records.rs</a></p>
+</section>
+<section id="sharing">
+<h2>Local share copies and explicit peer exchange</h2>
+<p>An active share rule copies a changed personal record to each local share scope in the same request. Copies include the delete marker and file counts.</p>
+<p>A read chooses the live local record first. Otherwise the first active received scope with a live record supplies the whole record.</p>
+<p>Active received data blocks alternate reads. Local share support does not enable automatic cloud delivery.</p>
+<p>Explicit owner peer exchange uses signed version 2 record events. Each field keeps the newer write. A losing different value can remain as a conflict.</p>
+<p>If a merged peer record exceeds 64 KiB, the stored record stays unchanged. The receipt names the skipped record; other records can save.</p>
+<p>Peer exchange refuses file blobs and shared data. It sends Purge as Delete, so the receiver keeps its own history. Automatic network delivery remains unavailable.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/query/hash_range_query/records/received.rs">records/received.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/write/record_effects.rs">write/record_effects.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/records/cap.rs">records/cap.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/fold_db_core/mutation_manager/peer_import/records/admission.rs">records/admission.rs</a></p>
+</section>
+<section id="encryption">
+<h2>Keys and encrypted run files</h2>
+<p>Each schema record key space has its own protected hash lookup. Alternate keys use separate key spaces.</p>
+<p>Typed range rules preserve the required order inside encrypted run blocks. The order rule alone is not encryption.</p>
+<p>Both run homes keep their native encrypted files during backup. Cloud object sizes do not select a different local storage format.</p>
+<p>File blobs retain separate encryption and file keys. Peer metadata excludes local file-reference keys.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/model/src/record_space.rs">src/record_space.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/model/src/atom/molecule_key_codec/profile.rs">molecule_key_codec/profile.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/run_node.rs">disk_pack/run_node.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/sharing/file_blob_seal.rs">sharing/file_blob_seal.rs</a></p>
+</section>
+<section id="cloud">
+<h2>Backup and restore remain separate</h2>
+<p>The owner can request a snapshot or enable an automatic policy after an account connection. Defaults check changes each minute and request a full snapshot daily.</p>
+<p>A snapshot captures both run homes. Later accepted change backups retain complete ordered changes.</p>
+<p>Restore needs a fresh destination, exact accepted state, complete change chain, account access, and the release switch.</p>
+<p>This release restores only format 7. Earlier backup profiles are refused. Restore preserves saved counts and does not repair them.</p>
+<p>The DEV recovery workflow adds a guarded manual baseline operation. That change is not proof of PROD recovery or older-backup compatibility.</p>
+<p>This review does not enable restore, alter the primary, or change automatic backup policy. Inactive snapshot preparation still grants no replacement authority.</p>
+<p>Source: <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/lastdb_node/src/byte_cloud_backup/automatic/policy.rs">automatic/policy.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/lastdb_node/src/byte_cloud_backup/mod.rs">byte_cloud_backup/mod.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/lastdb_node/src/byte_cloud_restore/logs/plan.rs">logs/plan.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/fold_db/crates/core/src/storage/disk_pack/byte_backup/run_codec.rs">byte_backup/run_codec.rs</a> · <a href="https://github.com/EdgeVector/lastdb/blob/7053eb5aa8d353e1efe173ae689ccf6c11be8ca0/.github/workflows/cloud-backup-recovery.yml">workflows/cloud-backup-recovery.yml</a></p>
+</section>
+<footer><p>No vendored LastStore source changed in this interval. Schema-service error helpers preserve their response rules.</p><p>Some design documents describe removed paths. Current source controls implementation claims. This guide does not prove deployed service behavior.</p><a href="/explore/#diagram">Open the system diagram →</a></footer>
 </main>
 </body>
 </html>
