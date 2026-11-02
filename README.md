@@ -113,9 +113,11 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 `public/explore/` contains the standalone guide from Sites source revision
 `4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `fb7cd7cbf2bf712bde916bcb934e4f18e25ae638` from 2 November 2026.
-The guide includes 124 parts and 402 named connections.
-Format 7 is the only supported home format. Whole records replace field atoms and tips.
+revision `f651fba2475922b89b9d28690012701f0aeaed78` from 2 November 2026.
+The guide includes 121 parts and 392 named connections.
+Format 8 is the only supported home format. Older homes need their matching program.
+Query replies carry one metadata block per record. Older snapshot comparison tools and
+app storage estimates are removed; owner record and disk reports remain.
 The guide explains the 64 KiB record limit, metadata, received data, owner pages, history,
 and retained conflicts. Device event capture and peer exchange are removed.
 Stopped-home backup can preserve automatic backup. Both backup paths share one upload planner,
