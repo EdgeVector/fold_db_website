@@ -56,12 +56,10 @@
     ["app-registry","app-list-cache","keeps verified catalog bytes in"],
     ["app-list-cache","app-compatibility","retains one catalog per API version for"],
     ["query-replies","record-metadata","return one block of"],
-    ["query-replies","record-conflicts","mark returned fields with"],
     ["snapshot","cloud-byte-pieces","plans its native files with","design"],
     ["schema","schema-removal","can be removed through"],
     ["schema-removal","record-home","releases personal records from"],
     ["schema-removal","record-history","releases saved values in"],
-    ["schema-removal","record-conflicts","removes retained losses from"],
     ["schema-removal","alternate-entries","removes the declared"],
     ["schema-removal","disk-holds","leaves physical retention to"],
     ["ttl","expiry-progress","remembers checked deleted keys through"],
@@ -78,8 +76,6 @@
     ["record-history","history-expiry","uses the policy and worker for","design"],
     ["record-history","field-restore","supplies a saved value to","design"],
     ["record-delete","record-history","removes saved values on Purge from","design"],
-    ["record-delete","record-conflicts","removes retained losses on Purge from","design"],
-    ["record-conflicts","time-queue","release expired losses through","design"],
     ["ttl","record-delete","uses the record cutoff and","design"],
     ["restore-checks","record-history","check saved field values in","design"],
     ["run-backup-files","record-home","preserve the native files of","design"],
@@ -89,7 +85,7 @@
     ["record-value","file-blob","can own one"],
     ["record-home","run-home","uses the ordered files of a"],
     ["home-creation","record-home","creates the supported format for","design"],
-    ["record-home","alternate-format","needs format 9 recognized by"],
+    ["record-home","alternate-format","needs format 10 recognized by"],
     ["record-home","flush","saves a complete request through"],
     ["record-home","alternate-entries","updates its record and"],
     ["record-delete","record-value","keeps a delete marker in a"],
@@ -269,9 +265,9 @@
     ["node","search-rebuild","must stop before"],
     ["search-rebuild","search-service","prepares fresh source records for"],
     ["search-rebuild","run-home","opens existing run files through"],
-    ["run-values","run-files","supply compact or original values to"],
+    ["run-values","run-files","supply unchanged values to"],
     ["run-values","run-encryption","receive disk protection from"],
-    ["run-lookup","run-values","restores original bytes from"],
+    ["run-lookup","run-values","returns"],
     ["run-merge","run-base","moves older records into"],
     ["run-merge","stale-byte-count","selects work with"],
     ["stale-byte-count","run-files","counts obsolete record bytes in"],
@@ -327,7 +323,8 @@
     ["ttl","retention-backfill","can include older records through"],
     ["schema","retention-backfill","supplies the active policy for"],
     ["retention-backfill","snapshot-commit","saves each page through"],
-    ["delete-purge","time-queue","keeps unfinished conflict cleanup in"],
+    ["history-expiry","time-queue","finds due saved values through","design"],
+    ["time-queue","record-history","removes expired copies from","design"],
     ["key","keyed-conditions","selects candidate records for"],
     ["read-view","keyed-conditions","keeps field values consistent for"],
     ["keyed-conditions","record","can reuse checked fields in"],
@@ -408,7 +405,7 @@
     ["record-home","warm-set","publishes saved records to"],
     ["warm-set","flush","admits writes after"],
     ["write-order","record-value","selects each field value in"],
-    ["write-order","record-conflicts","describes older retained writes in","design"],
+    ["write-order","record-history","keeps value selection separate from","design"],
     ["delete-purge","record-delete","uses"],
     ["record-delete","run-merge","leaves physical cleanup to"],
     ["field-history","record-history","keeps earlier values through","design"],
@@ -467,7 +464,7 @@
   const partStatus=p=>p.status==='candidate'?'Unreleased source':p.status==='configured'?'Service opt-in':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · NOT ACTIVE IN THE STORAGE PATH':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore still needs the release switch.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 9 is the only supported home format. One record holds its fields and optional file marker; file bytes stay separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; separate restore gate.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unreleased source, or is future design.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore still needs the release switch.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 10 is the only supported home format. One record holds its fields and optional file marker; file bytes stay separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; separate restore gate.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(meta[p.layer].title)}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(meta[parts[other].layer].title)} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function choosePart(id){const p=parts[id];if(!p)return;state.area=p.layer;state.selected=id;hideResults();history.replaceState(null,'',`#diagram/${p.layer}/${p.id}`);draw();announce(`${p.name} selected. Its purpose and connections appear beside the diagram.`);}
