@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Follow the connections between 131 parts, or follow one request through the layers.</p>
+        <p>Follow the connections between 130 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 3 November 2026. Explore record-owned files, memory, disk, and cloud, plus schema advice and the service-controlled catalog feed’s field type rules. Each part explains its purpose and limits.</p>
+        <p className="dim">Source review: 3 November 2026. Explore format 10 storage, field history, and the current backup and restore limits across memory, disk, and cloud. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
