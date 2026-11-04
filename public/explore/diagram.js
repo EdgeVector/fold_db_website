@@ -4,6 +4,7 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["alternate-entries","field-key-bundles","use each key’s own rules from"],
     ["format-writer","field-key-bundles","creates and saves"],
     ["field-key-bundles","hash-protection","supply the secret keys for"],
     ["field-key-bundles","range-context","save the rules checked by"],
@@ -49,8 +50,8 @@
     ["stable-release","restore","qualifies packaged code separately from"],
     ["format-writer","alternate-format","uses the definitions of"],
     ["format-writer","accepted-writes","encodes and checks records from"],
-    ["format-writer","alternate-entries","encodes changes to"],
-    ["format-writer","record-file-lifetime","prepares file changes for"],
+    ["format-writer","alternate-entries","binds locations and key values in"],
+    ["format-writer","record-file-lifetime","checks every changed record through"],
     ["format-writer","record-history","encodes saved values and expiry links for"],
     ["format-writer","flush","leaves saving to"],
     ["format-writer","warm-set","prepares saved records for"],
@@ -157,7 +158,7 @@
     ["alternate-keys","alternate-format","need a compatible layout checked by"],
     ["alternate-entries","read-view","check entries and fields in one"],
     ["alternate-entries","record","point to the primary key of a"],
-    ["alternate-entries","snapshot-commit","shares the record’s"],
+    ["alternate-entries","snapshot-commit","share the record’s"],
     ["alternate-entries","hash-protection","use separate key spaces for"],
     ["accepted-writes","alternate-entries","update affected"],
     ["delete-purge","alternate-entries","remove affected"],
