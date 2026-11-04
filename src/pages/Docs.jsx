@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 4 November 2026. Its 134 parts explain format 11 storage, protected file writes, expiry tracking, automatic backup, and recovery without a release switch. Select a part to see its purpose, connections, and limits.</p>
+        <p className="dim">The guide describes source from 4 November 2026. Its 134 parts explain format 11 storage, alternate-key checks, file cleanup, automatic backup, and recovery without a release switch. Select a part to see its purpose, connections, and limits.</p>
       </Section>
 
       <Section variant="amber">
