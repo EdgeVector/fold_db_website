@@ -111,19 +111,18 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 ## Interactive guide
 
-`public/explore/` contains the standalone guide from Sites source revision
-`4b2686d09121481e4424070650ded9d0c9541c1a`. Its architecture review uses LastDB
-revision `f651fba2475922b89b9d28690012701f0aeaed78` from 2 November 2026.
-The guide includes 121 parts and 392 named connections.
-Format 8 is the only supported home format. Older homes need their matching program.
-Query replies carry one metadata block per record. Older snapshot comparison tools and
-app storage estimates are removed; owner record and disk reports remain.
-The guide explains the 64 KiB record limit, metadata, received data, owner pages, history,
-and retained conflicts. Device event capture and peer exchange are removed.
-Stopped-home backup can preserve automatic backup. Both backup paths share one upload planner,
-and a separate HTTPS client transfers the bytes. Status compares local writes with the automatic
-policy’s saved backup positions. Normal cloud restore retains its release switch.
-The disk view describes run homes only. Cloud backup preserves their native files.
+`public/explore/` contains the standalone interactive guide. Its architecture review uses
+LastDB revision `121b187d6c845cb612d49392ff3603a786ab752e` from 4 November 2026.
+The guide includes 134 parts and 460 named connections, reviewed through 853 commits
+after the original October 21 source. Format 12 and API 27 use complete conditional
+record writes, explicit primary and alternate addresses, and one record revision.
+Omitted fields, metadata, and file markers disappear on replacement. Older homes need
+their matching program; there is no in-place conversion.
+
+The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate addresses,
+bounded retries, record-owned files, history, and deletion. Backup preserves encrypted
+native run files. Ordinary authenticated restore needs no release switch, but the linked
+PROD recovery evidence covers the earlier format 11 source, not the format 12 cutover.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the

@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 134 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 4 November 2026. Explore format 11 storage, alternate-key checks, record-owned file cleanup, and automatic backup and recovery across memory, disk, cloud, and services. Each part explains its purpose and limits.</p>
+        <p className="dim">Source review: 4 November 2026. Explore format 12 records, explicit keys, revision checks, record-owned files, and automatic backup and recovery across memory, disk, cloud, and services. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
