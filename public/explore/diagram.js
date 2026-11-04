@@ -4,6 +4,19 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["format-writer","time-queue","builds and checks entries for"],
+    ["format-writer","retry-receipts","encodes bounded lists for"],
+    ["format-writer","write-order","saves the author clock used by"],
+    ["format-writer","change-notices","assigns positions and encodes"],
+    ["format-writer","local-schema-declaration","validates and saves definitions from"],
+    ["format-writer","schema-removal","checks selected state deletions for"],
+    ["ci-app-publisher","stable-release","supplies signed entries before"],
+    ["ci-app-publisher","app-publish","consumes checked declarations from"],
+    ["ci-app-publisher","app-registry","publishes permitted entries to"],
+    ["ci-app-publisher","app-compatibility","signs the observed versions for"],
+    ["ci-app-publisher","managed-app-install","has explicit signer trust in"],
+    ["ci-app-publisher","node","uses app-operation evidence from"],
+
     ["record-value","record-file-lifetime","owns its optional file through"],
     ["record-metadata","file-blob","reports the marker for"],
     ["file-blob","record-file-lifetime","has one owner through"],
@@ -28,7 +41,7 @@
     ["format-writer","accepted-writes","encodes records from"],
     ["format-writer","alternate-entries","encodes changes to"],
     ["format-writer","record-file-lifetime","prepares file changes for"],
-    ["format-writer","record-history","admits retained history rows from"],
+    ["format-writer","record-history","encodes saved values and expiry links for"],
     ["format-writer","flush","leaves saving to"],
     ["format-writer","warm-set","prepares saved records for"],
     ["prod-recovery","restore","runs without the release switch through"],
