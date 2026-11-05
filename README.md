@@ -112,19 +112,22 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `ae97477260ed9cdea1296a7dcf864f960ee05c83` from 5 November 2026.
-The guide includes 134 parts and 462 named connections, reviewed through 869 commits
-after the original October 21 source. Format 12 and API 29 use complete conditional
+LastDB revision `38fb14037448d94300e4039e8cd0e7ade269eb03` from 5 November 2026.
+The guide includes 140 parts and 485 named connections, reviewed through 899 commits
+after the original October 21 source. Format 13 and API 30 use complete conditional
 record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
 Omitted fields, metadata, and file markers disappear on replacement. Older homes need
 their matching program; there is no in-place conversion.
 
 The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate addresses,
 how to reread after a lost write reply, record-owned files, history, and deletion.
+Writer positions commit with records. Applied-delete stamps live separately, and files have immutable versions.
+Shared log, exact-object upload, replay, and fresh-home staging components are documented as unconnected.
+Pinned schema routes and the limited format 12 to 13 copy operation are included.
 Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
 Status uses memory snapshots and a local log; database report writes and ops --since are removed. Backup preserves encrypted
 native run files. Ordinary authenticated restore needs no release switch, but the linked
-PROD recovery evidence covers the earlier format 11 source, not the format 12 cutover.
+PROD recovery evidence covers the earlier format 11 source, not the format 13 cutover.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the
