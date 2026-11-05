@@ -7,3 +7,51 @@
 @media(max-width:640px){.diagram-area-title{font-size:29px}.diagram-area-summary{font-size:22px}.diagram-node-title{font-size:21px}.diagram-node-caption{font-size:15px}.diagram-shell.expanded .diagram-stage{height:800px}.diagram-shell.expanded .diagram-stage.in-layer{height:560px}}
 
 .diagram-read-below{display:none;background:transparent;color:#48673e;font-size:11px;padding:5px 0;text-decoration:underline;text-underline-offset:3px}@media(max-width:950px){.diagram-read-below{display:block;margin-left:auto}.diagram-inspector{scroll-margin-top:12px}}
+
+/* Start with the write path; reveal storage machinery only on request. */
+.diagram-body.disk-summary{grid-template-columns:minmax(0,1fr)}
+.diagram-body.disk-summary .diagram-inspector,
+.diagram-body.disk-summary .diagram-legend,
+.diagram-body.disk-summary .diagram-context-note,
+.diagram-stage.disk-summary .diagram-zoom-controls,
+.diagram-stage.disk-summary .diagram-stage-location{display:none}
+.diagram-stage.disk-summary,
+.diagram-shell.expanded .diagram-stage.disk-summary{height:auto;overflow:visible;background:#f8faf5;flex:none}
+.diagram-shell.expanded:has(.disk-summary){overflow:auto}
+.diagram-shell.expanded .diagram-body.disk-summary,
+.diagram-shell.expanded .disk-summary .diagram-canvas-column{display:block}
+#diagram-disk-overview[hidden]{display:none}
+.disk-overview{max-width:850px;margin:0 auto;padding:30px 36px 36px}
+.disk-overview header .eyebrow{font-size:10px;color:#8c773e;margin-bottom:12px}
+.disk-overview h2{font-size:29px;line-height:1.25;letter-spacing:-.8px;font-weight:500;color:#33492c}
+.disk-overview header p{font-size:13px;line-height:1.7;color:#687b5e;margin-top:10px}
+.disk-write-path{list-style:none;padding:0;margin:25px 0 0;display:grid;gap:22px}
+.disk-write-path li{position:relative}
+.disk-write-path li+li::before{content:'↓';position:absolute;top:-22px;left:31px;color:#a89b79;font-size:18px;line-height:22px}
+.disk-write-path button{width:100%;display:flex;align-items:center;gap:18px;text-align:left;background:white;border:1px solid #d7dfce;border-radius:10px;padding:17px 20px;color:#33492c}
+.disk-write-path button:hover{border-color:#9b803d;background:#fffdf7}
+.disk-step-number{display:flex;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border-radius:50%;background:#f2ead5;color:#887131;font-size:12px}
+.disk-write-path strong{display:block;font-weight:500;font-size:18px;line-height:1.4}
+.disk-step-description{display:block;font-size:12px;line-height:1.6;color:#718265;margin-top:4px}
+.disk-step-open{margin-left:auto;color:#8e9d81;font-size:19px}
+.disk-backup-note{font-size:12px;line-height:1.7;color:#6e8262;margin:19px 0 30px;padding-left:2px}
+.disk-overview h3{font-weight:500;font-size:15px;margin-bottom:13px;color:#4b6540}
+.disk-detail-groups{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.disk-detail-groups details{border:1px solid #dce3d4;border-radius:8px;background:#fff;overflow:hidden}
+.disk-detail-groups summary{position:relative;cursor:pointer;padding:15px 30px 15px 16px;list-style:none}
+.disk-detail-groups summary::-webkit-details-marker{display:none}
+.disk-detail-groups summary::after{content:'+';position:absolute;right:14px;top:13px;font-size:19px;color:#7b8c6d}
+.disk-detail-groups details[open] summary::after{content:'−'}
+.disk-detail-groups summary strong{display:block;font-size:13px;font-weight:500;color:#4b6540;line-height:1.4}
+.disk-detail-groups summary>span{display:block;font-size:11px;line-height:1.6;color:#7a8970;margin-top:5px}
+.disk-detail-groups .diagram-part-menu{padding:0 16px 12px;grid-template-columns:1fr}
+.disk-detail-groups .diagram-part-menu button{font-size:12px;line-height:1.5}
+.disk-detail-groups .diagram-part-menu button>span:first-child{color:#4b6540}
+@media(max-width:640px){
+  .disk-overview{padding:23px 17px 25px}
+  .disk-overview h2{font-size:25px}
+  .disk-write-path button{padding:15px 13px;gap:12px}
+  .disk-write-path strong{font-size:16px}
+  .disk-write-path li+li::before{left:23px}
+  .disk-detail-groups{grid-template-columns:1fr}
+}
