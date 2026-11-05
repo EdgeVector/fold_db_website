@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 5 November 2026. Its 134 parts explain lookup-key protection, current request activity, whole-record queries, automatic backup, and recovery limits. Select a part to see its purpose, connections, and limits.</p>
+        <p className="dim">The guide describes source from 5 November 2026. Its 140 parts explain durable writer positions, versioned files, applied deletes, automatic backup, and shared-recovery components that are not yet connected. Select a part to see its purpose, connections, and limits.</p>
       </Section>
 
       <Section variant="amber">
