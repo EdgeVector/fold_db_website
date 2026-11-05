@@ -84,7 +84,7 @@
     ["stable-release","restore","qualifies packaged code separately from"],
     ["format-writer","alternate-format","uses the definitions of"],
     ["format-writer","accepted-writes","encodes and checks records from"],
-    ["format-writer","alternate-entries","binds locations and key values in"],
+    ["format-writer","alternate-entries","derives pointer changes for"],
     ["format-writer","record-file-lifetime","checks every changed record through"],
     ["format-writer","record-history","encodes saved values and expiry links for"],
     ["format-writer","flush","leaves saving to"],
