@@ -4,6 +4,11 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["node","node-status","exposes health and request activity through"],
+    ["node-status","warm-set","reports memory use for"],
+    ["node-status","socket-workers","reports request activity through"],
+    ["node-status","backup-status","includes coverage from"],
+    ["restore-checks","field-key-bundles","validate primary and alternate rules from"],
     ["app","query-replies","can check the record after a lost write reply through"],
     ["query-replies","conditions","return the revision required by"],
     ["conditions","record-value","guard the complete replacement of"],
