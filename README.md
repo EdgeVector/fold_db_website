@@ -112,15 +112,17 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `3142dc5d8ca627a2f9ed3027bf0440ec3b65e1cb` from 4 November 2026.
-The guide includes 133 parts and 457 named connections, reviewed through 856 commits
+LastDB revision `ae97477260ed9cdea1296a7dcf864f960ee05c83` from 5 November 2026.
+The guide includes 134 parts and 462 named connections, reviewed through 869 commits
 after the original October 21 source. Format 12 and API 29 use complete conditional
 record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
 Omitted fields, metadata, and file markers disappear on replacement. Older homes need
 their matching program; there is no in-place conversion.
 
 The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate addresses,
-how to reread after a lost write reply, record-owned files, history, and deletion. Backup preserves encrypted
+how to reread after a lost write reply, record-owned files, history, and deletion.
+Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
+Status uses memory snapshots and a local log; database report writes and ops --since are removed. Backup preserves encrypted
 native run files. Ordinary authenticated restore needs no release switch, but the linked
 PROD recovery evidence covers the earlier format 11 source, not the format 12 cutover.
 
