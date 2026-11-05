@@ -142,3 +142,9 @@ does not imply a new architecture review or enabled cloud delivery.
 For changes, update the source files here and use the normal PR build gate.
 Check the diagram and a selected part in the browser at desktop and mobile sizes.
 Keep raw browser output outside this repository.
+
+The disk diagram opens with four write steps and expandable groups for reads,
+large files, space management, and backup/setup. All 25 disk explanations remain
+available through these groups, search, and direct links. Part selection shows
+only that part and up to six neighbors; the explanation retains every named
+connection. Other area overviews reveal connections only after selection.
