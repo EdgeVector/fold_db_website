@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Follow the connections between 140 parts, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">Source review: 5 November 2026. Follow writer positions, versioned files, or a backup through recovery. Shared-recovery components are marked where normal-use integration is still pending. Each part explains its purpose and limits.</p>
+        <p className="dim">Source review: 5 November 2026. Follow ordinary backup through recovery, or explore explicit shared-writer commands and their DEV recovery results. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
