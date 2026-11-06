@@ -115,6 +115,7 @@ export default function BlogHowAnAppGetsPublishedOnLastdb() {
 
       <h1 className="tagline">How an App Gets Published on LastDB</h1>
       <p className="post-meta dim">2026-07-17</p>
+      <p className="dim">This post documents the registry and CLI at the time of publication. <Link to="/docs">See current installation guidance.</Link></p>
 
       <p className="bold white">LastDB&rsquo;s app registry launched this week with <span className="white">zero rows in it</span>, and that was the design: a row can only exist because a real registration produced it. App stores usually open the other way &mdash; a seeded shelf, the first dozen rows typed in by hand so the place doesn&rsquo;t look abandoned, and from that day forward two kinds of entries, the ones the system produced and the ones somebody typed. <span className="white">The empty shelf is the test suite.</span></p>
 

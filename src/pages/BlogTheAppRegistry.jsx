@@ -276,6 +276,7 @@ export default function BlogTheAppRegistry() {
 
       <h1 className="tagline">The LastDB App Registry: Install by Proof</h1>
       <p className="post-meta dim">2026-09-21</p>
+      <p className="dim">This post documents the registry and CLI at the time of publication. <Link to="/docs">See current installation guidance.</Link></p>
 
       <p className="bold white">
         LastDB now has an app registry. <span className="dim">lastdb app install brain</span> gives
