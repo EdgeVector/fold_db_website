@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `9295605424617d91df661915be34287200945bd7` from 5 November 2026.
-The guide includes 140 parts and 492 named connections, reviewed through 920 commits
+LastDB revision `c98e16f0ff802926829a9fe28323a5cd56baf439` from 5 November 2026.
+The guide includes 139 parts and 488 named connections, reviewed through 921 commits
 after the original October 21 source. Format 13 and API 30 use complete conditional
 record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
 Omitted fields, metadata, and file markers disappear on replacement. Older homes need
@@ -124,7 +124,8 @@ how to reread after a lost write reply, record-owned files, history, and deletio
 Writer positions commit with records. Applied-delete stamps live separately, and files have immutable versions.
 Explicit DEV shared-writer commands now connect durable logs, peer replay, and filtered snapshot publication.
 Owner-authorized shared restore has a verified DEV readback; automatic member delivery remains absent.
-Pinned schema routes and the limited format 12 to 13 copy operation are included.
+Pinned schema routes remain. The former format 12-to-13 copy rehearsal is removed;
+older homes still require their matching program.
 Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
 Status uses memory snapshots and a local log; database report writes and ops --since are removed. Backup preserves encrypted
 native run files. Ordinary authenticated restore needs no release switch, but the linked
