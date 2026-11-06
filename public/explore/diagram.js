@@ -13,10 +13,6 @@
     ["shared-database","schema-removal","blocks uncoordinated retirement through"],
     ["write-order","record-home","saves local writer progress with"],
     ["record-delete","write-order","keeps a separate applied-delete position from"],
-    ["alternate-format","format-copy","requires compatible programs for"],
-    ["format-copy","record-value","copies only live values from"],
-    ["format-copy","record-file-lifetime","preserves current bytes through"],
-    ["format-copy","ttl","refuses write-time ages it cannot preserve for"],
     ["shared-database","shared-log","uses explicit DEV commands for"],
     ["shared-database","shared-recovery","has an owner-authorized command for"],
     ["shared-log","shared-object-upload","require exact objects prepared through"],
@@ -520,7 +516,7 @@
     {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers or backups still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
-    {title:'Backup and home setup',summary:'Hold a saved state, retain changes, or prepare a compatible home.',ids:['local-snapshot','mutation-log','alternate-format','home-creation','format-copy']}
+    {title:'Backup and home setup',summary:'Hold a saved state, retain changes, or prepare a compatible home.',ids:['local-snapshot','mutation-log','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   let host=null,svg=null,nodes={},layoutBox={x:0,y:0,w:1240,h:1030},drag=null,pointers=new Map(),pinch=null,suppressClick=false,resizeObserver=null,narrowLayout=false;
