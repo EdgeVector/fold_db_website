@@ -175,17 +175,12 @@ org init
 search init --quiet`}</pre>
         <p className="dim">The installer prints <span className="bold">RESULT: PASS</span> or <span className="bold">RESULT: FAIL</span>. Stop on a failure.</p>
         <p className="dim">
-          Apps install by proof (LastDB 0.23.5+). <span className="bold">last-stack-install-apps</span> asks
-          <span className="bold"> lastdb app resolve</span> for each app: the newest app commit the
-          LastDB app registry proved with the LastDB build on your machine, read from a static signed
-          index on the Homebrew tap (no account, no live service). It checks out that commit, not
-          <span className="bold"> main</span>. <span className="bold">lastdb app list</span> shows the shelf;
-          <span className="bold"> lastdb app install brain</span> installs one app;
-          <span className="bold"> lastdb app upgrade brain kanban situations</span> moves to the newest
-          proved pair. Each night the release loop installs every app at a fixed commit in an isolated
-          home and runs this path; after a 1 hour clean soak it publishes that set to brew stable and to
-          the index together. If no row is proved with your build yet, install stops and names the remedy
-          (<span className="bold">brew upgrade lastdb</span>, or wait for the next proved set).
+          Apps install from a signed registry list for your node’s API version. On releases with the
+          grouped CLI, <span className="bold">lastdb app list brain</span> shows the signed Brain
+          release, and <span className="bold">lastdb app list</span> shows the full list.
+          <span className="bold"> lastdb app install brain</span> installs the pinned commit, and
+          <span className="bold"> lastdb app upgrade brain</span> refreshes an existing install.
+          If the registry has no signed entry for your API, the install stops.
         </p>
       </Section>
 
@@ -194,6 +189,8 @@ search init --quiet`}</pre>
         <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb`}</pre>
         <p>The Homebrew package ships <span className="bold">lastdbd</span>, the local daemon, and <span className="bold">lastdb</span>, the control CLI.</p>
+        <p>Run <code>lastdb --help</code> to see the commands on your installed release. The grouped CLI uses
+          <code> lastdb backup</code> for backup and restore and <code>lastdb admin</code> for maintenance.</p>
       </Section>
 
       <Section variant="slate">

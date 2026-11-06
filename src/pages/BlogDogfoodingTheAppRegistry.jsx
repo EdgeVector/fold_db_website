@@ -101,6 +101,7 @@ export default function BlogDogfoodingTheAppRegistry() {
 
       <h1 className="tagline">Dogfooding the App Registry</h1>
       <p className="post-meta dim">2026-07-17</p>
+      <p className="dim">This post documents the registry and CLI at the time of publication. <Link to="/docs">See current installation guidance.</Link></p>
 
       <p className="bold white">The first app we tried to put in the LastDB app registry could not get in. <span className="white">Registering a novel schema required the app to exist first. Publishing the app required its schemas to not be novel.</span> Two rules, each sensible alone, together a door locked from both sides: an app with any novel schema could never enter the registry at all. We found the deadlock the intended way &mdash; <Link to="/blog/how-an-app-gets-published-on-lastdb">the registry starts empty</Link>, so somebody had to be first through the real path, with a fresh signing key and an app the catalog had never seen. Below: the fix, the other four defects the walk surfaced, and the walk replayed on the fixed path, ending at tier <span className="white">live</span>.</p>
 
