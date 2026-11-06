@@ -112,29 +112,26 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `13108f1818f1113964dba2d656c608d460da3419` from 6 November 2026.
-The guide includes 141 parts and 499 named connections, reviewed through 941 commits
-after the original October 21 source. Format 13 and API 30 use complete conditional
-record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
-Omitted fields, metadata, and file markers disappear on replacement. Older homes need
-their matching program; there is no in-place conversion.
+LastDB revision `ceb3630ad6af38923fe009cf194b6d77ab881c8f` from 6 November 2026.
+The guide includes 137 parts and 487 named connections, reviewed through 955 commits
+after the original October 21 source. Format 14 and API 30 use complete conditional
+records, explicit keys, and one record revision. Replacements preserve the attachment
+unless explicitly changed; fields and metadata still require the complete desired state.
+The guide covers the 64 KiB record cap, 256 MiB warm limit, required-file schemas,
+mutate file input, exact-revision hydration, deletion, and removal of field history.
 
-The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate addresses,
-how to reread after a lost write reply, record-owned files, history, and deletion.
-Writer positions commit with records. Applied-delete stamps live separately, and files have immutable versions.
-Explicit DEV shared-writer commands now connect durable logs, peer replay, and filtered snapshot publication.
-A running DEV node can publish through lastdb snapshot, with a saved snapshot and tail target for retry.
-Owner-authorized shared restore has verified seven-writer DEV recovery; automatic member delivery remains absent.
-Explicit DEV peer catch-up now attempts bounded delete-marker cleanup behind confirmed writer progress.
-The cleanup boundary is saved with the erasures. Separate reference tracking releases completed local mutations
-and file versions that no live record or pending upload needs. The schema catalog feed is removed.
-Pinned schema routes remain. The former format 12-to-13 copy rehearsal is removed;
-older homes still require their matching program.
-Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
-Status uses memory snapshots and a local log; database report writes and ops --since are removed. Backup preserves encrypted
-native run files. Ordinary authenticated restore needs no release switch, but the linked
-PROD recovery evidence covers the earlier format 11 source, not the format 13 cutover.
-Current-format DEV evidence separately covers a retained shared cut and fresh-source Backup V2 recovery.
+Dedicated shared homes separate device-private state from shared records and files.
+Snapshots upload the original encrypted files directly to R2/B2. A recovery journal
+protects writes across those homes. New shared writers must restore before binding;
+only an explicit initial publisher can initialize before a snapshot exists.
+The disk overview retains four steps and expandable detail groups.
+
+Commands now use lastdb backup for ordinary backup and restore, and lastdb admin
+for maintenance and explicit shared operations. The latest shared DEV recovery run
+at ceb3630a failed on a rejected CLI command before recovery completed. Earlier DEV
+successes and the format 11 PROD result do not qualify the current format. Ordinary
+restore remains available without a release switch. Older homes need their matching
+program; there is no in-place conversion.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the

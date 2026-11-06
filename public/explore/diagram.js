@@ -4,6 +4,14 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["shared-private-home","run-home","adds device-private storage beside"],
+    ["shared-private-home","record-home","journals cross-home changes from"],
+    ["shared-private-home","run-encryption","derives a separate key through"],
+    ["shared-object-upload","shared-private-home","exclude device-only data in"],
+    ["shared-object-upload","cloud-destinations","route original files to"],
+    ["shared-recovery","shared-private-home","creates and validates fresh"],
+    ["shared-database","shared-private-home","requires the dedicated layout in"],
+
     ["shared-snapshot-command","node","runs through the owner socket of"],
     ["shared-snapshot-command","shared-log","sends changes through"],
     ["shared-snapshot-command","shared-object-upload","coordinates"],
@@ -20,7 +28,7 @@
     ["shared-log","record-file-lifetime","retain exact prior versions through"],
     ["shared-object-upload","read-view","capture one committed root through"],
     ["shared-object-upload","disk-holds","keep their chosen source files through"],
-    ["shared-object-upload","portable-schema","export only bound definitions from"],
+    ["shared-object-upload","portable-schema","bind exact definitions from"],
     ["shared-database","ttl","refuses expiry policies from"],
     ["shared-database","schema-removal","blocks uncoordinated retirement through"],
     ["write-order","record-home","saves local writer progress with"],
@@ -31,10 +39,10 @@
     ["shared-object-upload","shared-delete-cleanup","capture the saved replay boundary from"],
     ["shared-recovery","shared-delete-cleanup","preserves the saved replay boundary from"],
     ["shared-database","shared-log","uses explicit DEV commands for"],
-    ["shared-database","shared-recovery","has an owner-authorized command for"],
+    ["shared-database","shared-recovery","requires new writers to complete"],
     ["shared-log","shared-object-upload","require exact objects prepared through"],
     ["shared-log","portable-replay","carry complete mutations for"],
-    ["shared-object-upload","shared-recovery","publish the filtered snapshot used by"],
+    ["shared-object-upload","shared-recovery","publish the original files used by"],
     ["shared-object-upload","record-file-lifetime","bind uploaded file versions from"],
     ["shared-recovery","portable-replay","coordinates staged application through"],
     ["shared-recovery","restore-checks","reuses native checkpoint checks from"],
@@ -70,7 +78,6 @@
     ["retention-backfill","expiry-tracking","adds existing records to"],
     ["schema-removal","expiry-tracking","clears all bounded pages of"],
     ["record-value","format-writer","passes structure and final-size checks through"],
-    ["format-writer","time-queue","builds and checks entries for"],
     ["format-writer","write-order","saves the author clock used by"],
     ["format-writer","change-notices","assigns positions and encodes"],
     ["format-writer","local-schema-declaration","validates and saves definitions from"],
@@ -106,7 +113,6 @@
     ["format-writer","accepted-writes","encodes and checks records from"],
     ["format-writer","alternate-entries","derives pointer changes for"],
     ["format-writer","record-file-lifetime","checks every changed record through"],
-    ["format-writer","record-history","encodes saved values and expiry links for"],
     ["format-writer","flush","leaves saving to"],
     ["format-writer","warm-set","prepares saved records for"],
     ["prod-recovery","restore","runs without the release switch through"],
@@ -155,7 +161,6 @@
     ["snapshot","cloud-byte-pieces","plans its native files with","design"],
     ["schema","schema-removal","can be removed through"],
     ["schema-removal","record-home","releases personal records from"],
-    ["schema-removal","record-history","releases saved values in"],
     ["schema-removal","alternate-entries","removes the declared"],
     ["schema-removal","disk-holds","leaves physical retention to"],
     ["ttl","expiry-progress","remembers checked deleted keys through"],
@@ -167,12 +172,7 @@
     ["record-pages","query-replies","return their continuation through"],
     ["home-creation","mutation-log","sets private folder access required by"],
     ["search-rebuild","record-pages","continues past deleted records with"],
-    ["record-value","record-history","can retain earlier fields in","design"],
-    ["record-history","history-expiry","uses the policy and worker for","design"],
-    ["record-history","field-restore","supplies a saved value to","design"],
-    ["record-delete","record-history","removes saved values on Purge from","design"],
     ["ttl","record-delete","uses the record cutoff and","design"],
-    ["restore-checks","record-history","check saved field values in","design"],
     ["run-backup-files","record-home","preserve the native files of","design"],
     ["record","record-value","stores its fields in"],
     ["record-value","record-home","uses"],
@@ -180,7 +180,7 @@
     ["record-value","file-blob","can own one"],
     ["record-home","run-home","uses the ordered files of a"],
     ["home-creation","record-home","creates the supported format for","design"],
-    ["record-home","alternate-format","needs format 13 recognized by"],
+    ["record-home","alternate-format","needs format 14 recognized by"],
     ["record-home","flush","saves a complete request through"],
     ["record-home","alternate-entries","updates its record and"],
     ["record-delete","record-value","keeps a delete marker in a"],
@@ -223,13 +223,6 @@
     ["read-metadata","read-view","lasts only for one"],
     ["read-metadata","memory-budget","uses a separate bounded allowance from"],
     ["read-metadata","warm-set","keeps temporary lookup blocks outside"],
-    ["field","field-history","can keep previous values through","design"],
-    ["field-history","history-expiry","can release saved values through","design"],
-    ["history-expiry","run-merge","leaves physical reclaim to","design"],
-    ["delete-purge","field-history","can preserve or remove","design"],
-    ["field-restore","field-history","selects a retained value from","design"],
-    ["field-restore","conditions","requires a whole-record check through"],
-    ["field-restore","accepted-writes","creates a fresh change through"],
     ["query-replies","record","include every stored field of each"],
     ["query-replies","key","require the usual scope from"],
     ["query-replies","keyed-conditions","refuse count mode with"],
@@ -410,8 +403,6 @@
     ["ttl","retention-backfill","can include older records through"],
     ["schema","retention-backfill","supplies the active policy for"],
     ["retention-backfill","snapshot-commit","saves each page through"],
-    ["history-expiry","time-queue","finds due saved values through","design"],
-    ["time-queue","record-history","removes expired copies from","design"],
     ["key","keyed-conditions","selects candidate records for"],
     ["read-view","keyed-conditions","keeps field values consistent for"],
     ["keyed-conditions","record","evaluate stored fields on each"],
@@ -491,10 +482,8 @@
     ["record-home","warm-set","publishes saved records to"],
     ["warm-set","flush","admits writes after"],
     ["write-order","record-value","identifies the complete revision of"],
-    ["write-order","record-history","supplies the source stamp for","design"],
     ["delete-purge","record-delete","uses"],
     ["record-delete","run-merge","leaves physical cleanup to"],
-    ["field-history","record-history","keeps earlier values through","design"],
     ["record-metadata","record-value","belongs to"],
     ["record-pages","range-pages","keeps owner page order separate from"],
     ["record-pages","read-view","uses one"],
@@ -511,21 +500,21 @@
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → key → record → file'},
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
-    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Two run homes: records and their files.',preview:'Commit · files · compaction'},
+    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Records, files, and shared private state.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A separate copy for recovery.',preview:'Snapshot · changes · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
-    lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Keep history; remove data with its owner.',preview:'Record files · history · deletion'}
+    lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Retain needed bytes; remove data with its owner.',preview:'Record files · expiry · deletion'}
   };
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const state={area:'all',selected:null,scale:1,x:0,y:0,filter:'',expanded:false};
   const diskSteps=[
     ['format-writer','Prepare the change','Build the complete record and its related updates.'],
     ['write-queue','Queue the work','Ready requests can share one disk commit.'],
-    ['snapshot-commit','Save the state','Save new file bytes, then record changes, then file removals.'],
+    ['snapshot-commit','Save the state','Save every related change before publishing the new state.'],
     ['flush','Return success','Publish the saved state in memory, then send the ack.']
   ];
   const diskGroups=[
-    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
+    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','shared-private-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers or backups still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
     {title:'Backup and home setup',summary:'Hold a saved state, retain changes, or prepare a compatible home.',ids:['local-snapshot','mutation-log','alternate-format','home-creation']}
@@ -581,7 +570,7 @@
   const partStatus=p=>p.status==='dev-operation'?'Explicit DEV command':p.status==='candidate'?'Unreleased source':p.status==='configured'?'Service opt-in':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · EXPLICIT DEV COMMAND':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore checks a selected backup before creating a separate home.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 13 stores durable writer positions, separate delete stamps, and immutable file versions. A replacement supplies the complete state. File bytes stay separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore checks a selected backup before creating a separate home.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 14 separates shared data from device-private state and removes field history. A replacement supplies complete fields and addresses. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(meta[p.layer].title)}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(meta[parts[other].layer].title)} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function choosePart(id){const p=parts[id];if(!p)return;state.area=p.layer;state.selected=id;hideResults();history.replaceState(null,'',`#diagram/${p.layer}/${p.id}`);draw();announce(`${p.name} selected. Its purpose and connections appear beside the diagram.`);}
