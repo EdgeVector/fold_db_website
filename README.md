@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `38fb14037448d94300e4039e8cd0e7ade269eb03` from 5 November 2026.
-The guide includes 140 parts and 485 named connections, reviewed through 899 commits
+LastDB revision `9295605424617d91df661915be34287200945bd7` from 5 November 2026.
+The guide includes 140 parts and 492 named connections, reviewed through 920 commits
 after the original October 21 source. Format 13 and API 30 use complete conditional
 record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
 Omitted fields, metadata, and file markers disappear on replacement. Older homes need
@@ -122,12 +122,14 @@ their matching program; there is no in-place conversion.
 The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate addresses,
 how to reread after a lost write reply, record-owned files, history, and deletion.
 Writer positions commit with records. Applied-delete stamps live separately, and files have immutable versions.
-Shared log, exact-object upload, replay, and fresh-home staging components are documented as unconnected.
+Explicit DEV shared-writer commands now connect durable logs, peer replay, and filtered snapshot publication.
+Owner-authorized shared restore has a verified DEV readback; automatic member delivery remains absent.
 Pinned schema routes and the limited format 12 to 13 copy operation are included.
 Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
 Status uses memory snapshots and a local log; database report writes and ops --since are removed. Backup preserves encrypted
 native run files. Ordinary authenticated restore needs no release switch, but the linked
 PROD recovery evidence covers the earlier format 11 source, not the format 13 cutover.
+Current-format DEV evidence separately covers a retained shared cut and fresh-source Backup V2 recovery.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the
