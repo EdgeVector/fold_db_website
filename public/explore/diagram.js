@@ -4,6 +4,18 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["shared-snapshot-command","node","runs through the owner socket of"],
+    ["shared-snapshot-command","shared-log","sends changes through"],
+    ["shared-snapshot-command","shared-object-upload","coordinates"],
+    ["shared-snapshot-command","portable-schema","loads exact definitions from"],
+    ["shared-snapshot-command","saved-cloud-credentials","requires a DEV connection from"],
+    ["shared-log","shared-retention","release accepted local mutations through"],
+    ["portable-replay","shared-retention","advances older-home cleanup when idle through"],
+    ["shared-retention","record-file-lifetime","releases versions no longer needed by"],
+    ["shared-retention","format-writer","commits reference and file changes through"],
+    ["shared-retention","run-merge","leaves physical run-file removal to"],
+    ["shared-delete-cleanup","shared-retention","keeps delete-stamp cleanup separate from"],
+
     ["shared-log","record-home","saves outgoing mutations in the same request as"],
     ["shared-log","record-file-lifetime","retain exact prior versions through"],
     ["shared-object-upload","read-view","capture one committed root through"],
@@ -113,11 +125,6 @@
     ["schema-advice","registry","runs on"],
     ["schema-advice","canonical-vocabulary","compares draft fields with"],
     ["schema-advice","local-schema-declaration","does not block"],
-    ["app-registry","schema-catalog-feed","supplies verified public listings to","design"],
-    ["field","schema-catalog-feed","must name a concrete type for","design"],
-    ["schema-catalog-feed","registry-definitions","keeps its image separate from","design"],
-    ["schema-catalog-feed","canonical-vocabulary","can offer new field names to","design"],
-    ["schema-advice","schema-catalog-feed","does not yet read the separate image from","design"],
 
     ["app-registry","managed-app-install","supplies the signed source commit to"],
     ["managed-app-install","app","switches stable command links for"],
