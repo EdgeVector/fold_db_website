@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `f75edbccd50e0f4e707ec90d9c41cfd3c213e082` from 6 November 2026.
-The guide includes 140 parts and 493 named connections, reviewed through 922 commits
+LastDB revision `13108f1818f1113964dba2d656c608d460da3419` from 6 November 2026.
+The guide includes 141 parts and 499 named connections, reviewed through 941 commits
 after the original October 21 source. Format 13 and API 30 use complete conditional
 record writes, whole-record queries, explicit primary and alternate addresses, and one record revision.
 Omitted fields, metadata, and file markers disappear on replacement. Older homes need
@@ -123,9 +123,11 @@ The guide explains the 64 KiB record cap, 256 MiB warm limit, shared alternate a
 how to reread after a lost write reply, record-owned files, history, and deletion.
 Writer positions commit with records. Applied-delete stamps live separately, and files have immutable versions.
 Explicit DEV shared-writer commands now connect durable logs, peer replay, and filtered snapshot publication.
-Owner-authorized shared restore has a verified DEV readback; automatic member delivery remains absent.
+A running DEV node can publish through lastdb snapshot, with a saved snapshot and tail target for retry.
+Owner-authorized shared restore has verified seven-writer DEV recovery; automatic member delivery remains absent.
 Explicit DEV peer catch-up now attempts bounded delete-marker cleanup behind confirmed writer progress.
-The cleanup boundary is saved with the erasures; retained file versions have no new cleanup.
+The cleanup boundary is saved with the erasures. Separate reference tracking releases completed local mutations
+and file versions that no live record or pending upload needs. The schema catalog feed is removed.
 Pinned schema routes remain. The former format 12-to-13 copy rehearsal is removed;
 older homes still require their matching program.
 Lookup bundles belong to primary and alternate key spaces, with no bundles for payload fields.
