@@ -112,16 +112,16 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `024eb69185db8613fa43b3eef6912fe4497de81d` from 7 November 2026.
-The guide includes 139 parts and 504 named connections, reviewed through 972 commits
+LastDB revision `5ae38bc21450322a3988c0cb5c7af268ab640acc` from 7 November 2026.
+The guide includes 139 parts and 511 named connections, reviewed through 1002 commits
 after the original October 21 source. Format 14 and API 30 use complete conditional
-records, explicit keys, and one record revision. Replacements preserve the attachment
+records, explicit keys, and one record revision. Replacements preserve blob and inline attachments
 unless explicitly changed; fields and metadata still require the complete desired state.
 The guide covers the 64 KiB record cap, 256 MiB warm limit, required-file schemas,
-mutate file input, exact-revision hydration, deletion, and removal of field history.
+mutate file input, 64 KiB inline attachments, exact-revision hydration, deletion, and removal of field history. Queries return markers; inline bytes stay in separate record-home rows and outside the warm set.
 
 Dedicated shared homes separate device-private state from shared records and files.
-Snapshots upload the original encrypted files directly to R2/B2. A recovery journal
+New running snapshots clear hidden versions before retaining the original encrypted files for R2/B2 upload. Existing captures retain their exact bytes. A recovery journal
 protects writes across those homes. New shared writers must restore before binding;
 only an explicit initial publisher can initialize before a snapshot exists.
 The disk overview retains four steps and expandable detail groups.
@@ -134,10 +134,11 @@ sync is off by default; missing history still requires manual returning-writer r
 The six-writer automatic DEV run at 3c69cad6 passed source-free recovery. Lifecycle,
 conflict, and retention jobs at 024eb691 verified rejoin, opposite replay orders,
 and stable settled storage after 24 overwrites.
-The shared DEV cases are scheduled daily at 10:53 UTC, with cleanup at minute 17
+Lifecycle, conflict, retention, and automatic shared DEV cases are scheduled daily at 10:53 UTC, with cleanup at minute 17
 of each hour. Admission waits up to eight minutes for the latest required checks
 on the exact accepted source. A cleanup-only result does not qualify recovery.
-Managed app updates now report an individual failure and continue checking the
+Shared definitions now travel in snapshots and writer logs, without a schema-service lookup. Later local writes require explicit schema admission. The four-case DEV suite passed at 9335052e; the later automatic case at 290a847e and reclamation case at 5ae38bc2 failed. These older results do not qualify every new change.
+All app installs use the managed path. The local-development and unmanaged installers are removed. Managed app updates report an individual failure and continue checking the
 remaining apps. Saved unsupported private catalog locators stay blocked.
 
 Ordinary PROD recovery remains evidenced at ebd09268 with format 14/API 30 and the
@@ -164,7 +165,7 @@ available through these groups, search, and direct links. Part selection shows
 only that part and up to six neighbors; the explanation retains every named
 connection. Other area overviews reveal connections only after selection.
 
-Apps & services opens with six responsibility groups instead of a 39-part grid:
+Apps & services opens with six responsibility groups instead of a single large grid:
 local requests, schema definitions, app installation, app publishing, search and
 change feeds, and cloud access/sharing. Open a group to see its parts. A selected
 part keeps the focused connection view; clearing it returns to its group. The
