@@ -4,6 +4,14 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["shared-database","shared-writer-rejoin","offers explicit DEV recovery through"],
+    ["shared-writer-rejoin","shared-log","confirms pending changes through"],
+    ["shared-writer-rejoin","shared-recovery","rebuilds current shared state through"],
+    ["shared-writer-rejoin","shared-private-home","preserves device-only data in"],
+    ["shared-writer-rejoin","disk-holds","refuses unfinished snapshot holds in"],
+    ["shared-writer-rejoin","run-home","retains ownership while replacing"],
+    ["shared-writer-rejoin","portable-schema","requires exact bindings from"],
+    ["shared-writer-rejoin","write-order","preserves the writer identity used by"],
     ["shared-private-home","run-home","adds device-private storage beside"],
     ["shared-private-home","record-home","journals cross-home changes from"],
     ["shared-private-home","run-encryption","derives a separate key through"],
@@ -47,7 +55,7 @@
     ["shared-recovery","portable-replay","coordinates staged application through"],
     ["shared-recovery","restore-checks","reuses native checkpoint checks from"],
     ["shared-recovery","restore","is separate from the connected V2 path in"],
-    ["shared-recovery","prod-recovery","has no qualification from the older result in"],
+    ["shared-recovery","prod-recovery","has separate evidence from ordinary recovery in"],
     ["portable-replay","portable-schema","requires exact definitions from"],
     ["portable-replay","write-order","compares complete-record stamps from"],
     ["portable-replay","record-delete","respects the saved stamps from"],

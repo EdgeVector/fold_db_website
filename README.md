@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `ceb3630ad6af38923fe009cf194b6d77ab881c8f` from 6 November 2026.
-The guide includes 137 parts and 487 named connections, reviewed through 955 commits
+LastDB revision `ebd09268f8d151fb6cc382d8b1f9ac2c82e3420d` from 7 November 2026.
+The guide includes 138 parts and 495 named connections, reviewed through 960 commits
 after the original October 21 source. Format 14 and API 30 use complete conditional
 records, explicit keys, and one record revision. Replacements preserve the attachment
 unless explicitly changed; fields and metadata still require the complete desired state.
@@ -127,10 +127,14 @@ only an explicit initial publisher can initialize before a snapshot exists.
 The disk overview retains four steps and expandable detail groups.
 
 Commands now use lastdb backup for ordinary backup and restore, and lastdb admin
-for maintenance and explicit shared operations. The latest shared DEV recovery run
-at ceb3630a failed on a rejected CLI command before recovery completed. Earlier DEV
-successes and the format 11 PROD result do not qualify the current format. Ordinary
-restore remains available without a release switch. Older homes need their matching
+for maintenance and explicit shared operations. The ordinary PROD recovery run
+at ebd09268 passed with format 14/API 30 and the release switch off. Shared DEV
+recovery passed at ab81ae53, before range-by-range replay and returning-writer rejoin.
+Rejoin confirms pending uploads, keeps private records and files, and restores the
+shared state while retaining the writer identity and previous data. It is explicit
+DEV work and has no completed live evidence here. Saved upload retries reconcile
+acceptance before reupload. LastStore validates owner locks across directory swaps.
+Ordinary restore remains available without a release switch. Older homes need their matching
 program; there is no in-place conversion.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
