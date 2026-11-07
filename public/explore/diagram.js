@@ -12,6 +12,7 @@
     ["inline-file","shared-log","carries bytes in"],
     ["query-replies","inline-file","returns only the marker of"],
     ["file-blob","inline-file","can share one record with"],
+    ["file-blob","saved-cloud-credentials","uses account access for on-request downloads from"],
     ["snapshot-cleanup","run-merge","removes hidden versions through"],
     ["snapshot-cleanup","disk-holds","rechecks before creating"],
     ["snapshot-cleanup","space-reservation","reserves replacement space through"],
