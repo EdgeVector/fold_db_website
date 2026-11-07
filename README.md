@@ -163,3 +163,12 @@ large files, space management, and backup/setup. All 25 disk explanations remain
 available through these groups, search, and direct links. Part selection shows
 only that part and up to six neighbors; the explanation retains every named
 connection. Other area overviews reveal connections only after selection.
+
+Apps & services opens with six responsibility groups instead of a 39-part grid:
+local requests, schema definitions, app installation, app publishing, search and
+change feeds, and cloud access/sharing. Open a group to see its parts. A selected
+part keeps the focused connection view; clearing it returns to its group. The
+breadcrumb returns to the six-group overview. Search and existing part URLs
+select the owning group automatically; group URLs use
+`#diagram/services/group/<group-id>`. Groups organize navigation and do not add
+system parts or imply that every contained path is enabled.

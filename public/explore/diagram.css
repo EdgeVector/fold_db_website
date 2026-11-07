@@ -9,17 +9,17 @@
 .diagram-read-below{display:none;background:transparent;color:#48673e;font-size:11px;padding:5px 0;text-decoration:underline;text-underline-offset:3px}@media(max-width:950px){.diagram-read-below{display:block;margin-left:auto}.diagram-inspector{scroll-margin-top:12px}}
 
 /* Start with the write path; reveal storage machinery only on request. */
-.diagram-body.disk-summary{grid-template-columns:minmax(0,1fr)}
-.diagram-body.disk-summary .diagram-inspector,
-.diagram-body.disk-summary .diagram-legend,
-.diagram-body.disk-summary .diagram-context-note,
-.diagram-stage.disk-summary .diagram-zoom-controls,
-.diagram-stage.disk-summary .diagram-stage-location{display:none}
-.diagram-stage.disk-summary,
-.diagram-shell.expanded .diagram-stage.disk-summary{height:auto;overflow:visible;background:#f8faf5;flex:none}
-.diagram-shell.expanded:has(.disk-summary){overflow:auto}
-.diagram-shell.expanded .diagram-body.disk-summary,
-.diagram-shell.expanded .disk-summary .diagram-canvas-column{display:block}
+.diagram-body.summary-view{grid-template-columns:minmax(0,1fr)}
+.diagram-body.summary-view .diagram-inspector,
+.diagram-body.summary-view .diagram-legend,
+.diagram-body.summary-view .diagram-context-note,
+.diagram-stage.summary-view .diagram-zoom-controls,
+.diagram-stage.summary-view .diagram-stage-location{display:none}
+.diagram-stage.summary-view,
+.diagram-shell.expanded .diagram-stage.summary-view{height:auto;overflow:visible;background:#f8faf5;flex:none}
+.diagram-shell.expanded:has(.summary-view){overflow:auto}
+.diagram-shell.expanded .diagram-body.summary-view,
+.diagram-shell.expanded .summary-view .diagram-canvas-column{display:block}
 #diagram-disk-overview[hidden]{display:none}
 .disk-overview{max-width:850px;margin:0 auto;padding:30px 36px 36px}
 .disk-overview header .eyebrow{font-size:10px;color:#8c773e;margin-bottom:12px}
@@ -54,4 +54,32 @@
   .disk-write-path strong{font-size:16px}
   .disk-write-path li+li::before{left:23px}
   .disk-detail-groups{grid-template-columns:1fr}
+}
+
+/* Services reveal one responsibility at a time, before the selected-part graph. */
+#diagram-service-overview[hidden],#diagram-group-breadcrumb[hidden]{display:none}
+.diagram-breadcrumb{flex-wrap:wrap}
+.diagram-breadcrumb button:disabled{color:#7d8875;cursor:default}
+#diagram-group-breadcrumb{display:inline;font-size:10px}
+#diagram-current-group{display:inline;color:#52694b}
+.service-overview{max-width:1000px;margin:0 auto;padding:30px 36px}
+.service-overview .eyebrow{font-size:10px;color:#65776a;margin-bottom:12px}
+.service-overview h2{font-size:29px;line-height:1.25;letter-spacing:-.8px;font-weight:500;color:#33492c}
+.service-overview header p{font-size:13px;line-height:1.7;color:#687b5e;margin-top:10px;max-width:630px}
+.service-group-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.service-group-cards button{display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:20px;border:1px solid #d5dfcf;border-radius:10px;background:#fff;color:#33492c}
+.service-group-cards button:hover{border-color:#65776a;background:#f3f7f0}
+.service-group-cards strong{font-size:17px;line-height:1.4;font-weight:500}
+.service-group-cards button>span{font-size:12px;line-height:1.65;color:#6e8064;margin:9px 0 17px}
+.service-group-cards small{font-size:10px;color:#788b6d;margin-top:auto}
+.service-group-cards b{float:right;font-size:16px;font-weight:400}
+.service-overview-note{font-size:11px;line-height:1.7;color:#7a8a70;margin-top:19px}
+.diagram-part-context{flex-wrap:wrap;line-height:1.6}
+@media(max-width:800px){.service-group-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+  .diagram-breadcrumb{flex-basis:100%}
+  .service-overview{padding:23px 17px 25px}
+  .service-overview h2{font-size:25px}
+  .service-group-cards{grid-template-columns:1fr;gap:10px;margin-top:19px}
+  .service-group-cards button{padding:16px}
 }
