@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `97d2c254a1f649af784319fec87dc0cd04ca67fc` from 7 November 2026.
-The guide includes 139 parts and 504 named connections, reviewed through 970 commits
+LastDB revision `024eb69185db8613fa43b3eef6912fe4497de81d` from 7 November 2026.
+The guide includes 139 parts and 504 named connections, reviewed through 972 commits
 after the original October 21 source. Format 14 and API 30 use complete conditional
 records, explicit keys, and one record revision. Replacements preserve the attachment
 unless explicitly changed; fields and metadata still require the complete desired state.
@@ -132,9 +132,13 @@ the daemon uploads changes, receives peer records, and lets the publisher schedu
 snapshots. Defaults are one minute for changes and one day for snapshots. Shared
 sync is off by default; missing history still requires manual returning-writer recovery.
 The six-writer automatic DEV run at 3c69cad6 passed source-free recovery. Lifecycle,
-conflict, and retention jobs at 97d2c254 verified rejoin, opposite replay orders,
+conflict, and retention jobs at 024eb691 verified rejoin, opposite replay orders,
 and stable settled storage after 24 overwrites.
-The shared operations workflow has no enabled daily schedule.
+The shared DEV cases are scheduled daily at 10:53 UTC, with cleanup at minute 17
+of each hour. Admission waits up to eight minutes for the latest required checks
+on the exact accepted source. A cleanup-only result does not qualify recovery.
+Managed app updates now report an individual failure and continue checking the
+remaining apps. Saved unsupported private catalog locators stay blocked.
 
 Ordinary PROD recovery remains evidenced at ebd09268 with format 14/API 30 and the
 release switch off. Shared DEV results do not qualify shared PROD recovery.
