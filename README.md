@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `ebd09268f8d151fb6cc382d8b1f9ac2c82e3420d` from 7 November 2026.
-The guide includes 138 parts and 495 named connections, reviewed through 960 commits
+LastDB revision `97d2c254a1f649af784319fec87dc0cd04ca67fc` from 7 November 2026.
+The guide includes 139 parts and 504 named connections, reviewed through 970 commits
 after the original October 21 source. Format 14 and API 30 use complete conditional
 records, explicit keys, and one record revision. Replacements preserve the attachment
 unless explicitly changed; fields and metadata still require the complete desired state.
@@ -126,16 +126,19 @@ protects writes across those homes. New shared writers must restore before bindi
 only an explicit initial publisher can initialize before a snapshot exists.
 The disk overview retains four steps and expandable detail groups.
 
-Commands now use lastdb backup for ordinary backup and restore, and lastdb admin
-for maintenance and explicit shared operations. The ordinary PROD recovery run
-at ebd09268 passed with format 14/API 30 and the release switch off. Shared DEV
-recovery passed at ab81ae53, before range-by-range replay and returning-writer rejoin.
-Rejoin confirms pending uploads, keeps private records and files, and restores the
-shared state while retaining the writer identity and previous data. It is explicit
-DEV work and has no completed live evidence here. Saved upload retries reconcile
-acceptance before reupload. LastStore validates owner locks across directory swaps.
-Ordinary restore remains available without a release switch. Older homes need their matching
-program; there is no in-place conversion.
+Commands use lastdb backup for ordinary backup and restore, and lastdb admin
+for maintenance and shared setup. Bound DEV homes can enable automatic shared sync:
+the daemon uploads changes, receives peer records, and lets the publisher schedule
+snapshots. Defaults are one minute for changes and one day for snapshots. Shared
+sync is off by default; missing history still requires manual returning-writer recovery.
+The six-writer automatic DEV run at 3c69cad6 passed source-free recovery. Lifecycle,
+conflict, and retention jobs at 97d2c254 verified rejoin, opposite replay orders,
+and stable settled storage after 24 overwrites.
+The shared operations workflow has no enabled daily schedule.
+
+Ordinary PROD recovery remains evidenced at ebd09268 with format 14/API 30 and the
+release switch off. Shared DEV results do not qualify shared PROD recovery.
+Older homes need their matching program; there is no in-place conversion.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the
