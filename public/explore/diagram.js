@@ -4,6 +4,21 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["inline-file","record-value","belongs to"],
+    ["inline-file","record-metadata","is described by a marker in"],
+    ["inline-file","run-home","stores its separate row in"],
+    ["inline-file","run-encryption","protects stored bytes with"],
+    ["inline-file","cloud-files","requires matching bytes during"],
+    ["inline-file","shared-log","carries bytes in"],
+    ["query-replies","inline-file","returns only the marker of"],
+    ["file-blob","inline-file","can share one record with"],
+    ["snapshot-cleanup","run-merge","removes hidden versions through"],
+    ["snapshot-cleanup","disk-holds","rechecks before creating"],
+    ["snapshot-cleanup","space-reservation","reserves replacement space through"],
+    ["snapshot","snapshot-cleanup","prepares new running captures with"],
+    ["shared-snapshot-command","snapshot-cleanup","prepares new captures with"],
+    ["run-backup-files","inline-file","includes the row for"],
+
     ["shared-database","shared-automatic","can enable"],
     ["shared-automatic","node","runs in"],
     ["shared-automatic","shared-log","uploads through"],
@@ -71,8 +86,8 @@
     ["portable-replay","record-delete","respects the saved stamps from"],
     ["portable-replay","record-file-lifetime","admits only winning versions through"],
     ["portable-replay","format-writer","commits record and pointer changes through"],
-    ["portable-schema","schema","pin the full typed definition of"],
-    ["portable-schema","local-schema-declaration","check the complete installed definition from"],
+    ["portable-schema","schema","carries the full typed definition of"],
+    ["portable-schema","shared-log","travels before records in"],
     ["node","node-status","exposes health and request activity through"],
     ["node-status","warm-set","reports memory use for"],
     ["node-status","socket-workers","reports request activity through"],
@@ -153,7 +168,6 @@
     ["app-registry","managed-app-install","supplies the signed source commit to"],
     ["managed-app-install","app","switches stable command links for"],
     ["managed-app-install","app-compatibility","requires the selected interface from"],
-    ["managed-app-install","local-app-install","has a separate development alternative in"],
     ["app-updates","managed-app-install","reuse approved instructions through"],
     ["app-updates","app-registry","poll the saved channel in"],
     ["app-updates","app-rollback","attempt recovery through"],
@@ -245,9 +259,6 @@
     ["query-replies","key","require the usual scope from"],
     ["query-replies","keyed-conditions","refuse count mode with"],
     ["query-replies","range-pages","can omit metadata from"],
-    ["local-snapshot","disk-holds","retains exact files through"],
-    ["local-snapshot","run-backup-files","uses the same planner as"],
-    ["local-snapshot","automatic-backup","requires disabled and settled","design"],
     ["schema-registration","registry","controls new definitions in"],
     ["schema-registration","registry-records","checks the saved app owner in"],
     ["schema-registration","canonical-vocabulary","requires permission before changes to"],
@@ -390,9 +401,6 @@
     ["node","backup-status","reports backup work through"],
     ["backup-status","byte-backup-client","observes local work in"],
     ["backup-status","frontier","compares local writes with the automatic policy’s","design"],
-    ["app-registry","local-app-install","has a separate development alternative in"],
-    ["local-app-install","app-compatibility","uses development rules separate from"],
-    ["local-app-install","app","installs one chosen commit for"],
     ["disk-root","run-home","uses an encrypted file list in"],
     ["run-home","run-files","stores logical records in"],
     ["run-home","run-lookup","serves keyed reads through"],
@@ -535,14 +543,14 @@
     {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','shared-private-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers or backups still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
-    {title:'Backup and home setup',summary:'Hold a saved state, retain changes, or prepare a compatible home.',ids:['local-snapshot','mutation-log','alternate-format','home-creation']}
+    {title:'Backup and home setup',summary:'Prepare a clean snapshot, retain changes, or open a compatible home.',ids:['snapshot-cleanup','mutation-log','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','socket-workers','query-replies','storage-reports','node-status','backup-status']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration','schema-registration','registry-definitions','registry-generation','portable-schema']},
-    {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','local-app-install','app-updates','app-rollback']},
+    {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release','registry-records','verifier-queue']},
     {id:'search',title:'Search & change feeds',summary:'Send saved changes to other tools and keep search outside the database.',ids:['search-service','search-delivery','search-fields','search-rebuild','change-notices']},
     {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages']}
