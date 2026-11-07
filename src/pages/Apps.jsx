@@ -358,6 +358,7 @@ lastdb app upgrade brain kanban situations`}</pre>
         <h2><span className="bold">3 &mdash; MANUAL INSTALL</span> <span className="dim">advanced · skip if you used Home</span></h2>
 
         <p>
+          The alpha database is the GitHub release tag alpha, not this Homebrew path.
           Prefer not to use the Last Stack installer? Install the database, then only the apps you want.
           <span className="bold"> lastdb app install</span> puts the proved commit under{' '}
           <span className="bold">~/.lastdb/apps/&lt;app&gt;/source</span>; the bun step and the link are yours.
