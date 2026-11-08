@@ -112,8 +112,8 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `24258e5b57729b8efb2fb2340536729f91fa5e1e` from 8 November 2026.
-It covers 140 parts and 525 connections, reviewed through 1030 commits after October 21.
+LastDB revision `cad4d4b289aa301a9a552115d46720c8b7d78a57` from 8 November 2026.
+It covers 141 parts and 531 connections, reviewed through 1049 commits after October 21.
 Format 14 and API 30 use complete records, explicit keys, and one record revision.
 A shared replacement naming an accepted definition preserves stored fields outside that
 definition. Omitted declared fields and metadata still disappear. The SDK remembers the
@@ -129,10 +129,15 @@ The earlier PROD pass at `ebd09268` predates this layout and does not qualify it
 Recipient snapshot staging is implemented but has no user command. It validates one
 independent accepted snapshot using an exact grant and supplied content key, without
 installing an owner identity, credentials, receipt, or runnable home.
+Local file references keep an existing file outside LastDB and check its hash on reads.
+Their personal cloud upload path is incomplete; the guide describes the source gap and
+does not claim recoverable backup. Reads and sealing remain capped at 512 MiB.
+
 Shared sync remains DEV-only. The four-case operation at `24258e5b` passed, including
 the declared-field preservation rules. These are generated DEV results, not shared PROD
-qualification. LastStore, warm-set limits, disk format, and flush-before-ack are unchanged
-in this six-commit review. Older homes still need their matching program.
+qualification. This 19-commit review also covers owner-only empty run directories,
+32-byte identity seeds, and reduced telemetry compatibility. Warm-set limits, disk format,
+and flush-before-ack remain unchanged. Older homes still need their matching program.
 
 The disk diagram retains four steps and expandable detail groups. Apps & services opens
 with six responsibility groups, covering all 38 service parts. One selected part shows

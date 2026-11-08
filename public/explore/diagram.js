@@ -4,6 +4,12 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["local-file-reference","file-blob","is an alternative source for"],
+    ["local-file-reference","record-metadata","keeps its marker in"],
+    ["local-file-reference","record-file-lifetime","uses the removal rules in"],
+    ["local-file-reference","file-encryption","leaves the original outside"],
+    ["local-file-reference","snapshot","does not yet provide recoverable bytes for"],
+    ["local-file-reference","cloud-files","has incomplete personal upload described by"],
     ["recipient-snapshot","restore","reuses verified staging from"],
     ["recipient-snapshot","restore-checks","validates private data through"],
     ["recipient-snapshot","backup-manifest","binds access to one accepted"],
