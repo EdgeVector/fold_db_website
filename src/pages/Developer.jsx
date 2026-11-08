@@ -110,7 +110,7 @@ lastdb --version
 lastdbd --version`}</pre>
             <p className="dim">
               Expect <span className="bold">{`{"status":"ok"}`}</span>.
-              Socket: <span className="bold">~/.lastdb/data/folddb.sock</span>. Health path is <span className="bold">/health</span> (not <span className="bold">/api/health</span>). TCP <span className="bold">:9001</span> is retired.
+              Socket: <span className="bold">~/.lastdb/data/folddb.sock</span>. Health path is <span className="bold">/health</span> (not <span className="bold">/api/health</span>).
               Paste blocks omit <span className="bold">#</span> comments (macOS zsh interactive default).
             </p>
           </Card>

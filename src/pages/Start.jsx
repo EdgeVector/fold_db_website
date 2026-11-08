@@ -96,7 +96,7 @@ brew services restart lastdb
 kanban list`}</pre>
         <p className="dim">
           Expect <span className="bold">{`{"status":"ok"}`}</span>. Restart only if health fails.
-          Health is <span className="bold">/health</span> on the Unix socket (not <span className="bold">/api/health</span>, and not TCP port 9001).
+          Health is <span className="bold">/health</span> on the Unix socket (not <span className="bold">/api/health</span>).
           Paste blocks omit <span className="bold">#</span> comments so default macOS zsh does not choke.
         </p>
       </Section>

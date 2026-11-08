@@ -100,7 +100,7 @@ Deploy that preview and open `/?sentry-smoke=1`; Sentry should receive
 ## Source of truth
 
 GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
-(`ci-required`). The LastGit and Forgejo copies are frozen. The scheduled
+(`ci-required`). The scheduled
 `download-counts.yml` workflow runs daily on GitHub Actions.
 
 ## Related

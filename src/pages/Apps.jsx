@@ -100,7 +100,7 @@ const READINESS_GROUPS = [
         cmd: 'lastdb-browser',
         pct: 40,
         shelf: true,
-        note: 'Read-only local UI for schemas, keys, records, and atoms over the local socket.',
+        note: 'Read-only local UI for schemas, keys, records, and fields over the local socket.',
       },
       {
         rank: 11,
@@ -120,20 +120,13 @@ const READINESS_GROUPS = [
     apps: [
       {
         rank: 12,
-        name: 'LastGit',
-        cmd: 'lastdb://…',
-        pct: 30,
-        note: 'Git on LastDB. Not in the public install bundle yet.',
-      },
-      {
-        rank: 13,
         name: 'CodeRings',
         cmd: 'coderings',
         pct: 25,
         note: 'Repo size vs claimed complexity. No public install story yet.',
       },
       {
-        rank: 14,
+        rank: 13,
         name: 'Discovery',
         cmd: '—',
         pct: 25,
