@@ -30,8 +30,6 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 .ascii { color: #fabd2f; display: block; overflow: hidden; }
 .compare-table { line-height: 1.5; }
 .diagram { line-height: 1.4; margin: 1em 0; padding: 12px 0; }
-.mermaid-diagram { margin: 1.5em 0; overflow-x: auto; }
-.mermaid-diagram svg { max-width: 100%; height: auto; }
 .blog-list { display: flex; flex-direction: column; gap: 1em; margin: 1em 0; }
 .blog-list-item h2 { margin: 0.3em 0; }
 .post-meta { margin: 0.2em 0; }

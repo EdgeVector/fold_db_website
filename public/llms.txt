@@ -130,7 +130,7 @@ search init --quiet
 Use npm for Search runtime dependencies. It runs the native transformer setup
 that Bun can block as an untrusted postinstall script.
 
-LastDB Browser (read-only local UI for schemas, keys, records, and atoms;
+LastDB Browser (read-only local UI for schemas, keys, records, and fields;
 installed and built by `last-stack-install-apps`, which links the
 `lastdb-browser` launcher; needs Node 18+/npm). Open it after the node is
 running:
@@ -174,11 +174,11 @@ Source: https://github.com/EdgeVector/kanban-factory
 - **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
 - **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `org`, `search`, …)
 - **Org** — separate app for shared org membership + named DBs; keys via LastSecrets
-- **LastDB Browser** — read-only local UI for schemas, keys, records, and atoms (`lastdb-browser`)
+- **LastDB Browser** — read-only local UI for schemas, keys, records, and fields (`lastdb-browser`)
 - **Kanban Factory** — optional local animated UI over your board (not a second database)
 - **The Last Stack** — installer + agent skills (not a second database)
 
-Socket: `~/.lastdb/data/folddb.sock` (Unix socket; TCP :9001 is retired)
+Socket: `~/.lastdb/data/folddb.sock` (Unix socket)
 
 ## Quick try after install
 
@@ -231,9 +231,8 @@ Whole stack is product alpha. Stages: Alpha · Dogfood · Early.
 | 09 | Dogfood Graph | Dogfood | ~45 |
 | 10 | Kanban Factory | Dogfood | ~45 |
 | 11 | Routines | Early | ~35 |
-| 12 | LastGit | Early | ~30 |
-| 13 | CodeRings | Early | ~25 |
-| 14 | Discovery | Early | ~25 |
+| 12 | CodeRings | Early | ~25 |
+| 13 | Discovery | Early | ~25 |
 
 First try: ranks 01–03; use Search (#06) for semantic ask/search; LastSecrets (#07) for credentials;
 Org (#08) for invite/join shared orgs (pubkey seal — no Exemem account required for join).

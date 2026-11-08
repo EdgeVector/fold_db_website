@@ -209,7 +209,7 @@ lastdb --version
 lastdbd --version`}</pre>
           </Card>
         </div>
-        <p className="dim">The owner socket is <span className="bold">~/.lastdb/data/folddb.sock</span>. TCP <span className="bold">:9001</span> is retired.</p>
+        <p className="dim">The owner socket is <span className="bold">~/.lastdb/data/folddb.sock</span>.</p>
       </Section>
 
       <Section variant="lavender">
@@ -289,7 +289,7 @@ export function DocsNodeHealth() {
       <DocsHeader
         title="Node Health"
         path="/docs/node-health"
-        description="Check the local daemon without confusing retired TCP behavior for an outage."
+        description="Check the local daemon over its Unix socket."
       />
 
       <Section variant="sage">
@@ -316,15 +316,9 @@ brain ask "what did I decide recently?"`}</pre>
         </div>
       </Section>
 
-      <Section variant="rose">
-        <h2><span className="bold">COMMON CONFUSION</span></h2>
-        <p>The legacy TCP endpoint on <span className="bold">127.0.0.1:9001</span> is retired. A connection failure there does not, by itself, mean LastDB is down.</p>
-        <p>Prefer the Unix socket path: <span className="bold">~/.lastdb/data/folddb.sock</span>.</p>
-      </Section>
-
       <Section variant="amber">
         <h2><span className="bold">RESTART BOUNDARY</span></h2>
-        <p>Restart only after the socket health check fails and ordinary app reads fail. Do not restart just because an old TCP-only command printed a <span className="bold">:9001</span> error.</p>
+        <p>Restart only after the socket health check fails and ordinary app reads fail.</p>
         <pre>{`brew services restart lastdb`}</pre>
       </Section>
 
