@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 8 November 2026. Its 140 parts explain restored-device sign-in, shared field preservation, and recipient staging that is not yet connected. Select a part to see its purpose, connections, and limits.</p>
+        <p className="dim">The guide describes source from 8 November 2026. Its 141 parts explain local file references and their backup limit, restored-device sign-in, and shared field preservation. Select a part to see its purpose, connections, and limits.</p>
       </Section>
 
       <Section variant="amber">
