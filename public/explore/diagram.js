@@ -4,6 +4,25 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["share-publication","files-sharing","publishes completed imports from"],
+    ["share-publication","share-messages","provides a separate content key for"],
+    ["share-publication","snapshot","creates independent copies through"],
+    ["share-publication","frontier","watches durable changes at"],
+    ["share-publication","cloud-access","uses the sponsoring owner’s saved credentials with"],
+    ["share-publication","cloud-destinations","requires both"],
+    ["share-publication","run-encryption","uses a separate content key with"],
+    ["share-messages","share-cache","register read permission in"],
+    ["share-cache","recipient-snapshot","verifies new copies through"],
+    ["share-cache","guest-record-read","holds one version for"],
+    ["share-cache","disk-holds","keeps reader slots safe with"],
+    ["share-cache","run-encryption","opens only verified encrypted snapshots through"],
+    ["files-sharing","share-cache","receives and follows updates in"],
+    ["files-sharing","share-messages","requires an invitation from"],
+    ["files-sharing","record-value","stores file chunks as"],
+    ["files-sharing","key","finds every catalog and chunk by"],
+    ["database","share-publication","keeps a separate home for"],
+    ["database","share-cache","keeps received copies outside the owner home in"],
+
     ["local-file-reference","file-blob","is an alternative source for"],
     ["local-file-reference","record-metadata","keeps its marker in"],
     ["local-file-reference","record-file-lifetime","uses the removal rules in"],
@@ -12,7 +31,7 @@
     ["local-file-reference","cloud-files","has incomplete personal upload described by"],
     ["guest-permission","recipient-snapshot","authorizes guest reads for"],
     ["guest-permission","run-encryption","keeps the read token separate from the content key used by"],
-    ["guest-permission","share-messages","still needs secure delivery through"],
+    ["guest-permission","share-messages","travels encrypted inside"],
     ["recipient-snapshot","guest-record-read","provides verified local data for"],
     ["guest-record-read","key","requires an exact primary"],
     ["guest-record-read","record-value","returns the complete stored fields of"],
@@ -23,7 +42,7 @@
     ["recipient-snapshot","backup-manifest","binds access to one accepted"],
     ["recipient-snapshot","run-encryption","decrypts with a supplied content key through"],
     ["recipient-snapshot","cloud-access","uses account access only in the recipient form from"],
-    ["share-messages","recipient-snapshot","would supply authenticated grants to"],
+    ["share-messages","recipient-snapshot","supply permission and a content key to"],
     ["app","portable-schema","can name its declared definition from"],
     ["local-schema-declaration","portable-schema","returns the writer’s declared ID for"],
     ["file-blob","restored-account","requires device sign-in through"],
@@ -476,7 +495,6 @@
     ["registry","schema","offers separate advice about"],
     ["app-registry","app","lists signed source commits for"],
     ["search-service","key","returns candidates for"],
-    ["share-messages","shared-database","delivers invitations for","design"],
     ["database","schema","selects"],
     ["schema","field","names"],
     ["schema","key","declares"],
@@ -581,7 +599,7 @@
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release','registry-records','verifier-queue']},
     {id:'search',title:'Search & change feeds',summary:'Send saved changes to other tools and keep search outside the database.',ids:['search-service','search-delivery','search-fields','search-rebuild','change-notices']},
-    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages']}
+    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages','files-sharing']}
   ];
   const serviceGroupByPart=Object.fromEntries(serviceGroups.flatMap(group=>group.ids.map(id=>[id,group.id])));
   const currentGroup=()=>state.area==='services'?serviceGroups.find(group=>group.id===state.group):null;
