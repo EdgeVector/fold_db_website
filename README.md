@@ -129,7 +129,7 @@ The earlier PROD pass at `ebd09268` predates this layout and does not qualify it
 Guest snapshot staging has an explicit `lastdb admin shared stage-guest` command.
 It verifies a publisher-signed stream permission and an independent accepted snapshot.
 It can read one exact primary key and its inline bytes after staging the whole snapshot.
-The private workspace has no owner identity, credentials, receipt, or runnable home.
+The private workspace has no owner identity, credentials, restore receipt, or runnable home.
 Invitation delivery and the account-authenticated recipient command remain unconnected.
 Guest service deployment and a successful end-to-end operation are not established.
 Local file references keep an existing file outside LastDB and check its hash on reads.
