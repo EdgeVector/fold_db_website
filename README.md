@@ -112,9 +112,9 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `32ba40cfdc8458ce130b4ba8c485b1a93ffe5606` from 8 November 2026.
-It covers 143 parts and 539 connections, reviewed through 1073 commits after October 21.
-Format 14 and API 31 use complete records, explicit keys, and one record revision.
+LastDB revision `e08f2bcd09cf80bc18641319742ae14da897322b` from 8 November 2026.
+It covers 146 parts and 556 connections, reviewed through 1094 commits after October 21.
+Format 14 and API 34 use complete records, explicit keys, and one record revision.
 A shared replacement naming an accepted definition preserves stored fields outside that
 definition. Omitted declared fields and metadata still disappear. The SDK remembers the
 ID returned by schema declaration and sends it with later mutations.
@@ -126,25 +126,27 @@ name cloud versions that have since been released. The DEV operation at `4132e14
 with each restored home signed in as its own device and automatic backup off.
 The earlier PROD pass at `ebd09268` predates this layout and does not qualify it.
 
-Guest snapshot staging has an explicit `lastdb admin shared stage-guest` command.
-It verifies a publisher-signed stream permission and an independent accepted snapshot.
-It can read one exact primary key and its inline bytes after staging the whole snapshot.
-The private workspace has no owner identity, credentials, restore receipt, or runnable home.
-Invitation delivery and the account-authenticated recipient command remain unconnected.
-Guest service deployment and a successful end-to-end operation are not established.
+Share publication uses a separate home, identity, and content key. Its running daemon
+publishes independent snapshots after durable changes. Encrypted invitations connect
+publisher permissions to a recipient-owned, read-only cache. LastDB Files stores files
+as chunk records, follows verified snapshots, and checks complete bytes before saving.
+A failed refresh leaves the last verified copy usable offline. Invitation expiry cannot
+erase a received copy. CI covers local Share setup and file import only; cloud sharing
+and the account-authenticated recipient command remain unqualified or unconnected.
 Local file references keep an existing file outside LastDB and check its hash on reads.
 Their personal cloud upload path is incomplete; the guide describes the source gap and
 does not claim recoverable backup. Reads and sealing remain capped at 512 MiB.
 
 Shared sync remains DEV-only. The four-case operation at `24258e5b` passed, including
 the declared-field preservation rules. These are generated DEV results, not shared PROD
-qualification. This 24-commit review also covers API 31’s removal of the retired
-native-index search route, removal of unused switches and backup memory reserves,
-and schema lookup renaming. Warm-set limits, disk format, and flush-before-ack remain
-unchanged. Older homes still need their matching program.
+qualification. This 21-commit review also covers API 34, the Unix-only SDK, required
+schema purpose matching, and removal of unused schema seed, shadow and telemetry paths.
+Vendored LastStore adds shared read locks for verified snapshots while excluding writers.
+Warm-set limits, disk format, and flush-before-ack remain unchanged. Older homes still
+need their matching program.
 
 The disk diagram retains four steps and expandable detail groups. Apps & services opens
-with six responsibility groups, covering all 38 service parts. One selected part shows
+with six responsibility groups, covering all 39 service parts. One selected part shows
 its nearby connections while its explanation retains the full list.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes

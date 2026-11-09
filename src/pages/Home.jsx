@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Explore 143 parts in nested groups, including files, backup, and recovery, or follow one request through the layers.</p>
+        <p>Explore 146 parts in nested groups, including files, backup, and recovery, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-       <p className="dim">Source review: 8 November 2026. Explore guest permissions, private snapshot staging, and exact-key reads with optional inline files. Each part explains its purpose and limits.</p>
+       <p className="dim">Source review: 8 November 2026. Explore automatic Share publication, encrypted invitations, file sharing, and verified recipient copies. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
