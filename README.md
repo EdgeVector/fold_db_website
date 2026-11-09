@@ -112,9 +112,9 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 ## Interactive guide
 
 `public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `cad4d4b289aa301a9a552115d46720c8b7d78a57` from 8 November 2026.
-It covers 141 parts and 531 connections, reviewed through 1049 commits after October 21.
-Format 14 and API 30 use complete records, explicit keys, and one record revision.
+LastDB revision `32ba40cfdc8458ce130b4ba8c485b1a93ffe5606` from 8 November 2026.
+It covers 143 parts and 539 connections, reviewed through 1073 commits after October 21.
+Format 14 and API 31 use complete records, explicit keys, and one record revision.
 A shared replacement naming an accepted definition preserves stored fields outside that
 definition. Omitted declared fields and metadata still disappear. The SDK remembers the
 ID returned by schema declaration and sends it with later mutations.
@@ -126,18 +126,22 @@ name cloud versions that have since been released. The DEV operation at `4132e14
 with each restored home signed in as its own device and automatic backup off.
 The earlier PROD pass at `ebd09268` predates this layout and does not qualify it.
 
-Recipient snapshot staging is implemented but has no user command. It validates one
-independent accepted snapshot using an exact grant and supplied content key, without
-installing an owner identity, credentials, receipt, or runnable home.
+Guest snapshot staging has an explicit `lastdb admin shared stage-guest` command.
+It verifies a publisher-signed stream permission and an independent accepted snapshot.
+It can read one exact primary key and its inline bytes after staging the whole snapshot.
+The private workspace has no owner identity, credentials, restore receipt, or runnable home.
+Invitation delivery and the account-authenticated recipient command remain unconnected.
+Guest service deployment and a successful end-to-end operation are not established.
 Local file references keep an existing file outside LastDB and check its hash on reads.
 Their personal cloud upload path is incomplete; the guide describes the source gap and
 does not claim recoverable backup. Reads and sealing remain capped at 512 MiB.
 
 Shared sync remains DEV-only. The four-case operation at `24258e5b` passed, including
 the declared-field preservation rules. These are generated DEV results, not shared PROD
-qualification. This 19-commit review also covers owner-only empty run directories,
-32-byte identity seeds, and reduced telemetry compatibility. Warm-set limits, disk format,
-and flush-before-ack remain unchanged. Older homes still need their matching program.
+qualification. This 24-commit review also covers API 31’s removal of the retired
+native-index search route, removal of unused switches and backup memory reserves,
+and schema lookup renaming. Warm-set limits, disk format, and flush-before-ack remain
+unchanged. Older homes still need their matching program.
 
 The disk diagram retains four steps and expandable detail groups. Apps & services opens
 with six responsibility groups, covering all 38 service parts. One selected part shows
