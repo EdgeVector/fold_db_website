@@ -4,9 +4,18 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["share-contributions","share-publication","submits private creations for validation by"],
+    ["share-contributions","share-messages","uses a separate grant from"],
+    ["share-contributions","guest-permission","keeps append permission separate from"],
+    ["share-contributions","conditions","requires absence and an exact definition through"],
+    ["share-contributions","flush","saves acceptance and replay identity together through"],
+    ["share-contributions","guest-record-read","adds accepted author information to"],
+    ["share-publication","log-backup","publishes bounded accepted changes through"],
+    ["share-publication","mutation-log","retains changes in"],
+    ["share-cache","log-backup","replays verified accepted changes from"],
     ["share-publication","files-sharing","publishes completed imports from"],
     ["share-publication","share-messages","provides a separate content key for"],
-    ["share-publication","snapshot","creates independent copies through"],
+    ["share-publication","snapshot","starts and renews full copies through"],
     ["share-publication","frontier","watches durable changes at"],
     ["share-publication","cloud-access","uses the sponsoring owner’s saved credentials with"],
     ["share-publication","cloud-destinations","requires both"],
@@ -15,7 +24,7 @@
     ["share-cache","recipient-snapshot","verifies new copies through"],
     ["share-cache","guest-record-read","holds one version for"],
     ["share-cache","disk-holds","keeps reader slots safe with"],
-    ["share-cache","run-encryption","opens only verified encrypted snapshots through"],
+    ["share-cache","run-encryption","opens verified encrypted recovery points through"],
     ["files-sharing","share-cache","receives and follows updates in"],
     ["files-sharing","share-messages","requires an invitation from"],
     ["files-sharing","record-value","stores file chunks as"],
@@ -599,7 +608,7 @@
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release','registry-records','verifier-queue']},
     {id:'search',title:'Search & change feeds',summary:'Send saved changes to other tools and keep search outside the database.',ids:['search-service','search-delivery','search-fields','search-rebuild','change-notices']},
-    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages','files-sharing']}
+    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages','share-contributions','files-sharing']}
   ];
   const serviceGroupByPart=Object.fromEntries(serviceGroups.flatMap(group=>group.ids.map(id=>[id,group.id])));
   const currentGroup=()=>state.area==='services'?serviceGroups.find(group=>group.id===state.group):null;
