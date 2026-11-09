@@ -4,6 +4,14 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["app","database","selects an ID or local name from"],
+    ["node","share-cache","refreshes registered copies through"],
+    ["database","guest-record-read","routes registered Share reads through"],
+    ["share-contributions","database","use a selected registered"],
+    ["guest-record-read","alternate-keys","supports verified lookups through"],
+    ["guest-record-read","query-replies","returns ordinary records through"],
+    ["files-sharing","database","selects its received copy through"],
+    ["share-messages","database","register a received Share in"],
     ["share-contributions","share-publication","submits private creations for validation by"],
     ["share-contributions","share-messages","uses a separate grant from"],
     ["share-contributions","guest-permission","keeps append permission separate from"],
@@ -25,12 +33,12 @@
     ["share-cache","guest-record-read","holds one version for"],
     ["share-cache","disk-holds","keeps reader slots safe with"],
     ["share-cache","run-encryption","opens verified encrypted recovery points through"],
-    ["files-sharing","share-cache","receives and follows updates in"],
+    ["files-sharing","share-cache","reads automatically refreshed copies from"],
     ["files-sharing","share-messages","requires an invitation from"],
     ["files-sharing","record-value","stores file chunks as"],
     ["files-sharing","key","finds every catalog and chunk by"],
     ["database","share-publication","keeps a separate home for"],
-    ["database","share-cache","keeps received copies outside the owner home in"],
+    ["database","share-cache","keeps received records separate in"],
 
     ["local-file-reference","file-blob","is an alternative source for"],
     ["local-file-reference","record-metadata","keeps its marker in"],
@@ -42,7 +50,7 @@
     ["guest-permission","run-encryption","keeps the read token separate from the content key used by"],
     ["guest-permission","share-messages","travels encrypted inside"],
     ["recipient-snapshot","guest-record-read","provides verified local data for"],
-    ["guest-record-read","key","requires an exact primary"],
+    ["guest-record-read","key","uses declared addresses from"],
     ["guest-record-read","record-value","returns the complete stored fields of"],
     ["guest-record-read","inline-file","can verify and return"],
     ["guest-record-read","file-blob","does not download"],
