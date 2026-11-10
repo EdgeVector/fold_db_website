@@ -1,8 +1,8 @@
 /* Source-reviewed content. This site does not access LastDB. */
 window.GUIDE = {
-  revision:"8c0ec4f82fe2b7d8722fc836e47b56c8519879a0",
+  revision:"fcf3ffe5271ac9ebad52e85be17045ae59d26707",
   reviewed:"9 November 2026",
-  reviewedCommits:1108,
+  reviewedCommits:1109,
   previousRevision:"c70e6fdc7810bb6291a2564ad8157d7938de0494",
   aliases:{"format-copy":"alternate-format","retry-receipts":"conditions","org-database":"database","received-records":"local-export","blob-counter":"record-file-lifetime","release-log":"managed-app-install","snapshot-identity":"restore-checks","snapshot-plan":"snapshot-cleanup","snapshot-positions":"snapshot","range-candidate":"range-protection","range-inventory":"run-home","typed-range-plan":"range-protection","journal":"snapshot-commit","sync-queue":"byte-backup-client","key-directory":"run-lookup","locator":"run-lookup","packed-files":"run-files","receipt":"disk-root","compaction":"run-merge","compaction-memory":"run-merge","local-backup":"run-backup-files","record-transfer":"restore","disk-format":"run-home","extended-keys":"run-files","disk-conversion":"run-home","byte-packing":"cloud-byte-pieces","standalone-backup":"byte-backup-client","backup-job":"byte-backup-client","complete-keys":"range-pages","offline-recount":"record-file-lifetime","delete-marker-cleanup":"shared-delete-cleanup","replay-cutoff":"shared-delete-cleanup","content-encryption":"run-encryption","conflict-record":"write-order","record-conflicts":"write-order","alternate-key-change":"schema-conversion","record-warm":"warm-set","device-changes":"snapshot","device-identity":"snapshot","device-exchange":"snapshot","record-sync":"snapshot","schema-catalog-feed":"registry","field-restore":"restore","field-history":"delete-purge","history-expiry":"delete-purge","record-history":"delete-purge","time-queue":"delete-purge","local-app-install":"managed-app-install","local-snapshot":"snapshot-cleanup"},
   layers:[
