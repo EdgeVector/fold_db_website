@@ -5,7 +5,6 @@
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
     ["unified-mutation-log","automatic-backup","is not yet connected to","design"],
-    ["unified-mutation-log","shared-automatic","is not yet connected to","design"],
     ["unified-mutation-log","share-contributions","does not replace the current path for","design"],
     ["app","database","selects an ID or local name from"],
     ["node","share-cache","refreshes registered copies through"],
@@ -42,7 +41,6 @@
     ["files-sharing","key","finds every catalog and chunk by"],
     ["database","share-publication","keeps a separate home for"],
     ["database","share-cache","keeps received records separate in"],
-
     ["local-file-reference","file-blob","is an alternative source for"],
     ["local-file-reference","record-metadata","keeps its marker in"],
     ["local-file-reference","record-file-lifetime","uses the removal rules in"],
@@ -63,19 +61,15 @@
     ["recipient-snapshot","run-encryption","decrypts with a supplied content key through"],
     ["recipient-snapshot","cloud-access","uses account access only in the recipient form from"],
     ["share-messages","recipient-snapshot","supply permission and a content key to"],
-    ["app","portable-schema","can name its declared definition from"],
-    ["local-schema-declaration","portable-schema","returns the writer’s declared ID for"],
     ["file-blob","restored-account","requires device sign-in through"],
     ["restore","file-blob","prepares on-request downloads for","design"],
     ["log-backup","file-blob","uploads queued personal versions of","design"],
     ["record-file-lifetime","byte-backup-client","queues personal cloud releases for","design"],
-    ["portable-schema","record-value","preserve later fields and label the saved state in"],
     ["inline-file","record-value","belongs to"],
     ["inline-file","record-metadata","is described by a marker in"],
     ["inline-file","run-home","stores its separate row in"],
     ["inline-file","run-encryption","protects stored bytes with"],
     ["inline-file","cloud-files","requires matching bytes during"],
-    ["inline-file","shared-log","carries bytes in"],
     ["query-replies","inline-file","returns only the marker of"],
     ["file-blob","inline-file","can share one record with"],
     ["file-blob","saved-cloud-credentials","uses account access for on-request downloads from"],
@@ -83,83 +77,12 @@
     ["snapshot-cleanup","disk-holds","rechecks before creating"],
     ["snapshot-cleanup","space-reservation","reserves replacement space through"],
     ["snapshot","snapshot-cleanup","prepares new running captures with"],
-    ["shared-snapshot-command","snapshot-cleanup","prepares new captures with"],
     ["run-backup-files","inline-file","includes the row for"],
-
-    ["shared-database","shared-automatic","can enable"],
-    ["shared-automatic","node","runs in"],
-    ["shared-automatic","shared-log","uploads through"],
-    ["shared-automatic","portable-replay","receives through"],
-    ["shared-automatic","shared-object-upload","lets the publisher schedule"],
-    ["shared-automatic","saved-cloud-credentials","requires a DEV connection from"],
-    ["shared-automatic","shared-writer-rejoin","reports missing history for"],
-    ["shared-automatic","backup-status","reports progress through"],
-    ["shared-automatic","shared-snapshot-command","shares the publication lock with"],
-
-    ["shared-database","shared-writer-rejoin","offers explicit DEV recovery through"],
-    ["shared-writer-rejoin","shared-log","confirms pending changes through"],
-    ["shared-writer-rejoin","shared-recovery","rebuilds current shared state through"],
-    ["shared-writer-rejoin","shared-private-home","preserves device-only data in"],
-    ["shared-writer-rejoin","disk-holds","refuses unfinished snapshot holds in"],
-    ["shared-writer-rejoin","run-home","retains ownership while replacing"],
-    ["shared-writer-rejoin","portable-schema","requires exact bindings from"],
-    ["shared-writer-rejoin","write-order","preserves the writer identity used by"],
-    ["shared-private-home","run-home","adds device-private storage beside"],
-    ["shared-private-home","record-home","journals cross-home changes from"],
-    ["shared-private-home","run-encryption","derives a separate key through"],
-    ["shared-object-upload","shared-private-home","exclude device-only data in"],
-    ["shared-object-upload","cloud-destinations","route original files to"],
-    ["shared-recovery","shared-private-home","creates and validates fresh"],
-    ["shared-database","shared-private-home","requires the dedicated layout in"],
-
-    ["shared-snapshot-command","node","runs through the owner socket of"],
-    ["shared-snapshot-command","shared-log","sends changes through"],
-    ["shared-snapshot-command","shared-object-upload","coordinates"],
-    ["shared-snapshot-command","portable-schema","loads exact definitions from"],
-    ["shared-snapshot-command","saved-cloud-credentials","requires a DEV connection from"],
-    ["shared-log","shared-retention","release accepted local mutations through"],
-    ["portable-replay","shared-retention","advances older-home cleanup when idle through"],
-    ["shared-retention","record-file-lifetime","releases versions no longer needed by"],
-    ["shared-retention","format-writer","commits reference and file changes through"],
-    ["shared-retention","run-merge","leaves physical run-file removal to"],
-    ["shared-delete-cleanup","shared-retention","keeps delete-stamp cleanup separate from"],
-
-    ["shared-log","record-home","saves outgoing mutations in the same request as"],
-    ["shared-log","record-file-lifetime","retain exact prior versions through"],
-    ["shared-object-upload","read-view","capture one committed root through"],
-    ["shared-object-upload","backup-transport","follow the signed upload mode through"],
-    ["shared-object-upload","disk-holds","keep their chosen source files through"],
-    ["shared-object-upload","portable-schema","bind exact definitions from"],
-    ["shared-database","ttl","refuses expiry policies from"],
-    ["shared-database","schema-removal","blocks uncoordinated retirement through"],
     ["write-order","record-home","saves local writer progress with"],
     ["record-delete","write-order","keeps a separate applied-delete position from"],
-    ["portable-replay","shared-delete-cleanup","attempts"],
-    ["shared-log","shared-delete-cleanup","supply confirmed upload progress to"],
-    ["shared-delete-cleanup","record-delete","removes eligible stamps saved by"],
-    ["shared-object-upload","shared-delete-cleanup","capture the saved replay boundary from"],
-    ["shared-recovery","shared-delete-cleanup","preserves the saved replay boundary from"],
-    ["shared-database","shared-log","uses explicit DEV commands for"],
-    ["shared-database","shared-recovery","requires new writers to complete"],
-    ["shared-log","shared-object-upload","require exact objects prepared through"],
-    ["shared-log","portable-replay","carry complete mutations for"],
-    ["shared-object-upload","shared-recovery","publish the original files used by"],
-    ["shared-object-upload","record-file-lifetime","bind uploaded file versions from"],
-    ["shared-recovery","portable-replay","coordinates staged application through"],
-    ["shared-recovery","restore-checks","reuses native checkpoint checks from"],
-    ["shared-recovery","restore","is separate from the connected V2 path in"],
-    ["shared-recovery","prod-recovery","has separate evidence from ordinary recovery in"],
-    ["portable-replay","portable-schema","validates each record against an accepted definition in"],
-    ["portable-replay","write-order","compares complete-record stamps from"],
-    ["portable-replay","record-delete","respects the saved stamps from"],
-    ["portable-replay","record-file-lifetime","admits only winning versions through"],
-    ["portable-replay","format-writer","commits record and pointer changes through"],
-    ["portable-schema","schema","carry the full typed definition of"],
-    ["portable-schema","shared-log","travel before records in"],
     ["node","node-status","exposes health and request activity through"],
     ["node-status","socket-workers","reports request activity through"],
     ["node-status","backup-status","summarizes activity from"],
-
     ["app","query-replies","can check the record after a lost write reply through"],
     ["query-replies","conditions","return the revision required by"],
     ["conditions","record-value","guard the complete replacement of"],
@@ -189,7 +112,6 @@
     ["ci-app-publisher","app-compatibility","signs the observed versions for"],
     ["ci-app-publisher","managed-app-install","has explicit signer trust in"],
     ["ci-app-publisher","node","uses app-operation evidence from"],
-
     ["record-value","record-file-lifetime","owns its optional file through"],
     ["record-metadata","file-blob","reports the marker for"],
     ["file-blob","record-file-lifetime","has one owner through"],
@@ -231,7 +153,6 @@
     ["schema-advice","registry","runs on"],
     ["schema-advice","canonical-vocabulary","compares draft fields with"],
     ["schema-advice","local-schema-declaration","does not block"],
-
     ["app-registry","managed-app-install","supplies the signed source commit to"],
     ["managed-app-install","app","switches stable command links for"],
     ["managed-app-install","app-compatibility","requires the selected interface from"],
@@ -537,7 +458,7 @@
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'#55764f',fill:'#e3eddf',summary:'One structure across the system.',preview:'Schema → key → record → file'},
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
-    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Records, files, and shared private state.',preview:'Commit · files · compaction'},
+    disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Records, files, and durable changes.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'A separate copy for recovery.',preview:'Snapshot · changes · restore'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Retain needed bytes; remove data with its owner.',preview:'Record files · expiry · deletion'}
@@ -551,7 +472,7 @@
     ['flush','Return success','Publish the saved state in memory, then send the ack.']
   ];
   const diskGroups=[
-    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','shared-private-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
+    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers or backups still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
     {title:'Backup and home setup',summary:'Prepare a clean snapshot, retain changes, or open a compatible home.',ids:['snapshot-cleanup','mutation-log','alternate-format','home-creation']}
@@ -560,7 +481,7 @@
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','socket-workers','query-replies','storage-reports','node-status','backup-status']},
-    {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration','portable-schema']},
+    {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release']},
     {id:'search',title:'Search',summary:'Keep search outside the database, with an optional inbox for saved changes.',ids:['search-service','search-delivery','search-fields']},
@@ -649,7 +570,7 @@
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='configured'?'Service opt-in':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore checks a selected backup before creating a separate home.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Shared and device-private state remain separate. A replacement supplies complete fields and addresses. A shared writer can name its definition to protect later fields. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore checks a selected backup before creating a separate home.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.group=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();if(state.area==='services')host.querySelector('.service-overview h2').focus();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function chooseGroup(id){
