@@ -202,7 +202,7 @@ export default function Home() {
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
         <p>Explore 147 parts in nested groups, including files, backup, and recovery, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-       <p className="dim">Source review: 10 November 2026. Explore database selection, disk failure handling, shared uploads, and recovery limits. Each part explains its purpose and limits.</p>
+       <p className="dim">Source review: 10 November 2026. Explore app ownership, reserved names, format checks, and recovery limits. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
