@@ -4,6 +4,9 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["unified-mutation-log","automatic-backup","is not yet connected to","design"],
+    ["unified-mutation-log","shared-automatic","is not yet connected to","design"],
+    ["unified-mutation-log","share-contributions","does not replace the current path for","design"],
     ["app","database","selects an ID or local name from"],
     ["node","share-cache","refreshes registered copies through"],
     ["database","guest-record-read","routes registered Share reads through"],
@@ -12,12 +15,12 @@
     ["guest-record-read","query-replies","returns ordinary records through"],
     ["files-sharing","database","selects its received copy through"],
     ["share-messages","database","register a received Share in"],
-    ["share-contributions","share-publication","submits private creations for validation by"],
-    ["share-contributions","share-messages","uses a separate grant from"],
-    ["share-contributions","guest-permission","keeps append permission separate from"],
-    ["share-contributions","conditions","requires absence and an exact definition through"],
-    ["share-contributions","flush","saves acceptance and replay identity together through"],
-    ["share-contributions","guest-record-read","adds accepted author information to"],
+    ["share-contributions","share-publication","submit private changes for validation by"],
+    ["share-contributions","share-messages","use a separate grant from"],
+    ["share-contributions","guest-permission","keep append permission separate from"],
+    ["share-contributions","conditions","require an exact definition and checked condition through"],
+    ["share-contributions","flush","save acceptance and replay identity together through"],
+    ["share-contributions","guest-record-read","add accepted author information to"],
     ["share-publication","log-backup","publishes bounded accepted changes through"],
     ["share-publication","mutation-log","retains changes in"],
     ["share-cache","log-backup","replays verified accepted changes from"],
@@ -243,7 +246,6 @@
     ["local-schema-declaration","schema","checks and loads"],
     ["local-schema-declaration","field","requires a declared type for each"],
     ["local-schema-declaration","registry","works without calling"],
-    ["local-schema-declaration","schema-registration","is separate from"],
     ["byte-backup-client","backup-declarations","includes","design"],
     ["snapshot","backup-declarations","declares covered state and no earlier recovery need in","design"],
     ["log-backup","backup-declarations","names its base and previous change in","design"],
@@ -291,10 +293,9 @@
     ["compound-keys","alternate-entries","supply the coordinates for"],
     ["compound-keys","alternate-format","require the format checked by"],
     ["compound-keys","record","choose a list position for a"],
-    ["registry-records","verifier-queue","send accepted publish and revoke requests through"],
     ["field","field-reuse","has a reusable definition through"],
     ["field-reuse","schema","keeps record values owned by"],
-    ["field-reuse","canonical-vocabulary","uses checked definitions from"],
+    ["field-reuse","canonical-vocabulary","can reuse standard definitions from"],
     ["field-reuse","alternate-keys","keeps field meaning separate from"],
     ["schema","alternate-keys","can declare"],
     ["alternate-keys","alternate-entries","store routes through"],
@@ -325,10 +326,6 @@
     ["query-replies","key","require the usual scope from"],
     ["query-replies","keyed-conditions","refuse count mode with"],
     ["query-replies","range-pages","can omit metadata from"],
-    ["schema-registration","registry","controls new definitions in"],
-    ["schema-registration","registry-records","checks the saved app owner in"],
-    ["schema-registration","canonical-vocabulary","requires permission before changes to"],
-    ["schema-registration","registry-definitions","allows checked new definitions into"],
     ["accepted-writes","write-read-reuse","avoid repeated reads through"],
     ["write-read-reuse","read-view","uses one saved state from"],
     ["write-read-reuse","run-lookup","reuses exact results from"],
@@ -345,12 +342,6 @@
     ["backup-dependencies","snapshot","identifies required earlier","design"],
     ["backup-dependencies","log-backup","identifies required earlier","design"],
     ["backup-dependencies","restore","describes dependencies needed by","design"],
-    ["registry","registry-definitions","saves checked definitions through"],
-    ["canonical-vocabulary","registry-definitions","commits checked meanings with"],
-    ["registry-definitions","schema","save separately published definitions of"],
-    ["registry-definitions","field","save canonical and declared definitions of"],
-    ["registry-generation","registry-definitions","selects a separate set of"],
-    ["registry-definitions","registry-records","keep app ownership separate in"],
     ["stopped-backup","node","requires a clean stop of","design"],
     ["stopped-backup","manual-cloud-connection","requires a saved","design"],
     ["stopped-backup","automatic-backup","can keep the enabled policy for","design"],
@@ -362,9 +353,6 @@
     ["file-encryption","blob-storage-encryption","protects file contents before"],
     ["blob-storage-encryption","run-blob-home","protects each file entry in"],
     ["blob-storage-encryption","run-encryption","precedes"],
-    ["registry","registry-generation","can select a"],
-    ["registry-generation","canonical-vocabulary","selects its own"],
-    ["registry-generation","registry-records","separates releases but shares app ownership in"],
     ["automatic-backup","mutation-log","enables local retention in","design"],
     ["snapshot-commit","mutation-log","retains complete backup changes in","design"],
     ["mutation-log","run-files","retain original encrypted files from","design"],
@@ -388,9 +376,8 @@
     ["mutation-log","backup-status","report local saved positions and gaps through","design"],
     ["registry","canonical-vocabulary","checks definitions through"],
     ["canonical-vocabulary","field","checks the name and meaning of"],
-    ["canonical-vocabulary","schema","checks declared fields in"],
-    ["canonical-vocabulary","registry-records","checks stored release definitions in"],
-    ["app","canonical-vocabulary","can propose checked definitions through"],
+    ["canonical-vocabulary","schema","offers meanings for fields in"],
+    ["app","canonical-vocabulary","can read standard definitions from"],
     ["home-creation","range-context","sets the default typed rules used by"],
     ["run-backup-files","backup-key-selection","use","design"],
     ["restore-checks","backup-key-selection","use"],
@@ -433,8 +420,6 @@
     ["backup-read-buffers","run-encryption","verifies protected bytes from"],
     ["backup-read-buffers","memory-budget","uses a separate allowance from"],
     ["restore","backup-read-buffers","checks native bytes through","design"],
-    ["registry","registry-records","stores app definitions through"],
-    ["registry-records","app","check the saved owner of"],
     ["node","home-creation","sets up a new node through"],
     ["home-creation","run-home","prepares both disk homes in"],
     ["home-creation","run-encryption","requires the node key for"],
@@ -501,7 +486,7 @@
     ["range-pages","record","can reuse checked range values in"],
     ["accepted-writes","write-queue","places complete prepared changes in"],
     ["write-queue","snapshot-commit","shares immediate disk work through"],
-    ["app-access","socket-workers","defines allowed requests for"],
+    ["app-access","socket-workers","checks the connecting OS user before"],
     ["socket-workers","accepted-writes","can await disk completion of"],
     ["socket-workers","write-queue","releases its worker while a write waits in"],
     ["restore","restored-account","supplies a completed home for","design"],
@@ -510,7 +495,7 @@
     ["app","node","sends a request to"],
     ["app","schema","chooses"],
     ["node","core-state","coordinates"],
-    ["app-access","app","controls normal access for"],
+    ["app-access","app","accepts owner-user connections from"],
     ["registry","schema","offers separate advice about"],
     ["app-registry","app","lists signed source commits for"],
     ["search-service","key","returns candidates for"],
@@ -614,9 +599,9 @@
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','socket-workers','query-replies','storage-reports','node-status','backup-status']},
-    {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration','schema-registration','registry-definitions','registry-generation','portable-schema']},
+    {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration','portable-schema']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
-    {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release','registry-records','verifier-queue']},
+    {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release']},
     {id:'search',title:'Search & change feeds',summary:'Send saved changes to other tools and keep search outside the database.',ids:['search-service','search-delivery','search-fields','search-rebuild','change-notices']},
     {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','account-payments','local-export','share-messages','share-contributions','files-sharing']}
   ];
@@ -701,7 +686,7 @@
     host.querySelector('.diagram-stage').classList.toggle('in-layer',state.area!=='all');
   }
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='configured'?'Service opt-in':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
-  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
+  const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
   function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Restore checks a selected backup before creating a separate home.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 14 separates shared data from device-private state and removes field history. A replacement supplies complete fields and addresses. A shared writer can name its definition to protect later fields. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
