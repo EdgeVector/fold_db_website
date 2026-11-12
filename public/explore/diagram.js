@@ -39,7 +39,6 @@
     ["files-sharing","share-messages","requires an invitation from"],
     ["files-sharing","record-value","stores file chunks as"],
     ["files-sharing","key","finds every catalog and chunk by"],
-    ["database","share-publication","keeps a separate home for"],
     ["database","share-cache","keeps received records separate in"],
     ["local-file-reference","file-blob","is an alternative source for"],
     ["local-file-reference","record-metadata","keeps its marker in"],
@@ -100,7 +99,6 @@
     ["file-encryption","run-encryption","protects file content before"],
     ["format-writer","expiry-tracking","checks the schema owner of"],
     ["ttl","expiry-tracking","follows every hash-list page in"],
-    ["retention-backfill","expiry-tracking","adds existing records to"],
     ["schema-removal","expiry-tracking","clears all bounded pages of"],
     ["record-value","format-writer","passes structure and final-size checks through"],
     ["format-writer","write-order","saves the author clock used by"],
@@ -149,7 +147,6 @@
     ["node","socket-workers","serves through one owner socket with"],
     ["app-publish-rules","node","reads app-owned schemas from"],
     ["app-publish-rules","local-schema-declaration","uses the same identity rules as"],
-    ["app-publish","schema-advice","prints optional findings from"],
     ["schema-advice","registry","runs on"],
     ["schema-advice","canonical-vocabulary","compares draft fields with"],
     ["schema-advice","local-schema-declaration","does not block"],
@@ -367,9 +364,6 @@
     ["app-compatibility","search-delivery","checks the declared notice format for"],
     ["app-registry","app-compatibility","selects an exact interface through"],
     ["node","app-compatibility","reports supported versions for"],
-    ["ttl","retention-backfill","can include older records through"],
-    ["schema","retention-backfill","supplies the active policy for"],
-    ["retention-backfill","snapshot-commit","saves each page through"],
     ["range-pages","record","can reuse checked range values in"],
     ["accepted-writes","write-queue","places complete prepared changes in"],
     ["write-queue","snapshot-commit","shares immediate disk work through"],
@@ -453,6 +447,21 @@
     ["backup-transport","cloud-access","checks account permission through","design"],
     ["backup-transport","cloud-destinations","transfers approved bytes to","design"],
     ["backup-transport","backup-manifest","checks receipts used by","design"],
+    ["database","share-spec","can bind to"],
+    ["database","run-encryption","uses a distinct content key with"],
+    ["saved-queries","database","copies between selected owned"],
+    ["saved-queries","share-spec","projects only fields admitted by"],
+    ["saved-queries","key","selects records using"],
+    ["saved-queries","conditions","checks revisions through"],
+    ["saved-queries","flush","follows completed writes from"],
+    ["saved-queries","automatic-backup","does not enroll its destination in","design"],
+    ["node","saved-queries","follows saved selections through"],
+    ["files-sharing","share-spec","checks publication eligibility with"],
+    ["unified-mutation-log","share-spec","uses namespace rules from","design"],
+    ["cloud-cutover","database","names exactly one"],
+    ["cloud-cutover","snapshot","requires supplied evidence for"],
+    ["cloud-cutover","cloud-access","requests a committed receipt from"],
+    ["cloud-cutover","unified-mutation-log","does not connect normal runtime sync to","design"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(part=>['candidate','unconnected','planned','dev-operation'].includes(part?.status))?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
@@ -485,7 +494,7 @@
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release']},
     {id:'search',title:'Search',summary:'Keep search outside the database, with an optional inbox for saved changes.',ids:['search-service','search-delivery','search-fields']},
-    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','share-messages','share-contributions','files-sharing']}
+    {id:'cloud',title:'Cloud access & sharing',summary:'Authorize backup requests, manage account access, and share selected data.',ids:['cloud-access','backup-transport','share-messages','share-contributions','files-sharing','saved-queries']}
   ];
   const serviceGroupByPart=Object.fromEntries(serviceGroups.flatMap(group=>group.ids.map(id=>[id,group.id])));
   const currentGroup=()=>state.area==='services'?serviceGroups.find(group=>group.id===state.group):null;
