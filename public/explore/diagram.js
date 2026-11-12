@@ -4,7 +4,7 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
-    ["unified-mutation-log","automatic-backup","is not yet connected to","design"],
+    ["unified-mutation-log","automatic-backup","pauses only the confirmed owner’s legacy path for","design"],
     ["unified-mutation-log","share-contributions","does not replace the current path for","design"],
     ["app","database","selects an ID or local name from"],
     ["node","share-cache","refreshes registered copies through"],
@@ -22,7 +22,7 @@
     ["share-contributions","guest-record-read","add accepted author information to"],
     ["share-publication","log-backup","publishes bounded accepted changes through"],
     ["share-publication","mutation-log","retains changes in"],
-    ["share-cache","log-backup","replays verified accepted changes from"],
+    ["share-cache","log-backup","replay legacy publication changes from"],
     ["share-publication","files-sharing","publishes completed imports from"],
     ["share-publication","share-messages","provides a separate content key for"],
     ["share-publication","snapshot","starts and renews full copies through"],
@@ -31,10 +31,10 @@
     ["share-publication","cloud-destinations","requires both"],
     ["share-publication","run-encryption","uses a separate content key with"],
     ["share-messages","share-cache","register read permission in"],
-    ["share-cache","recipient-snapshot","verifies new copies through"],
-    ["share-cache","guest-record-read","holds one version for"],
-    ["share-cache","disk-holds","keeps reader slots safe with"],
-    ["share-cache","run-encryption","opens verified encrypted recovery points through"],
+    ["share-cache","recipient-snapshot","verify legacy publication copies through"],
+    ["share-cache","guest-record-read","hold one version for"],
+    ["share-cache","disk-holds","keep legacy reader slots safe with"],
+    ["share-cache","run-encryption","open verified encrypted recovery points through"],
     ["files-sharing","share-cache","reads automatically refreshed copies from"],
     ["files-sharing","share-messages","requires an invitation from"],
     ["files-sharing","record-value","stores file chunks as"],
@@ -53,7 +53,7 @@
     ["guest-record-read","key","uses declared addresses from"],
     ["guest-record-read","record-value","returns the complete stored fields of"],
     ["guest-record-read","inline-file","can verify and return"],
-    ["guest-record-read","file-blob","does not download"],
+    ["guest-record-read","file-blob","reads verified files in signed named stores; legacy publications refuse"],
     ["recipient-snapshot","restore","reuses verified staging from"],
     ["recipient-snapshot","restore-checks","checks captured roots and account through"],
     ["recipient-snapshot","backup-manifest","binds access to one accepted"],
@@ -457,11 +457,33 @@
     ["saved-queries","automatic-backup","does not enroll its destination in","design"],
     ["node","saved-queries","follows saved selections through"],
     ["files-sharing","share-spec","checks publication eligibility with"],
-    ["unified-mutation-log","share-spec","uses namespace rules from","design"],
+    ["unified-mutation-log","share-spec","checks publication eligibility with"],
     ["cloud-cutover","database","names exactly one"],
     ["cloud-cutover","snapshot","requires supplied evidence for"],
     ["cloud-cutover","cloud-access","requests a committed receipt from"],
-    ["cloud-cutover","unified-mutation-log","does not connect normal runtime sync to","design"]
+    ["cloud-cutover","unified-mutation-log","requires live service confirmation before activating"],
+    ["database","unified-mutation-log","requests cloud creation and activation through"],
+    ["node","unified-mutation-log","runs the background worker for"],
+    ["flush","accepted-stream","saves owned named entries before success in"],
+    ["accepted-stream","snapshot-commit","share the durable commit boundary with"],
+    ["accepted-stream","unified-mutation-log","supply eligible saved changes to"],
+    ["accepted-stream","share-spec","are classified using"],
+    ["accepted-stream","local-file-reference","retain a checked source path for"],
+    ["saved-queries","accepted-stream","create destination changes captured in"],
+    ["unified-mutation-log","named-recovery","recovers expired named cursors through"],
+    ["unified-mutation-log","named-members","refreshes grant revisions from"],
+    ["unified-mutation-log","cloud-files","uploads verified file envelopes through"],
+    ["named-recovery","share-cache","replays into the registered signed store in"],
+    ["named-recovery","guest-record-read","requires a durable prefix before"],
+    ["named-recovery","flush","finishes received pages before cloud ack with"],
+    ["named-recovery","file-blob","downloads and verifies referenced bytes for"],
+    ["named-recovery","run-encryption","uses the database content key from"],
+    ["named-recovery","restore","keeps the personal-home recovery path separate from"],
+    ["named-members","share-messages","grants access before sealing"],
+    ["named-members","share-contributions","does not yet enable the received-store write route for","design"],
+    ["named-members","database","binds each signed member list to"],
+    ["named-members","cloud-access","checks saved account and endpoint with"],
+    ["run-encryption","unified-mutation-log","binds encrypted entries and files for"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(part=>['candidate','unconnected','planned','dev-operation'].includes(part?.status))?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'#65776a',fill:'#e9efea',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
@@ -484,7 +506,7 @@
     {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers or backups still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
-    {title:'Backup and home setup',summary:'Prepare a clean snapshot, retain changes, or open a compatible home.',ids:['snapshot-cleanup','mutation-log','alternate-format','home-creation']}
+    {title:'Backup and home setup',summary:'Prepare a clean snapshot, retain changes, or open a compatible home.',ids:['snapshot-cleanup','mutation-log','accepted-stream','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
