@@ -14,3 +14,34 @@
 main:focus{outline:none}
 
 .website-return{color:#4c6b40;white-space:nowrap;font-size:11px;text-decoration:underline;text-underline-offset:3px}.topbar{gap:15px}.topbar #breadcrumb{margin-right:auto}@media(max-width:640px){.topbar #breadcrumb{display:none}.website-return{margin-right:auto;font-size:10px}}
+
+/* Share starts with the idea; implementation details open on demand. */
+.layer-share{--accent:#347b70;--tint:#e1efeb}
+.share-flow{margin:32px 0 20px;padding:26px;background:#edf4ef;border:1px solid #d0ded5;border-radius:14px}
+.share-flow .section-heading{margin:0 0 12px;align-items:center;gap:12px;flex-wrap:wrap}
+.share-flow>p{max-width:720px;line-height:1.65;color:#53685d}
+.share-flow-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;counter-reset:share-step;margin:24px 0;padding:0;gap:20px}
+.share-flow-steps li{position:relative;counter-increment:share-step;padding:17px 14px;background:#fff;border-radius:9px;border:1px solid #d0ded5}
+.share-flow-steps li::before{content:counter(share-step);display:block;color:#548478;font-size:12px;margin-bottom:12px}
+.share-flow-steps li+li::after{content:'→';position:absolute;left:-17px;top:50%;color:#548478}
+.share-flow-steps strong,.share-flow-steps span{display:block}
+.share-flow-steps strong{font-size:15px;margin-bottom:8px}
+.share-flow-steps span{font-size:13px;line-height:1.6;color:#5f7065}
+.share-current{border-left:3px solid #548478;padding:8px 20px;margin:24px 0 38px}
+.share-current p{margin:8px 0 0;font-size:14px;line-height:1.75;max-width:830px;color:#56665c}
+.share-examples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.share-examples article{padding:22px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.share-examples h3{font-size:19px;margin:12px 0}
+.share-examples p{font-size:14px;line-height:1.7;color:#56665c}
+.share-examples small{display:block;font-size:11px;line-height:1.6;color:#65736a;border-top:1px solid var(--line);padding-top:13px}
+.share-topic-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.share-topic-groups details{border:1px solid var(--line);border-radius:10px;background:#fff;padding:18px}
+.share-topic-groups summary{cursor:pointer;line-height:1.5}
+.share-topic-groups summary strong{font-size:16px}
+.share-topic-groups summary>span{display:block;color:#65736a;font-size:13px;margin-top:7px}
+.share-topic-groups .connection-list{margin-top:18px}
+.share-back{display:inline-block;margin-bottom:24px}
+.share-part-group{margin:0 0 10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.share-part-group summary{padding:12px 4px;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:1000px){.share-flow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.share-flow-steps li::after{display:none}.share-examples{grid-template-columns:1fr}}
+@media(max-width:600px){.share-flow{padding:20px 16px}.share-flow-steps{grid-template-columns:1fr;gap:12px}.share-flow-steps li{padding:14px 14px 14px 42px}.share-flow-steps li::before{position:absolute;left:16px;top:17px}.share-topic-groups{grid-template-columns:1fr}.share-current{padding-left:15px}}
