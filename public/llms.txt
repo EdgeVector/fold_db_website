@@ -7,8 +7,8 @@
 > tools on one foundation you own, not SaaS silos). Deliver slices of your
 > database to others.
 >
-> Local use needs no account. Optional cloud backup/sync joins an account for
-> multi-device (`lastdb connect`).
+> Local use needs no account. Backup is optional. The alpha program is the
+> GitHub release tag `alpha`, then `lastdb cloud backup-v2`.
 
 Website: https://thelastdb.com
 Pages are prerendered at build time so agents and curl can read them without executing JavaScript.
@@ -20,6 +20,41 @@ Explore 60 parts across memory, disk, cloud, the data model, protection, data li
 Each part explains its purpose, connections, example, and limits.
 The guide describes source from 23 October 2026 and marks future cloud designs.
 JavaScript enables the diagram. Public design notes: https://thelastdb.com/explore/sources/design-notes.html
+
+## Alpha
+
+The alpha release page is https://github.com/EdgeVector/lastdb/releases/tag/alpha
+
+That page names one commit after the job "Automatic DEV backup and recovery" passes. The page links the archives after the nightly build for that same commit exists. Until both exist, the page can be absent.
+
+Apple Silicon archive: `lastdb-aarch64-apple-darwin.tar.gz`
+Linux x64 archive: `lastdb-x86_64-unknown-linux-gnu.tar.gz`
+
+Each archive contains only `lastdb` and `lastdbd`.
+
+Put both programs on `PATH`. Run `lastdbd` with no flags. It serves `~/.lastdb/data/folddb.sock`. In a second terminal, run `lastdb status`.
+
+Local use needs no account. Backup is optional. A new backup account needs an invite. This page has no invite code. The flag `--dev` selects the current backup service.
+
+```bash
+lastdb cloud backup-v2 connect --dev --invite-code-stdin
+lastdb cloud backup-v2 enable-automatic --log-interval-seconds 60 --snapshot-interval-seconds 86400
+```
+
+The connect command reads the invite on stdin. Keep the recovery phrase. `lastdb status` names automatic on or off, the last accepted log time, and the next snapshot time. The line does not print a key, a phrase, or an object name.
+
+One machine writes. A second machine restores a backup into an absent home. The restored home starts with automatic backup off.
+
+```bash
+lastdb cloud backup-v2 discover --recovery-phrase-stdin
+lastdb cloud backup-v2 restore --recovery-phrase-stdin --stream STREAM --into /ABSENT/HOME
+```
+
+Replace `STREAM` with the stream id from discover. Send the recovery phrase on stdin. Do not put the phrase in the command.
+
+## App stack (not the alpha program)
+
+The blocks below install Homebrew and the app stack. They are not the alpha program.
 
 ## Install (macOS Apple Silicon)
 
@@ -91,7 +126,7 @@ A `lastdb` older than 0.23.5 has no `app resolve`: the installer falls back to
 your LastDB build yet, install stops and names the remedy (`brew upgrade
 lastdb`, or wait for the next proved set).
 
-Database only:
+Database only (Homebrew; not the alpha program):
 
 ```bash
 brew install edgevector/lastdb/lastdb
