@@ -340,10 +340,10 @@
     ["saved-cloud-credentials","accepted-stream","enable personal capture at startup in"],
     ["saved-cloud-credentials","registry","select the matching service for"],
     ["saved-cloud-credentials","cloud-access","supply saved account access to"],
-    ["manual-cloud-connection","saved-cloud-credentials","saves checked access as"],
-    ["manual-cloud-connection","cloud-access","checks the existing account through"],
+    ["manual-cloud-connection","saved-cloud-credentials","saves existing access as"],
+    ["manual-cloud-connection","cloud-access","prepares account access for"],
     ["node","manual-cloud-connection","accepts an explicit request through"],
-    ["restored-account","saved-cloud-credentials","saves matching access as"],
+    ["restored-account","saved-cloud-credentials","saves existing access as"],
     ["restore","restored-account","leaves later connection to"],
     ["cloud-cutover","database","confirms one selected"],
     ["cloud-cutover","cloud-access","requires a matching live reply from"],
@@ -430,10 +430,11 @@
   const groupByPart=Object.fromEntries([...serviceGroups,...G.shareGroups].flatMap(g=>g.ids.map(id=>[id,g.id])));
   const currentGroup=()=>groupsFor(state.area).find(g=>g.id===state.group);
   const partContext=p=>[meta[p.layer].title,groupsFor(p.layer).find(group=>group.id===groupByPart[p.id])?.title].filter(Boolean).join(' / ');
+  const partCount=count=>`${count} ${count===1?'part':'parts'}`;
   function serviceOverview(){
     const group=currentGroup(),groups=groupsFor(state.area),areaTitle=meta[state.area].title;
-    const cards=group?group.ids.map(id=>{const p=parts[id];return `<button data-diagram-part="${id}"><strong>${esc(p.name)}</strong><span>${esc(p.short)}</span><small>${partStatus(p)} <b aria-hidden="true">↗</b></small></button>`;}):groups.map(g=>`<button data-diagram-group="${g.id}"><strong>${esc(g.title)}</strong><span>${esc(g.summary)}</span><small>${g.ids.length} parts <b aria-hidden="true">→</b></small></button>`);
-    return `<section class="service-overview" aria-label="${group?esc(group.title):esc(areaTitle)+' overview'}"><header><span class="eyebrow">${group?esc(areaTitle)+' · '+group.ids.length+' parts':esc(areaTitle)+' · '+groups.length+' groups'}</span><h2 tabindex="-1">${group?esc(group.title):state.area==='share'?'Share a purpose. Choose your rules.':'Start with one job.'}</h2><p>${group?esc(group.summary):state.area==='share'?'Start with content and people, then follow changes into the local view. Local approval is a proposed step.':'Apps and services have different jobs. Open a group, then choose a part to see how it connects.'}</p>${state.area==='share'&&!group?'<a class="text-button" href="#share">Social, Medical, and Finance examples →</a>':''}</header><div class="service-group-cards">${cards.join('')}</div><p class="service-overview-note">${group?'Select a part for its purpose, limits, and connections across the system.':'All '+layers[state.area].parts.length+' parts remain available here and through search.'}</p></section>`;
+    const cards=group?group.ids.map(id=>{const p=parts[id];return `<button data-diagram-part="${id}"><strong>${esc(p.name)}</strong><span>${esc(p.short)}</span><small>${partStatus(p)} <b aria-hidden="true">↗</b></small></button>`;}):groups.map(g=>`<button data-diagram-group="${g.id}"><strong>${esc(g.title)}</strong><span>${esc(g.summary)}</span><small>${partCount(g.ids.length)} <b aria-hidden="true">→</b></small></button>`);
+    return `<section class="service-overview" aria-label="${group?esc(group.title):esc(areaTitle)+' overview'}"><header><span class="eyebrow">${group?esc(areaTitle)+' · '+partCount(group.ids.length):esc(areaTitle)+' · '+groups.length+' groups'}</span><h2 tabindex="-1">${group?esc(group.title):state.area==='share'?'Share a purpose. Choose your rules.':'Start with one job.'}</h2><p>${group?esc(group.summary):state.area==='share'?'Start with content and people, then follow changes into the local view. Local approval is a proposed step.':'Apps and services have different jobs. Open a group, then choose a part to see how it connects.'}</p>${state.area==='share'&&!group?'<a class="text-button" href="#share">Social, Medical, and Finance examples →</a>':''}</header><div class="service-group-cards">${cards.join('')}</div><p class="service-overview-note">${group?'Select a part for its purpose, limits, and connections across the system.':'All '+layers[state.area].parts.length+' parts remain available here and through search.'}</p></section>`;
   }
   let host=null,svg=null,nodes={},layoutBox={x:0,y:0,w:1240,h:1030},drag=null,pointers=new Map(),pinch=null,suppressClick=false,resizeObserver=null,narrowLayout=false;
   const overviewBoxes={services:{x:20,y:20,w:360,h:160},model:{x:445,y:20,w:360,h:160},share:{x:870,y:20,w:355,h:160},memory:{x:20,y:330,w:320,h:170},disk:{x:465,y:330,w:320,h:170},cloud:{x:910,y:330,w:315,h:170},protection:{x:65,y:640,w:480,h:160},lifetime:{x:700,y:640,w:480,h:160}};
@@ -517,7 +518,7 @@
     const group=groupsFor(state.area).find(g=>g.id===id);if(!group)return;
     state.group=id;state.selected=null;hideResults();
     history.replaceState(null,'',`#diagram/${state.area}/group/${id}`);draw();host.querySelector('.service-overview h2').focus();
-    announce(`${group.title}. ${group.ids.length} selectable parts.`);
+    announce(`${group.title}. ${group.ids.length} selectable ${group.ids.length===1?'part':'parts'}.`);
   }
   function choosePart(id){const p=parts[id];if(!p)return;state.area=p.layer;state.selected=id;state.group=groupByPart[id]||null;hideResults();history.replaceState(null,'',`#diagram/${p.layer}/${p.id}`);draw();announce(`${p.name} selected. Its purpose and connections appear beside the diagram.`);}
   function announce(text){host.querySelector('#diagram-announcement').textContent=text;}
