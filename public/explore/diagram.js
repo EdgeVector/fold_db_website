@@ -4,6 +4,30 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["native-snapshot","disk-holds","retains the captured files through"],
+    ["native-snapshot","run-home","captures original files from"],
+    ["native-snapshot","run-blob-home","captures stored attachments from"],
+    ["native-snapshot","cloud-destinations","uploads its inventory to"],
+    ["native-snapshot","accepted-stream","covers its captured position in"],
+    ["native-snapshot","restore","provides a checked file base for"],
+    ["native-snapshot","recovery-chain","complements logical replay through"],
+    ["automatic-backup","native-snapshot","handles explicit requests for"],
+    ["native-snapshot","local-file-reference","refuses external bytes held by"],
+    ["owner-device-sync","unified-mutation-log","publishes and receives changes through"],
+    ["owner-device-sync","write-order","chooses whole records using"],
+    ["owner-device-sync","accepted-stream","preserves pending local changes in"],
+    ["owner-device-sync","named-recovery","uses durable replay from"],
+    ["native-snapshot","owner-device-sync","forks the restored author stream for"],
+    ["social-app","named-members","reads and updates confirmed access through"],
+    ["social-app","share-messages","returns sealed receipts from"],
+    ["social-app","share-spec","filters database choices by"],
+    ["social-app","database-session","issues a selected intent through"],
+    ["social-app","guest-record-read","opens ready received data through"],
+    ["social-app","local-approval","does not yet implement"],
+    ["database-session","app-access","limits token-bearing requests within"],
+    ["database-session","database","selects exactly one"],
+    ["database-session","guest-record-read","allows received data reads through"],
+    ["app","database-session","can send a selected token from"],
     ["app","database","selects an ID or local name from"],
     ["node","share-cache","refreshes registered copies through"],
     ["database","guest-record-read","routes registered Share reads through"],
@@ -418,7 +442,7 @@
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
-    {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','socket-workers','query-replies','storage-reports','node-status']},
+    {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','database-session','socket-workers','query-replies','storage-reports','node-status']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release']},
