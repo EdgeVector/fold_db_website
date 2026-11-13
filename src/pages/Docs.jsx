@@ -93,7 +93,7 @@ export default function Docs() {
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-        <p className="dim">The guide describes source from 12 November 2026. Its 128 parts explain private databases, sharing, local acceptance, and recovery limits. Select a part to see its purpose, connections, and limits.</p>
+        <p className="dim">The guide describes source from 12 November 2026. Its 116 parts explain sharing, signed cloud sync, local acceptance, and recovery limits. Select a part to see its purpose, connections, and limits.</p>
       </Section>
 
       <Section variant="amber">
@@ -190,7 +190,7 @@ search init --quiet`}</pre>
 brew services start lastdb`}</pre>
         <p>The Homebrew package ships <span className="bold">lastdbd</span>, the local daemon, and <span className="bold">lastdb</span>, the control CLI.</p>
         <p>Run <code>lastdb --help</code> to see the commands on your installed release. The grouped CLI uses
-          <code> lastdb backup</code> for backup and restore and <code>lastdb admin</code> for maintenance.</p>
+          <code> lastdb backup</code> for cloud connection and fresh-home recovery, and <code>lastdb admin</code> for maintenance.</p>
       </Section>
 
       <Section variant="slate">
