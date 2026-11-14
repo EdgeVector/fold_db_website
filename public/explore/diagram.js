@@ -4,6 +4,10 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["manual-cloud-connection","initial-backup","requests a starting base through"],
+    ["cloud-access","account-payments","checks eligibility managed through"],
+    ["socket-workers","named-members","dispatches live member requests for"],
+    ["saved-queries","node","executes inside"],
     ["initial-backup","accepted-stream","preserves the base before"],
     ["initial-backup","disk-holds","keeps its captured runs with"],
     ["initial-backup","run-home","captures the starting state of"],
