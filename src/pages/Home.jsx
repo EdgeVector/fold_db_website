@@ -134,7 +134,7 @@ export default function Home() {
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS (Apple Silicon)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "The local database you build and own your whole tool stack on. Local use needs no account; optional encrypted cloud backup and multi-device sync register or connect your local database identity with zero personal info (no name or email).",
+      "description": "The local database you build and own your whole tool stack on. Local use needs no account; optional encrypted cloud backup and multi-device sync register or connect your local database identity without asking for a name or email.",
       "url": "https://thelastdb.com",
       "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
       "softwareVersion": "alpha"
@@ -154,7 +154,7 @@ export default function Home() {
         Build hard. Build happy. Keep the substrate &mdash; and deliver slices of it to people you choose.
       </p>
       <p className="dim">
-        Local use needs no account. Optional encrypted cloud backup and multi-device sync (<span className="bold">lastdb backup connect --env prod</span>) register or connect your local database identity with zero personal info (no name or email), with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
+        Local use needs no account. Optional encrypted cloud backup and multi-device sync (<span className="bold">lastdb --data-dir ~/.lastdb backup connect --env prod</span>) register or connect your local database identity without asking for a name or email, with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
         Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.
       </p>
       <p className="hero-cta">
@@ -200,7 +200,7 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Explore 123 parts in nested groups, including Social, the first backup, device recovery, covered log cleanup, and account access, or follow one request through the layers.</p>
+        <p>Explore 123 parts in nested groups, including Social, conditional SDK writes, initial backups, device recovery, and cloud log maintenance, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
        <p className="dim">Source review: 14 November 2026. Explore private databases, sharing, local acceptance, and recovery limits. Each part explains its purpose and limits.</p>
       </Section>

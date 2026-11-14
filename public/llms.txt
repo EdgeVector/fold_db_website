@@ -8,8 +8,8 @@
 > database to others.
 >
 > Local use needs no account. Optional encrypted cloud backup and multi-device sync
-> register or connect your local database identity (`lastdb backup connect --env prod`)
-> with zero personal info (no name or email), with paid cloud storage managed via
+> register or connect your local database identity (`lastdb --data-dir ~/.lastdb backup connect --env prod`)
+> without asking for a name or email, with paid cloud storage managed via
 > `lastdb cloud payment checkout`.
 
 Website: https://thelastdb.com

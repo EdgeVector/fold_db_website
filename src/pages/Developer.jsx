@@ -195,12 +195,12 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
             <pre>{`lastdb status
 lastdb --version
 lastdbd --version
-lastdb backup connect --env prod
+lastdb --data-dir ~/.lastdb backup connect --env prod
 lastdb cloud payment checkout
 brew services start lastdb
 brew services restart lastdb`}</pre>
             <p className="dim">
-              Local use needs no account. <span className="bold">lastdb backup connect --env prod</span> is optional &mdash; registers or connects your local database identity for encrypted cloud backup and multi-device sync with zero personal info (no name or email), with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
+              Local use needs no account. <span className="bold">lastdb --data-dir ~/.lastdb backup connect --env prod</span> is optional &mdash; registers or connects your local database identity for encrypted cloud backup and multi-device sync without asking for a name or email, with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
               App workflows live in app CLIs.
             </p>
           </Card>
