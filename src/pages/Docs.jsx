@@ -190,7 +190,7 @@ search init --quiet`}</pre>
 brew services start lastdb`}</pre>
         <p>The Homebrew package ships <span className="bold">lastdbd</span>, the local daemon, and <span className="bold">lastdb</span>, the control CLI.</p>
         <p>Run <code>lastdb --help</code> to see the commands on your installed release. The grouped CLI uses
-          <code> lastdb backup</code> for cloud connection and fresh-home recovery, and <code>lastdb admin</code> for maintenance.</p>
+          <code> lastdb backup</code> for cloud connection and fresh-home recovery, <code>lastdb cloud</code> for subscription and developer-key management, and <code>lastdb admin</code> for maintenance.</p>
       </Section>
 
       <Section variant="slate">

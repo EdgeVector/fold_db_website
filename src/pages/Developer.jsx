@@ -134,7 +134,7 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
           <Card>
             <p><Label color="green">INCLUDED</Label></p>
             <p><span className="bold">lastdbd</span> &mdash; semantic daemon (store, index, app identity, sync when connected).<br />
-              <span className="bold">lastdb</span> &mdash; tiny control CLI (<span className="bold">status</span>, <span className="bold">connect</span>, &hellip;).<br />
+              <span className="bold">lastdb</span> &mdash; tiny control CLI (<span className="bold">status</span>, <span className="bold">backup</span>, <span className="bold">cloud</span>, <span className="bold">app</span>, &hellip;).<br />
               Socket API for apps over <span className="bold">~/.lastdb/data/folddb.sock</span>.</p>
           </Card>
           <Card>
@@ -195,11 +195,12 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
             <pre>{`lastdb status
 lastdb --version
 lastdbd --version
-lastdb connect
+lastdb backup connect --env prod
+lastdb cloud payment checkout
 brew services start lastdb
 brew services restart lastdb`}</pre>
             <p className="dim">
-              Local use needs no account. <span className="bold">lastdb connect</span> is optional &mdash; joins an existing account for multi-device cloud backup/sync.
+              Local use needs no account. <span className="bold">lastdb backup connect --env prod</span> is optional &mdash; registers or connects your local database identity for encrypted cloud backup and multi-device sync with zero personal info (no name or email), with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
               App workflows live in app CLIs.
             </p>
           </Card>

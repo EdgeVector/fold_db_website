@@ -134,7 +134,7 @@ export default function Home() {
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS (Apple Silicon)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "The local database you build and own your whole tool stack on. Local use needs no account; optional cloud backup/sync joins an account for multi-device.",
+      "description": "The local database you build and own your whole tool stack on. Local use needs no account; optional encrypted cloud backup and multi-device sync register or connect your local database identity with zero personal info (no name or email).",
       "url": "https://thelastdb.com",
       "downloadUrl": "https://github.com/EdgeVector/homebrew-lastdb",
       "softwareVersion": "alpha"
@@ -154,7 +154,7 @@ export default function Home() {
         Build hard. Build happy. Keep the substrate &mdash; and deliver slices of it to people you choose.
       </p>
       <p className="dim">
-        Local use needs no account. Optional cloud backup/sync joins an account when you want multi-device.
+        Local use needs no account. Optional encrypted cloud backup and multi-device sync (<span className="bold">lastdb backup connect --env prod</span>) register or connect your local database identity with zero personal info (no name or email), with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
         Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.
       </p>
       <p className="hero-cta">

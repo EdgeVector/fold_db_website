@@ -7,8 +7,10 @@
 > tools on one foundation you own, not SaaS silos). Deliver slices of your
 > database to others.
 >
-> Local use needs no account. Optional cloud backup/sync joins an account for
-> multi-device (`lastdb connect`).
+> Local use needs no account. Optional encrypted cloud backup and multi-device sync
+> register or connect your local database identity (`lastdb backup connect --env prod`)
+> with zero personal info (no name or email), with paid cloud storage managed via
+> `lastdb cloud payment checkout`.
 
 Website: https://thelastdb.com
 Pages are prerendered at build time so agents and curl can read them without executing JavaScript.
@@ -16,9 +18,9 @@ Pages are prerendered at build time so agents and curl can read them without exe
 ## Understand LastDB
 
 Interactive system guide: https://thelastdb.com/explore/#diagram
-Explore 60 parts across memory, disk, cloud, the data model, protection, data lifetime, and services.
+Explore 123 parts across memory, disk, cloud, sharing, the data model, protection, data lifetime, and services.
 Each part explains its purpose, connections, example, and limits.
-The guide describes source from 23 October 2026 and marks future cloud designs.
+The guide describes source from 14 November 2026 and marks future designs.
 JavaScript enables the diagram. Public design notes: https://thelastdb.com/explore/sources/design-notes.html
 
 ## Install (macOS Apple Silicon)
