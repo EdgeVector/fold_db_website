@@ -4,6 +4,13 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["comment-rules","publisher-intake","are enforced by"],
+    ["comment-rules","named-members","require current schema grants from"],
+    ["comment-rules","conditions","check the latest version through"],
+    ["comment-rules","record-metadata","keep verified origin separate from"],
+    ["publisher-intake","record-metadata","preserves publisher source facts in"],
+    ["app","social-setup","opens a compatible shared collection through"],
+    ["app-publish","account-payments","can obtain a temporary publishing credential through"],
     ["social-app","social-circles","manages reusable membership through"],
     ["social-app","social-setup","creates compatible shared collections through"],
     ["social-circles","named-members","combines per-database permissions into"],
