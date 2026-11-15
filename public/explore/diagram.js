@@ -4,6 +4,17 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["social-app","social-circles","manages reusable membership through"],
+    ["social-app","social-setup","creates compatible shared collections through"],
+    ["social-circles","named-members","combines per-database permissions into"],
+    ["social-circles","database","links the same members to"],
+    ["social-circles","publisher-intake","supplies schema grants checked by"],
+    ["social-setup","database","creates or verifies one stable"],
+    ["social-setup","schema","checks required definitions of"],
+    ["social-setup","local-schema-declaration","installs missing definitions through"],
+    ["social-setup","database-session","opens the same collection through"],
+    ["node-status","owner-device-sync","reports separate progress and blocked deliveries for"],
+
     ["social-app","publisher-intake","uses circle schema grants for"],
     ["publisher-intake","named-members","checks current schema grants from"],
     ["publisher-intake","share-messages","gets its inbox public key through"],
