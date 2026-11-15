@@ -4,6 +4,15 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["social-app","publisher-intake","uses circle schema grants for"],
+    ["publisher-intake","named-members","checks current schema grants from"],
+    ["publisher-intake","share-messages","gets its inbox public key through"],
+    ["publisher-intake","conditions","requires a matching record condition from"],
+    ["publisher-intake","flush","waits for the accepted commit through"],
+    ["publisher-intake","unified-mutation-log","publishes only accepted changes to"],
+    ["guest-record-read","publisher-intake","can submit whole-database proposals to"],
+    ["publisher-intake","local-approval","is separate from proposed personal rules in","design"],
+
     ["manual-cloud-connection","initial-backup","requests a starting base through"],
     ["cloud-access","account-payments","checks eligibility managed through"],
     ["socket-workers","named-members","dispatches live member requests for"],
@@ -22,9 +31,9 @@
     ["covered-log-cleanup","native-snapshot","requires a verified base from"],
     ["covered-log-cleanup","recovery-chain","removes only the covered prefix of"],
     ["covered-log-cleanup","lagging-device-recovery","can require newer clients with"],
-    ["covered-log-cleanup","cloud-access","requires owner and service approval through"],
+    ["covered-log-cleanup","cloud-access","requires service eligibility through"],
     ["prod-recovery","lagging-device-recovery","records a DEV cutoff pass for"],
-    ["prod-recovery","covered-log-cleanup","records a DEV signed-reclaim pass for"],
+    ["prod-recovery","covered-log-cleanup","records revision-specific DEV passes for"],
     ["account-payments","cloud-access","uses the selected account at"],
     ["account-payments","saved-cloud-credentials","authenticates using"],
     ["manual-cloud-connection","account-payments","provides account access for"],
@@ -441,7 +450,7 @@
     memory:{title:'Memory',color:'#52774a',fill:'#e2eddf',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
     disk:{title:'Disk',color:'#9b803d',fill:'#f2ead5',summary:'Records, files, and durable changes.',preview:'Commit · files · compaction'},
     cloud:{title:'Cloud',color:'#6c8ba2',fill:'#e7eff6',summary:'Backup and checked recovery.',preview:'Signed log · files · recovery'},
-    share:{title:'Share',color:'#508d84',fill:'#e1efeb',summary:'Shared changes and local choices.',preview:'People · log · local acceptance'},
+    share:{title:'Share',color:'#508d84',fill:'#e1efeb',summary:'Shared changes and local choices.',preview:'People · permissions · changes'},
     protection:{title:'Keys & protection',color:'#897396',fill:'#eee7f2',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'#9c7850',fill:'#f1e8dc',summary:'Retain needed bytes; remove data with its owner.',preview:'Record files · expiry · deletion'}
   };
