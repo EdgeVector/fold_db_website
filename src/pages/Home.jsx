@@ -200,9 +200,9 @@ export default function Home() {
       <Section variant="sage" id="explore">
         <h2><span className="bold">SEE HOW LASTDB WORKS</span></h2>
         <p>Explore the whole system. Zoom into memory, disk, and cloud. Select a part to see what it does and why.</p>
-        <p>Explore 123 parts in nested groups, including Social, conditional SDK writes, initial backups, device recovery, and cloud log maintenance, or follow one request through the layers.</p>
+        <p>Explore 124 parts in nested groups, including Social circles, publisher validation, initial backups, device recovery, and covered-log cleanup, or follow one request through the layers.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
-       <p className="dim">Source review: 14 November 2026. Explore private databases, sharing, local acceptance, and recovery limits. Each part explains its purpose and limits.</p>
+       <p className="dim">Source review: 15 November 2026. Explore private databases, sharing, local acceptance, and recovery limits. Each part explains its purpose and limits.</p>
       </Section>
 
       {/* GET IT — primary CTA */}
