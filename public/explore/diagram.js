@@ -4,6 +4,11 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
+    ["app","submission-status","checks its own proposal through"],
+    ["publisher-intake","submission-status","reports private results through"],
+    ["submission-status","unified-mutation-log","reports publication to"],
+    ["guest-record-read","submission-status","can check a proposal through"],
+    ["submission-status","database-session","is available within"],
     ["comment-rules","publisher-intake","are enforced by"],
     ["comment-rules","named-members","require current schema grants from"],
     ["comment-rules","conditions","check the latest version through"],
