@@ -16,12 +16,13 @@ export default function NotFound() {
 
       <h1 className="tagline">Page Not Found</h1>
 
-      <p>The page you&rsquo;re looking for doesn&rsquo;t exist.</p>
+      <p>This page does not exist. The link may be old, or the address may be mistyped.</p>
+
+      <p>Try one of these:</p>
 
       <p>
         <Link to="/" className="link-btn">[Home]</Link>{'  '}
-        <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
+        <Link to="/start" className="link-btn">[Start]</Link>{'  '}
         <Link to="/developer" className="link-btn">[Developer]</Link>
       </p>
     </>

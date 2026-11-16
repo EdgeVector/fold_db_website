@@ -9,9 +9,9 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - LastDB</title>
-        <meta name="description" content="Build on LastDB: install Last Stack, describe a feature to your agent, watch the kanban board ship it. Socket API as reference." />
+        <meta name="description" content="Build on LastDB: check the local node, declare a schema, then write and read records over the socket." />
         <meta property="og:title" content="Developer Guide - LastDB" />
-        <meta property="og:description" content="LastDB developer guide: the agent-driven build loop, plus the socket API underneath." />
+        <meta property="og:description" content="LastDB developer guide: the node, schemas, keys, and the socket requests your app sends." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -25,11 +25,7 @@ export default function Developer() {
 
       <h1 className="tagline">Developer Guide</h1>
 
-      <p className="bold white">LastDB is in alpha. The product you install from Homebrew is a <span className="white">headless local daemon</span> &mdash; apps talk to it over a Unix socket.</p>
-
-      <p>Data is never accessed as a free-for-all dump. Queries and mutations go through the node; first-party apps (Brain, Kanban, &hellip;) are the usual interface. Building a new app uses the same socket contract.</p>
-
-      <p>You do not build here by hand-rolling scaffolding. Install <span className="bold">Last Stack</span> (LastDB + apps + agent skills), describe the feature to your agent, and the loop below carries it to shipped. Everything further down is the contract that loop runs on.</p>
+      <p className="bold white">LastDB is in alpha. It runs as <span className="white">one local daemon</span>. Your apps send HTTP requests to it over a Unix socket.</p>
 
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>{'  '}
@@ -39,189 +35,220 @@ export default function Developer() {
 
       <hr className="decorative-rule" aria-hidden="true" />
 
+      {/* 1. WHAT LASTDB IS */}
       <Section variant="sage">
-        <h2><span className="bold">LOOK INSIDE LASTDB</span></h2>
-        <p>The interactive guide shows the layers, their parts, and their connections. Each part explains its purpose with an example.</p>
-        <p><a href="/explore/#diagram" className="link-btn">[Explore the system &rarr;]</a></p>
-      </Section>
+        <h2 id="concepts"><span className="bold">1. WHAT LASTDB IS</span></h2>
 
-      {/* BUILD WITH YOUR AGENT */}
-      <Section variant="amber">
-        <h2 id="workflow"><span className="bold">BUILD WITH YOUR AGENT</span> <span className="dim">the loop, end to end</span></h2>
-
-        <p>This is the intended developer workflow. You state what you want; your agent does the scoping, the cards, and the PRs. You make the decisions.</p>
+        <p>LastDB is a key-value database. You find a record by its key. There is no read that returns everything, except the key listing in step 5.</p>
 
         <div className="card-stack">
           <Card>
-            <p><Label color="yellow">1. INSTALL LAST STACK</Label></p>
-            <pre>{`git clone https://github.com/EdgeVector/last-stack ~/.last-stack && ~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps`}</pre>
-            <p className="dim">One clone installs LastDB, the apps (Brain, Kanban, Situations, &hellip;), and the agent skills + scheduled routines that run the loop below.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">2. TELL YOUR AGENT THE FEATURE</Label></p>
-            <pre>{`"ship this feature: search results should show a snippet of the match"`}</pre>
-            <p className="dim">Plain language, to Claude Code or any agent with the skills installed. The <span className="bold">ship-feature</span> skill scopes the work, asks all its open questions in one batch, then files it: a North Star with a terminal proof, a milestone, and PR-sized cards on the board.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">3. SHIP IT</Label></p>
-            <p>Agents claim cards from the board and drive each one in an isolated worktree to a <span className="bold">merged PR</span>. A card reaches done only when its outcome is proven &mdash; not when the diff exists.</p>
-            <p className="dim">Decisions land in Brain; status lands on the board. The <span className="bold">kanban-agent</span>, <span className="bold">wait-merge</span>, and <span className="bold">close-out</span> skills do the driving.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">4. WATCH KANBAN</Label></p>
-            <pre>{`kanban list
-kanban list --column doing
-kanban show <slug>`}</pre>
-            <p className="dim">The board is the live status of your feature. Cards flow todo &rarr; doing &rarr; done as agents pick them up, and a blocked card says what it waits on.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">5. MORNING SYNC TO UNBLOCK</Label></p>
-            <pre>{`"morning sync"`}</pre>
-            <p className="dim">Once a day, the <span className="bold">morning-sync</span> skill surfaces the short list of decisions only you can make, each with context and a recommendation. Answer them: every answer is written to Brain and moves cards on the board. That is the whole management surface.</p>
+            <p><Label color="green">TERMS</Label></p>
+            <p><span className="bold">Daemon:</span> the background process, <span className="bold">lastdbd</span>. It holds the data on this machine.</p>
+            <p><span className="bold">Socket:</span> the file <span className="bold">~/.lastdb/data/folddb.sock</span>. Your requests go to this file. The name is the real file name; it is not a product name.</p>
+            <p><span className="bold">Schema:</span> a named record type. It lists its fields and its keys.</p>
+            <p><span className="bold">Record:</span> one stored value of one schema. It sits at one key.</p>
+            <p><span className="bold">Primary key:</span> the key that finds a record. It has a <span className="bold">hash</span>, the first part of the key. A schema can also use a <span className="bold">range</span>, the second part. This guide uses a hash only.</p>
+            <p><span className="bold">Alternate key:</span> a second named key that finds the same record. You give its value when you write the record.</p>
+            <p><span className="bold">Query:</span> a read. It must name a key. A read with no key is refused.</p>
           </Card>
         </div>
-
-        <p className="dim">The human-and-agent daily loop in more detail: <Link to="/start">How to use it</Link>.</p>
       </Section>
 
-      {/* QUICK START */}
-      <Section variant="lavender">
-        <h2 id="quickstart"><span className="bold">NODE QUICK START</span> <span className="dim">the database on its own</span></h2>
+      {/* 2. HEALTH CHECK */}
+      <Section variant="rose">
+        <h2 id="health"><span className="bold">2. CHECK THE NODE</span></h2>
+
+        <p>Run these two requests. Both use the socket.</p>
 
         <div className="card-stack">
           <Card>
-            <p><Label color="yellow">1. INSTALL</Label></p>
-            <p>Use the home-page one-liner (Last Stack installs LastDB + apps). Database only:</p>
-            <pre>{`brew install edgevector/lastdb/lastdb
-brew services start lastdb`}</pre>
-            <p className="dim">Full copy-paste path: <Link to="/#install">Home &rarr; Install</Link>.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="yellow">2. CONFIRM THE NODE</Label></p>
+            <p><Label color="red">HEALTH AND STATUS</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-lastdb status
-lastdb --version
-lastdbd --version`}</pre>
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</pre>
             <p className="dim">
-              Expect <span className="bold">{`{"status":"ok"}`}</span>.
-              Socket: <span className="bold">~/.lastdb/data/folddb.sock</span>. Health path is <span className="bold">/health</span> (not <span className="bold">/api/health</span>).
-              Paste blocks omit <span className="bold">#</span> comments (macOS zsh interactive default).
+              <span className="bold">/health</span> returns <span className="bold">{`{"status":"ok", ...}`}</span> with the API version and the node instance id.
+              <span className="bold"> /api/status</span> returns a summary of the running node.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* 3. DECLARE A SCHEMA */}
+      <Section variant="lavender">
+        <h2 id="schema"><span className="bold">3. DECLARE A SCHEMA</span></h2>
+
+        <p>A schema must exist before you write to it. This example declares a <span className="bold">note</span>. Each note has an id, a tag, and a body. The id is the primary key. The tag is an alternate key, so you can find notes by tag.</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="red">POST /api/schemas/declare</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  -X POST http://localhost/api/schemas/declare \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "namespace": "notes",
+    "schema": {
+      "name": "note",
+      "schema_type": "Hash",
+      "record_keys": {
+        "primary": { "kind": "hash" },
+        "alternates": { "by_tag": { "kind": "hash" } }
+      },
+      "fields": ["id", "tag", "body"],
+      "field_types": { "id": "String", "tag": "String", "body": "String" }
+    }
+  }'`}</pre>
+            <p className="dim">
+              <span className="bold">namespace</span> is your app name. It cannot contain a slash.
+              The schema becomes <span className="bold">notes/note</span>. Use that name in the next steps.
+            </p>
+            <p className="dim">
+              Declaring the same shape again is safe. The reply shows <span className="bold">resolution</span> as <span className="bold">reuse</span> when the schema already exists, and <span className="bold">register</span> when it is new.
+              Changing a field or a key of an installed schema is refused. Declare a new schema name instead.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* 4. WRITE AND READ */}
+      <Section variant="amber">
+        <h2 id="records"><span className="bold">4. WRITE A RECORD, READ IT BACK</span></h2>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="red">POST /api/mutation (WRITE)</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  -X POST http://localhost/api/mutation \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "type": "mutation",
+    "schema": "notes/note",
+    "record": { "id": "n1", "tag": "work", "body": "Ship the page" },
+    "key_value": { "hash": "n1", "range": null },
+    "alternates": { "by_tag": { "hash": "work", "range": null } },
+    "mutation_type": "create",
+    "expected": { "type": "absent" }
+  }'`}</pre>
+            <p className="dim">
+              <span className="bold">key_value</span> is the primary key. <span className="bold">alternates</span> gives one value for each named alternate key.
+              Every field in <span className="bold">record</span> must be declared in step 3.
+              <span className="bold"> expected</span> set to <span className="bold">absent</span> means the key must not exist yet.
+              The reply has <span className="bold">ok: true</span> and <span className="bold">success: true</span>.
             </p>
           </Card>
 
           <Card>
-            <p><Label color="yellow">3. USE AN APP (OR THE SOCKET)</Label></p>
-            <pre>{`brain init --grant-consent
-brain concept new local-search --title "Local search" --body "Embeddings stay on this machine."
-brain ask "what did I note about search?"
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</pre>
-            <p className="dim">Apps are the happy path. Building a new app: talk HTTP to the same socket (query / mutation / schemas). Last line is raw daemon status.</p>
-          </Card>
-        </div>
-      </Section>
-
-      {/* WHAT YOU GET */}
-      <Section variant="sage">
-        <h2 id="surface"><span className="bold">WHAT HOMEBREW SHIPS</span></h2>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="green">INCLUDED</Label></p>
-            <p><span className="bold">lastdbd</span> &mdash; semantic daemon (store, index, app identity, sync when connected).<br />
-              <span className="bold">lastdb</span> &mdash; tiny control CLI (<span className="bold">status</span>, <span className="bold">backup</span>, <span className="bold">cloud</span>, <span className="bold">app</span>, &hellip;).<br />
-              Socket API for apps over <span className="bold">~/.lastdb/data/folddb.sock</span>.</p>
-          </Card>
-          <Card>
-            <p><Label color="green">NOT INCLUDED</Label></p>
-            <p>No desktop UI, no DMG, no built-in file-ingestion product surface. Older docs that mention <span className="bold">lastdb ingest</span> or <span className="bold">/api/ingestion/*</span> describe a retired full-node path &mdash; not the Homebrew install.</p>
-          </Card>
-        </div>
-      </Section>
-
-      {/* SOCKET API */}
-      <Section variant="rose">
-        <h2 id="code"><span className="bold">SOCKET API</span> <span className="dim">what apps actually call</span></h2>
-
-        <p>All examples use the owner Unix socket. Prefer first-party CLIs unless you are building a new app.</p>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="red">HEALTH</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  http://localhost/health`}</pre>
-            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="red">STATUS</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  http://localhost/api/status`}</pre>
-            <p className="dim">Process / data-dir / sync summary.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="red">SCHEMAS</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  http://localhost/api/schemas`}</pre>
-            <p className="dim">List schemas known to this node.</p>
-          </Card>
-
-          <Card>
-            <p><Label color="red">QUERY</Label></p>
+            <p><Label color="red">POST /api/query (READ BY PRIMARY KEY)</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
-  -d '{"schema_name":"concept","limit":5}'`}</pre>
-            <p className="dim">Structured query. Apps also use <span className="bold">/api/mutation</span> for writes (POST).</p>
-          </Card>
-        </div>
-
-        <p className="dim">Exact request shapes evolve with the node; treat first-party apps and the TypeScript app SDK as the stable surface when in doubt. See <Link to="/apps">Apps</Link>.</p>
-      </Section>
-
-      {/* CLI */}
-      <Section variant="lavender">
-        <h2 id="cli"><span className="bold">CLI SURFACE</span></h2>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="purple">LASTDB (Homebrew)</Label></p>
-            <pre>{`lastdb status
-lastdb --version
-lastdbd --version
-lastdb --data-dir ~/.lastdb backup connect --env prod
-lastdb cloud payment checkout
-brew services start lastdb
-brew services restart lastdb`}</pre>
+  -d '{"schema_name":"notes/note","filter":{"HashKey":"n1"}}'`}</pre>
             <p className="dim">
-              Local use needs no account. <span className="bold">lastdb --data-dir ~/.lastdb backup connect --env prod</span> is optional &mdash; registers or connects your local database identity for encrypted cloud backup and multi-device sync without asking for a name or email, with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
-              App workflows live in app CLIs.
+              <span className="bold">HashKey</span> selects one record by its primary hash.
+              The reply has <span className="bold">ok: true</span> and a <span className="bold">results</span> list. Each result has a <span className="bold">key</span> and its <span className="bold">fields</span>.
+              A schema with a range uses <span className="bold">HashRangeKey</span> with both <span className="bold">hash</span> and <span className="bold">range</span>.
             </p>
           </Card>
 
           <Card>
-            <p><Label color="purple">APPS</Label></p>
-            <pre>{`brain init --grant-consent
-brain concept new <slug> --title "…" --body "…"
-brain ask "…"
-brain mcp
-
-kanban init
-kanban list
-kanban add <slug> --title "…"
-kanban mcp
-
-situations list
-situations init`}</pre>
-            <p className="dim">Full catalog: <Link to="/apps">Apps</Link>. Daily loop: <Link to="/start">How to use it</Link>.</p>
+            <p><Label color="red">POST /api/query (READ BY ALTERNATE KEY)</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  -X POST http://localhost/api/query \\
+  -H "Content-Type: application/json" \\
+  -d '{"schema_name":"notes/note","filter":{"HashKey":"work"},"key_name":"by_tag"}'`}</pre>
+            <p className="dim">
+              Add <span className="bold">key_name</span> to read by an alternate key. The <span className="bold">HashKey</span> value is the alternate key value, here the tag.
+            </p>
           </Card>
         </div>
+      </Section>
+
+      {/* 5. LIST KEYS */}
+      <Section variant="sage">
+        <h2 id="list"><span className="bold">5. LIST THE KEYS OF A SCHEMA</span></h2>
+
+        <p>
+          <span className="bold">This is the one whole-schema read.</span> It lists every key of the schema.
+          It returns one page at a time, and it does not return the field values. Use it to find keys, then read each record by key in step 4.
+        </p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="red">GET /api/list</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  "http://localhost/api/list?schema=notes/note&limit=2"`}</pre>
+            <p className="dim">
+              <span className="bold">limit</span> sets the page size. The default is 100. The maximum is 1000.
+              The reply has <span className="bold">list.keys</span>, <span className="bold">list.has_more</span>, and <span className="bold">list.next_cursor</span>.
+            </p>
+          </Card>
+
+          <Card>
+            <p><Label color="red">NEXT PAGE</Label></p>
+            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  "http://localhost/api/list?schema=notes/note&limit=2&cursor=CURSOR"`}</pre>
+            <p className="dim">
+              Replace <span className="bold">CURSOR</span> with the <span className="bold">next_cursor</span> value from the last reply, percent-encoded.
+              Stop when <span className="bold">has_more</span> is false.
+              Add <span className="bold">&amp;hash=n1</span> to list only the keys under one hash.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* 6. CLI EQUIVALENTS */}
+      <Section variant="lavender">
+        <h2 id="cli"><span className="bold">6. CLI EQUIVALENTS</span></h2>
+
+        <p>The <span className="bold">lastdb</span> command runs the same reads. Add <span className="bold">--json</span> for the raw reply.</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="purple">LASTDB</Label></p>
+            <pre>{`lastdb status
+lastdb get notes/note --key-hash n1
+lastdb get-keys notes/note --limit 2
+lastdb get-keys notes/note --key-hash work --key-name by_tag`}</pre>
+            <p className="dim">
+              <span className="bold">get</span> reads one record by key. <span className="bold">get-keys</span> lists keys, as step 5 does.
+              <span className="bold"> --key-name</span> needs <span className="bold">--key-hash</span>.
+              Writes go through the socket request in step 4.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* 7. ERRORS */}
+      <Section variant="rose">
+        <h2 id="errors"><span className="bold">7. ERRORS</span></h2>
+
+        <p>A failed request returns a 4xx or 5xx status. A 400 from this socket returns a JSON body that names the problem. This example comes from a read with no key:</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="red">400 BAD REQUEST</Label></p>
+            <pre>{`{
+  "ok": false,
+  "kind": "full_schema_scan_not_allowed",
+  "error": "product apps are keyed-access only; unfiltered schema queries are not supported",
+  "message": "full_schema_scan_not_allowed: unfiltered query on product schema 'note' is not supported; add a keyed filter using the structured remediation",
+  "schema_name": "note",
+  "schema_id": "notes/note",
+  "remediation": { "action": "add_key_filter", "request_key": "filter", "...": "trimmed" }
+}`}</pre>
+            <p className="dim">
+              <span className="bold">kind</span> is the error code. Fix the request and send it again.
+              A malformed mutation or query body returns <span className="bold">kind</span>, <span className="bold">error</span>, and sometimes <span className="bold">key</span> and <span className="bold">try</span>, with a corrected example.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+
+      <Section variant="sage">
+        <p>The interactive guide shows the layers, their parts, and their connections. <a href="/explore/#diagram" className="link-btn">[Explore the system &rarr;]</a></p>
+        <p className="dim">Full catalog of apps: <Link to="/apps">Apps</Link>.</p>
       </Section>
 
       <hr className="decorative-rule" aria-hidden="true" />

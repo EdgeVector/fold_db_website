@@ -17,7 +17,7 @@ const DOC_PAGES = [
     path: '/docs/daily-loop',
     title: 'Daily Loop',
     label: 'Use',
-    description: 'Brain for durable context, Kanban for live work, MCP for agents.',
+    description: 'Brain for durable context, LastSecrets for credentials, MCP for agents.',
     status: 'Alpha',
   },
   {
@@ -50,7 +50,7 @@ function DocsHeader({ title, description, path }) {
       <AsciiTitle text="DOCS" />
       <h1 className="tagline">{title}</h1>
       <p className="bold white">{description}</p>
-      <p className="dim docs-reviewed">Last reviewed: 2026-08-18. Product status: alpha.</p>
+      <p className="dim docs-reviewed">Last reviewed: 2026-11-15 against the LastDB source. Product status: alpha.</p>
       <p className="hero-cta">
         <Link to="/docs" className="link-btn">[Docs index]</Link>{'  '}
         <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
@@ -91,7 +91,7 @@ export default function Docs() {
 
       <Section variant="sage">
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
-        <p>Explore the layers and their parts with a diagram, examples, and plain explanations.</p>
+        <p>Explore the layers and their parts with a diagram and plain explanations.</p>
         <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
         <p className="dim">The guide describes source from 16 November 2026. Its 127 parts explain saved sharing requests in Social, reusable circles, file upload cleanup, and backup recovery. Select a part to see its purpose, connections, and limits.</p>
       </Section>
@@ -144,43 +144,29 @@ export function DocsInstall() {
       />
 
       <Section variant="amber">
-        <h2><span className="bold">FULL STACK INSTALL</span></h2>
-        <p>This path installs LastDB plus the common first-party app CLIs and the read-only LastDB Browser UI (its launcher is linked as <span className="bold">lastdb-browser</span>).</p>
+        <h2><span className="bold">INSTALL LASTDB AND APPS</span></h2>
+        <p>This path installs LastDB with Homebrew, then the apps you name from the App Registry.</p>
         <p className="dim">
           Paste-safe for macOS zsh (no <span className="bold">#</span> comment lines — interactive zsh
-          does not treat them as comments). Skip the Bun line if already installed; skip the node line
-          if <span className="bold">npm --version</span> already works. Needs Homebrew + Apple Silicon.
+          does not treat them as comments). Needs Homebrew, Bun, and Apple Silicon.
         </p>
-        <pre>{`curl -fsSL https://bun.sh/install | bash
-export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
-brew install node
-
-test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
-for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
-node --version
-git --version
-
-git clone https://github.com/EdgeVector/last-stack ~/.last-stack
-~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps
-
+        <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-brain init --grant-consent
-kanban init
-situations init
-lastsecrets init
-org init
-search init --quiet`}</pre>
-        <p className="dim">The installer prints <span className="bold">RESULT: PASS</span> or <span className="bold">RESULT: FAIL</span>. Stop on a failure.</p>
+lastdb app list
+lastdb app install brain lastsecrets`}</pre>
         <p className="dim">
-          Apps install from a signed registry list for your node’s API version. On releases with the
-          grouped CLI, <span className="bold">lastdb app list brain</span> shows the signed Brain
-          release, and <span className="bold">lastdb app list</span> shows the full list.
-          <span className="bold"> lastdb app install brain</span> installs the pinned commit, and
-          <span className="bold"> lastdb app upgrade brain</span> refreshes an existing install.
-          If the registry has no signed entry for your API, the install stops.
+          The first <span className="bold">lastdb app install</span> prints the install plan for each app and stops.
+          Read the plan, then run the same command again with <span className="bold">--accept-install</span>.
+          Then run <span className="bold">lastdb app status</span> and <span className="bold">brain init</span>.
+        </p>
+        <p className="dim">The install runs each app&rsquo;s own package step with Bun and links its commands into <span className="bold">~/.local/bin</span>. Bun must be on your PATH first.</p>
+        <p className="dim">
+          <span className="bold">lastdb app list</span> shows the apps proved with your LastDB build.
+          <span className="bold"> lastdb app install brain</span> installs the proved commit, and
+          <span className="bold"> lastdb app upgrade brain</span> moves an existing install to the newest proved commit.
+          If no entry is proved with your build, the install stops.
         </p>
       </Section>
 
@@ -200,7 +186,7 @@ brew services start lastdb`}</pre>
             <p><Label color="blue">HEALTH</Label></p>
             <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   http://localhost/health`}</pre>
-            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>.</p>
+            <p className="dim">Expect JSON with <span className="bold">{`"status":"ok"`}</span>.</p>
           </Card>
           <Card>
             <p><Label color="blue">VERSIONS</Label></p>
@@ -214,7 +200,7 @@ lastdbd --version`}</pre>
 
       <Section variant="lavender">
         <h2><span className="bold">WHAT IS NOT INCLUDED</span></h2>
-        <p>No desktop app, DMG, or file-ingestion product surface ships in the current Homebrew path. Use the local node plus app CLIs.</p>
+        <p>The Homebrew path installs the database and its CLI. It does not install a desktop app. Use the local node plus the app CLIs.</p>
       </Section>
 
       <RelatedDocs currentPath="/docs/install" />
@@ -229,7 +215,7 @@ export function DocsDailyLoop() {
       <DocsHeader
         title="Daily Loop"
         path="/docs/daily-loop"
-        description="Use Brain for durable context, Kanban for live work, and MCP when agents need tool access."
+        description="Use Brain for durable context, LastSecrets for credentials, and MCP when agents need tool access."
       />
 
       <Section variant="lavender">
@@ -240,8 +226,8 @@ export function DocsDailyLoop() {
             <p>Use Brain for decisions, designs, rationale, preferences, references, and other long-lived context.</p>
           </Card>
           <Card>
-            <p><Label color="purple">KANBAN</Label></p>
-            <p>Use Kanban for live work state. One card should describe one unit of work and move as reality changes.</p>
+            <p><Label color="purple">LASTSECRETS</Label></p>
+            <p>Use LastSecrets for credentials. Store the value once, then keep only its <span className="bold">lastsecrets://</span> reference in notes, docs, and scripts.</p>
           </Card>
         </div>
       </Section>
@@ -250,11 +236,7 @@ export function DocsDailyLoop() {
         <h2><span className="bold">HUMAN LOOP</span></h2>
         <div className="card-stack">
           <Card>
-            <p><Label color="yellow">1</Label> Start from the board.</p>
-            <pre>{`kanban list`}</pre>
-          </Card>
-          <Card>
-            <p><Label color="yellow">2</Label> Put durable reasoning in Brain.</p>
+            <p><Label color="yellow">1</Label> Put durable reasoning in Brain.</p>
             <pre>{`brain concept new local-search \\
   --title "Local search" \\
   --body "Embeddings stay on this machine."
@@ -262,18 +244,22 @@ export function DocsDailyLoop() {
 brain ask "what did we decide about search?"`}</pre>
           </Card>
           <Card>
-            <p><Label color="yellow">3</Label> Track work on cards.</p>
-            <pre>{`kanban add ship-login --title "Ship login flow" --tags auth
-kanban move ship-login doing`}</pre>
+            <p><Label color="yellow">2</Label> Read it back by name, or ask in plain words.</p>
+            <pre>{`brain get local-search
+brain search "search"`}</pre>
+          </Card>
+          <Card>
+            <p><Label color="yellow">3</Label> Keep a credential out of your notes.</p>
+            <pre>{`printf '%s' "$TOKEN" | lastsecrets put my-api-token --label "My API token" --value-stdin
+lastsecrets ref my-api-token`}</pre>
           </Card>
         </div>
       </Section>
 
       <Section variant="sage">
         <h2><span className="bold">AGENT SETUP</span></h2>
-        <p>Give agents MCP access to the app CLIs when they need to read or write durable state.</p>
-        <pre>{`brain mcp
-kanban mcp`}</pre>
+        <p>Give agents MCP access to Brain when they need to read or write durable state.</p>
+        <pre>{`brain mcp`}</pre>
         <p className="dim">Some clients can install the MCP wiring directly from the app CLI, for example <span className="bold">brain mcp install</span>.</p>
       </Section>
 
@@ -309,8 +295,7 @@ export function DocsNodeHealth() {
           </Card>
           <Card>
             <p><Label color="blue">APP READ</Label></p>
-            <pre>{`kanban list
-brain ask "what did I decide recently?"`}</pre>
+            <pre>{`brain ask "what did I decide recently?"`}</pre>
             <p className="dim">A successful socket-backed app read also proves the node is reachable.</p>
           </Card>
         </div>

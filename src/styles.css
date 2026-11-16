@@ -36,7 +36,6 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 /* Indent post lists so markers sit inside the content column (the site reset zeroes ul/ol padding). */
 .blog-post ul, .blog-post ol { padding-left: 1.6em; margin: 1em 0; }
 .blog-post li { margin: 0.4em 0; padding-left: 0.2em; }
-.compare-table-wrap { overflow-x: auto; margin: 0.5em 0; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin: 1em 0; align-items: stretch; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em; margin: 1em 0; align-items: stretch; }
 
@@ -54,10 +53,14 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 .section-amber h2 .bold    { color: #fabd2f; }
 .section-lavender h2 .bold { color: #d3869b; }
 
-[class^="section-"] .bold { color: #fbf1c7; }
-[class^="section-"] .dim { color: #928374; }
-[class^="section-"] a { color: #8ec07c; text-decoration: none; }
-[class^="section-"] a:hover { color: #b8bb26; }
+/* Inside a tint, dim text is lifted from #a89984 so it clears 4.5:1 on every tint. */
+.section .bold { color: #fbf1c7; }
+.section .dim { color: #bdae93; }
+.section a { color: #8ec07c; text-decoration: none; }
+.section a:hover { color: #b8bb26; }
+/* The tint padding is the only gap at a section edge, so drop the child margins there. */
+.section > :first-child { margin-top: 0; }
+.section > :last-child { margin-bottom: 0; }
 .card { border: 1px solid #504945; padding: 12px; display: flex; flex-direction: column; min-width: 0; }
 .card pre { background: #282828; padding: 8px; margin: 0.5em 0; border: 1px solid #504945; }
 
@@ -110,7 +113,7 @@ pre { font: inherit; margin: 0; white-space: pre; overflow-x: auto; }
 .label-orange { background: #fe8019; }
 
 .white { color: #fbf1c7; }
-.dim { color: #928374; }
+.dim { color: #a89984; }
 .bold { font-weight: 400; color: #fbf1c7; }
 a { color: #8ec07c; text-decoration: none; }
 a:hover { color: #b8bb26; }
@@ -125,6 +128,8 @@ a:hover { color: #b8bb26; }
   align-items: baseline;
   gap: 0.35em 0.6em;
 }
+.hero-facts { padding-left: 1.2em; margin: 0.6em 0; }
+.hero-facts li { margin: 0.2em 0; }
 .hero-cta .link-btn {
   font-size: 15px;
   letter-spacing: 0.02em;
@@ -160,8 +165,10 @@ a:hover { color: #b8bb26; }
 .nav-spacer { flex: 1; }
 .nav-links {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 4px 10px;
 }
 .nav-toggle {
   display: none;
@@ -183,24 +190,7 @@ a:hover { color: #b8bb26; }
   border-top: 1px solid #504945;
 }
 .site-footer p { margin: 0.3em 0; }
-
-/* filter buttons */
-.filter-btn { background: none; border: 1px solid #504945; color: #928374; padding: 2px 8px; cursor: pointer; font: inherit; margin-right: 4px; }
-.filter-btn.active { border-color: #fabd2f; color: #fabd2f; }
-.filter-btn:hover { color: #ebdbb2; border-color: #ebdbb2; }
-
-/* schema cards */
-.schema-card { word-break: break-all; }
-.schema-card:hover { border-color: #fabd2f; }
-.schema-card:focus { border-color: #fabd2f; outline: 1px solid #fabd2f; outline-offset: -1px; }
-
-/* modal */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: #3c3836; border: 1px solid #504945; padding: 24px; max-width: 80ch; width: 90%; max-height: 80vh; overflow-y: auto; color: #ebdbb2; }
-.modal:focus { outline: none; }
-.modal .link-btn { background: none; border: none; cursor: pointer; font: inherit; }
-.modal-close-btn { float: right; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.3em 1.2em; }
 
 /* vertical card stack */
 .card-stack { display: flex; flex-direction: column; gap: 1em; margin: 1em 0; }
@@ -237,7 +227,7 @@ a:hover { color: #b8bb26; }
 .readiness-legend-item p {
   margin: 0.45em 0 0;
   font-size: 12px;
-  color: #928374;
+  color: #a89984;
   line-height: 1.4;
 }
 .readiness-list {
@@ -270,7 +260,7 @@ a:hover { color: #b8bb26; }
 }
 .readiness-row:last-child { border-bottom: none; }
 .readiness-rank {
-  color: #928374;
+  color: #a89984;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
   font-size: 12px;
@@ -291,12 +281,12 @@ a:hover { color: #b8bb26; }
   font-size: 13px;
 }
 .readiness-cmd {
-  color: #928374;
+  color: #a89984;
   font-size: 12px;
 }
 .readiness-note {
   margin: 0;
-  color: #928374;
+  color: #a89984;
   font-size: 12px;
   line-height: 1.4;
 }
@@ -323,11 +313,10 @@ a:hover { color: #b8bb26; }
 .readiness-bar > span {
   display: block;
   height: 100%;
-  background: #928374;
+  background: #a89984;
 }
 .readiness-bar.stage-alpha > span { background: #b8bb26; }
 .readiness-bar.stage-dogfood > span { background: #fabd2f; }
-.readiness-bar.stage-optional > span { background: #83a598; }
 .readiness-bar.stage-early > span { background: #fe8019; }
 .readiness-callout {
   border: 1px solid #504945;

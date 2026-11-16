@@ -64,7 +64,13 @@ function generateAsciiArt(text, fontSize) {
 }
 
 function getResponsiveFontSize(el) {
-  const containerWidth = el.parentElement ? el.parentElement.clientWidth : window.innerWidth;
+  // clientWidth includes the parent's padding; measure only the content box.
+  const parent = el.parentElement;
+  let containerWidth = window.innerWidth;
+  if (parent) {
+    const pcs = window.getComputedStyle(parent);
+    containerWidth = parent.clientWidth - parseFloat(pcs.paddingLeft) - parseFloat(pcs.paddingRight);
+  }
   const style = window.getComputedStyle(el);
 
   const span = document.createElement('span');

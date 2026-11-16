@@ -1,19 +1,18 @@
 # LastDB
 
-> Build for your happiness. On a foundation you own.
+> A local database for the tools you build.
 >
-> LastDB is a local database you build your own tool stack on
-> (Brain, Kanban, Situations, LastSecrets, Search, agent skills, and the apps you write —
-> tools on one foundation you own, not SaaS silos). Deliver slices of your
-> database to others.
+> LastDB is one local daemon on your Mac, reached over a Unix socket. Apps read
+> and write it by key. Starter apps install from the App Registry: Brain
+> and LastSecrets. You can write your own app on the same socket.
 >
-> Local use needs no account. Optional encrypted cloud backup and multi-device sync
-> register or connect your local database identity (`lastdb --data-dir ~/.lastdb backup connect --env prod`)
-> without asking for a name or email, with paid cloud storage managed via
-> `lastdb cloud payment checkout`.
+> Local use needs no account. Optional cloud backup connects your local database
+> with `lastdb backup connect`. Paid cloud storage is set up with `lastdb cloud`.
 
 Website: https://thelastdb.com
 Pages are prerendered at build time so agents and curl can read them without executing JavaScript.
+
+Status: alpha. macOS on Apple Silicon only.
 
 ## Understand LastDB
 
@@ -25,175 +24,125 @@ JavaScript enables the diagram. Public design notes: https://thelastdb.com/explo
 
 ## Install (macOS Apple Silicon)
 
-Needs Homebrew, Bun (https://bun.sh), and Node 18+ with npm (npm builds the
-LastDB Browser UI). Apple Silicon only.
+Needs Homebrew and Bun on PATH. The app installs run `bun install`.
 
-Paste-safe for macOS zsh: the bash blocks below have **no `#` comment lines**.
-Default interactive zsh has `interactivecomments` off, so pasting `# 0) …`
-yields `parse error near ')'` / `command not found: #`. Put notes in markdown
-prose, not inside the fence. Skip the Bun line if `bun --version` already works;
-skip the node line if `npm --version` already works.
+Recommended: the installer script. Read it first: https://thelastdb.com/install.sh
 
 ```bash
-curl -fsSL https://bun.sh/install | bash
-export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
-brew install node
+curl -fsSL https://thelastdb.com/install.sh -o install.sh
+sh install.sh
+```
 
-test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
-for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
-node --version
-git --version
+The first run installs LastDB, starts the service, prints the install plan for each starter app, and stops.
+It ends with `RESULT: CONSENT NEEDED` (exit 3). That stop is expected. Read the plan. Then run:
 
-git clone https://github.com/EdgeVector/last-stack ~/.last-stack
-~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps
+```bash
+sh install.sh --accept-install
+brain init
+```
 
+The second run ends with `RESULT: PASS` when the apps are current and healthy.
+`RESULT: FAIL` means a step failed; the line above it says which one. Running the script again is safe.
+An agent must not pass `--accept-install` before the user has read the plan.
+
+The same steps by hand. Paste-safe for macOS zsh: the block has no `#` comment lines.
+
+```bash
+brew install edgevector/lastdb/lastdb
 brew services start lastdb
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-brain init --grant-consent
-kanban init
-situations init
-lastsecrets init
-org init
-search init --quiet
-kanban list
+lastdb app list
+lastdb app install brain lastsecrets
 ```
 
-Health path is `/health` (not `/api/health`). Expect `{"status":"ok"}`.
-The installer ends with `RESULT: PASS` or `RESULT: FAIL`. Stop on `RESULT: FAIL`.
-The bundle installs Brain, Kanban, Situations, Routines, Dogfood Graph, Org,
-LastSecrets, Search, and LastDB Browser. Kanban Factory is optional.
+The first `lastdb app install` prints the install plan for each app and stops.
+Read the plan. Then run the same command again with `--accept-install`.
+
+```bash
+lastdb app install brain lastsecrets --accept-install
+lastdb app status
+brain init
+```
+
+The health check returns JSON with `"status":"ok"`. The socket path is `~/.lastdb/data/folddb.sock`.
+Use `lastdb status` for host vitals and request activity.
 
 On the first LastDB start, save any recovery phrase in a password manager.
 Never put the phrase in chat, a source file, or a log.
 
-Apps install by proof (LastDB 0.23.5 and later). `last-stack-install-apps`
-asks `lastdb app resolve` for each app: the newest app commit that the LastDB
-app registry proved with the LastDB build on your machine. The registry is one
-static signed index on the Homebrew tap
-(https://raw.githubusercontent.com/EdgeVector/homebrew-lastdb/main/registry/stable.json,
-signature checked with the key inside `lastdb`). No account, no live service.
-Install checks out that exact commit, not `main`.
+## What the install changes
+
+- Homebrew installs the `lastdb` and `lastdbd` commands and starts the LastDB service.
+- The App Registry clones each app into `~/.local/share/lastdb-apps/<app>/` and links its commands into `~/.local/bin`.
+- Each app installs its own packages with Bun.
+- On macOS, the first app install adds a LaunchAgent, `com.edgevector.lastdb-app-registry`. It checks the registry every 60 seconds and upgrades the installed apps on the stable channel.
+- Nothing edits the shell profile. If `~/.local/bin` is not on PATH, add it yourself.
+- Your data is in `~/.lastdb`.
+
+## Remove it
+
+Your data stays in `~/.lastdb`. These steps do not touch it.
 
 ```bash
-lastdb app list                              # the shelf, with the row for your node
-lastdb app install brain                     # one app, at its proved commit
-lastdb app upgrade brain kanban situations   # move to the newest proved pair
+launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry"
+rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
+rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
+brew services stop lastdb
+brew uninstall lastdb
 ```
 
-Each night the release loop builds LastDB main, installs every app at a fixed
-commit in an isolated home, runs this install path, and cuts its own primary
-over. After a 1 hour clean soak it publishes that pair set to brew stable and
-to the index together. So a row is on the shelf only because a fresh install
-of it passed, with the node you get from brew.
-
-A `lastdb` older than 0.23.5 has no `app resolve`: the installer falls back to
-`main` and says so; `brew upgrade lastdb` fixes that. If no row is proved with
-your LastDB build yet, install stops and names the remedy (`brew upgrade
-lastdb`, or wait for the next proved set).
-
-Database only:
+## Database only
 
 ```bash
 brew install edgevector/lastdb/lastdb
 brew services start lastdb
 ```
 
-LastSecrets only (after LastDB is running):
+The package ships `lastdbd` (the daemon) and `lastdb` (the control CLI).
+Run `lastdb --help` to see the commands for your installed release.
+
+## App Registry
+
+The App Registry is the install path for apps. It is a signed list. No account is needed.
+
+`lastdb app list` shows the apps proved with your LastDB release. Install checks out the
+exact proved commit, not `main`. Each app is proved in a fresh home before it is listed.
+If no entry is proved with your release, install stops. Upgrade LastDB with
+`brew upgrade lastdb`, or wait for the next proved set.
 
 ```bash
-git clone https://github.com/EdgeVector/lastsecrets && cd lastsecrets
-bun install && bun link
-lastsecrets init
+lastdb app list
+lastdb app install brain
+lastdb app upgrade brain
+lastdb app status
 ```
 
-Org only (after LastDB + LastSecrets; share orgs via public-key invite).
-After init: `org create friends --name "Friends"`; invite path is
-https://github.com/EdgeVector/org/blob/main/docs/INVITE.md
-(friend: `org receive` → you: `org invite friends --to 'orgpk1:…' --agent` →
-friend: `org join --sealed 'orgseal1:…'`).
+- `lastdb app install <app>` installs one or more apps at their proved commit.
+- `lastdb app upgrade <app>` moves an app to the newest proved commit. Use `--all` for every app.
+- `lastdb app status` shows what is installed and the active release. Add `--check` to run the app's own checks.
+- `lastdb app rollback <app>` returns an app to its previous release.
+
+The list changes as apps are proved. Trust `lastdb app list` on the machine over any list on a web page.
+
+## Apps: first commands
+
+Brain (long-term notes and decisions):
 
 ```bash
-git clone https://github.com/EdgeVector/org && cd org
-bun install && bun link
-org init
-```
-
-Search only (semantic plane for brain/kanban ask/search; after LastDB is running):
-
-```bash
-git clone https://github.com/EdgeVector/search && cd search
-npm ci --omit=dev --no-audit --no-fund
-ln -snf "$PWD/bin/search" ~/.local/bin/search
-search init --quiet
-```
-
-Use npm for Search runtime dependencies. It runs the native transformer setup
-that Bun can block as an untrusted postinstall script.
-
-LastDB Browser (read-only local UI for schemas, keys, records, and fields;
-installed and built by `last-stack-install-apps`, which links the
-`lastdb-browser` launcher; needs Node 18+/npm). Open it after the node is
-running:
-
-```bash
-lastdb-browser
-```
-
-It reads `~/.lastdb/data/folddb.sock` by default; set `LASTDB_SOCKET` to point
-at another machine-local socket.
-
-## Kanban Factory (optional animated board UI)
-
-Local theater for your real Kanban board: cards hop between lanes, routines show
-as a crew, heartbeats tick in the factory log. Read-mostly; runs on loopback
-only. Needs `kanban` on PATH (from `last-stack-install-apps`) and Node 18+.
-
-`last-stack-install-apps` also clones this under `~/lastdb-apps/kanban-factory`
-when the public GitHub repo is reachable.
-
-Standalone (after kanban init works). Serves http://127.0.0.1:4177.
-
-```bash
-git clone https://github.com/EdgeVector/kanban-factory.git \
-  ~/.local/share/edgevector/kanban-factory
-cd ~/.local/share/edgevector/kanban-factory
-node server.mjs
-```
-
-macOS auto-start on login:
-
-```bash
-./scripts/install-launchd.sh install
-open http://127.0.0.1:4177
-```
-
-Source: https://github.com/EdgeVector/kanban-factory
-
-## Mental model
-
-- **LastDB** — the database (Homebrew service `lastdb`, daemon `lastdbd`)
-- **Apps** — tools that talk to it (`brain`, `kanban`, `situations`, `lastsecrets`, `org`, `search`, …)
-- **Org** — separate app for shared org membership + named DBs; keys via LastSecrets
-- **LastDB Browser** — read-only local UI for schemas, keys, records, and fields (`lastdb-browser`)
-- **Kanban Factory** — optional local animated UI over your board (not a second database)
-- **The Last Stack** — installer + agent skills (not a second database)
-
-Socket: `~/.lastdb/data/folddb.sock` (Unix socket)
-
-## Quick try after install
-
-Semantic ask may lag a few seconds after create; use a term from the body.
-`brain get` is immediate. LastSecrets: never put raw secret values on the command line;
-list/search always print `value=<redacted>`.
-
-```bash
-kanban list
+brain init
 brain concept new hello --title "Hello" --body "my first note"
 brain get hello
 brain ask "first note"
+```
 
+`brain get` reads by name. `brain ask` matches by keyword until LastSeek is installed; use a term from the body.
+`brain mcp` runs Brain as a stdio MCP server for an agent.
+
+LastSecrets (credentials):
+
+```bash
+lastsecrets init
 printf '%s' "$TOKEN" | lastsecrets put my-api-token \
   --label "My API token" \
   --provider example \
@@ -202,59 +151,53 @@ printf '%s' "$TOKEN" | lastsecrets put my-api-token \
   --value-stdin
 lastsecrets ref my-api-token
 lastsecrets list
-
-org create friends --name "Friends"
-org list
 ```
 
-`lastsecrets ref` prints a `lastsecrets://…` locator. Org invite path: docs/INVITE.md on the org repo.
+`lastsecrets ref` prints a `lastsecrets://…` locator. List and search always print `value=<redacted>`.
+
+LastSeek (semantic search, coming): LastSeek keeps a semantic index beside the node. It is not in the App Registry yet. Until it is, Brain finds notes by name and by keyword.
+Do not install the older Search app on a new machine.
 
 ## Secrets policy (agents)
 
 - Store with `lastsecrets put <slug> … --value-stdin` (value on stdin only).
-- Persist only `lastsecrets://<slug>` locators in Brain, Kanban, docs, CI, and logs.
+- Persist only `lastsecrets://<slug>` locators in Brain, docs, CI, and logs.
 - Retrieve with `lastsecrets get <slug>` only at the point of use; do not print or re-store the value.
 - If LastSecrets is unavailable, stop before handling raw secret material.
 
-## App readiness (ranked high → low; judgment, not SLAs)
+## Mental model
 
-Whole stack is product alpha. Stages: Alpha · Dogfood · Early.
+- **LastDB**: the database. Homebrew service `lastdb`, daemon `lastdbd`.
+- **Schemas and keys**: a schema names its fields, its primary key, and any named alternate keys.
+  A query needs a key (a hash, or a hash plus a range). A read with no key is refused.
+  `lastdb get-keys` lists the keys of one schema, one page at a time. It does not return field values.
+- **Apps**: programs that talk to the node over the socket (`brain`, `lastsecrets`, and your own).
+- **LastSeek**: a semantic index beside the node. It is not part of the database, and it is not in the App Registry yet.
+- **App Registry**: the signed list of apps you install by name with `lastdb app install`.
 
-| Rank | App | Stage | ~% |
-|------|-----|--------|-----|
-| 01 | Brain | Alpha | ~75 |
-| 02 | LastDB | Alpha | ~70 |
-| 03 | Kanban | Alpha | ~70 |
-| 04 | Last Stack | Dogfood | ~60 |
-| 05 | Situations | Dogfood | ~55 |
-| 06 | Search | Dogfood | ~50 |
-| 07 | LastSecrets | Dogfood | ~50 |
-| 08 | Org | Dogfood | ~50 |
-| 09 | Dogfood Graph | Dogfood | ~45 |
-| 10 | Kanban Factory | Dogfood | ~45 |
-| 11 | Routines | Early | ~35 |
-| 12 | CodeRings | Early | ~25 |
-| 13 | Discovery | Early | ~25 |
+Socket: `~/.lastdb/data/folddb.sock` (Unix socket). The file name is historical; the product is LastDB.
 
-First try: ranks 01–03; use Search (#06) for semantic ask/search; LastSecrets (#07) for credentials;
-Org (#08) for invite/join shared orgs (pubkey seal — no Exemem account required for join).
-Optional eye candy after the board works: Kanban Factory (#10).
-Full notes: https://thelastdb.com/apps#readiness
+## Build your own app
+
+The developer guide has working requests for each step: declare a schema, write a record,
+read it by primary key, read it by alternate key, and list keys.
+https://thelastdb.com/developer
 
 ## Key pages
 
-- https://thelastdb.com/ — what it is + install
-- https://thelastdb.com/apps — what each app does + readiness
-- https://thelastdb.com/start — daily loop + agent MCP/skills
+- https://thelastdb.com/ — what it is and install
+- https://thelastdb.com/install.sh — the installer script
+- https://thelastdb.com/apps — the apps you can install today
+- https://thelastdb.com/start — daily use and agent MCP
 - https://thelastdb.com/about — product thesis
 - https://thelastdb.com/developer — socket API for builders
-- https://thelastdb.com/docs — stable docs index
+- https://thelastdb.com/explore/#diagram — interactive system guide
+- https://thelastdb.com/docs — docs index
 - https://thelastdb.com/docs/install — install and version checks
-- https://thelastdb.com/docs/daily-loop — Brain/Kanban daily loop
+- https://thelastdb.com/docs/daily-loop — Brain and LastSecrets daily use
 - https://thelastdb.com/docs/node-health — node health and socket checks
 - https://thelastdb.com/blog — engineering writing
-- https://github.com/EdgeVector/lastsecrets — LastSecrets public source
-- https://github.com/EdgeVector/org — Org public source (shared org membership + invite/join)
-- https://github.com/EdgeVector/org/blob/main/docs/INVITE.md — Org invite handshake
-- https://github.com/EdgeVector/search — Search public source (semantic MiniLM plane)
-- https://github.com/EdgeVector/kanban-factory — Kanban Factory (animated local board theater)
+- https://github.com/EdgeVector/lastdb — LastDB source (Apache-2.0)
+- https://github.com/EdgeVector/brain — Brain source
+- https://github.com/EdgeVector/lastsecrets — LastSecrets source
+- https://github.com/EdgeVector/lastseek — LastSeek source
