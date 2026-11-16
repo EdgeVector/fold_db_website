@@ -175,11 +175,12 @@ step "lastdb get-keys" 0 "n1" -- lastdb get-keys notes/note --limit 2
 
 # 7. The removal steps from the home page. The data folder must survive.
 remove_it() {
-    launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry"
-    rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
-    rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
-    brew services stop lastdb
-    brew uninstall lastdb
+    # Chained, so one failed line fails the step.
+    launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry" &&
+        rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist" &&
+        rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry" &&
+        brew services stop lastdb &&
+        brew uninstall lastdb
 }
 step "remove it" 0 "" -- remove_it
 if [ -d "$HOME/.lastdb" ]; then
@@ -188,6 +189,8 @@ else
     row "data folder kept" "FAIL" "~/.lastdb is gone"
     failures=$((failures + 1))
 fi
+# Forget cached command paths, or bash still reports the removed program.
+hash -r
 if command -v lastdb >/dev/null 2>&1; then
     finding "lastdb after removal" "still on PATH at $(command -v lastdb)"
 fi
