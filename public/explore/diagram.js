@@ -456,8 +456,6 @@
     ["prod-recovery","restore","records a DEV snapshot pass for"],
     ["prod-recovery","named-recovery","has no new PROD qualification for"],
     ["node-status","automatic-backup","does not prove cloud coverage from"],
-    ["backup-read-buffers","memory-budget","use bounded working memory alongside"],
-    ["backup-read-buffers","run-encryption","authenticate native blocks protected by"],
     ["named-members","cloud-access","checks saved account and endpoint with"],
     ["stable-release","restore","qualifies packaged code separately from"],
     ["guaranteed-write","cloud-access","requires a cloud grant through"],
