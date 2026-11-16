@@ -11,17 +11,12 @@ const STARTER_APPS = [
   {
     name: 'Brain',
     cmd: 'brain',
-    what: 'Long-term notes and decisions. Write them once, then find them by name or by meaning.',
+    what: 'Long-term notes and decisions. Write them once, then find them by name or by keyword.',
   },
   {
     name: 'LastSecrets',
     cmd: 'lastsecrets',
     what: 'Credentials kept in your LastDB. Other tools hold only a lastsecrets:// reference.',
-  },
-  {
-    name: 'Search',
-    cmd: 'search',
-    what: 'A semantic index beside the database. Brain uses it for ask and search.',
   },
 ];
 
@@ -30,7 +25,7 @@ export default function Apps() {
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="The apps you can install on LastDB today from the App Registry: Brain, LastSecrets, and Search. Commands to install and try each one." />
+        <meta name="description" content="The apps you can install on LastDB today from the App Registry: Brain and LastSecrets. Commands to install and try each one." />
         <meta property="og:title" content="Apps - LastDB" />
         <meta property="og:description" content="What you can install on LastDB today, and how to try it." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
@@ -72,7 +67,7 @@ lastdb app rollback brain`}</pre>
           <span className="bold">list</span> shows the apps for your release. The list changes as apps are proved, so trust it over this page.
           The first <span className="bold">install</span> prints the install plan and stops. Read the plan, then repeat the command with{' '}
           <span className="bold">--accept-install</span>.
-          The install runs the app&rsquo;s own package step with Bun or npm and links its commands into <span className="bold">~/.local/bin</span>.
+          The install runs the app&rsquo;s own package step with Bun and links its commands into <span className="bold">~/.local/bin</span>.
         </p>
       </Section>
 
@@ -103,7 +98,7 @@ brain concept new caching --title "Cache" --body "chose LRU because the working 
 brain get caching
 brain ask "what did we decide about caching?"`}</pre>
             <p className="dim">
-              <span className="bold">brain get</span> answers at once. <span className="bold">brain ask</span> can lag a few seconds after a new note.
+              <span className="bold">brain get</span> reads the note by name. <span className="bold">brain ask</span> matches by keyword until LastSeek is installed.
             </p>
           </Card>
 
@@ -125,17 +120,18 @@ lastsecrets list`}</pre>
             </p>
           </Card>
 
-          <Card>
-            <p><Label color="purple">SEARCH</Label></p>
-            <pre>{`search init --quiet`}</pre>
-            <p className="dim">
-              Run this once after install. The index stays on this machine.
-            </p>
-          </Card>
         </div>
 
         <p className="dim">
           Daily use: <Link to="/start" className="link-btn">[How to use it &rarr;]</Link>
+        </p>
+      </Section>
+
+      <Section variant="rose" id="coming">
+        <h2><span className="bold">COMING</span> <span className="dim">not installable yet</span></h2>
+        <p>
+          <span className="bold">LastSeek</span> is semantic search for LastDB: ask in plain words and find a record by meaning.
+          It is not in the App Registry yet. Until it is, Brain finds notes by name and by keyword.
         </p>
       </Section>
 

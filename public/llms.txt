@@ -3,8 +3,8 @@
 > A local database for the tools you build.
 >
 > LastDB is one local daemon on your Mac, reached over a Unix socket. Apps read
-> and write it by key. Starter apps install from the App Registry: Brain,
-> LastSecrets, and Search. You can write your own app on the same socket.
+> and write it by key. Starter apps install from the App Registry: Brain
+> and LastSecrets. You can write your own app on the same socket.
 >
 > Local use needs no account. Optional cloud backup connects your local database
 > with `lastdb backup connect`. Paid cloud storage is set up with `lastdb cloud`.
@@ -24,7 +24,7 @@ JavaScript enables the diagram. Public design notes: https://thelastdb.com/explo
 
 ## Install (macOS Apple Silicon)
 
-Needs Homebrew, Bun, and npm (from Node) on PATH. The app installs run `bun install` and `npm ci`.
+Needs Homebrew and Bun on PATH. The app installs run `bun install`.
 
 Recommended: the installer script. Read it first: https://thelastdb.com/install.sh
 
@@ -53,14 +53,14 @@ brew services start lastdb
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 lastdb app list
-lastdb app install brain lastsecrets search
+lastdb app install brain lastsecrets
 ```
 
 The first `lastdb app install` prints the install plan for each app and stops.
 Read the plan. Then run the same command again with `--accept-install`.
 
 ```bash
-lastdb app install brain lastsecrets search --accept-install
+lastdb app install brain lastsecrets --accept-install
 lastdb app status
 brain init
 ```
@@ -75,7 +75,7 @@ Never put the phrase in chat, a source file, or a log.
 
 - Homebrew installs the `lastdb` and `lastdbd` commands and starts the LastDB service.
 - The App Registry clones each app into `~/.local/share/lastdb-apps/<app>/` and links its commands into `~/.local/bin`.
-- Each app installs its own packages with Bun or npm.
+- Each app installs its own packages with Bun.
 - On macOS, the first app install adds a LaunchAgent, `com.edgevector.lastdb-app-registry`. It checks the registry every 60 seconds and upgrades the installed apps on the stable channel.
 - Nothing edits the shell profile. If `~/.local/bin` is not on PATH, add it yourself.
 - Your data is in `~/.lastdb`.
@@ -136,7 +136,7 @@ brain get hello
 brain ask "first note"
 ```
 
-`brain get` is immediate. `brain ask` may lag a few seconds after a new note; use a term from the body.
+`brain get` reads by name. `brain ask` matches by keyword until LastSeek is installed; use a term from the body.
 `brain mcp` runs Brain as a stdio MCP server for an agent.
 
 LastSecrets (credentials):
@@ -155,11 +155,8 @@ lastsecrets list
 
 `lastsecrets ref` prints a `lastsecrets://…` locator. List and search always print `value=<redacted>`.
 
-Search (semantic index that Brain uses for ask and search):
-
-```bash
-search init --quiet
-```
+LastSeek (semantic search, coming): LastSeek keeps a semantic index beside the node. It is not in the App Registry yet. Until it is, Brain finds notes by name and by keyword.
+Do not install the older Search app on a new machine.
 
 ## Secrets policy (agents)
 
@@ -174,8 +171,8 @@ search init --quiet
 - **Schemas and keys**: a schema names its fields, its primary key, and any named alternate keys.
   A query needs a key (a hash, or a hash plus a range). A read with no key is refused.
   `lastdb get-keys` lists the keys of one schema, one page at a time. It does not return field values.
-- **Apps**: programs that talk to the node over the socket (`brain`, `lastsecrets`, `search`, and your own).
-- **Search**: a semantic index beside the node. It is not part of the database.
+- **Apps**: programs that talk to the node over the socket (`brain`, `lastsecrets`, and your own).
+- **LastSeek**: a semantic index beside the node. It is not part of the database, and it is not in the App Registry yet.
 - **App Registry**: the signed list of apps you install by name with `lastdb app install`.
 
 Socket: `~/.lastdb/data/folddb.sock` (Unix socket). The file name is historical; the product is LastDB.
@@ -203,4 +200,4 @@ https://thelastdb.com/developer
 - https://github.com/EdgeVector/lastdb — LastDB source (Apache-2.0)
 - https://github.com/EdgeVector/brain — Brain source
 - https://github.com/EdgeVector/lastsecrets — LastSecrets source
-- https://github.com/EdgeVector/search — Search source
+- https://github.com/EdgeVector/lastseek — LastSeek source

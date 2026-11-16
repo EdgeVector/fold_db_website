@@ -148,20 +148,20 @@ export function DocsInstall() {
         <p>This path installs LastDB with Homebrew, then the apps you name from the App Registry.</p>
         <p className="dim">
           Paste-safe for macOS zsh (no <span className="bold">#</span> comment lines — interactive zsh
-          does not treat them as comments). Needs Homebrew + Apple Silicon.
+          does not treat them as comments). Needs Homebrew, Bun, and Apple Silicon.
         </p>
         <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 lastdb app list
-lastdb app install brain search lastsecrets`}</pre>
+lastdb app install brain lastsecrets`}</pre>
         <p className="dim">
           The first <span className="bold">lastdb app install</span> prints the install plan for each app and stops.
           Read the plan, then run the same command again with <span className="bold">--accept-install</span>.
           Then run <span className="bold">lastdb app status</span> and <span className="bold">brain init</span>.
         </p>
-        <p className="dim">The install runs each app&rsquo;s own package step with Bun or npm and links its commands into <span className="bold">~/.local/bin</span>. Both tools must be on your PATH first.</p>
+        <p className="dim">The install runs each app&rsquo;s own package step with Bun and links its commands into <span className="bold">~/.local/bin</span>. Bun must be on your PATH first.</p>
         <p className="dim">
           <span className="bold">lastdb app list</span> shows the apps proved with your LastDB build.
           <span className="bold"> lastdb app install brain</span> installs the proved commit, and

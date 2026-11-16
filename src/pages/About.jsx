@@ -64,7 +64,7 @@ export default function About() {
         <h2><span className="bold">LAYERS</span></h2>
 
         <pre className="compare-table">
-{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`   Brain · Search · LastSecrets · yours
+{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`   Brain · LastSecrets · yours
         |
         v
   `}<span style={{ color: '#83a598' }}>{`LastDB node`}</span>{`     schemas, keyed records, socket API
@@ -108,7 +108,7 @@ export default function About() {
         <p>An app is a program that talks to the node over a local Unix socket. Brain and LastSecrets are apps. You can write your own.</p>
 
         <h2 className="section-subheading"><span className="bold">Search</span></h2>
-        <p>The Search app keeps a semantic index beside the node. Brain uses it for ask and search.</p>
+        <p>LastSeek is the search service. It keeps a semantic index beside the node, outside the database. It is not in the App Registry yet. Until it is, Brain finds notes by name and by keyword.</p>
 
         <h2 className="section-subheading"><span className="bold">Sharing</span></h2>
         <p>Sharing uses contact codes. A contact file can be checked against a key you already trust, with <span className="bold">lastdb share verify-contact</span>.</p>

@@ -2,12 +2,12 @@
 # LastDB installer for macOS on Apple Silicon.
 #
 # Steps, in order:
-#   1. Check macOS, arm64, Homebrew, bun, and npm.
+#   1. Check macOS, arm64, Homebrew, and bun.
 #   2. Install LastDB with the Homebrew formula edgevector/lastdb/lastdb.
 #      If LastDB is already installed, skip the install. This script never upgrades.
 #   3. Start the Homebrew service: brew services start lastdb.
 #   4. Run lastdb status, then check GET /health over the Unix socket.
-#   5. Install the starter apps (brain, lastsecrets, search) with lastdb app install.
+#   5. Install the starter apps (brain, lastsecrets) with lastdb app install.
 #   6. Check each starter app with lastdb app status --check.
 #   7. Print RESULT: PASS, RESULT: CONSENT NEEDED, or RESULT: FAIL.
 #
@@ -20,14 +20,14 @@
 #
 # Side effects confirmed from the LastDB source (lastdb_node/src/bin/lastdb/app_registry_index/):
 #   - Clones each app source from its git repository into ~/.local/share/lastdb-apps/<app>/.
-#   - Creates command symlinks in ~/.local/bin (brain, brain-mcp, lastsecrets, search).
+#   - Creates command symlinks in ~/.local/bin (brain, brain-mcp, lastsecrets).
 #   - On macOS, the first app install writes and loads a LaunchAgent,
 #     ~/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist. It runs
 #     "lastdb app upgrade --all" every 60 seconds, so apps update on their own
 #     from the stable channel. Remove it with the steps at https://thelastdb.com/#install.
-#   - App install runs each app's prepare step with bun (brain, lastsecrets) or
-#     npm (search). That is why this script checks for them.
-#   - This script does not edit shell profiles and does not install bun or npm.
+#   - App install runs each app's prepare step with bun. That is why this script checks for it.
+#   - This script does not edit shell profiles and does not install bun.
+#   - Search is not a starter app. LastSeek replaces it and is not in the App Registry yet.
 #
 # Idempotent: running it again skips steps that are already done.
 
@@ -53,7 +53,7 @@ for arg in "$@"; do
 done
 
 FORMULA="edgevector/lastdb/lastdb"
-STARTER_APPS="brain lastsecrets search"
+STARTER_APPS="brain lastsecrets"
 SOCKET="$HOME/.lastdb/data/folddb.sock"
 TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/lastdb-install.XXXXXX")
 trap 'rm -rf "$TMP_DIR"' EXIT HUP INT TERM
@@ -75,14 +75,11 @@ fi
 if ! command -v brew >/dev/null 2>&1; then
     fail "Homebrew is required. Install it from https://brew.sh, open a new terminal, and run this script again."
 fi
-# The app prepare steps run "bun install" (brain, lastsecrets) and "npm ci" (search).
-# The app install passes PATH through, so both tools must be on PATH.
-# This script does not install them.
+# The app prepare steps run "bun install".
+# The app install passes PATH through, so bun must be on PATH.
+# This script does not install it.
 if ! command -v bun >/dev/null 2>&1; then
     fail "bun is required by the brain and lastsecrets app installs. Install bun, open a new terminal, and run this script again."
-fi
-if ! command -v npm >/dev/null 2>&1; then
-    fail "npm is required by the search app install. Install Node, open a new terminal, and run this script again."
 fi
 
 # 2. Install LastDB. Skip if Homebrew already has it. Never upgrade here.
@@ -177,5 +174,5 @@ case ":$PATH:" in
     *) echo "note: $HOME/.local/bin is not on PATH in this shell. Add it to your shell profile yourself if brain is not found." ;;
 esac
 
-echo "Installed: LastDB (lastdb, lastdbd) and apps brain, lastsecrets, search."
+echo "Installed: LastDB (lastdb, lastdbd) and apps brain, lastsecrets."
 echo "RESULT: PASS"

@@ -40,12 +40,12 @@ const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
   <text x="100" y="74" text-anchor="middle" fill="#928374" font-size="10">memory</text>
 
   <rect x="190" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SEARCH</text>
-  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">find by meaning</text>
+  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSECRETS</text>
+  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">credentials</text>
 
   <rect x="340" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSECRETS</text>
-  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">credentials</text>
+  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSEEK</text>
+  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">search · coming</text>
 
   <rect x="490" y="36" width="130" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
   <text x="555" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR APP</text>
@@ -89,7 +89,7 @@ export default function Home() {
     <>
       <Helmet>
         <title>LastDB - Build for your happiness</title>
-        <meta name="description" content="Build for your happiness. LastDB is the local database you build your own tools on: memory, search, credentials, and the apps you write. Records are found by key. Install apps from the App Registry." />
+        <meta name="description" content="Build for your happiness. LastDB is the local database you build your own tools on: memory, credentials, and the apps you write. Records are found by key. Install apps from the App Registry." />
         <meta property="og:title" content="LastDB - Build for your happiness" />
         <meta property="og:description" content="One local database, every tool yours. Build hard. Build happy. Own your foundation." />
         <meta property="og:type" content="website" />
@@ -160,7 +160,7 @@ export default function Home() {
         </p>
         <p>
           <span className="bold white">LastDB is the room you own.</span> One permanent local database.
-          Apps (Brain, Search, LastSecrets, and the ones you write) are tools on that foundation &mdash;
+          Apps (Brain, LastSecrets, and the ones you write) are tools on that foundation &mdash;
           not permanent custodians of a copy. The goal is not grind. It is building software,
           and a practice, that makes you happy.
         </p>
@@ -195,9 +195,9 @@ export default function Home() {
         <h2><span className="bold">INSTALL</span> <span className="dim">two steps, about five minutes</span></h2>
 
         <p>
-          <span className="bold white">You need:</span> Apple Silicon, <span className="bold">Homebrew</span>,{' '}
-          <span className="bold">Bun</span>, and <span className="bold">npm</span> (from Node).
-          The installer checks for all four and stops if one is missing.
+          <span className="bold white">You need:</span> Apple Silicon, <span className="bold">Homebrew</span>, and{' '}
+          <span className="bold">Bun</span>.
+          The installer checks for all three and stops if one is missing.
           Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
         </p>
 
@@ -218,7 +218,7 @@ export default function Home() {
         <Card>
           <p>
             <Label color="yellow">2. CONSENT TO THE STARTER APPS</Label>{' '}
-            <span className="dim">brain, lastsecrets, and search</span>
+            <span className="dim">brain and lastsecrets</span>
           </p>
           <CopyBlock text={INSTALL_STEP_2} label="Copy" />
           <p className="dim">
@@ -235,8 +235,8 @@ export default function Home() {
           <li>Homebrew installs the <span className="bold">lastdb</span> and <span className="bold">lastdbd</span> commands and starts the LastDB service.</li>
           <li>The App Registry clones each starter app into <span className="bold">~/.local/share/lastdb-apps</span> and links its commands into <span className="bold">~/.local/bin</span>.</li>
           <li>The first app install adds a background job. It checks the registry every 60 seconds and upgrades the apps on the stable channel. It writes its log under <span className="bold">~/.local/state/lastdb-app-registry</span>.</li>
-          <li>Each app installs its own packages with Bun or npm.</li>
-          <li>It does not edit your shell profile, and it does not install Bun or npm.</li>
+          <li>Each app installs its own packages with Bun.</li>
+          <li>It does not edit your shell profile, and it does not install Bun.</li>
         </ul>
 
         <div className="grid-2" style={{ marginTop: '1em' }}>
@@ -276,8 +276,8 @@ curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http:
             <p>Decisions and designs that outlive any chat. Stop re-explaining yourself every session.</p>
           </Card>
           <Card>
-            <p><Label color="purple">SEARCH</Label> <span className="dim">find by meaning</span></p>
-            <p>Semantic search over your records. Ask in plain language and find the record by meaning.</p>
+            <p><Label color="purple">LASTSEEK</Label> <span className="dim">find by meaning &middot; coming</span></p>
+            <p>Semantic search beside the database. It is not in the App Registry yet. Until it is, Brain finds notes by name and by keyword.</p>
           </Card>
           <Card>
             <p><Label color="purple">LASTSECRETS</Label> <span className="dim">credentials that stay local</span></p>
@@ -286,7 +286,7 @@ curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http:
         </div>
 
         <p>
-          <Link to="/apps" className="link-btn">[Full catalog &amp; readiness &rarr;]</Link>
+          <Link to="/apps" className="link-btn">[All apps &rarr;]</Link>
           <span className="dim"> &mdash; then build tools that fit how you want to work.</span>
         </p>
       </Section>
