@@ -103,7 +103,7 @@ const ALIAS = `${SVG_OPEN('0 0 660 234')}
   <polygon points="520,116 516,125 524,125" fill="var(--muted)"/>
 
   <polyline points="330,190 140,190 140,116" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="235" y="210" text-anchor="middle" fill="var(--line)" font-size="10">no path here</text>
+  <text x="235" y="210" text-anchor="middle" fill="var(--muted)" font-size="10">no path here</text>
 </svg>`;
 
 // 4 — the log that never shrank. Compaction folds old entries into a snapshot

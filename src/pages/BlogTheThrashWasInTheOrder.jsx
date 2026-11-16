@@ -42,8 +42,8 @@ const WRONG_ORDER = `${SVG_OPEN('0 0 660 300')}
 
   <line x1="472" y1="70" x2="520" y2="70" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 3"/>
   <rect x="522" y="48" width="100" height="44" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="572" y="68" text-anchor="middle" fill="var(--line)" font-size="11" letter-spacing="1">UPLOAD</text>
-  <text x="572" y="84" text-anchor="middle" fill="var(--line)" font-size="10">never reached</text>
+  <text x="572" y="68" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1">UPLOAD</text>
+  <text x="572" y="84" text-anchor="middle" fill="var(--muted)" font-size="10">never reached</text>
 
   <line x1="36" y1="130" x2="624" y2="130" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
@@ -87,8 +87,8 @@ const RIGHT_ORDER = `${SVG_OPEN('0 0 660 250')}
   <text x="434" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">optional · capped</text>
 
   <rect x="528" y="52" width="96" height="52" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="576" y="74" text-anchor="middle" fill="var(--line)" font-size="11" letter-spacing="1">REST</text>
-  <text x="576" y="92" text-anchor="middle" fill="var(--line)" font-size="10">next ticks</text>
+  <text x="576" y="74" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1">REST</text>
+  <text x="576" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">next ticks</text>
 
   <line x1="36" y1="140" x2="36" y2="154" stroke="var(--muted)" stroke-width="1"/>
   <line x1="320" y1="140" x2="320" y2="154" stroke="var(--muted)" stroke-width="1"/>

@@ -98,7 +98,7 @@ const READ_WRITE = `${SVG_OPEN('0 0 660 260')}
   <text x="462" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">READ ONLY</text>
 
   <rect x="564" y="56" width="56" height="72" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 2"/>
-  <text x="592" y="98" text-anchor="middle" fill="var(--line)" font-size="16">&hellip;</text>
+  <text x="592" y="98" text-anchor="middle" fill="var(--muted)" font-size="16">&hellip;</text>
 
   <line x1="48" y1="160" x2="612" y2="160" stroke="var(--line)" stroke-width="1"/>
   <rect x="46" y="158" width="4" height="4" fill="var(--muted)"/>
