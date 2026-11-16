@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,111 +21,111 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — two lines, one version string. The drift the version number can't see.
 const FIG_DRIFT = `${SVG_OPEN('0 0 660 240')}
-  <text x="36" y="56" fill="#ebdbb2" font-size="11" letter-spacing="1.5">THE CODEBASE</text>
-  <text x="36" y="72" fill="#928374" font-size="10">every fix lands here</text>
-  <line x1="170" y1="64" x2="610" y2="64" stroke="#928374" stroke-width="1"/>
-  <line x1="185" y1="61" x2="185" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="215" y1="61" x2="215" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="245" y1="61" x2="245" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="275" y1="61" x2="275" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="305" y1="61" x2="305" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="335" y1="61" x2="335" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="365" y1="61" x2="365" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="395" y1="61" x2="395" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="425" y1="61" x2="425" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="455" y1="61" x2="455" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="485" y1="61" x2="485" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="515" y1="61" x2="515" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="545" y1="61" x2="545" y2="67" stroke="#928374" stroke-width="1"/>
-  <line x1="575" y1="61" x2="575" y2="67" stroke="#928374" stroke-width="1"/>
-  <rect x="608" y="62" width="4" height="4" fill="#928374"/>
-  <text x="610" y="50" text-anchor="end" fill="#928374" font-size="10">today &#183; says v0.3.0</text>
+  <text x="36" y="56" fill="var(--ink)" font-size="11" letter-spacing="1.5">THE CODEBASE</text>
+  <text x="36" y="72" fill="var(--muted)" font-size="10">every fix lands here</text>
+  <line x1="170" y1="64" x2="610" y2="64" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="185" y1="61" x2="185" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="215" y1="61" x2="215" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="245" y1="61" x2="245" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="275" y1="61" x2="275" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="305" y1="61" x2="305" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="335" y1="61" x2="335" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="365" y1="61" x2="365" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="395" y1="61" x2="395" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="425" y1="61" x2="425" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="455" y1="61" x2="455" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="485" y1="61" x2="485" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="515" y1="61" x2="515" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="545" y1="61" x2="545" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="575" y1="61" x2="575" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="608" y="62" width="4" height="4" fill="var(--muted)"/>
+  <text x="610" y="50" text-anchor="end" fill="var(--muted)" font-size="10">today &#183; says v0.3.0</text>
 
-  <text x="36" y="132" fill="#ebdbb2" font-size="11" letter-spacing="1.5">THE DEV BINARY</text>
-  <text x="36" y="148" fill="#928374" font-size="10">its own release line</text>
-  <line x1="170" y1="140" x2="380" y2="140" stroke="#928374" stroke-width="1"/>
-  <line x1="185" y1="137" x2="185" y2="143" stroke="#928374" stroke-width="1"/>
-  <line x1="215" y1="137" x2="215" y2="143" stroke="#928374" stroke-width="1"/>
-  <line x1="245" y1="137" x2="245" y2="143" stroke="#928374" stroke-width="1"/>
-  <line x1="275" y1="137" x2="275" y2="143" stroke="#928374" stroke-width="1"/>
-  <line x1="305" y1="137" x2="305" y2="143" stroke="#928374" stroke-width="1"/>
-  <line x1="335" y1="137" x2="335" y2="143" stroke="#928374" stroke-width="1"/>
-  <rect x="378" y="138" width="4" height="4" fill="#928374"/>
-  <text x="380" y="126" text-anchor="middle" fill="#928374" font-size="10">last release &#183; says v0.3.0</text>
-  <line x1="382" y1="140" x2="610" y2="140" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="36" y="132" fill="var(--ink)" font-size="11" letter-spacing="1.5">THE DEV BINARY</text>
+  <text x="36" y="148" fill="var(--muted)" font-size="10">its own release line</text>
+  <line x1="170" y1="140" x2="380" y2="140" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="185" y1="137" x2="185" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="215" y1="137" x2="215" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="245" y1="137" x2="245" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="275" y1="137" x2="275" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="305" y1="137" x2="305" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="335" y1="137" x2="335" y2="143" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="378" y="138" width="4" height="4" fill="var(--muted)"/>
+  <text x="380" y="126" text-anchor="middle" fill="var(--muted)" font-size="10">last release &#183; says v0.3.0</text>
+  <line x1="382" y1="140" x2="610" y2="140" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <line x1="380" y1="168" x2="380" y2="182" stroke="#83a598" stroke-width="1"/>
-  <line x1="610" y1="168" x2="610" y2="182" stroke="#83a598" stroke-width="1"/>
-  <line x1="380" y1="175" x2="610" y2="175" stroke="#83a598" stroke-width="1"/>
-  <text x="495" y="200" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">THE DRIFT &#8212; INVISIBLE TO --version</text>
+  <line x1="380" y1="168" x2="380" y2="182" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="610" y1="168" x2="610" y2="182" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="380" y1="175" x2="610" y2="175" stroke="var(--accent)" stroke-width="1"/>
+  <text x="495" y="200" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">THE DRIFT &#8212; INVISIBLE TO --version</text>
 </svg>`;
 
 // 2 — compile where the code lives; execute where the data lives.
 const FIG_COMPILE = `${SVG_OPEN('0 0 660 262')}
-  <text x="36" y="58" fill="#928374" font-size="11" letter-spacing="1.5">BEFORE</text>
-  <rect x="110" y="38" width="150" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="185" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR PROJECT</text>
-  <text x="185" y="77" text-anchor="middle" fill="#928374" font-size="10">rust source</text>
-  <line x1="260" y1="64" x2="346" y2="64" stroke="#928374" stroke-width="1"/>
-  <polygon points="350,64 341,60 341,68" fill="#928374"/>
-  <text x="304" y="52" text-anchor="middle" fill="#928374" font-size="10">source</text>
-  <rect x="350" y="38" width="230" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="465" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DEV BINARY</text>
-  <text x="465" y="77" text-anchor="middle" fill="#928374" font-size="10">compiles cold, then executes</text>
+  <text x="36" y="58" fill="var(--muted)" font-size="11" letter-spacing="1.5">BEFORE</text>
+  <rect x="110" y="38" width="150" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="185" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR PROJECT</text>
+  <text x="185" y="77" text-anchor="middle" fill="var(--muted)" font-size="10">rust source</text>
+  <line x1="260" y1="64" x2="346" y2="64" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="350,64 341,60 341,68" fill="var(--muted)"/>
+  <text x="304" y="52" text-anchor="middle" fill="var(--muted)" font-size="10">source</text>
+  <rect x="350" y="38" width="230" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="465" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DEV BINARY</text>
+  <text x="465" y="77" text-anchor="middle" fill="var(--muted)" font-size="10">compiles cold, then executes</text>
 
-  <line x1="110" y1="104" x2="110" y2="140" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <line x1="580" y1="104" x2="580" y2="140" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="110" y1="104" x2="110" y2="140" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="580" y1="104" x2="580" y2="140" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <text x="36" y="174" fill="#ebdbb2" font-size="11" letter-spacing="1.5">AFTER</text>
-  <rect x="110" y="154" width="150" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="185" y="176" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR PROJECT</text>
-  <text x="185" y="193" text-anchor="middle" fill="#928374" font-size="10">cargo &#183; incremental</text>
-  <line x1="260" y1="180" x2="346" y2="180" stroke="#83a598" stroke-width="1"/>
-  <polygon points="350,180 341,176 341,184" fill="#83a598"/>
-  <text x="304" y="168" text-anchor="middle" fill="#83a598" font-size="10">wasm bytes</text>
-  <rect x="350" y="154" width="230" height="52" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="465" y="176" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE NODE</text>
-  <text x="465" y="193" text-anchor="middle" fill="#ebdbb2" font-size="10">executes &#183; by default</text>
+  <text x="36" y="174" fill="var(--ink)" font-size="11" letter-spacing="1.5">AFTER</text>
+  <rect x="110" y="154" width="150" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="185" y="176" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR PROJECT</text>
+  <text x="185" y="193" text-anchor="middle" fill="var(--muted)" font-size="10">cargo &#183; incremental</text>
+  <line x1="260" y1="180" x2="346" y2="180" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="350,180 341,176 341,184" fill="var(--accent)"/>
+  <text x="304" y="168" text-anchor="middle" fill="var(--accent)" font-size="10">wasm bytes</text>
+  <rect x="350" y="154" width="230" height="52" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="465" y="176" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE NODE</text>
+  <text x="465" y="193" text-anchor="middle" fill="var(--ink)" font-size="10">executes &#183; by default</text>
 
-  <text x="330" y="240" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">COMPILE WHERE THE CODE LIVES &#183; EXECUTE WHERE THE DATA LIVES</text>
+  <text x="330" y="240" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">COMPILE WHERE THE CODE LIVES &#183; EXECUTE WHERE THE DATA LIVES</text>
 </svg>`;
 
 // 3 — one house; the dev wing has no door to the data and isn't built when shipped.
 const FIG_PLAN = `${SVG_OPEN('0 0 660 252')}
-  <text x="375" y="30" text-anchor="middle" fill="#928374" font-size="10">NO DOOR &#8212; BY CONSTRUCTION</text>
-  <line x1="375" y1="36" x2="375" y2="78" stroke="#928374" stroke-width="1"/>
-  <rect x="373" y="76" width="4" height="4" fill="#928374"/>
+  <text x="375" y="30" text-anchor="middle" fill="var(--muted)" font-size="10">NO DOOR &#8212; BY CONSTRUCTION</text>
+  <line x1="375" y1="36" x2="375" y2="78" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="373" y="76" width="4" height="4" fill="var(--muted)"/>
 
-  <rect x="110" y="46" width="440" height="144" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="130" y="66" fill="#ebdbb2" font-size="12" letter-spacing="1.5">FOLDDB &#8212; ONE BINARY</text>
+  <rect x="110" y="46" width="440" height="144" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="130" y="66" fill="var(--ink)" font-size="12" letter-spacing="1.5">FOLDDB &#8212; ONE BINARY</text>
 
-  <rect x="130" y="80" width="230" height="90" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="245" y="118" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR DATA</text>
-  <text x="245" y="136" text-anchor="middle" fill="#ebdbb2" font-size="10">production</text>
+  <rect x="130" y="80" width="230" height="90" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="245" y="118" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR DATA</text>
+  <text x="245" y="136" text-anchor="middle" fill="var(--ink)" font-size="10">production</text>
 
-  <rect x="360" y="80" width="30" height="90" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
+  <rect x="360" y="80" width="30" height="90" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
 
-  <rect x="390" y="80" width="140" height="90" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="460" y="114" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DEV WING</text>
-  <text x="460" y="131" text-anchor="middle" fill="#83a598" font-size="10">folddb dev</text>
-  <text x="460" y="147" text-anchor="middle" fill="#928374" font-size="10">ephemeral &#183; /dev/*</text>
+  <rect x="390" y="80" width="140" height="90" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="460" y="114" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DEV WING</text>
+  <text x="460" y="131" text-anchor="middle" fill="var(--accent)" font-size="10">folddb dev</text>
+  <text x="460" y="147" text-anchor="middle" fill="var(--muted)" font-size="10">ephemeral &#183; /dev/*</text>
 
-  <line x1="130" y1="204" x2="130" y2="218" stroke="#928374" stroke-width="1"/>
-  <line x1="360" y1="204" x2="360" y2="218" stroke="#928374" stroke-width="1"/>
-  <line x1="130" y1="211" x2="360" y2="211" stroke="#928374" stroke-width="1"/>
-  <text x="245" y="236" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">ALWAYS SHIPPED</text>
+  <line x1="130" y1="204" x2="130" y2="218" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="360" y1="204" x2="360" y2="218" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="130" y1="211" x2="360" y2="211" stroke="var(--muted)" stroke-width="1"/>
+  <text x="245" y="236" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">ALWAYS SHIPPED</text>
 
-  <line x1="390" y1="204" x2="390" y2="218" stroke="#83a598" stroke-width="1"/>
-  <line x1="530" y1="204" x2="530" y2="218" stroke="#83a598" stroke-width="1"/>
-  <line x1="390" y1="211" x2="530" y2="211" stroke="#83a598" stroke-width="1"/>
-  <text x="460" y="236" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">DEV BUILDS ONLY</text>
+  <line x1="390" y1="204" x2="390" y2="218" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="530" y1="204" x2="530" y2="218" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="390" y1="211" x2="530" y2="211" stroke="var(--accent)" stroke-width="1"/>
+  <text x="460" y="236" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">DEV BUILDS ONLY</text>
 </svg>`;
 
 export default function BlogTheSecondBinary() {

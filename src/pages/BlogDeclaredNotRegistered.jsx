@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,72 +21,72 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — two roads (declare locally / register centrally) reach ONE canonical name,
 // because the name is a fingerprint of the shape.
 const CONVERGE = `${SVG_OPEN('0 0 660 268')}
-  <rect x="34" y="34" width="212" height="58" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="140" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">AN APP, LOCALLY</text>
-  <text x="140" y="78" text-anchor="middle" fill="#928374" font-size="10">declares its schema to its node</text>
+  <rect x="34" y="34" width="212" height="58" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="140" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">AN APP, LOCALLY</text>
+  <text x="140" y="78" text-anchor="middle" fill="var(--muted)" font-size="10">declares its schema to its node</text>
 
-  <rect x="414" y="34" width="212" height="58" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="520" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE REGISTRY</text>
-  <text x="520" y="78" text-anchor="middle" fill="#928374" font-size="10">registers the same schema</text>
+  <rect x="414" y="34" width="212" height="58" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="520" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE REGISTRY</text>
+  <text x="520" y="78" text-anchor="middle" fill="var(--muted)" font-size="10">registers the same schema</text>
 
-  <polyline points="140,92 140,150 330,150" fill="none" stroke="#928374" stroke-width="1"/>
-  <polyline points="520,92 520,150 330,150" fill="none" stroke="#928374" stroke-width="1"/>
-  <line x1="330" y1="150" x2="330" y2="182" stroke="#928374" stroke-width="1"/>
-  <rect x="138" y="148" width="4" height="4" fill="#928374"/>
-  <rect x="518" y="148" width="4" height="4" fill="#928374"/>
-  <rect x="328" y="148" width="4" height="4" fill="#83a598"/>
-  <text x="344" y="142" fill="#928374" font-size="10" letter-spacing="1">CONTENT-ADDRESSED</text>
+  <polyline points="140,92 140,150 330,150" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <polyline points="520,92 520,150 330,150" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="330" y1="150" x2="330" y2="182" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="138" y="148" width="4" height="4" fill="var(--muted)"/>
+  <rect x="518" y="148" width="4" height="4" fill="var(--muted)"/>
+  <rect x="328" y="148" width="4" height="4" fill="var(--accent)"/>
+  <text x="344" y="142" fill="var(--muted)" font-size="10" letter-spacing="1">CONTENT-ADDRESSED</text>
 
-  <rect x="200" y="184" width="260" height="60" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="330" y="209" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">ONE CANONICAL NAME</text>
-  <text x="330" y="228" text-anchor="middle" fill="#83a598" font-size="11">61b22ab4 &hellip; 925d7c</text>
+  <rect x="200" y="184" width="260" height="60" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="330" y="209" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">ONE CANONICAL NAME</text>
+  <text x="330" y="228" text-anchor="middle" fill="var(--accent)" font-size="11">61b22ab4 &hellip; 925d7c</text>
 </svg>`;
 
 // 2 — the node's per-app adapter: the app's chosen name maps to the fingerprint.
 const ADAPTER = `${SVG_OPEN('0 0 660 236')}
-  <rect x="34" y="80" width="170" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="119" y="110" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE APP</text>
-  <text x="119" y="129" text-anchor="middle" fill="#928374" font-size="10">calls it &ldquo;decision&rdquo;</text>
+  <rect x="34" y="80" width="170" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="119" y="110" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE APP</text>
+  <text x="119" y="129" text-anchor="middle" fill="var(--muted)" font-size="10">calls it &ldquo;decision&rdquo;</text>
 
-  <line x1="204" y1="116" x2="286" y2="116" stroke="#928374" stroke-width="1"/>
-  <polygon points="288,116 279,112 279,120" fill="#928374"/>
-  <text x="245" y="108" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1.5">MINT</text>
+  <line x1="204" y1="116" x2="286" y2="116" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="288,116 279,112 279,120" fill="var(--muted)"/>
+  <text x="245" y="108" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1.5">MINT</text>
 
-  <rect x="290" y="40" width="336" height="156" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="458" y="66" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE NODE &mdash; PER-APP ADAPTER</text>
+  <rect x="290" y="40" width="336" height="156" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="458" y="66" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE NODE &mdash; PER-APP ADAPTER</text>
 
-  <rect x="312" y="86" width="292" height="86" fill="#282828" stroke="#504945" stroke-width="1"/>
-  <text x="326" y="108" fill="#928374" font-size="10" letter-spacing="1">THE APP&rsquo;S NAME</text>
-  <text x="326" y="132" fill="#ebdbb2" font-size="11">( brain , &ldquo;decision&rdquo; )</text>
-  <line x1="326" y1="142" x2="590" y2="142" stroke="#504945" stroke-width="1"/>
-  <text x="326" y="160" fill="#83a598" font-size="11">&rarr; 61b22ab4 &hellip; 925d7c</text>
-  <text x="512" y="108" fill="#928374" font-size="10" letter-spacing="1">RESOLUTION: MINT</text>
+  <rect x="312" y="86" width="292" height="86" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+  <text x="326" y="108" fill="var(--muted)" font-size="10" letter-spacing="1">THE APP&rsquo;S NAME</text>
+  <text x="326" y="132" fill="var(--ink)" font-size="11">( brain , &ldquo;decision&rdquo; )</text>
+  <line x1="326" y1="142" x2="590" y2="142" stroke="var(--line)" stroke-width="1"/>
+  <text x="326" y="160" fill="var(--accent)" font-size="11">&rarr; 61b22ab4 &hellip; 925d7c</text>
+  <text x="512" y="108" fill="var(--muted)" font-size="10" letter-spacing="1">RESOLUTION: MINT</text>
 </svg>`;
 
 // 3 — the honest boundary: declared (identity agreed) vs loaded (queryable).
 const BOUNDARY = `${SVG_OPEN('0 0 660 220')}
-  <rect x="120" y="40" width="420" height="42" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DECLARED</text>
-  <text x="330" y="75" text-anchor="middle" fill="#928374" font-size="10">identity agreed &middot; mapping written</text>
+  <rect x="120" y="40" width="420" height="42" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DECLARED</text>
+  <text x="330" y="75" text-anchor="middle" fill="var(--muted)" font-size="10">identity agreed &middot; mapping written</text>
 
-  <rect x="120" y="128" width="420" height="42" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="330" y="148" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LOADED</text>
-  <text x="330" y="163" text-anchor="middle" fill="#83a598" font-size="10">materialized into the queryable set</text>
+  <rect x="120" y="128" width="420" height="42" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="330" y="148" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">LOADED</text>
+  <text x="330" y="163" text-anchor="middle" fill="var(--accent)" font-size="10">materialized into the queryable set</text>
 
-  <line x1="560" y1="40" x2="560" y2="82" stroke="#928374" stroke-width="1"/>
-  <line x1="560" y1="128" x2="560" y2="170" stroke="#928374" stroke-width="1"/>
-  <line x1="560" y1="82" x2="560" y2="128" stroke="#83a598" stroke-width="1" stroke-dasharray="2 3"/>
-  <rect x="558" y="103" width="4" height="4" fill="#83a598"/>
-  <text x="576" y="108" fill="#83a598" font-size="10" letter-spacing="0.5">THE LAST INCH</text>
-  <text x="330" y="200" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">CLOSING &mdash; SO DECLARATION ALONE SUFFICES</text>
+  <line x1="560" y1="40" x2="560" y2="82" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="560" y1="128" x2="560" y2="170" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="560" y1="82" x2="560" y2="128" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="558" y="103" width="4" height="4" fill="var(--accent)"/>
+  <text x="576" y="108" fill="var(--accent)" font-size="10" letter-spacing="0.5">THE LAST INCH</text>
+  <text x="330" y="200" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">CLOSING &mdash; SO DECLARATION ALONE SUFFICES</text>
 </svg>`;
 
 export default function BlogDeclaredNotRegistered() {

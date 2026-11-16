@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,113 +21,113 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}${''}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}${''}`;
 
 // 1 — the read path: through the storage machinery, or straight to memory.
 const READ_PATH = `${SVG_OPEN('0 0 660 262')}
-  <text x="96" y="34" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">BEFORE</text>
-  <rect x="36" y="46" width="120" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="96" y="67" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">READ</text>
-  <rect x="94" y="80" width="4" height="4" fill="#928374"/>
-  <line x1="96" y1="84" x2="96" y2="104" stroke="#928374" stroke-width="1"/>
-  <rect x="36" y="106" width="120" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="96" y="127" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">RESOLVE BUCKETS</text>
-  <rect x="94" y="140" width="4" height="4" fill="#928374"/>
-  <line x1="96" y1="144" x2="96" y2="164" stroke="#928374" stroke-width="1"/>
-  <rect x="36" y="166" width="120" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="96" y="187" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">WALK · DECODE</text>
-  <rect x="94" y="200" width="4" height="4" fill="#928374"/>
-  <line x1="96" y1="204" x2="96" y2="218" stroke="#928374" stroke-width="1"/>
-  <rect x="36" y="220" width="120" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="96" y="241" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">DISK</text>
-  <text x="176" y="132" fill="#928374" font-size="10">every</text>
-  <text x="176" y="146" fill="#928374" font-size="10">call</text>
+  <text x="96" y="34" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">BEFORE</text>
+  <rect x="36" y="46" width="120" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="96" y="67" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">READ</text>
+  <rect x="94" y="80" width="4" height="4" fill="var(--muted)"/>
+  <line x1="96" y1="84" x2="96" y2="104" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="36" y="106" width="120" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="96" y="127" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">RESOLVE BUCKETS</text>
+  <rect x="94" y="140" width="4" height="4" fill="var(--muted)"/>
+  <line x1="96" y1="144" x2="96" y2="164" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="36" y="166" width="120" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="96" y="187" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">WALK · DECODE</text>
+  <rect x="94" y="200" width="4" height="4" fill="var(--muted)"/>
+  <line x1="96" y1="204" x2="96" y2="218" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="36" y="220" width="120" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="96" y="241" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">DISK</text>
+  <text x="176" y="132" fill="var(--muted)" font-size="10">every</text>
+  <text x="176" y="146" fill="var(--muted)" font-size="10">call</text>
 
-  <line x1="252" y1="40" x2="252" y2="254" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="252" y1="40" x2="252" y2="254" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="464" y="34" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1.5">AFTER</text>
-  <rect x="404" y="46" width="120" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="464" y="67" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">READ</text>
-  <rect x="462" y="80" width="4" height="4" fill="#83a598"/>
-  <line x1="464" y1="84" x2="464" y2="112" stroke="#83a598" stroke-width="1"/>
-  <rect x="404" y="114" width="120" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="464" y="133" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">RESIDENT GRAPH</text>
-  <text x="464" y="149" text-anchor="middle" fill="#83a598" font-size="10">in memory — answer</text>
+  <text x="464" y="34" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1.5">AFTER</text>
+  <rect x="404" y="46" width="120" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="464" y="67" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">READ</text>
+  <rect x="462" y="80" width="4" height="4" fill="var(--accent)"/>
+  <line x1="464" y1="84" x2="464" y2="112" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="404" y="114" width="120" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="464" y="133" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">RESIDENT GRAPH</text>
+  <text x="464" y="149" text-anchor="middle" fill="var(--accent)" font-size="10">in memory — answer</text>
 
-  <line x1="524" y1="136" x2="596" y2="136" stroke="#928374" stroke-width="1" stroke-dasharray="3 3"/>
-  <polygon points="598,136 589,132 589,140" fill="#928374"/>
-  <text x="560" y="126" text-anchor="middle" fill="#928374" font-size="9" letter-spacing="1">MISS</text>
-  <rect x="560" y="150" width="76" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="598" y="171" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">DISK</text>
-  <line x1="560" y1="184" x2="484" y2="206" stroke="#928374" stroke-width="1" stroke-dasharray="3 3"/>
-  <text x="500" y="222" text-anchor="middle" fill="#928374" font-size="9" letter-spacing="0.5">LOAD ONCE · INSTALL · NEXT READ HITS</text>
+  <line x1="524" y1="136" x2="596" y2="136" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+  <polygon points="598,136 589,132 589,140" fill="var(--muted)"/>
+  <text x="560" y="126" text-anchor="middle" fill="var(--muted)" font-size="9" letter-spacing="1">MISS</text>
+  <rect x="560" y="150" width="76" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="598" y="171" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">DISK</text>
+  <line x1="560" y1="184" x2="484" y2="206" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="500" y="222" text-anchor="middle" fill="var(--muted)" font-size="9" letter-spacing="0.5">LOAD ONCE · INSTALL · NEXT READ HITS</text>
 </svg>`;
 
 // 2 — the write path: acknowledge after memory, persist behind, window bounded.
 const WRITE_PATH = `${SVG_OPEN('0 0 660 248')}
-  <text x="36" y="38" fill="#928374" font-size="11" letter-spacing="1.5">BEFORE</text>
-  <rect x="36" y="50" width="88" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="80" y="71" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">WRITE</text>
-  <line x1="124" y1="67" x2="152" y2="67" stroke="#928374" stroke-width="1"/>
-  <rect x="152" y="50" width="120" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="212" y="71" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">STORE ON DISK</text>
-  <line x1="272" y1="67" x2="300" y2="67" stroke="#928374" stroke-width="1"/>
-  <rect x="300" y="50" width="100" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="350" y="71" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">SYNC · FSYNC</text>
-  <line x1="400" y1="67" x2="428" y2="67" stroke="#928374" stroke-width="1"/>
-  <polygon points="430,67 421,63 421,71" fill="#928374"/>
-  <rect x="430" y="50" width="88" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="474" y="71" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">ACK</text>
-  <text x="544" y="71" fill="#928374" font-size="10">seconds</text>
+  <text x="36" y="38" fill="var(--muted)" font-size="11" letter-spacing="1.5">BEFORE</text>
+  <rect x="36" y="50" width="88" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="80" y="71" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">WRITE</text>
+  <line x1="124" y1="67" x2="152" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="152" y="50" width="120" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="212" y="71" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">STORE ON DISK</text>
+  <line x1="272" y1="67" x2="300" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="300" y="50" width="100" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="350" y="71" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">SYNC · FSYNC</text>
+  <line x1="400" y1="67" x2="428" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="430,67 421,63 421,71" fill="var(--muted)"/>
+  <rect x="430" y="50" width="88" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="474" y="71" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">ACK</text>
+  <text x="544" y="71" fill="var(--muted)" font-size="10">seconds</text>
 
-  <line x1="36" y1="106" x2="624" y2="106" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="36" y1="106" x2="624" y2="106" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="36" y="132" fill="#83a598" font-size="11" letter-spacing="1.5">AFTER</text>
-  <rect x="36" y="144" width="88" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="80" y="165" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">WRITE</text>
-  <line x1="124" y1="161" x2="152" y2="161" stroke="#83a598" stroke-width="1"/>
-  <rect x="152" y="144" width="140" height="34" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="222" y="165" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">APPLY IN MEMORY</text>
-  <line x1="292" y1="161" x2="320" y2="161" stroke="#83a598" stroke-width="1"/>
-  <polygon points="322,161 313,157 313,165" fill="#83a598"/>
-  <rect x="322" y="144" width="88" height="34" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="366" y="165" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">ACK</text>
-  <text x="436" y="165" fill="#83a598" font-size="10">milliseconds</text>
+  <text x="36" y="132" fill="var(--accent)" font-size="11" letter-spacing="1.5">AFTER</text>
+  <rect x="36" y="144" width="88" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="80" y="165" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">WRITE</text>
+  <line x1="124" y1="161" x2="152" y2="161" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="152" y="144" width="140" height="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="222" y="165" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">APPLY IN MEMORY</text>
+  <line x1="292" y1="161" x2="320" y2="161" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="322,161 313,157 313,165" fill="var(--accent)"/>
+  <rect x="322" y="144" width="88" height="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="366" y="165" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">ACK</text>
+  <text x="436" y="165" fill="var(--accent)" font-size="10">milliseconds</text>
 
-  <rect x="220" y="178" width="4" height="4" fill="#928374"/>
-  <line x1="222" y1="182" x2="222" y2="202" stroke="#928374" stroke-width="1" stroke-dasharray="3 3"/>
-  <rect x="152" y="204" width="140" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="222" y="225" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">PERSIST BEHIND</text>
+  <rect x="220" y="178" width="4" height="4" fill="var(--muted)"/>
+  <line x1="222" y1="182" x2="222" y2="202" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+  <rect x="152" y="204" width="140" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="222" y="225" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">PERSIST BEHIND</text>
 
-  <line x1="312" y1="204" x2="312" y2="238" stroke="#928374" stroke-width="1"/>
-  <line x1="472" y1="204" x2="472" y2="238" stroke="#928374" stroke-width="1"/>
-  <line x1="312" y1="221" x2="472" y2="221" stroke="#928374" stroke-width="1"/>
-  <text x="482" y="225" fill="#928374" font-size="9" letter-spacing="0.5">BOUNDED WINDOW —</text>
-  <text x="482" y="238" fill="#928374" font-size="9" letter-spacing="0.5">OVER CAP → INLINE</text>
+  <line x1="312" y1="204" x2="312" y2="238" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="472" y1="204" x2="472" y2="238" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="312" y1="221" x2="472" y2="221" stroke="var(--muted)" stroke-width="1"/>
+  <text x="482" y="225" fill="var(--muted)" font-size="9" letter-spacing="0.5">BOUNDED WINDOW —</text>
+  <text x="482" y="238" fill="var(--muted)" font-size="9" letter-spacing="0.5">OVER CAP → INLINE</text>
 </svg>`;
 
 // 3 — the numbers, drawn to within-row scale (after is a sliver of before).
 const NUMBERS = `${SVG_OPEN('0 0 660 224')}
-  <text x="36" y="40" fill="#928374" font-size="10" letter-spacing="1.5">POINT READ</text>
-  <rect x="36" y="48" width="480" height="14" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="524" y="59" fill="#928374" font-size="10">2,970 ms</text>
-  <rect x="36" y="68" width="8" height="14" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="52" y="79" fill="#83a598" font-size="10">48 ms</text>
+  <text x="36" y="40" fill="var(--muted)" font-size="10" letter-spacing="1.5">POINT READ</text>
+  <rect x="36" y="48" width="480" height="14" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="524" y="59" fill="var(--muted)" font-size="10">2,970 ms</text>
+  <rect x="36" y="68" width="8" height="14" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="52" y="79" fill="var(--accent)" font-size="10">48 ms</text>
 
-  <text x="36" y="112" fill="#928374" font-size="10" letter-spacing="1.5">COLUMN SCAN</text>
-  <rect x="36" y="120" width="480" height="14" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="524" y="131" fill="#928374" font-size="10">10,300 ms</text>
-  <rect x="36" y="140" width="98" height="14" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="142" y="151" fill="#83a598" font-size="10">2,100 ms</text>
+  <text x="36" y="112" fill="var(--muted)" font-size="10" letter-spacing="1.5">COLUMN SCAN</text>
+  <rect x="36" y="120" width="480" height="14" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="524" y="131" fill="var(--muted)" font-size="10">10,300 ms</text>
+  <rect x="36" y="140" width="98" height="14" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="142" y="151" fill="var(--accent)" font-size="10">2,100 ms</text>
 
-  <text x="36" y="184" fill="#928374" font-size="10" letter-spacing="1.5">WRITE PIPELINE</text>
-  <rect x="36" y="192" width="480" height="14" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="524" y="203" fill="#928374" font-size="10">~6,800 ms</text>
-  <rect x="36" y="212" width="3" height="14" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="47" y="223" fill="#83a598" font-size="10">15&#8211;20 ms</text>
+  <text x="36" y="184" fill="var(--muted)" font-size="10" letter-spacing="1.5">WRITE PIPELINE</text>
+  <rect x="36" y="192" width="480" height="14" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="524" y="203" fill="var(--muted)" font-size="10">~6,800 ms</text>
+  <rect x="36" y="212" width="3" height="14" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="47" y="223" fill="var(--accent)" font-size="10">15&#8211;20 ms</text>
 </svg>`;
 
 export default function BlogMemoryFirstDiskLater() {

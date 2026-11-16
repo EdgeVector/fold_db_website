@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,93 +21,93 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — three independent layers people collapse into "run an app"
 const THREE_LAYERS = `${SVG_OPEN('0 0 660 280')}
-  <rect x="36" y="36" width="180" height="96" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="126" y="72" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LAUNCH</text>
-  <text x="126" y="94" text-anchor="middle" fill="#928374" font-size="10">OS jail around a process</text>
-  <text x="126" y="112" text-anchor="middle" fill="#928374" font-size="10">not a store catalog</text>
+  <rect x="36" y="36" width="180" height="96" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="126" y="72" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">LAUNCH</text>
+  <text x="126" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">OS jail around a process</text>
+  <text x="126" y="112" text-anchor="middle" fill="var(--muted)" font-size="10">not a store catalog</text>
 
-  <rect x="240" y="36" width="180" height="96" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="72" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">IDENTITY</text>
-  <text x="330" y="94" text-anchor="middle" fill="#928374" font-size="10">a real app id + publisher</text>
-  <text x="330" y="112" text-anchor="middle" fill="#928374" font-size="10">lookup by known name</text>
+  <rect x="240" y="36" width="180" height="96" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="72" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">IDENTITY</text>
+  <text x="330" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">a real app id + publisher</text>
+  <text x="330" y="112" text-anchor="middle" fill="var(--muted)" font-size="10">lookup by known name</text>
 
-  <rect x="444" y="36" width="180" height="96" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="534" y="72" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">CONSENT</text>
-  <text x="534" y="94" text-anchor="middle" fill="#928374" font-size="10">you grant this node access</text>
-  <text x="534" y="112" text-anchor="middle" fill="#928374" font-size="10">revocable, per device</text>
+  <rect x="444" y="36" width="180" height="96" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="534" y="72" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">CONSENT</text>
+  <text x="534" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">you grant this node access</text>
+  <text x="534" y="112" text-anchor="middle" fill="var(--muted)" font-size="10">revocable, per device</text>
 
-  <line x1="126" y1="132" x2="126" y2="176" stroke="#504945" stroke-width="1"/>
-  <line x1="330" y1="132" x2="330" y2="176" stroke="#504945" stroke-width="1"/>
-  <line x1="534" y1="132" x2="534" y2="176" stroke="#504945" stroke-width="1"/>
-  <line x1="126" y1="176" x2="534" y2="176" stroke="#504945" stroke-width="1"/>
-  <line x1="330" y1="176" x2="330" y2="198" stroke="#83a598" stroke-width="1"/>
-  <rect x="328" y="174" width="4" height="4" fill="#83a598"/>
+  <line x1="126" y1="132" x2="126" y2="176" stroke="var(--line)" stroke-width="1"/>
+  <line x1="330" y1="132" x2="330" y2="176" stroke="var(--line)" stroke-width="1"/>
+  <line x1="534" y1="132" x2="534" y2="176" stroke="var(--line)" stroke-width="1"/>
+  <line x1="126" y1="176" x2="534" y2="176" stroke="var(--line)" stroke-width="1"/>
+  <line x1="330" y1="176" x2="330" y2="198" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="328" y="174" width="4" height="4" fill="var(--accent)"/>
 
-  <rect x="160" y="200" width="340" height="52" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="330" y="224" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">A WORKING ATTRIBUTED APP</text>
-  <text x="330" y="242" text-anchor="middle" fill="#928374" font-size="10">on your local node &middot; your data stays home</text>
+  <rect x="160" y="200" width="340" height="52" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="330" y="224" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">A WORKING ATTRIBUTED APP</text>
+  <text x="330" y="242" text-anchor="middle" fill="var(--muted)" font-size="10">on your local node &middot; your data stays home</text>
 </svg>`;
 
 // 2 — two doors into the node: owner (full trust) vs app (jailed, restricted)
 const TWO_DOORS = `${SVG_OPEN('0 0 660 300')}
-  <rect x="200" y="28" width="260" height="48" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="50" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR LOCAL LASTDB NODE</text>
-  <text x="330" y="66" text-anchor="middle" fill="#928374" font-size="10">one database &middot; one device</text>
+  <rect x="200" y="28" width="260" height="48" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="50" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR LOCAL LASTDB NODE</text>
+  <text x="330" y="66" text-anchor="middle" fill="var(--muted)" font-size="10">one database &middot; one device</text>
 
-  <rect x="48" y="120" width="220" height="120" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="158" y="150" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">OWNER DOOR</text>
-  <text x="158" y="172" text-anchor="middle" fill="#928374" font-size="10">apps you build and trust</text>
-  <text x="158" y="192" text-anchor="middle" fill="#928374" font-size="10">full read / write</text>
-  <text x="158" y="212" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">DEVICE TRUST</text>
+  <rect x="48" y="120" width="220" height="120" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="158" y="150" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">OWNER DOOR</text>
+  <text x="158" y="172" text-anchor="middle" fill="var(--muted)" font-size="10">apps you build and trust</text>
+  <text x="158" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">full read / write</text>
+  <text x="158" y="212" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">DEVICE TRUST</text>
 
-  <rect x="392" y="120" width="220" height="120" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="502" y="150" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">APP DOOR</text>
-  <text x="502" y="172" text-anchor="middle" fill="#928374" font-size="10">published / third-party apps</text>
-  <text x="502" y="192" text-anchor="middle" fill="#928374" font-size="10">jailed process + consent</text>
-  <text x="502" y="212" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">ATTRIBUTED</text>
+  <rect x="392" y="120" width="220" height="120" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="502" y="150" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">APP DOOR</text>
+  <text x="502" y="172" text-anchor="middle" fill="var(--muted)" font-size="10">published / third-party apps</text>
+  <text x="502" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">jailed process + consent</text>
+  <text x="502" y="212" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">ATTRIBUTED</text>
 
-  <line x1="158" y1="76" x2="158" y2="120" stroke="#928374" stroke-width="1"/>
-  <line x1="502" y1="76" x2="502" y2="120" stroke="#83a598" stroke-width="1"/>
-  <rect x="156" y="74" width="4" height="4" fill="#928374"/>
-  <rect x="500" y="74" width="4" height="4" fill="#83a598"/>
+  <line x1="158" y1="76" x2="158" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="502" y1="76" x2="502" y2="120" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="156" y="74" width="4" height="4" fill="var(--muted)"/>
+  <rect x="500" y="74" width="4" height="4" fill="var(--accent)"/>
 
-  <text x="330" y="274" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">JAIL CLOSES THE OWNER DOOR TO THE CHILD PROCESS</text>
+  <text x="330" y="274" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">JAIL CLOSES THE OWNER DOOR TO THE CHILD PROCESS</text>
 </svg>`;
 
 // 3 — read any namespace; write only your own
 const READ_WRITE = `${SVG_OPEN('0 0 660 260')}
-  <text x="330" y="32" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1.5">ONE ATTRIBUTED APP &mdash; e.g. NOTES</text>
+  <text x="330" y="32" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1.5">ONE ATTRIBUTED APP &mdash; e.g. NOTES</text>
 
-  <rect x="48" y="56" width="140" height="72" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="118" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">NOTES/*</text>
-  <text x="118" y="108" text-anchor="middle" fill="#83a598" font-size="10">READ + WRITE</text>
+  <rect x="48" y="56" width="140" height="72" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="118" y="88" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">NOTES/*</text>
+  <text x="118" y="108" text-anchor="middle" fill="var(--accent)" font-size="10">READ + WRITE</text>
 
-  <rect x="220" y="56" width="140" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="290" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">BRAIN/*</text>
-  <text x="290" y="108" text-anchor="middle" fill="#928374" font-size="10">READ ONLY</text>
+  <rect x="220" y="56" width="140" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="290" y="88" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">BRAIN/*</text>
+  <text x="290" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">READ ONLY</text>
 
-  <rect x="392" y="56" width="140" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="462" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">KANBAN/*</text>
-  <text x="462" y="108" text-anchor="middle" fill="#928374" font-size="10">READ ONLY</text>
+  <rect x="392" y="56" width="140" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="462" y="88" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">KANBAN/*</text>
+  <text x="462" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">READ ONLY</text>
 
-  <rect x="564" y="56" width="56" height="72" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="3 2"/>
-  <text x="592" y="98" text-anchor="middle" fill="#504945" font-size="16">&hellip;</text>
+  <rect x="564" y="56" width="56" height="72" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="592" y="98" text-anchor="middle" fill="var(--line)" font-size="16">&hellip;</text>
 
-  <line x1="48" y1="160" x2="612" y2="160" stroke="#504945" stroke-width="1"/>
-  <rect x="46" y="158" width="4" height="4" fill="#928374"/>
-  <rect x="610" y="158" width="4" height="4" fill="#928374"/>
+  <line x1="48" y1="160" x2="612" y2="160" stroke="var(--line)" stroke-width="1"/>
+  <rect x="46" y="158" width="4" height="4" fill="var(--muted)"/>
+  <rect x="610" y="158" width="4" height="4" fill="var(--muted)"/>
 
-  <text x="330" y="190" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">READ BROADLY</text>
-  <text x="330" y="210" text-anchor="middle" fill="#928374" font-size="10">other apps&rsquo; data stays readable on your machine</text>
-  <text x="330" y="236" text-anchor="middle" fill="#83a598" font-size="12" letter-spacing="1.5">WRITE ONLY YOUR NAMESPACE</text>
-  <text x="330" y="254" text-anchor="middle" fill="#928374" font-size="10">honest apps can&rsquo;t clobber each other&rsquo;s records</text>
+  <text x="330" y="190" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">READ BROADLY</text>
+  <text x="330" y="210" text-anchor="middle" fill="var(--muted)" font-size="10">other apps&rsquo; data stays readable on your machine</text>
+  <text x="330" y="236" text-anchor="middle" fill="var(--accent)" font-size="12" letter-spacing="1.5">WRITE ONLY YOUR NAMESPACE</text>
+  <text x="330" y="254" text-anchor="middle" fill="var(--muted)" font-size="10">honest apps can&rsquo;t clobber each other&rsquo;s records</text>
 </svg>`;
 
 export default function BlogHowAnAppRunsOnLastdb() {

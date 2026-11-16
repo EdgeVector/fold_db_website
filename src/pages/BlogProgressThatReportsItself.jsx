@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,80 +21,80 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — three sources of truth roll up into one picture.
 const ROLLUP = `${SVG_OPEN('0 0 660 246')}
-  <rect x="36" y="28" width="160" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="116" y="54" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">NOTES</text>
-  <text x="116" y="72" text-anchor="middle" fill="#928374" font-size="10">decisions, standing rules</text>
+  <rect x="36" y="28" width="160" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="116" y="54" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">NOTES</text>
+  <text x="116" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">decisions, standing rules</text>
 
-  <rect x="250" y="28" width="160" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="54" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">BOARD</text>
-  <text x="330" y="72" text-anchor="middle" fill="#928374" font-size="10">cards, one per feature</text>
+  <rect x="250" y="28" width="160" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="54" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">BOARD</text>
+  <text x="330" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">cards, one per feature</text>
 
-  <rect x="464" y="28" width="160" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="544" y="54" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">GIT HISTORY</text>
-  <text x="544" y="72" text-anchor="middle" fill="#928374" font-size="10">what actually landed</text>
+  <rect x="464" y="28" width="160" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="544" y="54" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">GIT HISTORY</text>
+  <text x="544" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">what actually landed</text>
 
-  <line x1="116" y1="84" x2="116" y2="120" stroke="#928374" stroke-width="1"/>
-  <line x1="330" y1="84" x2="330" y2="120" stroke="#928374" stroke-width="1"/>
-  <line x1="544" y1="84" x2="544" y2="120" stroke="#928374" stroke-width="1"/>
-  <line x1="116" y1="120" x2="544" y2="120" stroke="#928374" stroke-width="1"/>
-  <line x1="330" y1="120" x2="330" y2="148" stroke="#928374" stroke-width="1"/>
-  <rect x="328" y="148" width="4" height="4" fill="#928374"/>
+  <line x1="116" y1="84" x2="116" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="330" y1="84" x2="330" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="544" y1="84" x2="544" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="116" y1="120" x2="544" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="330" y1="120" x2="330" y2="148" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="328" y="148" width="4" height="4" fill="var(--muted)"/>
 
-  <rect x="190" y="156" width="280" height="64" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="184" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">THE DASHBOARD</text>
-  <text x="330" y="202" text-anchor="middle" fill="#928374" font-size="10">no one filled this in by hand</text>
+  <rect x="190" y="156" width="280" height="64" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="184" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">THE DASHBOARD</text>
+  <text x="330" y="202" text-anchor="middle" fill="var(--muted)" font-size="10">no one filled this in by hand</text>
 </svg>`;
 
 // 2 — a feature card carries its own completion state, no status meeting required.
 const CARD = `${SVG_OPEN('0 0 660 220')}
-  <rect x="150" y="30" width="360" height="150" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="174" y="62" fill="#ebdbb2" font-size="13" letter-spacing="1">PRIVATE CLOUD CHAT</text>
-  <text x="174" y="80" fill="#928374" font-size="10">one-click AI setup</text>
+  <rect x="150" y="30" width="360" height="150" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="174" y="62" fill="var(--ink)" font-size="13" letter-spacing="1">PRIVATE CLOUD CHAT</text>
+  <text x="174" y="80" fill="var(--muted)" font-size="10">one-click AI setup</text>
 
-  <rect x="174" y="98" width="312" height="10" fill="none" stroke="#504945" stroke-width="1"/>
-  <rect x="174" y="98" width="260" height="10" fill="#83a598"/>
-  <text x="174" y="126" fill="#928374" font-size="10" letter-spacing="0.5">5 OF 6 PIECES DONE</text>
+  <rect x="174" y="98" width="312" height="10" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <rect x="174" y="98" width="260" height="10" fill="var(--accent)"/>
+  <text x="174" y="126" fill="var(--muted)" font-size="10" letter-spacing="0.5">5 OF 6 PIECES DONE</text>
 
-  <rect x="174" y="142" width="118" height="20" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="233" y="156" text-anchor="middle" fill="#83a598" font-size="9" letter-spacing="1">WAITING ON YOU</text>
+  <rect x="174" y="142" width="118" height="20" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="233" y="156" text-anchor="middle" fill="var(--accent)" font-size="9" letter-spacing="1">WAITING ON YOU</text>
 
-  <text x="40" y="44" fill="#928374" font-size="10" letter-spacing="1.5">EVERY CARD</text>
-  <line x1="40" y1="52" x2="40" y2="160" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="40" y="172" fill="#928374" font-size="10">carries this on its own</text>
+  <text x="40" y="44" fill="var(--muted)" font-size="10" letter-spacing="1.5">EVERY CARD</text>
+  <line x1="40" y1="52" x2="40" y2="160" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="40" y="172" fill="var(--muted)" font-size="10">carries this on its own</text>
 </svg>`;
 
 // 3 — most state moves itself; a spend or public decision waits for a person.
 const GATE = `${SVG_OPEN('0 0 660 240')}
-  <rect x="36" y="92" width="120" height="48" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="96" y="114" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">A CARD</text>
-  <text x="96" y="130" text-anchor="middle" fill="#928374" font-size="9">moves through the board</text>
+  <rect x="36" y="92" width="120" height="48" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="96" y="114" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">A CARD</text>
+  <text x="96" y="130" text-anchor="middle" fill="var(--muted)" font-size="9">moves through the board</text>
 
-  <line x1="156" y1="116" x2="220" y2="62" stroke="#928374" stroke-width="1"/>
-  <line x1="156" y1="116" x2="220" y2="170" stroke="#83a598" stroke-width="1"/>
+  <line x1="156" y1="116" x2="220" y2="62" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="156" y1="116" x2="220" y2="170" stroke="var(--accent)" stroke-width="1"/>
 
-  <rect x="220" y="36" width="180" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="310" y="58" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">REVERSIBLE, LOCAL</text>
-  <text x="310" y="76" text-anchor="middle" fill="#928374" font-size="9">ships on its own</text>
+  <rect x="220" y="36" width="180" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="310" y="58" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">REVERSIBLE, LOCAL</text>
+  <text x="310" y="76" text-anchor="middle" fill="var(--muted)" font-size="9">ships on its own</text>
 
-  <rect x="220" y="146" width="180" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="310" y="168" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">SPENDS MONEY, OR PUBLIC</text>
-  <text x="310" y="186" text-anchor="middle" fill="#83a598" font-size="9">waits for a person</text>
+  <rect x="220" y="146" width="180" height="52" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="310" y="168" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">SPENDS MONEY, OR PUBLIC</text>
+  <text x="310" y="186" text-anchor="middle" fill="var(--accent)" font-size="9">waits for a person</text>
 
-  <line x1="400" y1="62" x2="540" y2="62" stroke="#928374" stroke-width="1"/>
-  <polygon points="540,62 531,58 531,66" fill="#928374"/>
-  <line x1="400" y1="172" x2="496" y2="172" stroke="#83a598" stroke-width="1" stroke-dasharray="2 3"/>
-  <rect x="496" y="166" width="4" height="4" fill="#83a598"/>
-  <text x="448" y="160" text-anchor="middle" fill="#83a598" font-size="9" letter-spacing="0.5">holds here</text>
+  <line x1="400" y1="62" x2="540" y2="62" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="540,62 531,58 531,66" fill="var(--muted)"/>
+  <line x1="400" y1="172" x2="496" y2="172" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="496" y="166" width="4" height="4" fill="var(--accent)"/>
+  <text x="448" y="160" text-anchor="middle" fill="var(--accent)" font-size="9" letter-spacing="0.5">holds here</text>
 
-  <rect x="540" y="36" width="84" height="52" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="582" y="66" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">DONE</text>
+  <rect x="540" y="36" width="84" height="52" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="582" y="66" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">DONE</text>
 </svg>`;
 
 export default function BlogProgressThatReportsItself() {
@@ -127,8 +127,8 @@ export default function BlogProgressThatReportsItself() {
       <ArchFigure svg={ROLLUP} caption="Fig. 1 — notes, board, and git history roll up into one picture" />
 
       <figure style={{ margin: '34px 0', textAlign: 'center' }}>
-        <img src="/dashboard-progress-snapshot.png" alt="A generated dashboard showing 17 feature areas tracked, 10 shipped and live, 4 actively building, and 1 waiting on a decision, plus a daily commit-activity chart broken out by app." style={{ width: '100%', maxWidth: '760px', border: '1px solid #3c3836', borderRadius: '6px' }} />
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <img src="/dashboard-progress-snapshot.png" alt="A generated dashboard showing 17 feature areas tracked, 10 shipped and live, 4 actively building, and 1 waiting on a decision, plus a daily commit-activity chart broken out by app." style={{ width: '100%', maxWidth: '760px', border: '1px solid var(--line-soft)', borderRadius: '6px' }} />
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           Fig. 1a &mdash; an actual snapshot, generated from the rollup, not written by hand
         </figcaption>
       </figure>

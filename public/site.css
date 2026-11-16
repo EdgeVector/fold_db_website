@@ -1,0 +1,71 @@
+/* LastDB shared design tokens and base styles.
+   Every page on thelastdb.com loads this file first: the React pages, the
+   Explore guide under /explore/, and its design notes. Colours and fonts live
+   here and nowhere else. Other stylesheets hold layout only and read these
+   variables. To change the palette, change this file. */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ground and text */
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --ink: #14171f;
+  --sub: #363b47;      /* body text on tints, secondary headings */
+  --muted: #555b69;    /* captions, labels; 4.5:1 on --bg and on every tint */
+  --line: #cfd2da;
+  --line-soft: #e1e3e8;
+  --hatch: #e9ebf0;
+
+  /* accent */
+  --accent: #2447e6;
+  --accent-hover: #1a35b8;
+  --accent-soft: #7d93f2;
+  --on-accent: #ffffff;
+
+  /* supporting hues, each dark enough for text on --bg */
+  --ok: #0f7a52;
+  --amber: #a2560a;
+  --violet: #7a3fc4;
+  --warn: #c0312b;
+  --teal: #0d7f86;
+  --sky: #2b7bb5;
+
+  /* soft tints with their borders */
+  --tint-blue: #e4e9fd;    --tint-blue-line: #c3cdfa;
+  --tint-mint: #dff3ea;    --tint-mint-line: #b9e0cd;
+  --tint-peach: #fdeedd;   --tint-peach-line: #f2d3ad;
+  --tint-lilac: #f1e6fb;   --tint-lilac-line: #dcc6f3;
+  --tint-sky: #dff1fb;     --tint-sky-line: #b8dcf1;
+  --tint-teal: #dcf3f3;    --tint-teal-line: #b5e0e0;
+  --tint-rose: #fde9e4;    --tint-rose-line: #f3cbbd;
+  --tint-grey: #eef0f4;    --tint-grey-line: #d6d9e1;
+
+  /* shadows and overlays */
+  --shadow: rgba(16, 23, 54, 0.14);
+  --shadow-strong: rgba(16, 23, 54, 0.35);
+  --scrim: rgba(16, 23, 54, 0.45);
+
+  /* dark band (install section) */
+  --band: #101736;
+  --band-text: #f5f6fb;
+  --band-sub: #cfd5ee;
+  --band-label: #9fb0ff;
+  --band-code: #090e24;
+  --band-line: #2b3566;
+
+  /* type */
+  --sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+code, kbd, pre, samp { font-family: var(--mono); }
+::selection { background: var(--tint-blue); }

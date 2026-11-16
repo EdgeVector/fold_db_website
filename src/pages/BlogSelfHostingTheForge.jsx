@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,109 +21,109 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — every merge routed through one box you don't control.
 const SINGLE_POINT = `${SVG_OPEN('0 0 660 240')}
-  <rect x="44" y="36" width="132" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="110" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">AGENT</text>
-  <rect x="44" y="96" width="132" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="110" y="120" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">AGENT</text>
-  <rect x="44" y="156" width="132" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="110" y="180" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">AGENT</text>
-  <text x="110" y="222" text-anchor="middle" fill="#928374" font-size="10">the fleet — ships around the clock</text>
+  <rect x="44" y="36" width="132" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="110" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">AGENT</text>
+  <rect x="44" y="96" width="132" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="110" y="120" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">AGENT</text>
+  <rect x="44" y="156" width="132" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="110" y="180" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">AGENT</text>
+  <text x="110" y="222" text-anchor="middle" fill="var(--muted)" font-size="10">the fleet — ships around the clock</text>
 
-  <rect x="176" y="54" width="4" height="4" fill="#928374"/>
-  <rect x="176" y="114" width="4" height="4" fill="#928374"/>
-  <rect x="176" y="174" width="4" height="4" fill="#928374"/>
-  <line x1="180" y1="56" x2="300" y2="56" stroke="#928374" stroke-width="1"/>
-  <line x1="180" y1="116" x2="300" y2="116" stroke="#928374" stroke-width="1"/>
-  <line x1="180" y1="176" x2="300" y2="176" stroke="#928374" stroke-width="1"/>
-  <line x1="300" y1="56" x2="300" y2="176" stroke="#928374" stroke-width="1"/>
+  <rect x="176" y="54" width="4" height="4" fill="var(--muted)"/>
+  <rect x="176" y="114" width="4" height="4" fill="var(--muted)"/>
+  <rect x="176" y="174" width="4" height="4" fill="var(--muted)"/>
+  <line x1="180" y1="56" x2="300" y2="56" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="180" y1="116" x2="300" y2="116" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="180" y1="176" x2="300" y2="176" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="300" y1="56" x2="300" y2="176" stroke="var(--muted)" stroke-width="1"/>
 
-  <line x1="300" y1="116" x2="346" y2="116" stroke="#928374" stroke-width="1"/>
-  <line x1="374" y1="116" x2="418" y2="116" stroke="#928374" stroke-width="1"/>
-  <line x1="352" y1="108" x2="372" y2="124" stroke="#83a598" stroke-width="1"/>
-  <line x1="352" y1="124" x2="372" y2="108" stroke="#83a598" stroke-width="1"/>
-  <text x="352" y="94" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">A BILLING SWITCH</text>
-  <text x="352" y="144" text-anchor="middle" fill="#928374" font-size="10">not yours to flip</text>
+  <line x1="300" y1="116" x2="346" y2="116" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="374" y1="116" x2="418" y2="116" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="352" y1="108" x2="372" y2="124" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="352" y1="124" x2="372" y2="108" stroke="var(--accent)" stroke-width="1"/>
+  <text x="352" y="94" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">A BILLING SWITCH</text>
+  <text x="352" y="144" text-anchor="middle" fill="var(--muted)" font-size="10">not yours to flip</text>
 
-  <rect x="420" y="82" width="196" height="68" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="416" y="114" width="4" height="4" fill="#928374"/>
-  <text x="518" y="112" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">GITHUB</text>
-  <text x="518" y="130" text-anchor="middle" fill="#928374" font-size="10">someone else&#39;s computer</text>
-  <text x="518" y="176" text-anchor="middle" fill="#928374" font-size="10">every merge, every test, every release</text>
+  <rect x="420" y="82" width="196" height="68" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="416" y="114" width="4" height="4" fill="var(--muted)"/>
+  <text x="518" y="112" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">GITHUB</text>
+  <text x="518" y="130" text-anchor="middle" fill="var(--muted)" font-size="10">someone else&#39;s computer</text>
+  <text x="518" y="176" text-anchor="middle" fill="var(--muted)" font-size="10">every merge, every test, every release</text>
 </svg>`;
 
 // 2 — the hybrid: hot local forge, warm daily mirror, hourly pulls back.
 const HYBRID = `${SVG_OPEN('0 0 660 260')}
-  <rect x="36" y="30" width="284" height="200" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="48" y="48" fill="#928374" font-size="10" letter-spacing="2">YOUR MACHINE</text>
+  <rect x="36" y="30" width="284" height="200" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="48" y="48" fill="var(--muted)" font-size="10" letter-spacing="2">YOUR MACHINE</text>
 
-  <rect x="66" y="66" width="224" height="70" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="178" y="96" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">LOCAL FORGE</text>
-  <text x="178" y="114" text-anchor="middle" fill="#928374" font-size="10">the monorepo — hot</text>
+  <rect x="66" y="66" width="224" height="70" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="178" y="96" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">LOCAL FORGE</text>
+  <text x="178" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">the monorepo — hot</text>
 
-  <rect x="66" y="164" width="224" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="178" y="186" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">THE FLEET</text>
-  <text x="178" y="203" text-anchor="middle" fill="#928374" font-size="10">prs open + merge here</text>
-  <rect x="176" y="136" width="4" height="4" fill="#928374"/>
-  <line x1="178" y1="140" x2="178" y2="164" stroke="#928374" stroke-width="1"/>
+  <rect x="66" y="164" width="224" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="178" y="186" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">THE FLEET</text>
+  <text x="178" y="203" text-anchor="middle" fill="var(--muted)" font-size="10">prs open + merge here</text>
+  <rect x="176" y="136" width="4" height="4" fill="var(--muted)"/>
+  <line x1="178" y1="140" x2="178" y2="164" stroke="var(--muted)" stroke-width="1"/>
 
-  <rect x="420" y="66" width="196" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="518" y="96" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">GITHUB</text>
-  <text x="518" y="114" text-anchor="middle" fill="#928374" font-size="10">warm mirror</text>
-  <text x="518" y="160" text-anchor="middle" fill="#928374" font-size="10">downstream automation</text>
-  <text x="518" y="174" text-anchor="middle" fill="#928374" font-size="10">still fires off the mirror</text>
+  <rect x="420" y="66" width="196" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="518" y="96" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">GITHUB</text>
+  <text x="518" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">warm mirror</text>
+  <text x="518" y="160" text-anchor="middle" fill="var(--muted)" font-size="10">downstream automation</text>
+  <text x="518" y="174" text-anchor="middle" fill="var(--muted)" font-size="10">still fires off the mirror</text>
 
-  <rect x="288" y="80" width="4" height="4" fill="#83a598"/>
-  <line x1="292" y1="82" x2="410" y2="82" stroke="#83a598" stroke-width="1"/>
-  <polygon points="418,82 409,78 409,86" fill="#83a598"/>
-  <text x="368" y="70" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">PUSH &#183; DAILY</text>
+  <rect x="288" y="80" width="4" height="4" fill="var(--accent)"/>
+  <line x1="292" y1="82" x2="410" y2="82" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="418,82 409,78 409,86" fill="var(--accent)"/>
+  <text x="368" y="70" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">PUSH &#183; DAILY</text>
 
-  <rect x="416" y="118" width="4" height="4" fill="#928374"/>
-  <line x1="416" y1="120" x2="300" y2="120" stroke="#928374" stroke-width="1"/>
-  <polygon points="292,120 301,116 301,124" fill="#928374"/>
-  <text x="368" y="110" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">PULL &#183; HOURLY</text>
-  <text x="368" y="152" text-anchor="middle" fill="#928374" font-size="10">the other repos</text>
+  <rect x="416" y="118" width="4" height="4" fill="var(--muted)"/>
+  <line x1="416" y1="120" x2="300" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="292,120 301,116 301,124" fill="var(--muted)"/>
+  <text x="368" y="110" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">PULL &#183; HOURLY</text>
+  <text x="368" y="152" text-anchor="middle" fill="var(--muted)" font-size="10">the other repos</text>
 
-  <text x="330" y="246" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">REVERSIBLE — EITHER SIDE CAN BE RE-PROMOTED</text>
+  <text x="330" y="246" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">REVERSIBLE — EITHER SIDE CAN BE RE-PROMOTED</text>
 </svg>`;
 
 // 3 — a push mirror makes the target MATCH the source; target-only refs are erased.
 const MIRROR_SEMANTICS = `${SVG_OPEN('0 0 660 250')}
-  <text x="160" y="44" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SOURCE — FORGE</text>
-  <rect x="60" y="56" width="200" height="130" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <rect x="84" y="72" width="152" height="20" fill="#282828" stroke="#928374" stroke-width="1"/>
-  <text x="94" y="86" fill="#ebdbb2" font-size="10">main</text>
-  <rect x="84" y="102" width="152" height="20" fill="#282828" stroke="#928374" stroke-width="1"/>
-  <text x="94" y="116" fill="#ebdbb2" font-size="10">feat/a</text>
-  <rect x="84" y="132" width="152" height="20" fill="#282828" stroke="#928374" stroke-width="1"/>
-  <text x="94" y="146" fill="#ebdbb2" font-size="10">feat/b</text>
+  <text x="160" y="44" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">SOURCE — FORGE</text>
+  <rect x="60" y="56" width="200" height="130" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="84" y="72" width="152" height="20" fill="var(--surface)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="94" y="86" fill="var(--ink)" font-size="10">main</text>
+  <rect x="84" y="102" width="152" height="20" fill="var(--surface)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="94" y="116" fill="var(--ink)" font-size="10">feat/a</text>
+  <rect x="84" y="132" width="152" height="20" fill="var(--surface)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="94" y="146" fill="var(--ink)" font-size="10">feat/b</text>
 
-  <rect x="256" y="108" width="4" height="4" fill="#83a598"/>
-  <line x1="260" y1="110" x2="390" y2="110" stroke="#83a598" stroke-width="1"/>
-  <polygon points="398,110 389,106 389,114" fill="#83a598"/>
-  <text x="328" y="98" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1.5">SYNC</text>
-  <text x="330" y="128" text-anchor="middle" fill="#928374" font-size="10">match the source</text>
+  <rect x="256" y="108" width="4" height="4" fill="var(--accent)"/>
+  <line x1="260" y1="110" x2="390" y2="110" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="398,110 389,106 389,114" fill="var(--accent)"/>
+  <text x="328" y="98" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1.5">SYNC</text>
+  <text x="330" y="128" text-anchor="middle" fill="var(--muted)" font-size="10">match the source</text>
 
-  <text x="500" y="44" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">TARGET — GITHUB</text>
-  <rect x="400" y="56" width="200" height="130" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="424" y="72" width="152" height="20" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="434" y="86" fill="#ebdbb2" font-size="10">main</text>
-  <rect x="424" y="102" width="152" height="20" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="434" y="116" fill="#ebdbb2" font-size="10">feat/a</text>
-  <rect x="424" y="132" width="152" height="20" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="434" y="146" fill="#ebdbb2" font-size="10">feat/b</text>
-  <rect x="424" y="160" width="152" height="20" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="3 3"/>
-  <text x="434" y="174" fill="#83a598" font-size="10">feat/c — only here</text>
-  <line x1="424" y1="170" x2="576" y2="170" stroke="#83a598" stroke-width="1"/>
+  <text x="500" y="44" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">TARGET — GITHUB</text>
+  <rect x="400" y="56" width="200" height="130" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="424" y="72" width="152" height="20" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="434" y="86" fill="var(--ink)" font-size="10">main</text>
+  <rect x="424" y="102" width="152" height="20" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="434" y="116" fill="var(--ink)" font-size="10">feat/a</text>
+  <rect x="424" y="132" width="152" height="20" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="434" y="146" fill="var(--ink)" font-size="10">feat/b</text>
+  <rect x="424" y="160" width="152" height="20" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="434" y="174" fill="var(--accent)" font-size="10">feat/c — only here</text>
+  <line x1="424" y1="170" x2="576" y2="170" stroke="var(--accent)" stroke-width="1"/>
 
-  <text x="500" y="208" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">ERASED BY THE SYNC</text>
-  <text x="330" y="236" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">PARITY-CHECK BOTH SIDES BEFORE THE FIRST SYNC</text>
+  <text x="500" y="208" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">ERASED BY THE SYNC</text>
+  <text x="330" y="236" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">PARITY-CHECK BOTH SIDES BEFORE THE FIRST SYNC</text>
 </svg>`;
 
 export default function BlogSelfHostingTheForge() {

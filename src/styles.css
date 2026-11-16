@@ -1,33 +1,6 @@
-/* LastDB site styles: "field guide" layout, paper-and-cobalt palette.
-   Proportional type for reading, monospace for code and small technical labels. */
-:root {
-  --bg: #fbfaf7;
-  --surface: #ffffff;
-  --ink: #14171f;
-  --sub: #363b47;      /* body text on tints, secondary headings */
-  --muted: #555b69;    /* captions, labels; 4.5:1 on --bg and on every tint */
-  --line: #cfd2da;
-  --line-soft: #e1e3e8;
-  --accent: #2447e6;
-  --accent-hover: #1a35b8;
-  --on-accent: #ffffff;
-  --tint-blue: #e4e9fd;   --tint-blue-line: #c3cdfa;
-  --tint-mint: #dff3ea;   --tint-mint-line: #b9e0cd;
-  --tint-peach: #fdeedd;  --tint-peach-line: #f2d3ad;
-  --tint-lilac: #f1e6fb;  --tint-lilac-line: #dcc6f3;
-  --hatch: #e9ebf0;
-  --band: #101736;        /* dark panels: install band, figures, ASCII diagrams */
-  --band-text: #f5f6fb;
-  --band-sub: #cfd5ee;
-  --band-label: #9fb0ff;
-  --band-code: #090e24;
-  --band-line: #2b3566;
-  --sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-}
-
+/* LastDB layout styles for the React pages. Colours and fonts come from
+   /site.css (public/site.css), which every page loads first. */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
   font-family: var(--sans);
   font-size: 17px;
@@ -68,17 +41,8 @@ pre {
   margin: 0.6em 0;
   color: var(--ink);
 }
-/* ASCII art and ASCII diagrams were drawn light-on-dark; keep them on a dark panel. */
-pre.ascii, pre.diagram, .diagram pre, pre.compare-table {
-  background: var(--band);
-  border-color: var(--band-line);
-  color: var(--band-text);
-  line-height: 1.4;
-}
-.diagram .bold, .diagram .white, pre.ascii .bold, pre.compare-table .bold { color: #ffffff; }
-.diagram .dim, pre.compare-table .dim { color: var(--band-sub); }
+pre.ascii, pre.compare-table { line-height: 1.4; }
 .diagram { margin: 1em 0; }
-.compare-table { line-height: 1.5; }
 
 .copy-block { position: relative; margin: 0.6em 0; }
 /* The button sits in its own strip above the code, so it never covers a long line. */
@@ -100,12 +64,13 @@ pre.ascii, pre.diagram, .diagram pre, pre.compare-table {
   line-height: 1.4;
 }
 .copy-block-btn:hover { border-color: var(--accent); }
-.copy-block-btn.copied { border-color: #0f7a52; color: #0b5c3d; }
+.copy-block-btn.copied { border-color: var(--ok); color: var(--ok); }
 .copy-block-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Figures hold hand-drawn light-on-dark line art (and one video); frame them dark. */
+/* Figures: hand-drawn line art on a quiet panel. */
 figure {
-  background: var(--band);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
   border-radius: 14px;
   padding: 28px 20px 18px;
 }
@@ -133,10 +98,10 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
 .section-subheading { margin-top: 1.5em; }
 /* A variant only colours the section's heading. */
 .section-slate h2 .bold    { color: var(--accent); }
-.section-sage h2 .bold     { color: #0f7a52; }
-.section-amber h2 .bold    { color: #a2560a; }
-.section-lavender h2 .bold { color: #7a3fc4; }
-.section-rose h2 .bold     { color: #c0312b; }
+.section-sage h2 .bold     { color: var(--ok); }
+.section-amber h2 .bold    { color: var(--amber); }
+.section-lavender h2 .bold { color: var(--violet); }
+.section-rose h2 .bold     { color: var(--warn); }
 
 .card {
   background: var(--bg);
@@ -159,12 +124,12 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
   border-radius: 999px;
   vertical-align: 0.1em;
 }
-.label-blue   { background: var(--tint-blue);  color: #1c3bbf; }
-.label-green  { background: var(--tint-mint);  color: #0b5c3d; }
-.label-yellow { background: var(--tint-peach); color: #8a4a06; }
-.label-orange { background: var(--tint-peach); color: #8a4a06; }
-.label-purple { background: var(--tint-lilac); color: #6a34ad; }
-.label-red    { background: #fde4e2;           color: #a3261f; }
+.label-blue   { background: var(--tint-blue);  color: var(--accent-hover); }
+.label-green  { background: var(--tint-mint);  color: var(--ok); }
+.label-yellow { background: var(--tint-peach); color: var(--amber); }
+.label-orange { background: var(--tint-peach); color: var(--amber); }
+.label-purple { background: var(--tint-lilac); color: var(--violet); }
+.label-red    { background: var(--tint-rose);  color: var(--warn); }
 
 .link-btn { font-weight: 600; color: var(--accent); }
 .link-btn:hover { color: var(--accent-hover); }
@@ -180,8 +145,8 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
 .nav-brand:hover { color: var(--ink); text-decoration: none; }
 .nav-mark { display: flex; flex-direction: column; gap: 3px; }
 .nav-mark span { display: block; width: 24px; height: 6px; border-radius: 1px; background: var(--accent); }
-.nav-mark span:nth-child(2) { background: #7d93f2; }
-.nav-mark span:nth-child(3) { background: #c3cdfa; }
+.nav-mark span:nth-child(2) { background: var(--accent-soft); }
+.nav-mark span:nth-child(3) { background: var(--tint-blue-line); }
 .nav-brand-text { font-weight: 700; font-size: 20px; letter-spacing: -0.01em; }
 .nav-spacer { flex: 1; }
 .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 24px; font-size: 15px; }
@@ -354,7 +319,7 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
     padding: 12px 18px;
     gap: 10px;
     z-index: 50;
-    box-shadow: 0 16px 32px -16px rgba(16, 23, 54, 0.35);
+    box-shadow: 0 16px 32px -16px var(--shadow-strong);
   }
   .nav-links.open { display: flex; }
 }

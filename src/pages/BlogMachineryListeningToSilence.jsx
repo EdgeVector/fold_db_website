@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,106 +21,106 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — one publisher, five subscriber loops, four of them wired to nothing.
 const THE_BUS = `${SVG_OPEN('0 0 660 300')}
-  <rect x="26" y="118" width="150" height="54" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="101" y="142" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">THE WRITE PATH</text>
-  <text x="101" y="160" text-anchor="middle" fill="#928374" font-size="10">publishes 1 event</text>
+  <rect x="26" y="118" width="150" height="54" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="101" y="142" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">THE WRITE PATH</text>
+  <text x="101" y="160" text-anchor="middle" fill="var(--muted)" font-size="10">publishes 1 event</text>
 
-  <text x="303" y="30" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">ASYNC MESSAGE BUS</text>
-  <line x1="300" y1="42" x2="300" y2="270" stroke="#928374" stroke-width="1"/>
-  <line x1="306" y1="42" x2="306" y2="270" stroke="#928374" stroke-width="1"/>
+  <text x="303" y="30" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">ASYNC MESSAGE BUS</text>
+  <line x1="300" y1="42" x2="300" y2="270" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="306" y1="42" x2="306" y2="270" stroke="var(--muted)" stroke-width="1"/>
 
-  <text x="180" y="139" fill="#83a598" font-size="9" letter-spacing="0.5">MutationExecuted</text>
-  <line x1="176" y1="146" x2="298" y2="146" stroke="#83a598" stroke-width="1"/>
-  <polygon points="300,146 291,142 291,150" fill="#83a598"/>
+  <text x="180" y="139" fill="var(--accent)" font-size="9" letter-spacing="0.5">MutationExecuted</text>
+  <line x1="176" y1="146" x2="298" y2="146" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="300,146 291,142 291,150" fill="var(--accent)"/>
 
-  <rect x="412" y="46" width="212" height="34" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="422" y="67" fill="#ebdbb2" font-size="11">MutationExecuted</text>
-  <text x="614" y="67" text-anchor="end" fill="#83a598" font-size="9" letter-spacing="0.5">LIVE</text>
-  <line x1="306" y1="63" x2="412" y2="63" stroke="#83a598" stroke-width="1"/>
+  <rect x="412" y="46" width="212" height="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="422" y="67" fill="var(--ink)" font-size="11">MutationExecuted</text>
+  <text x="614" y="67" text-anchor="end" fill="var(--accent)" font-size="9" letter-spacing="0.5">LIVE</text>
+  <line x1="306" y1="63" x2="412" y2="63" stroke="var(--accent)" stroke-width="1"/>
 
-  <rect x="412" y="94" width="212" height="34" fill="none" stroke="#504945" stroke-width="1"/>
-  <text x="422" y="115" fill="#928374" font-size="11">FieldValueSet</text>
-  <text x="614" y="115" text-anchor="end" fill="#928374" font-size="9" letter-spacing="0.5">idle</text>
-  <line x1="306" y1="111" x2="412" y2="111" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="412" y="94" width="212" height="34" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <text x="422" y="115" fill="var(--muted)" font-size="11">FieldValueSet</text>
+  <text x="614" y="115" text-anchor="end" fill="var(--muted)" font-size="9" letter-spacing="0.5">idle</text>
+  <line x1="306" y1="111" x2="412" y2="111" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <rect x="412" y="142" width="212" height="34" fill="none" stroke="#504945" stroke-width="1"/>
-  <text x="422" y="163" fill="#928374" font-size="11">AtomCreated</text>
-  <text x="614" y="163" text-anchor="end" fill="#928374" font-size="9" letter-spacing="0.5">idle</text>
-  <line x1="306" y1="159" x2="412" y2="159" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="412" y="142" width="212" height="34" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <text x="422" y="163" fill="var(--muted)" font-size="11">AtomCreated</text>
+  <text x="614" y="163" text-anchor="end" fill="var(--muted)" font-size="9" letter-spacing="0.5">idle</text>
+  <line x1="306" y1="159" x2="412" y2="159" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <rect x="412" y="190" width="212" height="34" fill="none" stroke="#504945" stroke-width="1"/>
-  <text x="422" y="211" fill="#928374" font-size="11">MoleculeCreated</text>
-  <text x="614" y="211" text-anchor="end" fill="#928374" font-size="9" letter-spacing="0.5">idle</text>
-  <line x1="306" y1="207" x2="412" y2="207" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="412" y="190" width="212" height="34" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <text x="422" y="211" fill="var(--muted)" font-size="11">MoleculeCreated</text>
+  <text x="614" y="211" text-anchor="end" fill="var(--muted)" font-size="9" letter-spacing="0.5">idle</text>
+  <line x1="306" y1="207" x2="412" y2="207" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <rect x="412" y="238" width="212" height="34" fill="none" stroke="#504945" stroke-width="1"/>
-  <text x="422" y="259" fill="#928374" font-size="11">QueryExecuted</text>
-  <text x="614" y="259" text-anchor="end" fill="#928374" font-size="9" letter-spacing="0.5">idle</text>
-  <line x1="306" y1="255" x2="412" y2="255" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="412" y="238" width="212" height="34" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <text x="422" y="259" fill="var(--muted)" font-size="11">QueryExecuted</text>
+  <text x="614" y="259" text-anchor="end" fill="var(--muted)" font-size="9" letter-spacing="0.5">idle</text>
+  <line x1="306" y1="255" x2="412" y2="255" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <text x="176" y="232" fill="#928374" font-size="10" letter-spacing="0.5">4 event types</text>
-  <text x="176" y="248" fill="#928374" font-size="10" letter-spacing="0.5">have NO publisher</text>
-  <text x="176" y="264" fill="#928374" font-size="10" letter-spacing="0.5">in production</text>
+  <text x="176" y="232" fill="var(--muted)" font-size="10" letter-spacing="0.5">4 event types</text>
+  <text x="176" y="248" fill="var(--muted)" font-size="10" letter-spacing="0.5">have NO publisher</text>
+  <text x="176" y="264" fill="var(--muted)" font-size="10" letter-spacing="0.5">in production</text>
 </svg>`;
 
 // 2 — the bug: the write commits durably, the publish fails, the client is told 400.
 const THE_BUG = `${SVG_OPEN('0 0 660 250')}
-  <rect x="24" y="96" width="178" height="66" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="113" y="126" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">WRITE COMMITTED</text>
-  <text x="113" y="145" text-anchor="middle" fill="#ebdbb2" font-size="10">durable &middot; on disk</text>
+  <rect x="24" y="96" width="178" height="66" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="113" y="126" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">WRITE COMMITTED</text>
+  <text x="113" y="145" text-anchor="middle" fill="var(--ink)" font-size="10">durable &middot; on disk</text>
 
-  <line x1="202" y1="129" x2="284" y2="129" stroke="#928374" stroke-width="1"/>
+  <line x1="202" y1="129" x2="284" y2="129" stroke="var(--muted)" stroke-width="1"/>
 
-  <rect x="286" y="104" width="104" height="50" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="338" y="134" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PUBLISH</text>
-  <text x="338" y="176" text-anchor="middle" fill="#928374" font-size="9">every subscriber died</text>
+  <rect x="286" y="104" width="104" height="50" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="338" y="134" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PUBLISH</text>
+  <text x="338" y="176" text-anchor="middle" fill="var(--muted)" font-size="9">every subscriber died</text>
 
-  <line x1="390" y1="129" x2="414" y2="129" stroke="#928374" stroke-width="1"/>
-  <line x1="418" y1="119" x2="418" y2="139" stroke="#83a598" stroke-width="1"/>
-  <line x1="424" y1="119" x2="424" y2="139" stroke="#83a598" stroke-width="1"/>
-  <line x1="428" y1="129" x2="452" y2="129" stroke="#928374" stroke-width="1"/>
-  <polygon points="452,129 443,125 443,133" fill="#928374"/>
+  <line x1="390" y1="129" x2="414" y2="129" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="418" y1="119" x2="418" y2="139" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="424" y1="119" x2="424" y2="139" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="428" y1="129" x2="452" y2="129" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="452,129 443,125 443,133" fill="var(--muted)"/>
 
-  <rect x="452" y="98" width="182" height="62" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="543" y="123" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">CLIENT SEES</text>
-  <text x="543" y="147" text-anchor="middle" fill="#83a598" font-size="16" letter-spacing="1">HTTP 400</text>
+  <rect x="452" y="98" width="182" height="62" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="543" y="123" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">CLIENT SEES</text>
+  <text x="543" y="147" text-anchor="middle" fill="var(--accent)" font-size="16" letter-spacing="1">HTTP 400</text>
 
-  <line x1="113" y1="186" x2="113" y2="200" stroke="#928374" stroke-width="1"/>
-  <line x1="543" y1="186" x2="543" y2="200" stroke="#928374" stroke-width="1"/>
-  <line x1="113" y1="193" x2="543" y2="193" stroke="#928374" stroke-width="1"/>
-  <text x="328" y="222" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">THE WRITE SUCCEEDED. THE RESPONSE SAID IT FAILED.</text>
+  <line x1="113" y1="186" x2="113" y2="200" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="543" y1="186" x2="543" y2="200" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="113" y1="193" x2="543" y2="193" stroke="var(--muted)" stroke-width="1"/>
+  <text x="328" y="222" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">THE WRITE SUCCEEDED. THE RESPONSE SAID IT FAILED.</text>
 </svg>`;
 
 // 3 — after: one synchronous path, durable before the response returns.
 const THE_DIRECT_CALL = `${SVG_OPEN('0 0 660 264')}
-  <rect x="240" y="26" width="180" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="53" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">MUTATION COMMIT</text>
+  <rect x="240" y="26" width="180" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="53" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">MUTATION COMMIT</text>
 
-  <line x1="330" y1="70" x2="330" y2="100" stroke="#928374" stroke-width="1"/>
-  <polygon points="330,104 326,95 334,95" fill="#928374"/>
+  <line x1="330" y1="70" x2="330" y2="100" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="330,104 326,95 334,95" fill="var(--muted)"/>
 
-  <rect x="222" y="106" width="216" height="52" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="130" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">RECORD PROCESS RESULT</text>
-  <text x="330" y="148" text-anchor="middle" fill="#ebdbb2" font-size="10">one direct call, in-thread</text>
+  <rect x="222" y="106" width="216" height="52" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="130" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">RECORD PROCESS RESULT</text>
+  <text x="330" y="148" text-anchor="middle" fill="var(--ink)" font-size="10">one direct call, in-thread</text>
 
-  <line x1="438" y1="132" x2="470" y2="132" stroke="#83a598" stroke-width="1"/>
-  <text x="478" y="128" fill="#83a598" font-size="10">durable before the</text>
-  <text x="478" y="142" fill="#83a598" font-size="10">client hears back</text>
+  <line x1="438" y1="132" x2="470" y2="132" stroke="var(--accent)" stroke-width="1"/>
+  <text x="478" y="128" fill="var(--accent)" font-size="10">durable before the</text>
+  <text x="478" y="142" fill="var(--accent)" font-size="10">client hears back</text>
 
-  <line x1="330" y1="158" x2="330" y2="188" stroke="#928374" stroke-width="1"/>
-  <polygon points="330,192 326,183 334,183" fill="#928374"/>
+  <line x1="330" y1="158" x2="330" y2="188" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="330,192 326,183 334,183" fill="var(--muted)"/>
 
-  <rect x="240" y="194" width="180" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="330" y="221" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">RESPOND</text>
+  <rect x="240" y="194" width="180" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="330" y="221" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">RESPOND</text>
 
-  <text x="330" y="258" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">COMMIT &rarr; RECORD &rarr; RESPOND &mdash; ONE SYNCHRONOUS PATH</text>
+  <text x="330" y="258" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">COMMIT &rarr; RECORD &rarr; RESPOND &mdash; ONE SYNCHRONOUS PATH</text>
 </svg>`;
 
 export default function BlogMachineryListeningToSilence() {
