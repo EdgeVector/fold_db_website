@@ -98,7 +98,7 @@ export default function BlogTheFixWasSubtraction() {
         <link rel="canonical" href="https://thelastdb.com/blog/the-fix-was-subtraction" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">The Fix Was Subtraction</h1>
       <p className="post-meta dim">2026-07-05</p>
@@ -148,7 +148,7 @@ export default function BlogTheFixWasSubtraction() {
 
       <p className="dim">More on distrusting a confident story until it&rsquo;s proven: <Link to="/blog/prove-it-to-land">Prove It To Land</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

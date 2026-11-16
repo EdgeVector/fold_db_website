@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import AnimatedLogo from './AnimatedLogo';
 
 // One list drives the nav and the footer. `document` marks a static file under
 // public/ (not a router route), so it stays a plain anchor and reloads the page.
@@ -29,7 +28,7 @@ export default function Nav() {
   return (
     <nav className="site-nav" aria-label="Main navigation">
       <Link to="/" className="nav-brand">
-        <AnimatedLogo size={64} />
+        <span className="nav-mark" aria-hidden="true"><span /><span /><span /></span>
         <span className="nav-brand-text">LastDB</span>
       </Link>
       <span className="nav-spacer" />
@@ -45,16 +44,16 @@ export default function Nav() {
         {NAV_LINKS.map(link => {
           if (link.document) {
             return (
-              <a key={link.to} href={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</a>
+              <a key={link.to} href={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>{link.label}</a>
             );
           }
           if (isActive(link.to, pathname)) {
             return (
-              <span key={link.to} className="link-btn active" aria-current="page">[{link.label}]</span>
+              <span key={link.to} className="link-btn active" aria-current="page">{link.label}</span>
             );
           }
           return (
-            <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>[{link.label}]</Link>
+            <Link key={link.to} to={link.to} className="link-btn" onClick={() => setMenuOpen(false)}>{link.label}</Link>
           );
         })}
       </div>

@@ -100,7 +100,7 @@ export default function BlogDeclaredNotRegistered() {
         <link rel="canonical" href="https://thelastdb.com/blog/declared-not-registered" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Declared, Not Registered</h1>
       <p className="post-meta dim">2026-07-03</p>
@@ -144,7 +144,7 @@ export default function BlogDeclaredNotRegistered() {
 
       <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB. See also <Link to="/blog/evolving-a-live-schema">Against Migration</Link>, on why the app &mdash; not the database &mdash; owns the shape of its data.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

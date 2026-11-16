@@ -119,7 +119,7 @@ export default function BlogReadMeDontRunMe() {
         <link rel="canonical" href="https://thelastdb.com/blog/read-me-dont-run-me" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Read Me, Don&rsquo;t Run Me</h1>
       <p className="post-meta dim">2026-07-03</p>
@@ -163,7 +163,7 @@ export default function BlogReadMeDontRunMe() {
 
       <p className="dim">More on how the fleet builds LastDB safely: <Link to="/blog/prove-it-to-land">Prove It To Land</Link>, on why a green pull request isn&rsquo;t proof, and <Link to="/blog/building-lastdb-with-agents">Building LastDB with an autonomous agent loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

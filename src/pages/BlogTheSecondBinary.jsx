@@ -139,7 +139,7 @@ export default function BlogTheSecondBinary() {
         <link rel="canonical" href="https://thelastdb.com/blog/the-second-binary" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">The Second Binary</h1>
       <p className="post-meta dim">2026-07-03</p>
@@ -190,7 +190,7 @@ export default function BlogTheSecondBinary() {
 
       <p className="dim">The stale binary was found the way most of our bugs are found &mdash; by an agent doing real work inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>, on the same stack that runs <Link to="/apps">Brain and Kanban</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

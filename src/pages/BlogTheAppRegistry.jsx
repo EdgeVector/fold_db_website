@@ -271,7 +271,7 @@ export default function BlogTheAppRegistry() {
       </Helmet>
 
       <p>
-        <Link to="/blog" className="link-btn">[&larr; Blog]</Link>
+        <Link to="/blog" className="link-btn">&larr; Blog</Link>
       </p>
 
       <h1 className="tagline">The LastDB App Registry: Install by Proof</h1>
@@ -567,7 +567,7 @@ situations   0.1.0 @ 923409b1a3e9  1 rows  Shared operational posture and prefli
       </p>
 
       <p>
-        <Link to="/blog" className="link-btn">[&larr; Blog]</Link>
+        <Link to="/blog" className="link-btn">&larr; Blog</Link>
       </p>
     </article>
   );

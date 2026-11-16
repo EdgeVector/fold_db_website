@@ -114,7 +114,7 @@ export default function BlogProveItToLand() {
         <link rel="canonical" href="https://thelastdb.com/blog/prove-it-to-land" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Prove It To Land</h1>
       <p className="post-meta dim">2026-06-30</p>
@@ -173,7 +173,7 @@ export default function BlogProveItToLand() {
 
       <p className="dim">Part of the same system that lets an <Link to="/blog/building-lastdb-with-agents">autonomous agent loop</Link> merge its own work &mdash; safely.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

@@ -107,7 +107,7 @@ export default function BlogSpeedupsWeDidntWrite() {
         <link rel="canonical" href="https://thelastdb.com/blog/speedups-we-didnt-write" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">A week of speedups we didn&rsquo;t write</h1>
       <p className="post-meta dim">2026-06-28</p>
@@ -146,7 +146,7 @@ export default function BlogSpeedupsWeDidntWrite() {
 
       <p className="dim">More on the loop itself: <Link to="/blog/building-lastdb-with-agents">Building LastDB with an autonomous agent loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

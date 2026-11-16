@@ -127,7 +127,7 @@ export default function BlogArgumentListTooLong() {
         <link rel="canonical" href="https://thelastdb.com/blog/argument-list-too-long" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Argument List Too Long</h1>
       <p className="post-meta dim">2026-07-01</p>
@@ -179,7 +179,7 @@ export default function BlogArgumentListTooLong() {
 
       <p className="dim">One of many small lessons from letting an <Link to="/blog/building-lastdb-with-agents">autonomous loop</Link> build and operate LastDB &mdash; where the tooling has to survive its own success.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

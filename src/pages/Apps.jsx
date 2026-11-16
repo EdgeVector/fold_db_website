@@ -30,7 +30,7 @@ export default function Apps() {
         <meta property="og:description" content="What you can install on LastDB today, and how to try it." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
       <h1 className="tagline">Apps on LastDB</h1>
 
@@ -41,7 +41,7 @@ export default function Apps() {
         This page lists the apps you can install today. The whole product is alpha, on macOS with Apple Silicon.
       </p>
       <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Install on Home &rarr;]</Link>
+        <Link to="/#install" className="link-btn">Install on Home &rarr;</Link>
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
@@ -123,7 +123,7 @@ lastsecrets list`}</pre>
         </div>
 
         <p className="dim">
-          Daily use: <Link to="/start" className="link-btn">[How to use it &rarr;]</Link>
+          Daily use: <Link to="/start" className="link-btn">How to use it &rarr;</Link>
         </p>
       </Section>
 
@@ -141,7 +141,7 @@ lastsecrets list`}</pre>
           Your app uses the same socket as these apps. Declare a schema, then write and read records by key.
         </p>
         <p className="dim">
-          <Link to="/developer" className="link-btn">[Developer guide &rarr;]</Link>
+          <Link to="/developer" className="link-btn">Developer guide &rarr;</Link>
         </p>
       </Section>
 

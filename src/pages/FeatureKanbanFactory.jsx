@@ -100,7 +100,7 @@ export default function FeatureKanbanFactory() {
         <link rel="canonical" href="https://thelastdb.com/features/kanban-factory" />
       </Helmet>
 
-      <p><Link to="/features" className="link-btn">[&larr; Feature Blog]</Link></p>
+      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
 
       <h1 className="tagline">Kanban Factory</h1>
       <p className="post-meta">
@@ -117,9 +117,9 @@ export default function FeatureKanbanFactory() {
       </p>
 
       <p className="hero-cta">
-        <a href="#get-it" className="link-btn">[Get it &rarr;]</a>{'  '}
-        <a href="#open-it" className="link-btn">[Open it &rarr;]</a>{'  '}
-        <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="link-btn">[Source]</a>
+        <a href="#get-it" className="link-btn">Get it &rarr;</a>{'  '}
+        <a href="#open-it" className="link-btn">Open it &rarr;</a>{'  '}
+        <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="link-btn">Source</a>
       </p>
 
       <figure style={{ margin: '34px 0', textAlign: 'center' }}>
@@ -320,7 +320,7 @@ export default function FeatureKanbanFactory() {
         <Link to="/apps">Apps catalog</Link>
       </p>
 
-      <p><Link to="/features" className="link-btn">[&larr; Feature Blog]</Link></p>
+      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
     </article>
   );
 }

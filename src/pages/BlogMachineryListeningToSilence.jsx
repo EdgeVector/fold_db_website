@@ -134,7 +134,7 @@ export default function BlogMachineryListeningToSilence() {
         <link rel="canonical" href="https://thelastdb.com/blog/machinery-listening-to-silence" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Machinery Listening to Silence</h1>
       <p className="post-meta dim">2026-07-02</p>
@@ -189,7 +189,7 @@ export default function BlogMachineryListeningToSilence() {
 
       <p className="dim">One in a series on <Link to="/blog/n-plus-one-six-bugs">finding</Link> and removing the machinery a codebase accumulates &mdash; inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

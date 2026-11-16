@@ -14,22 +14,16 @@ export default function Developer() {
         <meta property="og:description" content="LastDB developer guide: the node, schemas, keys, and the socket requests your app sends." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
-      <pre className="ascii">{`
-####  ##### #   #
-#   # #     #   #
-#   # ###   #   #
-#   # #      # #
-####  #####   #`.trim()}</pre>
 
       <h1 className="tagline">Developer Guide</h1>
 
       <p className="bold white">LastDB is in alpha. It runs as <span className="white">one local daemon</span>. Your apps send HTTP requests to it over a Unix socket.</p>
 
       <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Install LastDB &rarr;]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <Link to="/#install" className="link-btn">Install LastDB &rarr;</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>
         <span className="dim"> &mdash; install first if you do not have a node yet.</span>
       </p>
 
@@ -247,7 +241,7 @@ lastdb get-keys notes/note --key-hash work --key-name by_tag`}</pre>
 
 
       <Section variant="sage">
-        <p>The interactive guide shows the layers, their parts, and their connections. <a href="/explore/#diagram" className="link-btn">[Explore the system &rarr;]</a></p>
+        <p>The interactive guide shows the layers, their parts, and their connections. <a href="/explore/#diagram" className="link-btn">Explore the system &rarr;</a></p>
         <p className="dim">Full catalog of apps: <Link to="/apps">Apps</Link>.</p>
       </Section>
 

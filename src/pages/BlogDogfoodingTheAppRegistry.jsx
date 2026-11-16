@@ -97,7 +97,7 @@ export default function BlogDogfoodingTheAppRegistry() {
         <link rel="canonical" href="https://thelastdb.com/blog/dogfooding-the-app-registry" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Dogfooding the App Registry</h1>
       <p className="post-meta dim">2026-07-17</p>
@@ -186,7 +186,7 @@ promoted: {
 
       <p className="dim">Companion piece: <Link to="/blog/how-an-app-gets-published-on-lastdb">How an App Gets Published on LastDB</Link> for the design; <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> for how schema resolution works under it.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

@@ -131,7 +131,7 @@ export default function BlogCantNotWont() {
         <link rel="canonical" href="https://thelastdb.com/blog/cant-not-wont" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Can&rsquo;t, Not Won&rsquo;t</h1>
       <p className="post-meta dim">2026-06-30</p>
@@ -196,7 +196,7 @@ export default function BlogCantNotWont() {
 
       <p className="dim">Part of making LastDB <Link to="/">a place your data is actually yours</Link> &mdash; built in the open, the same way we build <Link to="/blog/building-lastdb-with-agents">everything else</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

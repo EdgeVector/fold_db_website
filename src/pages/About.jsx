@@ -14,15 +14,15 @@ export default function About() {
         <meta property="og:description" content="The problem with app silos, the LastDB model, and the principles behind owning your whole tool stack." />
         <link rel="canonical" href="https://thelastdb.com/about" />
       </Helmet>
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
       <h1 className="tagline">About LastDB</h1>
       <p className="bold white">
         Why build your tools on a database you own &mdash; instead of renting a silo per tool.
       </p>
       <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <Link to="/#install" className="link-btn">Install &rarr;</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>
         <span className="dim"> &mdash; thesis here; install and apps live on their own pages.</span>
       </p>
 
@@ -118,10 +118,10 @@ export default function About() {
         <h2><span className="bold">STATUS</span></h2>
         <p>LastDB is <span className="bold white">alpha and in active development</span>. The current release covers the local node, the App Registry, and the apps listed on the Apps page.</p>
         <p>
-          <Link to="/" className="link-btn">[Install on the home page &rarr;]</Link>{'  '}
-          <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
-          <Link to="/developer" className="link-btn">[Developer]</Link>{'  '}
-          <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Paper]</a>
+          <Link to="/" className="link-btn">Install on the home page &rarr;</Link>{'  '}
+          <Link to="/apps" className="link-btn">Apps</Link>{'  '}
+          <Link to="/developer" className="link-btn">Developer</Link>{'  '}
+          <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">Paper</a>
         </p>
       </Section>
 

@@ -161,7 +161,7 @@ export default function BlogTheParallelismTax() {
         <link rel="canonical" href="https://thelastdb.com/blog/the-parallelism-tax" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">The Parallelism Tax</h1>
       <p className="post-meta dim">2026-07-02</p>
@@ -208,7 +208,7 @@ export default function BlogTheParallelismTax() {
 
       <p className="dim">More on how we work in the open: <Link to="/blog/prove-it-to-land">why a green pull request isn&rsquo;t proof</Link>, and <Link to="/blog/speedups-we-didnt-write">a week of speedups we didn&rsquo;t write</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

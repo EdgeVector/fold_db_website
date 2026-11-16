@@ -189,7 +189,7 @@ export default function BlogTheBackupThatWouldntCommit() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
 
@@ -413,7 +413,7 @@ export default function BlogTheBackupThatWouldntCommit() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
     </article>

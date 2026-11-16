@@ -111,7 +111,7 @@ export default function BlogHowAnAppGetsPublishedOnLastdb() {
         <link rel="canonical" href="https://thelastdb.com/blog/how-an-app-gets-published-on-lastdb" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">How an App Gets Published on LastDB</h1>
       <p className="post-meta dim">2026-07-17</p>
@@ -170,7 +170,7 @@ export default function BlogHowAnAppGetsPublishedOnLastdb() {
 
       <p className="dim">Related: <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> on how schema resolution works, and <Link to="/blog/how-an-app-runs-on-lastdb">How an App Runs on LastDB</Link> for the app model itself.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

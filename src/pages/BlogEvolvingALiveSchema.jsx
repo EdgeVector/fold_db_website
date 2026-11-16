@@ -111,7 +111,7 @@ export default function BlogEvolvingALiveSchema() {
         <link rel="canonical" href="https://thelastdb.com/blog/evolving-a-live-schema" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Against Migration</h1>
       <p className="post-meta dim">2026-06-24</p>
@@ -149,7 +149,7 @@ export default function BlogEvolvingALiveSchema() {
 
       <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB &mdash; inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }
