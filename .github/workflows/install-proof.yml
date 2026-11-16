@@ -1,0 +1,40 @@
+# Runs the public install path (public/install.sh) on a clean Apple Silicon
+# runner, then the commands and socket requests the site prints.
+#
+# This is an operational check of the real product path, not a merge gate. It
+# is not part of `ci-required`. It runs when the installer or this check
+# changes, and on demand. The result is the job summary; raw output stays on
+# the runner.
+name: install-proof
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - public/install.sh
+      - scripts/install-proof.sh
+      - .github/workflows/install-proof.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: install-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install-proof:
+    name: install-proof
+    # macos-15 is Apple Silicon (arm64). The installer refuses anything else.
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install and exercise LastDB on a clean machine
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_CLEANUP: "1"
+          NO_COLOR: "1"
+        run: bash scripts/install-proof.sh
