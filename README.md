@@ -111,43 +111,32 @@ GitHub `EdgeVector/fold_db_website` is the source of truth and the merge gate
 
 ## Interactive guide
 
-`public/explore/` contains the standalone interactive guide. Its architecture review uses
-LastDB revision `e08f2bcd09cf80bc18641319742ae14da897322b` from 8 November 2026.
-It covers 146 parts and 556 connections, reviewed through 1094 commits after October 21.
-Format 14 and API 34 use complete records, explicit keys, and one record revision.
-A shared replacement naming an accepted definition preserves stored fields outside that
-definition. Omitted declared fields and metadata still disappear. The SDK remembers the
-ID returned by schema declaration and sends it with later mutations.
+`public/explore/` contains the standalone interactive guide. Its reviewed LastDB
+revision, date, and cumulative commit count live in `public/explore/content.js`.
+The [source notes](public/explore/sources/design-notes.html) describe the review
+scope, current implementation limits, and revision-specific live evidence.
 
-Personal backup uploads blob versions separately. Restore starts with an empty blob home;
-a later file request verifies and downloads its selected version. A missing local file
-without saved credentials returns “sign in to fetch this file”. Older restored records can
-name cloud versions that have since been released. The DEV operation at `4132e14a` passed
-with each restored home signed in as its own device and automatic backup off.
-The earlier PROD pass at `ebd09268` predates this layout and does not qualify it.
+The guide covers the data model, memory, disk, deletion, cloud, sharing,
+protection, and related services. Format 15 keeps complete records and explicit
+keys. A local write reaches disk before memory publication and acknowledgement.
+Cloud activation and backup progress are separate from local write success.
 
-Share publication uses a separate home, identity, and content key. Its running daemon
-publishes independent snapshots after durable changes. Encrypted invitations connect
-publisher permissions to a recipient-owned, read-only cache. LastDB Files stores files
-as chunk records, follows verified snapshots, and checks complete bytes before saving.
-A failed refresh leaves the last verified copy usable offline. Invitation expiry cannot
-erase a received copy. CI covers local Share setup and file import only; cloud sharing
-and the account-authenticated recipient command remain unqualified or unconnected.
-Local file references keep an existing file outside LastDB and check its hash on reads.
-Their personal cloud upload path is incomplete; the guide describes the source gap and
-does not claim recoverable backup. Reads and sealing remain capped at 512 MiB.
+Owned and received databases have separate stores. Whole-database sharing keeps
+a published log and a pending proposal log. The publisher validates proposals
+against confirmed permissions and record rules before publishing accepted changes.
+Social manages contacts, reusable circles, and owner-approved sharing requests.
+Personal acceptance settings, medical apps, and finance apps remain proposed
+examples, clearly separated from implemented behavior.
 
-Shared sync remains DEV-only. The four-case operation at `24258e5b` passed, including
-the declared-field preservation rules. These are generated DEV results, not shared PROD
-qualification. This 21-commit review also covers API 34, the Unix-only SDK, required
-schema purpose matching, and removal of unused schema seed, shadow and telemetry paths.
-Vendored LastStore adds shared read locks for verified snapshots while excluding writers.
-Warm-set limits, disk format, and flush-before-ack remain unchanged. Older homes still
-need their matching program.
+Recovery uses a verified file base and later signed changes where available.
+Historical DEV results qualify only their recorded operation and revision;
+they do not establish PROD recovery or general cloud-retention qualification.
+LastDB owns retention decisions, while ExeMem performs authorized cloud cleanup.
 
-The disk diagram retains four steps and expandable detail groups. Apps & services opens
-with six responsibility groups, covering all 39 service parts. One selected part shows
-its nearby connections while its explanation retains the full list.
+The Disk overview has four steps and expandable details. Apps & services opens
+with six groups; Share has three. One selected part shows a few direct connections,
+while its explanation retains the complete list. Part counts come from the guide
+content, and retired part URLs remain aliases where an explanation replaces them.
 
 Use a normal anchor to `/explore/#diagram`. The guide owns its hash routes
 and does not use the React router. Vite copies these public assets into the
