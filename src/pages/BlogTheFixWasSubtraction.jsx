@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,70 +21,70 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — two ways to read one record. Left: haul the whole collection over, keep
 // one row, discard the rest. Right: ask for the one row by name; the index
 // hands it back. Red marks the thrown-away bulk; sage marks the keyed read.
 const TWO_READS = `${SVG_OPEN('0 0 660 320')}
-  <text x="165" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">SCAN, THEN FILTER</text>
-  <rect x="60" y="44" width="210" height="150" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="165" y="120" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">~1,200 ROWS</text>
-  <text x="165" y="138" text-anchor="middle" fill="#928374" font-size="10">hauled over the wire</text>
-  <line x1="165" y1="194" x2="165" y2="228" stroke="#928374" stroke-width="1"/>
-  <rect x="163" y="194" width="4" height="4" fill="#928374"/>
-  <rect x="126" y="228" width="78" height="30" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="165" y="247" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">1 KEPT</text>
-  <text x="165" y="284" text-anchor="middle" fill="#fb4934" font-size="10">1,199 discarded in memory</text>
-  <line x1="126" y1="298" x2="204" y2="298" stroke="#fb4934" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="165" y="26" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">SCAN, THEN FILTER</text>
+  <rect x="60" y="44" width="210" height="150" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="165" y="120" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">~1,200 ROWS</text>
+  <text x="165" y="138" text-anchor="middle" fill="var(--muted)" font-size="10">hauled over the wire</text>
+  <line x1="165" y1="194" x2="165" y2="228" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="163" y="194" width="4" height="4" fill="var(--muted)"/>
+  <rect x="126" y="228" width="78" height="30" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="165" y="247" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">1 KEPT</text>
+  <text x="165" y="284" text-anchor="middle" fill="var(--warn)" font-size="10">1,199 discarded in memory</text>
+  <line x1="126" y1="298" x2="204" y2="298" stroke="var(--warn)" stroke-width="1" stroke-dasharray="3 3"/>
 
-  <line x1="330" y1="30" x2="330" y2="300" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="330" y1="30" x2="330" y2="300" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="495" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">READ BY KEY</text>
-  <rect x="400" y="44" width="190" height="150" fill="none" stroke="#928374" stroke-width="1"/>
-  <line x1="400" y1="70" x2="590" y2="70" stroke="#504945" stroke-width="1"/>
-  <line x1="400" y1="96" x2="590" y2="96" stroke="#504945" stroke-width="1"/>
-  <rect x="400" y="96" width="190" height="26" fill="url(#poche)" stroke="#83a598" stroke-width="1.5"/>
-  <line x1="400" y1="148" x2="590" y2="148" stroke="#504945" stroke-width="1"/>
-  <line x1="400" y1="174" x2="590" y2="174" stroke="#504945" stroke-width="1"/>
-  <text x="360" y="112" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">KEY</text>
-  <line x1="330" y1="109" x2="398" y2="109" stroke="#83a598" stroke-width="1"/>
-  <rect x="396" y="107" width="4" height="4" fill="#83a598"/>
-  <text x="495" y="243" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">THE ONE ROW</text>
-  <text x="495" y="261" text-anchor="middle" fill="#928374" font-size="10">straight off the index</text>
-  <text x="495" y="284" text-anchor="middle" fill="#83a598" font-size="10">nothing hauled, nothing discarded</text>
+  <text x="495" y="26" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">READ BY KEY</text>
+  <rect x="400" y="44" width="190" height="150" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="400" y1="70" x2="590" y2="70" stroke="var(--line)" stroke-width="1"/>
+  <line x1="400" y1="96" x2="590" y2="96" stroke="var(--line)" stroke-width="1"/>
+  <rect x="400" y="96" width="190" height="26" fill="url(#poche)" stroke="var(--accent)" stroke-width="1.5"/>
+  <line x1="400" y1="148" x2="590" y2="148" stroke="var(--line)" stroke-width="1"/>
+  <line x1="400" y1="174" x2="590" y2="174" stroke="var(--line)" stroke-width="1"/>
+  <text x="360" y="112" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">KEY</text>
+  <line x1="330" y1="109" x2="398" y2="109" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="396" y="107" width="4" height="4" fill="var(--accent)"/>
+  <text x="495" y="243" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">THE ONE ROW</text>
+  <text x="495" y="261" text-anchor="middle" fill="var(--muted)" font-size="10">straight off the index</text>
+  <text x="495" y="284" text-anchor="middle" fill="var(--accent)" font-size="10">nothing hauled, nothing discarded</text>
 </svg>`;
 
 // 2 — the tower. A full-scan foundation, and three workarounds stacked on top
 // of it, each defending against a cost the scan created. Strike the foundation
 // and the whole stack comes down; a single keyed line stands where it was.
 const THE_TOWER = `${SVG_OPEN('0 0 660 300')}
-  <text x="180" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">BUILT ON THE SCAN</text>
-  <rect x="70" y="210" width="220" height="46" fill="url(#poche)" stroke="#fb4934" stroke-width="1.5"/>
-  <text x="180" y="231" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">FULL SCAN</text>
-  <text x="180" y="247" text-anchor="middle" fill="#fb4934" font-size="9">the wrong assumption</text>
+  <text x="180" y="26" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">BUILT ON THE SCAN</text>
+  <rect x="70" y="210" width="220" height="46" fill="url(#poche)" stroke="var(--warn)" stroke-width="1.5"/>
+  <text x="180" y="231" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">FULL SCAN</text>
+  <text x="180" y="247" text-anchor="middle" fill="var(--warn)" font-size="9">the wrong assumption</text>
 
-  <rect x="88" y="166" width="184" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="180" y="187" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">RETRY LOOP</text>
-  <rect x="106" y="126" width="148" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="180" y="147" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">FAST-MISS</text>
-  <rect x="124" y="86" width="112" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="180" y="107" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">RETRY CAP</text>
-  <line x1="120" y1="70" x2="240" y2="70" stroke="#fb4934" stroke-width="1"/>
-  <line x1="120" y1="74" x2="240" y2="66" stroke="#fb4934" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="88" y="166" width="184" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="180" y="187" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">RETRY LOOP</text>
+  <rect x="106" y="126" width="148" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="180" y="147" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">FAST-MISS</text>
+  <rect x="124" y="86" width="112" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="180" y="107" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">RETRY CAP</text>
+  <line x1="120" y1="70" x2="240" y2="70" stroke="var(--warn)" stroke-width="1"/>
+  <line x1="120" y1="74" x2="240" y2="66" stroke="var(--warn)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <line x1="356" y1="60" x2="356" y2="266" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="356" y1="60" x2="356" y2="266" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="510" y="26" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">WHAT REPLACED IT</text>
-  <line x1="430" y1="150" x2="590" y2="150" stroke="#83a598" stroke-width="1.5"/>
-  <rect x="428" y="148" width="4" height="4" fill="#83a598"/>
-  <rect x="588" y="148" width="4" height="4" fill="#83a598"/>
-  <text x="510" y="140" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1">ONE KEYED READ</text>
-  <text x="510" y="176" text-anchor="middle" fill="#928374" font-size="10">nothing to defend,</text>
-  <text x="510" y="192" text-anchor="middle" fill="#928374" font-size="10">so nothing to keep</text>
+  <text x="510" y="26" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHAT REPLACED IT</text>
+  <line x1="430" y1="150" x2="590" y2="150" stroke="var(--accent)" stroke-width="1.5"/>
+  <rect x="428" y="148" width="4" height="4" fill="var(--accent)"/>
+  <rect x="588" y="148" width="4" height="4" fill="var(--accent)"/>
+  <text x="510" y="140" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1">ONE KEYED READ</text>
+  <text x="510" y="176" text-anchor="middle" fill="var(--muted)" font-size="10">nothing to defend,</text>
+  <text x="510" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">so nothing to keep</text>
 </svg>`;
 
 export default function BlogTheFixWasSubtraction() {
@@ -98,7 +98,7 @@ export default function BlogTheFixWasSubtraction() {
         <link rel="canonical" href="https://thelastdb.com/blog/the-fix-was-subtraction" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">The Fix Was Subtraction</h1>
       <p className="post-meta dim">2026-07-05</p>
@@ -148,7 +148,7 @@ export default function BlogTheFixWasSubtraction() {
 
       <p className="dim">More on distrusting a confident story until it&rsquo;s proven: <Link to="/blog/prove-it-to-land">Prove It To Land</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

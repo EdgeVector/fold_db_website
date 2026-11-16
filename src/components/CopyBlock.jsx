@@ -41,7 +41,7 @@ export default function CopyBlock({ text, label = 'Copy' }) {
         onClick={handleCopy}
         aria-label={status === 'copied' ? 'Copied to clipboard' : 'Copy install script'}
       >
-        [{buttonLabel}]
+        {buttonLabel}
       </button>
       <pre>{text}</pre>
     </div>

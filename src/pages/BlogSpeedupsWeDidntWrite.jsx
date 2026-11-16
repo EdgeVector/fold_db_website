@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,79 +21,79 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — listing one kind of record: scan everything vs. read only the slice.
 const SCAN = `${SVG_OPEN('0 0 660 292')}
-  <text x="36" y="56" fill="#ebdbb2" font-size="13" letter-spacing="1.5">BEFORE</text>
-  <text x="36" y="73" fill="#928374" font-size="10">reads &amp; decodes every record</text>
-  <rect x="180" y="44" width="420" height="40" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
+  <text x="36" y="56" fill="var(--ink)" font-size="13" letter-spacing="1.5">BEFORE</text>
+  <text x="36" y="73" fill="var(--muted)" font-size="10">reads &amp; decodes every record</text>
+  <rect x="180" y="44" width="420" height="40" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
 
-  <line x1="180" y1="96" x2="180" y2="110" stroke="#928374" stroke-width="1"/>
-  <line x1="600" y1="96" x2="600" y2="110" stroke="#928374" stroke-width="1"/>
-  <line x1="180" y1="103" x2="600" y2="103" stroke="#928374" stroke-width="1"/>
-  <text x="390" y="128" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">EVERY RECORD &mdash; ~4,400 MS AT 50K</text>
+  <line x1="180" y1="96" x2="180" y2="110" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="600" y1="96" x2="600" y2="110" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="180" y1="103" x2="600" y2="103" stroke="var(--muted)" stroke-width="1"/>
+  <text x="390" y="128" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">EVERY RECORD &mdash; ~4,400 MS AT 50K</text>
 
-  <text x="36" y="190" fill="#ebdbb2" font-size="13" letter-spacing="1.5">AFTER</text>
-  <text x="36" y="207" fill="#928374" font-size="10">jumps to the matching slice</text>
-  <rect x="180" y="178" width="420" height="40" fill="none" stroke="#504945" stroke-width="1"/>
-  <rect x="180" y="178" width="64" height="40" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
+  <text x="36" y="190" fill="var(--ink)" font-size="13" letter-spacing="1.5">AFTER</text>
+  <text x="36" y="207" fill="var(--muted)" font-size="10">jumps to the matching slice</text>
+  <rect x="180" y="178" width="420" height="40" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <rect x="180" y="178" width="64" height="40" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
 
-  <rect x="210" y="160" width="4" height="4" fill="#83a598"/>
-  <line x1="212" y1="164" x2="212" y2="178" stroke="#83a598" stroke-width="1"/>
-  <text x="252" y="172" fill="#83a598" font-size="10" letter-spacing="0.5">INDEX FINDS IT DIRECTLY</text>
+  <rect x="210" y="160" width="4" height="4" fill="var(--accent)"/>
+  <line x1="212" y1="164" x2="212" y2="178" stroke="var(--accent)" stroke-width="1"/>
+  <text x="252" y="172" fill="var(--accent)" font-size="10" letter-spacing="0.5">INDEX FINDS IT DIRECTLY</text>
 
-  <line x1="180" y1="230" x2="180" y2="244" stroke="#83a598" stroke-width="1"/>
-  <line x1="244" y1="230" x2="244" y2="244" stroke="#83a598" stroke-width="1"/>
-  <line x1="180" y1="237" x2="244" y2="237" stroke="#83a598" stroke-width="1"/>
-  <text x="212" y="262" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">MATCHING ONLY &mdash; ~10 MS, FLAT</text>
+  <line x1="180" y1="230" x2="180" y2="244" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="244" y1="230" x2="244" y2="244" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="180" y1="237" x2="244" y2="237" stroke="var(--accent)" stroke-width="1"/>
+  <text x="212" y="262" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">MATCHING ONLY &mdash; ~10 MS, FLAT</text>
 </svg>`;
 
 // 2 — new-device restore: strictly serial vs. parallel fetch, ordered apply.
 const RESTORE = `${SVG_OPEN('0 0 660 300')}
-  <text x="36" y="50" fill="#ebdbb2" font-size="13" letter-spacing="1.5">BEFORE</text>
-  <text x="36" y="67" fill="#928374" font-size="10">one entry at a time</text>
+  <text x="36" y="50" fill="var(--ink)" font-size="13" letter-spacing="1.5">BEFORE</text>
+  <text x="36" y="67" fill="var(--muted)" font-size="10">one entry at a time</text>
 
-  <rect x="150" y="38" width="92" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="196" y="59" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">DOWNLOAD</text>
-  <line x1="242" y1="55" x2="266" y2="55" stroke="#928374" stroke-width="1"/>
-  <polygon points="270,55 261,51 261,59" fill="#928374"/>
-  <rect x="270" y="38" width="92" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="316" y="59" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">DECRYPT</text>
-  <line x1="362" y1="55" x2="386" y2="55" stroke="#928374" stroke-width="1"/>
-  <polygon points="390,55 381,51 381,59" fill="#928374"/>
-  <rect x="390" y="38" width="92" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="436" y="59" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">APPLY</text>
-  <text x="500" y="59" fill="#928374" font-size="10">&times; 210K</text>
+  <rect x="150" y="38" width="92" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="196" y="59" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">DOWNLOAD</text>
+  <line x1="242" y1="55" x2="266" y2="55" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="270,55 261,51 261,59" fill="var(--muted)"/>
+  <rect x="270" y="38" width="92" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="316" y="59" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">DECRYPT</text>
+  <line x1="362" y1="55" x2="386" y2="55" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="390,55 381,51 381,59" fill="var(--muted)"/>
+  <rect x="390" y="38" width="92" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="436" y="59" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">APPLY</text>
+  <text x="500" y="59" fill="var(--muted)" font-size="10">&times; 210K</text>
 
-  <line x1="150" y1="86" x2="150" y2="100" stroke="#928374" stroke-width="1"/>
-  <line x1="524" y1="86" x2="524" y2="100" stroke="#928374" stroke-width="1"/>
-  <line x1="150" y1="93" x2="524" y2="93" stroke="#928374" stroke-width="1"/>
-  <text x="337" y="118" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">STRICTLY SERIAL &mdash; ABOUT 7 HOURS</text>
+  <line x1="150" y1="86" x2="150" y2="100" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="524" y1="86" x2="524" y2="100" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="150" y1="93" x2="524" y2="93" stroke="var(--muted)" stroke-width="1"/>
+  <text x="337" y="118" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">STRICTLY SERIAL &mdash; ABOUT 7 HOURS</text>
 
-  <text x="36" y="196" fill="#ebdbb2" font-size="13" letter-spacing="1.5">AFTER</text>
-  <text x="36" y="213" fill="#928374" font-size="10">fetch in parallel,</text>
-  <text x="36" y="226" fill="#928374" font-size="10">apply in order</text>
+  <text x="36" y="196" fill="var(--ink)" font-size="13" letter-spacing="1.5">AFTER</text>
+  <text x="36" y="213" fill="var(--muted)" font-size="10">fetch in parallel,</text>
+  <text x="36" y="226" fill="var(--muted)" font-size="10">apply in order</text>
 
-  <text x="215" y="166" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="0.5">DOWNLOAD + DECRYPT &mdash; &times;32</text>
-  <rect x="150" y="174" width="130" height="16" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="150" y="196" width="130" height="16" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="150" y="218" width="130" height="16" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="150" y="240" width="130" height="16" fill="none" stroke="#928374" stroke-width="1"/>
+  <text x="215" y="166" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">DOWNLOAD + DECRYPT &mdash; &times;32</text>
+  <rect x="150" y="174" width="130" height="16" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="150" y="196" width="130" height="16" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="150" y="218" width="130" height="16" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="150" y="240" width="130" height="16" fill="none" stroke="var(--muted)" stroke-width="1"/>
 
-  <line x1="280" y1="182" x2="416" y2="222" stroke="#928374" stroke-width="1"/>
-  <line x1="280" y1="204" x2="416" y2="224" stroke="#928374" stroke-width="1"/>
-  <line x1="280" y1="226" x2="416" y2="226" stroke="#928374" stroke-width="1"/>
-  <line x1="280" y1="248" x2="416" y2="228" stroke="#928374" stroke-width="1"/>
-  <polygon points="420,225 411,221 411,229" fill="#83a598"/>
+  <line x1="280" y1="182" x2="416" y2="222" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="280" y1="204" x2="416" y2="224" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="280" y1="226" x2="416" y2="226" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="280" y1="248" x2="416" y2="228" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="420,225 411,221 411,229" fill="var(--accent)"/>
 
-  <rect x="420" y="204" width="130" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="485" y="223" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">APPLY</text>
-  <text x="485" y="238" text-anchor="middle" fill="#928374" font-size="9" letter-spacing="0.5">IN ORDER</text>
-  <text x="485" y="278" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">ABOUT 15 MIN &mdash; BANDWIDTH-BOUND</text>
+  <rect x="420" y="204" width="130" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="485" y="223" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">APPLY</text>
+  <text x="485" y="238" text-anchor="middle" fill="var(--muted)" font-size="9" letter-spacing="0.5">IN ORDER</text>
+  <text x="485" y="278" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="0.5">ABOUT 15 MIN &mdash; BANDWIDTH-BOUND</text>
 </svg>`;
 
 export default function BlogSpeedupsWeDidntWrite() {
@@ -107,7 +107,7 @@ export default function BlogSpeedupsWeDidntWrite() {
         <link rel="canonical" href="https://thelastdb.com/blog/speedups-we-didnt-write" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">A week of speedups we didn&rsquo;t write</h1>
       <p className="post-meta dim">2026-06-28</p>
@@ -146,7 +146,7 @@ export default function BlogSpeedupsWeDidntWrite() {
 
       <p className="dim">More on the loop itself: <Link to="/blog/building-lastdb-with-agents">Building LastDB with an autonomous agent loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

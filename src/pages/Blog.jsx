@@ -182,7 +182,7 @@ export default function Blog() {
         <link rel="canonical" href="https://thelastdb.com/blog" />
       </Helmet>
 
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
       <h1 className="tagline">Dev Blog</h1>
       <p>Notes on how we build LastDB &mdash; the process, in the open. <span className="dim">(We share how we work, not what&rsquo;s under the hood.)</span></p>
@@ -199,7 +199,7 @@ export default function Blog() {
             <p className="post-meta"><Label color="green">{post.date}</Label></p>
             <h2><Link to={`/blog/${post.slug}`}>{post.title}</Link></h2>
             <p>{post.blurb}</p>
-            <p><Link to={`/blog/${post.slug}`} className="link-btn">[Read &rarr;]</Link></p>
+            <p><Link to={`/blog/${post.slug}`} className="link-btn">Read &rarr;</Link></p>
           </Card>
         ))}
       </div>

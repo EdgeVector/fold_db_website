@@ -11,7 +11,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -22,85 +22,85 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — the round trip: the boundary is the whole point. An in-memory set→get
 // never leaves the process, so it passes while the app is broken. Only crossing
 // a real boundary asserts the capability.
 const ROUNDTRIP = `${SVG_OPEN('0 0 660 250')}
-  <rect x="36" y="66" width="176" height="60" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="124" y="92" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">ACT</text>
-  <text x="124" y="110" text-anchor="middle" fill="#928374" font-size="10">set a password</text>
+  <rect x="36" y="66" width="176" height="60" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="124" y="92" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">ACT</text>
+  <text x="124" y="110" text-anchor="middle" fill="var(--muted)" font-size="10">set a password</text>
 
-  <line x1="212" y1="96" x2="270" y2="96" stroke="#928374" stroke-width="1"/>
-  <polygon points="272,96 263,92 263,100" fill="#928374"/>
+  <line x1="212" y1="96" x2="270" y2="96" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="272,96 263,92 263,100" fill="var(--muted)"/>
 
-  <line x1="330" y1="30" x2="330" y2="162" stroke="#83a598" stroke-width="1" stroke-dasharray="3 4"/>
-  <text x="330" y="24" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1.5">THE BOUNDARY</text>
-  <text x="330" y="180" text-anchor="middle" fill="#83a598" font-size="10">restart &#183; re-open &#183; re-fetch</text>
+  <line x1="330" y1="30" x2="330" y2="162" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 4"/>
+  <text x="330" y="24" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1.5">THE BOUNDARY</text>
+  <text x="330" y="180" text-anchor="middle" fill="var(--accent)" font-size="10">restart &#183; re-open &#183; re-fetch</text>
 
-  <line x1="390" y1="96" x2="448" y2="96" stroke="#928374" stroke-width="1"/>
-  <polygon points="450,96 441,92 441,100" fill="#928374"/>
+  <line x1="390" y1="96" x2="448" y2="96" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="450,96 441,92 441,100" fill="var(--muted)"/>
 
-  <rect x="450" y="66" width="176" height="60" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="538" y="92" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">ASSERT</text>
-  <text x="538" y="110" text-anchor="middle" fill="#928374" font-size="10">unlock with it</text>
+  <rect x="450" y="66" width="176" height="60" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="538" y="92" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">ASSERT</text>
+  <text x="538" y="110" text-anchor="middle" fill="var(--muted)" font-size="10">unlock with it</text>
 
-  <path d="M124,132 C124,200 538,200 538,132" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="331" y="224" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">SET&#8594;GET IN MEMORY NEVER CROSSES &#8212; IT PASSES WHILE THE APP IS BROKEN</text>
+  <path d="M124,132 C124,200 538,200 538,132" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="331" y="224" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">SET&#8594;GET IN MEMORY NEVER CROSSES &#8212; IT PASSES WHILE THE APP IS BROKEN</text>
 </svg>`;
 
 // 2 — proportional proof: the form of proof scales with blast radius, so the
 // gate is a one-liner where it can be and a real round trip where it must be.
 const LADDER = `${SVG_OPEN('0 0 660 250')}
-  <text x="34" y="40" fill="#928374" font-size="10" letter-spacing="1.5">BLAST RADIUS</text>
-  <line x1="44" y1="52" x2="44" y2="214" stroke="#928374" stroke-width="1"/>
-  <polygon points="44,216 40,207 48,207" fill="#928374"/>
+  <text x="34" y="40" fill="var(--muted)" font-size="10" letter-spacing="1.5">BLAST RADIUS</text>
+  <line x1="44" y1="52" x2="44" y2="214" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="44,216 40,207 48,207" fill="var(--muted)"/>
 
-  <rect x="80" y="52" width="180" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="72" fill="#ebdbb2" font-size="11" letter-spacing="1">NO BEHAVIOR CHANGE</text>
-  <text x="92" y="88" fill="#928374" font-size="10">rename &#183; docs &#183; refactor</text>
-  <text x="286" y="79" fill="#928374" font-size="10">tests still green &#8212; one line why</text>
+  <rect x="80" y="52" width="180" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="72" fill="var(--ink)" font-size="11" letter-spacing="1">NO BEHAVIOR CHANGE</text>
+  <text x="92" y="88" fill="var(--muted)" font-size="10">rename &#183; docs &#183; refactor</text>
+  <text x="286" y="79" fill="var(--muted)" font-size="10">tests still green &#8212; one line why</text>
 
-  <rect x="80" y="108" width="220" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="128" fill="#ebdbb2" font-size="11" letter-spacing="1">LOGIC WITH A UNIT</text>
-  <text x="92" y="144" fill="#928374" font-size="10">a new rule or branch</text>
-  <text x="326" y="135" fill="#928374" font-size="10">a test &#43; a negative case</text>
+  <rect x="80" y="108" width="220" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="128" fill="var(--ink)" font-size="11" letter-spacing="1">LOGIC WITH A UNIT</text>
+  <text x="92" y="144" fill="var(--muted)" font-size="10">a new rule or branch</text>
+  <text x="326" y="135" fill="var(--muted)" font-size="10">a test &#43; a negative case</text>
 
-  <rect x="80" y="164" width="300" height="50" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="92" y="185" fill="#ebdbb2" font-size="11" letter-spacing="1">USER-VISIBLE / STATEFUL</text>
-  <text x="92" y="201" fill="#ebdbb2" font-size="10">auth &#183; settings &#183; sync &#183; a data write</text>
-  <text x="406" y="192" fill="#83a598" font-size="10">the real-app round trip</text>
+  <rect x="80" y="164" width="300" height="50" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="92" y="185" fill="var(--ink)" font-size="11" letter-spacing="1">USER-VISIBLE / STATEFUL</text>
+  <text x="92" y="201" fill="var(--ink)" font-size="10">auth &#183; settings &#183; sync &#183; a data write</text>
+  <text x="406" y="192" fill="var(--accent)" font-size="10">the real-app round trip</text>
 </svg>`;
 
 // 3 — proof is produced by something other than the author. The claim is written
 // from the user's seat; a different agent reproduces it; only then does the gate open.
 const VERIFIER = `${SVG_OPEN('0 0 660 236')}
-  <rect x="36" y="70" width="188" height="86" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="130" y="94" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">## PROOF</text>
-  <text x="130" y="114" text-anchor="middle" fill="#928374" font-size="10">claim &#183; tier &#183; how</text>
-  <text x="130" y="130" text-anchor="middle" fill="#928374" font-size="10">verified-by</text>
-  <text x="130" y="150" text-anchor="middle" fill="#928374" font-size="9" letter-spacing="1">WRITTEN BY THE AUTHOR</text>
+  <rect x="36" y="70" width="188" height="86" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="130" y="94" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">## PROOF</text>
+  <text x="130" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">claim &#183; tier &#183; how</text>
+  <text x="130" y="130" text-anchor="middle" fill="var(--muted)" font-size="10">verified-by</text>
+  <text x="130" y="150" text-anchor="middle" fill="var(--muted)" font-size="9" letter-spacing="1">WRITTEN BY THE AUTHOR</text>
 
-  <line x1="224" y1="113" x2="288" y2="113" stroke="#928374" stroke-width="1"/>
-  <polygon points="290,113 281,109 281,117" fill="#928374"/>
-  <text x="256" y="103" text-anchor="middle" fill="#928374" font-size="9">reproduce</text>
+  <line x1="224" y1="113" x2="288" y2="113" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="290,113 281,109 281,117" fill="var(--muted)"/>
+  <text x="256" y="103" text-anchor="middle" fill="var(--muted)" font-size="9">reproduce</text>
 
-  <rect x="290" y="70" width="160" height="86" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="370" y="100" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">VERIFIER</text>
-  <text x="370" y="118" text-anchor="middle" fill="#83a598" font-size="10">a different agent</text>
-  <text x="370" y="138" text-anchor="middle" fill="#83a598" font-size="9" letter-spacing="1">RUNS THE THING</text>
+  <rect x="290" y="70" width="160" height="86" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="370" y="100" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">VERIFIER</text>
+  <text x="370" y="118" text-anchor="middle" fill="var(--accent)" font-size="10">a different agent</text>
+  <text x="370" y="138" text-anchor="middle" fill="var(--accent)" font-size="9" letter-spacing="1">RUNS THE THING</text>
 
-  <line x1="450" y1="113" x2="514" y2="113" stroke="#928374" stroke-width="1"/>
-  <polygon points="516,113 507,109 507,117" fill="#928374"/>
+  <line x1="450" y1="113" x2="514" y2="113" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="516,113 507,109 507,117" fill="var(--muted)"/>
 
-  <rect x="516" y="82" width="4" height="62" fill="#928374"/>
-  <rect x="540" y="82" width="4" height="62" fill="#928374"/>
-  <text x="530" y="70" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1.5">MERGE</text>
-  <text x="530" y="160" text-anchor="middle" fill="#928374" font-size="9">opens only if it reproduces</text>
+  <rect x="516" y="82" width="4" height="62" fill="var(--muted)"/>
+  <rect x="540" y="82" width="4" height="62" fill="var(--muted)"/>
+  <text x="530" y="70" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1.5">MERGE</text>
+  <text x="530" y="160" text-anchor="middle" fill="var(--muted)" font-size="9">opens only if it reproduces</text>
 </svg>`;
 
 export default function BlogProveItToLand() {
@@ -114,7 +114,7 @@ export default function BlogProveItToLand() {
         <link rel="canonical" href="https://thelastdb.com/blog/prove-it-to-land" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Prove It To Land</h1>
       <p className="post-meta dim">2026-06-30</p>
@@ -173,7 +173,7 @@ export default function BlogProveItToLand() {
 
       <p className="dim">Part of the same system that lets an <Link to="/blog/building-lastdb-with-agents">autonomous agent loop</Link> merge its own work &mdash; safely.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

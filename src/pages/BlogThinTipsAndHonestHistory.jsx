@@ -9,7 +9,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -20,86 +20,86 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // Fig 1 — fat tip vs thin tip (conceptual)
 const FAT_VS_THIN = `${SVG_OPEN('0 0 660 280')}
-  <text x="165" y="28" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">FAT TIP (OLD DEFAULT)</text>
-  <rect x="40" y="48" width="250" height="180" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="165" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11">CONTENT ID</text>
-  <text x="165" y="100" text-anchor="middle" fill="#ebdbb2" font-size="11">CLOCK</text>
-  <text x="165" y="122" text-anchor="middle" fill="#ebdbb2" font-size="11">DEVICE</text>
-  <line x1="60" y1="140" x2="270" y2="140" stroke="#504945" stroke-width="1"/>
-  <text x="165" y="164" text-anchor="middle" fill="#fb4934" font-size="10">SIGNATURE</text>
-  <text x="165" y="182" text-anchor="middle" fill="#fb4934" font-size="10">PUBKEY</text>
-  <text x="165" y="200" text-anchor="middle" fill="#fb4934" font-size="10">PROVENANCE&hellip;</text>
-  <text x="165" y="248" text-anchor="middle" fill="#928374" font-size="10">crypto on every field tip</text>
+  <text x="165" y="28" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">FAT TIP (OLD DEFAULT)</text>
+  <rect x="40" y="48" width="250" height="180" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="165" y="78" text-anchor="middle" fill="var(--ink)" font-size="11">CONTENT ID</text>
+  <text x="165" y="100" text-anchor="middle" fill="var(--ink)" font-size="11">CLOCK</text>
+  <text x="165" y="122" text-anchor="middle" fill="var(--ink)" font-size="11">DEVICE</text>
+  <line x1="60" y1="140" x2="270" y2="140" stroke="var(--line)" stroke-width="1"/>
+  <text x="165" y="164" text-anchor="middle" fill="var(--warn)" font-size="10">SIGNATURE</text>
+  <text x="165" y="182" text-anchor="middle" fill="var(--warn)" font-size="10">PUBKEY</text>
+  <text x="165" y="200" text-anchor="middle" fill="var(--warn)" font-size="10">PROVENANCE&hellip;</text>
+  <text x="165" y="248" text-anchor="middle" fill="var(--muted)" font-size="10">crypto on every field tip</text>
 
-  <line x1="330" y1="40" x2="330" y2="250" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="330" y1="40" x2="330" y2="250" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="495" y="28" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">THIN TIP (NOW)</text>
-  <rect x="370" y="48" width="250" height="100" fill="url(#poche)" stroke="#83a598" stroke-width="1.5"/>
-  <text x="495" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11">CONTENT ID</text>
-  <text x="495" y="100" text-anchor="middle" fill="#ebdbb2" font-size="11">CLOCK + DEVICE</text>
-  <text x="495" y="122" text-anchor="middle" fill="#83a598" font-size="10">(+ optional PREV LINK)</text>
-  <text x="495" y="180" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1">POINTERS ONLY</text>
-  <text x="495" y="200" text-anchor="middle" fill="#928374" font-size="10">values live in content rows</text>
-  <text x="495" y="248" text-anchor="middle" fill="#928374" font-size="10">trust at the channel, not every tip</text>
+  <text x="495" y="28" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">THIN TIP (NOW)</text>
+  <rect x="370" y="48" width="250" height="100" fill="url(#poche)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="495" y="78" text-anchor="middle" fill="var(--ink)" font-size="11">CONTENT ID</text>
+  <text x="495" y="100" text-anchor="middle" fill="var(--ink)" font-size="11">CLOCK + DEVICE</text>
+  <text x="495" y="122" text-anchor="middle" fill="var(--accent)" font-size="10">(+ optional PREV LINK)</text>
+  <text x="495" y="180" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1">POINTERS ONLY</text>
+  <text x="495" y="200" text-anchor="middle" fill="var(--muted)" font-size="10">values live in content rows</text>
+  <text x="495" y="248" text-anchor="middle" fill="var(--muted)" font-size="10">trust at the channel, not every tip</text>
 </svg>`;
 
 // Fig 2 — tip version chain
 const TIP_CHAIN = `${SVG_OPEN('0 0 660 240')}
-  <text x="330" y="28" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">PER-SLOT TIP VERSION CHAIN</text>
+  <text x="330" y="28" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">PER-SLOT TIP VERSION CHAIN</text>
 
-  <rect x="40" y="60" width="160" height="70" fill="url(#poche)" stroke="#83a598" stroke-width="1.5"/>
-  <text x="120" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">HEAD TIP</text>
-  <text x="120" y="108" text-anchor="middle" fill="#928374" font-size="10">current content id</text>
+  <rect x="40" y="60" width="160" height="70" fill="url(#poche)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="120" y="88" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">HEAD TIP</text>
+  <text x="120" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">current content id</text>
 
-  <line x1="200" y1="95" x2="250" y2="95" stroke="#928374" stroke-width="1"/>
-  <polygon points="252,95 243,91 243,99" fill="#928374"/>
-  <text x="226" y="82" text-anchor="middle" fill="#83a598" font-size="9">PREV</text>
+  <line x1="200" y1="95" x2="250" y2="95" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="252,95 243,91 243,99" fill="var(--muted)"/>
+  <text x="226" y="82" text-anchor="middle" fill="var(--accent)" font-size="9">PREV</text>
 
-  <rect x="252" y="60" width="160" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="332" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11">ARCHIVE</text>
-  <text x="332" y="108" text-anchor="middle" fill="#928374" font-size="10">prior tip version</text>
+  <rect x="252" y="60" width="160" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="332" y="88" text-anchor="middle" fill="var(--ink)" font-size="11">ARCHIVE</text>
+  <text x="332" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">prior tip version</text>
 
-  <line x1="412" y1="95" x2="462" y2="95" stroke="#928374" stroke-width="1"/>
-  <polygon points="464,95 455,91 455,99" fill="#928374"/>
-  <text x="438" y="82" text-anchor="middle" fill="#83a598" font-size="9">PREV</text>
+  <line x1="412" y1="95" x2="462" y2="95" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="464,95 455,91 455,99" fill="var(--muted)"/>
+  <text x="438" y="82" text-anchor="middle" fill="var(--accent)" font-size="9">PREV</text>
 
-  <rect x="464" y="60" width="160" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="544" y="88" text-anchor="middle" fill="#ebdbb2" font-size="11">ARCHIVE</text>
-  <text x="544" y="108" text-anchor="middle" fill="#928374" font-size="10">earlier still</text>
+  <rect x="464" y="60" width="160" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="544" y="88" text-anchor="middle" fill="var(--ink)" font-size="11">ARCHIVE</text>
+  <text x="544" y="108" text-anchor="middle" fill="var(--muted)" font-size="10">earlier still</text>
 
-  <text x="330" y="170" text-anchor="middle" fill="#928374" font-size="11">as-of walks the chain until the clock is old enough</text>
-  <text x="330" y="192" text-anchor="middle" fill="#928374" font-size="10">each node is a pointer + clock &mdash; not a full value copy</text>
-  <text x="330" y="220" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">REAL HISTORY WITHOUT A FAT EVENT LOG</text>
+  <text x="330" y="170" text-anchor="middle" fill="var(--muted)" font-size="11">as-of walks the chain until the clock is old enough</text>
+  <text x="330" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">each node is a pointer + clock &mdash; not a full value copy</text>
+  <text x="330" y="220" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">REAL HISTORY WITHOUT A FAT EVENT LOG</text>
 </svg>`;
 
 // Fig 3 — where bytes go (conceptual bars)
 const WHERE_BYTES = `${SVG_OPEN('0 0 660 260')}
-  <text x="330" y="28" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">WHERE LIVE BYTES GO (CONCEPTUAL)</text>
+  <text x="330" y="28" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHERE LIVE BYTES GO (CONCEPTUAL)</text>
 
-  <text x="40" y="70" fill="#ebdbb2" font-size="11">VALUES</text>
-  <rect x="140" y="54" width="440" height="28" fill="url(#poche)" stroke="#83a598" stroke-width="1.5"/>
-  <text x="360" y="73" text-anchor="middle" fill="#ebdbb2" font-size="11">content rows &mdash; the bodies you wrote</text>
+  <text x="40" y="70" fill="var(--ink)" font-size="11">VALUES</text>
+  <rect x="140" y="54" width="440" height="28" fill="url(#poche)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="360" y="73" text-anchor="middle" fill="var(--ink)" font-size="11">content rows &mdash; the bodies you wrote</text>
 
-  <text x="40" y="120" fill="#ebdbb2" font-size="11">TIPS</text>
-  <rect x="140" y="104" width="310" height="28" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="295" y="123" text-anchor="middle" fill="#ebdbb2" font-size="11">current pointers (now thin)</text>
+  <text x="40" y="120" fill="var(--ink)" font-size="11">TIPS</text>
+  <rect x="140" y="104" width="310" height="28" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="295" y="123" text-anchor="middle" fill="var(--ink)" font-size="11">current pointers (now thin)</text>
 
-  <text x="40" y="170" fill="#ebdbb2" font-size="11">INDEXES</text>
-  <rect x="140" y="154" width="240" height="28" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="260" y="173" text-anchor="middle" fill="#ebdbb2" font-size="11">scan / sample helpers</text>
+  <text x="40" y="170" fill="var(--ink)" font-size="11">INDEXES</text>
+  <rect x="140" y="154" width="240" height="28" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="260" y="173" text-anchor="middle" fill="var(--ink)" font-size="11">scan / sample helpers</text>
 
-  <text x="40" y="220" fill="#ebdbb2" font-size="11">VERSIONS</text>
-  <rect x="140" y="204" width="40" height="28" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="280" y="223" fill="#83a598" font-size="10">tip archives &mdash; small, grow with overwrites</text>
+  <text x="40" y="220" fill="var(--ink)" font-size="11">VERSIONS</text>
+  <rect x="140" y="204" width="40" height="28" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="280" y="223" fill="var(--accent)" font-size="10">tip archives &mdash; small, grow with overwrites</text>
 
-  <text x="330" y="252" text-anchor="middle" fill="#928374" font-size="10">no always-on mutation event stream on the hot path</text>
+  <text x="330" y="252" text-anchor="middle" fill="var(--muted)" font-size="10">no always-on mutation event stream on the hot path</text>
 </svg>`;
 
 export default function BlogThinTipsAndHonestHistory() {
@@ -121,7 +121,7 @@ export default function BlogThinTipsAndHonestHistory() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
 
@@ -292,7 +292,7 @@ export default function BlogThinTipsAndHonestHistory() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
     </article>

@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,103 +21,103 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — the easy answer we threw away: one server in the middle sees everything.
 const PROXY = `${SVG_OPEN('0 0 660 210')}
-  <rect x="30" y="80" width="124" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="106" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
-  <text x="92" y="123" text-anchor="middle" fill="#928374" font-size="10">your words</text>
+  <rect x="30" y="80" width="124" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="106" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
+  <text x="92" y="123" text-anchor="middle" fill="var(--muted)" font-size="10">your words</text>
 
-  <rect x="268" y="70" width="156" height="76" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="346" y="100" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">OUR SERVER</text>
-  <text x="346" y="118" text-anchor="middle" fill="#83a598" font-size="10">reads every word</text>
-  <text x="346" y="132" text-anchor="middle" fill="#83a598" font-size="10">holds the key</text>
+  <rect x="268" y="70" width="156" height="76" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="346" y="100" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">OUR SERVER</text>
+  <text x="346" y="118" text-anchor="middle" fill="var(--accent)" font-size="10">reads every word</text>
+  <text x="346" y="132" text-anchor="middle" fill="var(--accent)" font-size="10">holds the key</text>
 
-  <rect x="520" y="80" width="110" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="575" y="112" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">ANTHROPIC</text>
+  <rect x="520" y="80" width="110" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="575" y="112" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">ANTHROPIC</text>
 
-  <line x1="154" y1="108" x2="266" y2="108" stroke="#928374" stroke-width="1"/>
-  <polygon points="266,108 257,104 257,112" fill="#928374"/>
-  <text x="210" y="100" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">PLAINTEXT</text>
+  <line x1="154" y1="108" x2="266" y2="108" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="266,108 257,104 257,112" fill="var(--muted)"/>
+  <text x="210" y="100" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">PLAINTEXT</text>
 
-  <line x1="424" y1="108" x2="518" y2="108" stroke="#928374" stroke-width="1"/>
-  <polygon points="518,108 509,104 509,112" fill="#928374"/>
-  <text x="471" y="100" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">PLAINTEXT</text>
+  <line x1="424" y1="108" x2="518" y2="108" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="518,108 509,104 509,112" fill="var(--muted)"/>
+  <text x="471" y="100" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">PLAINTEXT</text>
 
-  <text x="346" y="44" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1.2">ONE PLACE SEES WHO + WHAT</text>
-  <line x1="346" y1="52" x2="346" y2="68" stroke="#83a598" stroke-width="1" stroke-dasharray="2 3"/>
-  <rect x="344" y="68" width="4" height="4" fill="#83a598"/>
+  <text x="346" y="44" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1.2">ONE PLACE SEES WHO + WHAT</text>
+  <line x1="346" y1="52" x2="346" y2="68" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="344" y="68" width="4" height="4" fill="var(--accent)"/>
 </svg>`;
 
 // 2 — split the job in two: the relay knows who, the enclave knows what.
 const SPLIT = `${SVG_OPEN('0 0 660 244')}
-  <rect x="24" y="86" width="110" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="79" y="110" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
-  <text x="79" y="127" text-anchor="middle" fill="#928374" font-size="10">seals + verifies</text>
+  <rect x="24" y="86" width="110" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="79" y="110" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
+  <text x="79" y="127" text-anchor="middle" fill="var(--muted)" font-size="10">seals + verifies</text>
 
-  <rect x="176" y="86" width="120" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="236" y="110" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">BLIND RELAY</text>
-  <text x="236" y="127" text-anchor="middle" fill="#928374" font-size="10">strips identity</text>
+  <rect x="176" y="86" width="120" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="236" y="110" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">BLIND RELAY</text>
+  <text x="236" y="127" text-anchor="middle" fill="var(--muted)" font-size="10">strips identity</text>
 
-  <rect x="340" y="78" width="130" height="72" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="405" y="106" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">ENCLAVE</text>
-  <text x="405" y="123" text-anchor="middle" fill="#83a598" font-size="10">sealed — we</text>
-  <text x="405" y="136" text-anchor="middle" fill="#83a598" font-size="10">can't open it</text>
+  <rect x="340" y="78" width="130" height="72" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="405" y="106" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">ENCLAVE</text>
+  <text x="405" y="123" text-anchor="middle" fill="var(--accent)" font-size="10">sealed — we</text>
+  <text x="405" y="136" text-anchor="middle" fill="var(--accent)" font-size="10">can't open it</text>
 
-  <rect x="520" y="86" width="112" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="576" y="110" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">ANTHROPIC</text>
-  <text x="576" y="127" text-anchor="middle" fill="#928374" font-size="10">text, not who</text>
+  <rect x="520" y="86" width="112" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="576" y="110" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">ANTHROPIC</text>
+  <text x="576" y="127" text-anchor="middle" fill="var(--muted)" font-size="10">text, not who</text>
 
-  <line x1="134" y1="114" x2="174" y2="114" stroke="#928374" stroke-width="1"/>
-  <polygon points="174,114 165,110 165,118" fill="#928374"/>
-  <line x1="296" y1="114" x2="338" y2="114" stroke="#928374" stroke-width="1"/>
-  <polygon points="338,114 329,110 329,118" fill="#928374"/>
-  <line x1="470" y1="114" x2="518" y2="114" stroke="#928374" stroke-width="1"/>
-  <polygon points="518,114 509,110 509,118" fill="#928374"/>
+  <line x1="134" y1="114" x2="174" y2="114" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="174,114 165,110 165,118" fill="var(--muted)"/>
+  <line x1="296" y1="114" x2="338" y2="114" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="338,114 329,110 329,118" fill="var(--muted)"/>
+  <line x1="470" y1="114" x2="518" y2="114" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="518,114 509,110 509,118" fill="var(--muted)"/>
 
-  <line x1="176" y1="160" x2="176" y2="174" stroke="#928374" stroke-width="1"/>
-  <line x1="296" y1="160" x2="296" y2="174" stroke="#928374" stroke-width="1"/>
-  <line x1="176" y1="167" x2="296" y2="167" stroke="#928374" stroke-width="1"/>
-  <text x="236" y="190" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1.5">KNOWS WHO</text>
+  <line x1="176" y1="160" x2="176" y2="174" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="296" y1="160" x2="296" y2="174" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="176" y1="167" x2="296" y2="167" stroke="var(--muted)" stroke-width="1"/>
+  <text x="236" y="190" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1.5">KNOWS WHO</text>
 
-  <line x1="340" y1="160" x2="340" y2="174" stroke="#83a598" stroke-width="1"/>
-  <line x1="470" y1="160" x2="470" y2="174" stroke="#83a598" stroke-width="1"/>
-  <line x1="340" y1="167" x2="470" y2="167" stroke="#83a598" stroke-width="1"/>
-  <text x="405" y="190" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1.5">KNOWS WHAT</text>
+  <line x1="340" y1="160" x2="340" y2="174" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="470" y1="160" x2="470" y2="174" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="340" y1="167" x2="470" y2="167" stroke="var(--accent)" stroke-width="1"/>
+  <text x="405" y="190" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1.5">KNOWS WHAT</text>
 
-  <text x="323" y="222" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">NO SINGLE PARTY LINKS WHO &#8596; WHAT</text>
+  <text x="323" y="222" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">NO SINGLE PARTY LINKS WHO &#8596; WHAT</text>
 </svg>`;
 
 // 3 — a box we run but cannot open; the client trusts it only after a proof.
 const SEALED = `${SVG_OPEN('0 0 660 268')}
-  <rect x="28" y="104" width="124" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="90" y="134" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
-  <text x="90" y="151" text-anchor="middle" fill="#928374" font-size="10">checks the proof</text>
-  <text x="90" y="208" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">MISMATCH &#8594; REFUSE</text>
+  <rect x="28" y="104" width="124" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="90" y="134" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">YOUR DEVICE</text>
+  <text x="90" y="151" text-anchor="middle" fill="var(--muted)" font-size="10">checks the proof</text>
+  <text x="90" y="208" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">MISMATCH &#8594; REFUSE</text>
 
-  <rect x="288" y="40" width="344" height="210" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="460" y="62" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">THE MACHINE WE OPERATE</text>
+  <rect x="288" y="40" width="344" height="210" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="460" y="62" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">THE MACHINE WE OPERATE</text>
 
-  <rect x="356" y="104" width="218" height="92" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="465" y="138" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">SEALED ENCLAVE</text>
-  <text x="465" y="157" text-anchor="middle" fill="#83a598" font-size="10">holds the key &#183; reads the chat</text>
-  <text x="460" y="232" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NO SHELL &#183; NO MEMORY DUMP &#183; NO DISK</text>
+  <rect x="356" y="104" width="218" height="92" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="465" y="138" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">SEALED ENCLAVE</text>
+  <text x="465" y="157" text-anchor="middle" fill="var(--accent)" font-size="10">holds the key &#183; reads the chat</text>
+  <text x="460" y="232" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">NO SHELL &#183; NO MEMORY DUMP &#183; NO DISK</text>
 
-  <line x1="152" y1="70" x2="286" y2="70" stroke="#928374" stroke-width="1"/>
-  <polygon points="286,70 277,66 277,74" fill="#928374"/>
-  <text x="219" y="62" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">1 &#183; PROVE YOU'RE SEALED</text>
+  <line x1="152" y1="70" x2="286" y2="70" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="286,70 277,66 277,74" fill="var(--muted)"/>
+  <text x="219" y="62" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">1 &#183; PROVE YOU'RE SEALED</text>
 
-  <line x1="286" y1="92" x2="152" y2="92" stroke="#928374" stroke-width="1"/>
-  <polygon points="152,92 161,88 161,96" fill="#928374"/>
-  <text x="219" y="104" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">SIGNED ATTESTATION</text>
+  <line x1="286" y1="92" x2="152" y2="92" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="152,92 161,88 161,96" fill="var(--muted)"/>
+  <text x="219" y="104" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">SIGNED ATTESTATION</text>
 
-  <line x1="152" y1="150" x2="354" y2="150" stroke="#83a598" stroke-width="1"/>
-  <polygon points="356,150 347,146 347,154" fill="#83a598"/>
-  <text x="252" y="142" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">2 &#183; SEAL CHAT TO ITS KEY</text>
+  <line x1="152" y1="150" x2="354" y2="150" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="356,150 347,146 347,154" fill="var(--accent)"/>
+  <text x="252" y="142" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">2 &#183; SEAL CHAT TO ITS KEY</text>
 </svg>`;
 
 export default function BlogCantNotWont() {
@@ -131,7 +131,7 @@ export default function BlogCantNotWont() {
         <link rel="canonical" href="https://thelastdb.com/blog/cant-not-wont" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Can&rsquo;t, Not Won&rsquo;t</h1>
       <p className="post-meta dim">2026-06-30</p>
@@ -196,7 +196,7 @@ export default function BlogCantNotWont() {
 
       <p className="dim">Part of making LastDB <Link to="/">a place your data is actually yours</Link> &mdash; built in the open, the same way we build <Link to="/blog/building-lastdb-with-agents">everything else</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

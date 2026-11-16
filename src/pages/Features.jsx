@@ -37,7 +37,7 @@ export default function Features() {
         <link rel="canonical" href="https://thelastdb.com/features" />
       </Helmet>
 
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
       <h1 className="tagline">Feature Blog</h1>
       <p>
@@ -60,7 +60,7 @@ export default function Features() {
             </p>
             <h2><Link to={`/features/${post.slug}`}>{post.title}</Link></h2>
             <p>{post.blurb}</p>
-            <p><Link to={`/features/${post.slug}`} className="link-btn">[Read &rarr;]</Link></p>
+            <p><Link to={`/features/${post.slug}`} className="link-btn">Read &rarr;</Link></p>
           </Card>
         ))}
       </div>

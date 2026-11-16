@@ -9,7 +9,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -20,113 +20,113 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
 const SVG_OPEN = (vb) =>
-  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — board + heartbeats feed a theater that only animates diffs.
 const PIPELINE = `${SVG_OPEN('0 0 660 250')}
-  <rect x="24" y="36" width="130" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="89" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">BACKLOG</text>
-  <text x="89" y="88" text-anchor="middle" fill="#928374" font-size="10">waiting</text>
+  <rect x="24" y="36" width="130" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="89" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">BACKLOG</text>
+  <text x="89" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">waiting</text>
 
-  <line x1="154" y1="72" x2="178" y2="72" stroke="#928374" stroke-width="1"/>
-  <polygon points="178,72 169,68 169,76" fill="#928374"/>
+  <line x1="154" y1="72" x2="178" y2="72" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="178,72 169,68 169,76" fill="var(--muted)"/>
 
-  <rect x="182" y="36" width="130" height="72" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="247" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">TODO</text>
-  <text x="247" y="88" text-anchor="middle" fill="#928374" font-size="10">ready</text>
+  <rect x="182" y="36" width="130" height="72" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="247" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">TODO</text>
+  <text x="247" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">ready</text>
 
-  <line x1="312" y1="72" x2="336" y2="72" stroke="#83a598" stroke-width="1"/>
-  <polygon points="336,72 327,68 327,76" fill="#83a598"/>
+  <line x1="312" y1="72" x2="336" y2="72" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="336,72 327,68 327,76" fill="var(--accent)"/>
 
-  <rect x="340" y="36" width="130" height="72" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="405" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DOING</text>
-  <text x="405" y="88" text-anchor="middle" fill="#83a598" font-size="10">in flight</text>
+  <rect x="340" y="36" width="130" height="72" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="405" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DOING</text>
+  <text x="405" y="88" text-anchor="middle" fill="var(--accent)" font-size="10">in flight</text>
 
-  <line x1="470" y1="72" x2="494" y2="72" stroke="#928374" stroke-width="1"/>
-  <polygon points="494,72 485,68 485,76" fill="#928374"/>
+  <line x1="470" y1="72" x2="494" y2="72" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="494,72 485,68 485,76" fill="var(--muted)"/>
 
-  <rect x="498" y="36" width="138" height="72" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="567" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DONE</text>
-  <text x="567" y="88" text-anchor="middle" fill="#928374" font-size="10">shipped</text>
+  <rect x="498" y="36" width="138" height="72" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="567" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DONE</text>
+  <text x="567" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">shipped</text>
 
-  <rect x="120" y="150" width="180" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="210" y="174" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE BOARD</text>
-  <text x="210" y="192" text-anchor="middle" fill="#928374" font-size="10">live cards</text>
+  <rect x="120" y="150" width="180" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="210" y="174" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE BOARD</text>
+  <text x="210" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">live cards</text>
 
-  <rect x="360" y="150" width="180" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="450" y="174" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">JOB HEARTBEATS</text>
-  <text x="450" y="192" text-anchor="middle" fill="#928374" font-size="10">who fired, what happened</text>
+  <rect x="360" y="150" width="180" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="450" y="174" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">JOB HEARTBEATS</text>
+  <text x="450" y="192" text-anchor="middle" fill="var(--muted)" font-size="10">who fired, what happened</text>
 
-  <line x1="210" y1="150" x2="210" y2="120" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <line x1="450" y1="150" x2="450" y2="120" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <line x1="210" y1="120" x2="450" y2="120" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <line x1="330" y1="120" x2="330" y2="108" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="230" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">THE THEATER ONLY MOVES WHEN THESE CHANGE</text>
+  <line x1="210" y1="150" x2="210" y2="120" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="450" y1="150" x2="450" y2="120" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="210" y1="120" x2="450" y2="120" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="330" y1="120" x2="330" y2="108" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="230" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">THE THEATER ONLY MOVES WHEN THESE CHANGE</text>
 </svg>`;
 
 // 2 — snapshot → diff → hop (not a fake simulation).
 const DIFF = `${SVG_OPEN('0 0 660 236')}
-  <rect x="40" y="40" width="150" height="64" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="115" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SNAPSHOT t0</text>
-  <text x="115" y="88" text-anchor="middle" fill="#928374" font-size="10">card X in TODO</text>
+  <rect x="40" y="40" width="150" height="64" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="115" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">SNAPSHOT t0</text>
+  <text x="115" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">card X in TODO</text>
 
-  <rect x="255" y="40" width="150" height="64" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="68" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SNAPSHOT t1</text>
-  <text x="330" y="88" text-anchor="middle" fill="#928374" font-size="10">card X in DOING</text>
+  <rect x="255" y="40" width="150" height="64" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="68" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">SNAPSHOT t1</text>
+  <text x="330" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">card X in DOING</text>
 
-  <line x1="190" y1="72" x2="250" y2="72" stroke="#928374" stroke-width="1"/>
-  <polygon points="250,72 241,68 241,76" fill="#928374"/>
-  <text x="220" y="60" text-anchor="middle" fill="#928374" font-size="10">poll</text>
+  <line x1="190" y1="72" x2="250" y2="72" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="250,72 241,68 241,76" fill="var(--muted)"/>
+  <text x="220" y="60" text-anchor="middle" fill="var(--muted)" font-size="10">poll</text>
 
-  <rect x="470" y="40" width="150" height="64" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="545" y="68" text-anchor="middle" fill="#83a598" font-size="12" letter-spacing="1.5">DIFF</text>
-  <text x="545" y="88" text-anchor="middle" fill="#928374" font-size="10">TODO &rarr; DOING</text>
+  <rect x="470" y="40" width="150" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="545" y="68" text-anchor="middle" fill="var(--accent)" font-size="12" letter-spacing="1.5">DIFF</text>
+  <text x="545" y="88" text-anchor="middle" fill="var(--muted)" font-size="10">TODO &rarr; DOING</text>
 
-  <line x1="405" y1="72" x2="465" y2="72" stroke="#83a598" stroke-width="1"/>
-  <polygon points="465,72 456,68 456,76" fill="#83a598"/>
+  <line x1="405" y1="72" x2="465" y2="72" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="465,72 456,68 456,76" fill="var(--accent)"/>
 
-  <line x1="545" y1="104" x2="545" y2="148" stroke="#83a598" stroke-width="1"/>
-  <rect x="543" y="148" width="4" height="4" fill="#83a598"/>
+  <line x1="545" y1="104" x2="545" y2="148" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="543" y="148" width="4" height="4" fill="var(--accent)"/>
 
-  <rect x="180" y="156" width="300" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="330" y="180" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">HOP + BLIP + SPEECH</text>
-  <text x="330" y="196" text-anchor="middle" fill="#928374" font-size="10">animation is the delta, not a loop of noise</text>
+  <rect x="180" y="156" width="300" height="52" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="330" y="180" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">HOP + BLIP + SPEECH</text>
+  <text x="330" y="196" text-anchor="middle" fill="var(--muted)" font-size="10">animation is the delta, not a loop of noise</text>
 </svg>`;
 
 // 3 — scheduled jobs as a crew with roles, not faceless cron.
 const CREW = `${SVG_OPEN('0 0 660 220')}
-  <rect x="36" y="48" width="110" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="91" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PICKUP</text>
-  <text x="91" y="96" text-anchor="middle" fill="#928374" font-size="9">grabs ready work</text>
+  <rect x="36" y="48" width="110" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="91" y="78" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PICKUP</text>
+  <text x="91" y="96" text-anchor="middle" fill="var(--muted)" font-size="9">grabs ready work</text>
 
-  <rect x="162" y="48" width="110" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="217" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">GROOM</text>
-  <text x="217" y="96" text-anchor="middle" fill="#928374" font-size="9">unblocks queue</text>
+  <rect x="162" y="48" width="110" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="217" y="78" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">GROOM</text>
+  <text x="217" y="96" text-anchor="middle" fill="var(--muted)" font-size="9">unblocks queue</text>
 
-  <rect x="288" y="48" width="110" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="343" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PIPELINE</text>
-  <text x="343" y="96" text-anchor="middle" fill="#928374" font-size="9">keeps merges clear</text>
+  <rect x="288" y="48" width="110" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="343" y="78" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PIPELINE</text>
+  <text x="343" y="96" text-anchor="middle" fill="var(--muted)" font-size="9">keeps merges clear</text>
 
-  <rect x="414" y="48" width="110" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="469" y="78" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">WATCH</text>
-  <text x="469" y="96" text-anchor="middle" fill="#928374" font-size="9">reconciles stuck</text>
+  <rect x="414" y="48" width="110" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="469" y="78" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">WATCH</text>
+  <text x="469" y="96" text-anchor="middle" fill="var(--muted)" font-size="9">reconciles stuck</text>
 
-  <rect x="540" y="48" width="90" height="70" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="585" y="78" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1">YOU</text>
-  <text x="585" y="96" text-anchor="middle" fill="#83a598" font-size="9">decisions</text>
+  <rect x="540" y="48" width="90" height="70" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="585" y="78" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1">YOU</text>
+  <text x="585" y="96" text-anchor="middle" fill="var(--accent)" font-size="9">decisions</text>
 
-  <line x1="91" y1="118" x2="91" y2="150" stroke="#504945" stroke-width="1"/>
-  <line x1="217" y1="118" x2="217" y2="150" stroke="#504945" stroke-width="1"/>
-  <line x1="343" y1="118" x2="343" y2="150" stroke="#504945" stroke-width="1"/>
-  <line x1="469" y1="118" x2="469" y2="150" stroke="#504945" stroke-width="1"/>
-  <line x1="91" y1="150" x2="469" y2="150" stroke="#504945" stroke-width="1"/>
-  <line x1="280" y1="150" x2="280" y2="170" stroke="#928374" stroke-width="1"/>
-  <rect x="160" y="170" width="240" height="32" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="280" y="190" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">SAME BOARD</text>
+  <line x1="91" y1="118" x2="91" y2="150" stroke="var(--line)" stroke-width="1"/>
+  <line x1="217" y1="118" x2="217" y2="150" stroke="var(--line)" stroke-width="1"/>
+  <line x1="343" y1="118" x2="343" y2="150" stroke="var(--line)" stroke-width="1"/>
+  <line x1="469" y1="118" x2="469" y2="150" stroke="var(--line)" stroke-width="1"/>
+  <line x1="91" y1="150" x2="469" y2="150" stroke="var(--line)" stroke-width="1"/>
+  <line x1="280" y1="150" x2="280" y2="170" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="160" y="170" width="240" height="32" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="280" y="190" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">SAME BOARD</text>
 </svg>`;
 
 export default function BlogKanbanFactory() {
@@ -148,7 +148,7 @@ export default function BlogKanbanFactory() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
 
@@ -178,9 +178,9 @@ export default function BlogKanbanFactory() {
           style={{
             width: '100%',
             maxWidth: '760px',
-            border: '1px solid #3c3836',
+            border: '1px solid var(--line-soft)',
             borderRadius: '6px',
-            background: '#1d2021',
+            background: 'var(--surface)',
             display: 'block',
             margin: '0 auto',
           }}
@@ -189,7 +189,7 @@ export default function BlogKanbanFactory() {
         </video>
         <figcaption
           style={{
-            color: '#928374',
+            color: 'var(--muted)',
             fontSize: '11px',
             letterSpacing: '0.06em',
             marginTop: '10px',
@@ -327,7 +327,7 @@ export default function BlogKanbanFactory() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
     </article>

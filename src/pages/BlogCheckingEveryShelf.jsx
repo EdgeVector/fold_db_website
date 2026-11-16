@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,32 +21,32 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
     <pattern id="cells" width="20" height="28" patternUnits="userSpaceOnUse">
-      <line x1="0" y1="0" x2="0" y2="28" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="28" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // Fig 1 — one cheap read that walks the whole warehouse.
 const WAREHOUSE = `${SVG_OPEN('0 0 660 300')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE CARD SHOW</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">ONE CARD SHOW</text>
 
-  <circle cx="72" cy="88" r="28" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="72" y="92" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">APP</text>
-  <text x="72" y="132" text-anchor="middle" fill="#928374" font-size="10">wants one row</text>
+  <circle cx="72" cy="88" r="28" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="72" y="92" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">APP</text>
+  <text x="72" y="132" text-anchor="middle" fill="var(--muted)" font-size="10">wants one row</text>
 
-  <line x1="100" y1="88" x2="168" y2="88" stroke="#928374" stroke-width="1"/>
-  <polygon points="170,88 161,84 161,92" fill="#928374"/>
-  <rect x="166" y="86" width="4" height="4" fill="#928374"/>
+  <line x1="100" y1="88" x2="168" y2="88" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="170,88 161,84 161,92" fill="var(--muted)"/>
+  <rect x="166" y="86" width="4" height="4" fill="var(--muted)"/>
 
-  <rect x="174" y="48" width="450" height="180" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="399" y="72" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTDB · HASH GROUPS</text>
-  <text x="399" y="90" text-anchor="middle" fill="#928374" font-size="10">~1024 buckets · fanout 16 when keyed well</text>
+  <rect x="174" y="48" width="450" height="180" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="399" y="72" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">LASTDB · HASH GROUPS</text>
+  <text x="399" y="90" text-anchor="middle" fill="var(--muted)" font-size="10">~1024 buckets · fanout 16 when keyed well</text>
 
   <!-- grid of buckets: most faint, all visited = thrash -->
-  <g stroke="#504945" stroke-width="1" fill="none">
+  <g stroke="var(--line)" stroke-width="1" fill="none">
     <rect x="198" y="110" width="36" height="28"/>
     <rect x="242" y="110" width="36" height="28"/>
     <rect x="286" y="110" width="36" height="28"/>
@@ -67,7 +67,7 @@ const WAREHOUSE = `${SVG_OPEN('0 0 660 300')}
     <rect x="550" y="148" width="36" height="28"/>
   </g>
   <!-- highlight every cell with dashed accent walk -->
-  <g stroke="#83a598" stroke-width="1" fill="none" stroke-dasharray="2 2">
+  <g stroke="var(--accent)" stroke-width="1" fill="none" stroke-dasharray="2 2">
     <rect x="198" y="110" width="36" height="28"/>
     <rect x="242" y="110" width="36" height="28"/>
     <rect x="286" y="110" width="36" height="28"/>
@@ -87,30 +87,30 @@ const WAREHOUSE = `${SVG_OPEN('0 0 660 300')}
     <rect x="506" y="148" width="36" height="28"/>
     <rect x="550" y="148" width="36" height="28"/>
   </g>
-  <text x="399" y="204" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="0.5">EVERY BUCKET VISITED</text>
+  <text x="399" y="204" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="0.5">EVERY BUCKET VISITED</text>
 
-  <line x1="174" y1="248" x2="174" y2="262" stroke="#928374" stroke-width="1"/>
-  <line x1="624" y1="248" x2="624" y2="262" stroke="#928374" stroke-width="1"/>
-  <line x1="174" y1="255" x2="624" y2="255" stroke="#928374" stroke-width="1"/>
-  <text x="399" y="282" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">PREFIX HAS NO SHELF LABEL → FULL COLLECTION SWEEP</text>
+  <line x1="174" y1="248" x2="174" y2="262" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="624" y1="248" x2="624" y2="262" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="174" y1="255" x2="624" y2="255" stroke="var(--muted)" stroke-width="1"/>
+  <text x="399" y="282" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">PREFIX HAS NO SHELF LABEL → FULL COLLECTION SWEEP</text>
 </svg>`;
 
 // Fig 2 — shelf label: prune to a neighborhood; index points at records.
 const SHELF = `${SVG_OPEN('0 0 660 280')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">SAME CARD · AFTER</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">SAME CARD · AFTER</text>
 
-  <circle cx="72" cy="88" r="28" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="72" y="92" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">APP</text>
-  <text x="72" y="132" text-anchor="middle" fill="#928374" font-size="10">wants one row</text>
+  <circle cx="72" cy="88" r="28" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="72" y="92" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">APP</text>
+  <text x="72" y="132" text-anchor="middle" fill="var(--muted)" font-size="10">wants one row</text>
 
-  <line x1="100" y1="88" x2="168" y2="88" stroke="#83a598" stroke-width="1"/>
-  <polygon points="170,88 161,84 161,92" fill="#83a598"/>
-  <rect x="166" y="86" width="4" height="4" fill="#83a598"/>
+  <line x1="100" y1="88" x2="168" y2="88" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="170,88 161,84 161,92" fill="var(--accent)"/>
+  <rect x="166" y="86" width="4" height="4" fill="var(--accent)"/>
 
-  <rect x="174" y="48" width="450" height="160" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="399" y="72" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTDB · HASH GROUPS</text>
+  <rect x="174" y="48" width="450" height="160" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="399" y="72" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">LASTDB · HASH GROUPS</text>
 
-  <g stroke="#504945" stroke-width="1" fill="none">
+  <g stroke="var(--line)" stroke-width="1" fill="none">
     <rect x="198" y="100" width="36" height="28"/>
     <rect x="242" y="100" width="36" height="28"/>
     <rect x="286" y="100" width="36" height="28"/>
@@ -122,41 +122,41 @@ const SHELF = `${SVG_OPEN('0 0 660 280')}
     <rect x="550" y="100" width="36" height="28"/>
   </g>
   <!-- only a neighborhood lit -->
-  <g stroke="#83a598" stroke-width="1" fill="url(#poche)">
+  <g stroke="var(--accent)" stroke-width="1" fill="url(#poche)">
     <rect x="374" y="100" width="36" height="28"/>
     <rect x="418" y="100" width="36" height="28"/>
   </g>
-  <text x="414" y="154" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">~FANOUT GROUPS</text>
+  <text x="414" y="154" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">~FANOUT GROUPS</text>
 
-  <rect x="300" y="170" width="200" height="28" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="400" y="189" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">INDEX / POINT KEYS</text>
+  <rect x="300" y="170" width="200" height="28" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="400" y="189" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">INDEX / POINT KEYS</text>
 
-  <line x1="374" y1="228" x2="374" y2="242" stroke="#83a598" stroke-width="1"/>
-  <line x1="454" y1="228" x2="454" y2="242" stroke="#83a598" stroke-width="1"/>
-  <line x1="374" y1="235" x2="454" y2="235" stroke="#83a598" stroke-width="1"/>
-  <text x="414" y="264" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">SHELF LABEL PRESENT → PRUNE</text>
+  <line x1="374" y1="228" x2="374" y2="242" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="454" y1="228" x2="454" y2="242" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="374" y1="235" x2="454" y2="235" stroke="var(--accent)" stroke-width="1"/>
+  <text x="414" y="264" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">SHELF LABEL PRESENT → PRUNE</text>
 </svg>`;
 
 // Fig 3 — before/after wall clock strip.
 const NUMBERS = `${SVG_OPEN('0 0 660 220')}
-  <text x="36" y="32" fill="#928374" font-size="11" letter-spacing="1.5">MEASURED · REAL NODE</text>
+  <text x="36" y="32" fill="var(--muted)" font-size="11" letter-spacing="1.5">MEASURED · REAL NODE</text>
 
-  <text x="36" y="72" fill="#928374" font-size="11">BOARD LIST (SCAN-SHAPED)</text>
-  <line x1="36" y1="88" x2="600" y2="88" stroke="#504945" stroke-width="1"/>
-  <line x1="36" y1="84" x2="36" y2="92" stroke="#928374" stroke-width="1"/>
-  <line x1="600" y1="84" x2="600" y2="92" stroke="#928374" stroke-width="1"/>
-  <line x1="36" y1="88" x2="560" y2="88" stroke="#928374" stroke-width="1"/>
-  <text x="300" y="78" fill="#928374" font-size="10">BEFORE ~11s</text>
-  <line x1="36" y1="108" x2="90" y2="108" stroke="#83a598" stroke-width="2"/>
-  <text x="100" y="112" fill="#83a598" font-size="10">AFTER ~1.1s</text>
+  <text x="36" y="72" fill="var(--muted)" font-size="11">BOARD LIST (SCAN-SHAPED)</text>
+  <line x1="36" y1="88" x2="600" y2="88" stroke="var(--line)" stroke-width="1"/>
+  <line x1="36" y1="84" x2="36" y2="92" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="600" y1="84" x2="600" y2="92" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="36" y1="88" x2="560" y2="88" stroke="var(--muted)" stroke-width="1"/>
+  <text x="300" y="78" fill="var(--muted)" font-size="10">BEFORE ~11s</text>
+  <line x1="36" y1="108" x2="90" y2="108" stroke="var(--accent)" stroke-width="2"/>
+  <text x="100" y="112" fill="var(--accent)" font-size="10">AFTER ~1.1s</text>
 
-  <text x="36" y="150" fill="#928374" font-size="11">RICH CARD READ (SAME KEY)</text>
-  <line x1="36" y1="166" x2="420" y2="166" stroke="#928374" stroke-width="1"/>
-  <text x="230" y="156" fill="#928374" font-size="10">BEFORE ~8s · EVERY CALL</text>
-  <line x1="36" y1="186" x2="48" y2="186" stroke="#83a598" stroke-width="2"/>
-  <text x="58" y="190" fill="#83a598" font-size="10">AFTER ~0.03–0.1s WARM</text>
+  <text x="36" y="150" fill="var(--muted)" font-size="11">RICH CARD READ (SAME KEY)</text>
+  <line x1="36" y1="166" x2="420" y2="166" stroke="var(--muted)" stroke-width="1"/>
+  <text x="230" y="156" fill="var(--muted)" font-size="10">BEFORE ~8s · EVERY CALL</text>
+  <line x1="36" y1="186" x2="48" y2="186" stroke="var(--accent)" stroke-width="2"/>
+  <text x="58" y="190" fill="var(--accent)" font-size="10">AFTER ~0.03–0.1s WARM</text>
 
-  <text x="330" y="214" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NOT A CACHE MIRACLE · THE WALK SHRANK</text>
+  <text x="330" y="214" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">NOT A CACHE MIRACLE · THE WALK SHRANK</text>
 </svg>`;
 
 export default function BlogCheckingEveryShelf() {
@@ -178,7 +178,7 @@ export default function BlogCheckingEveryShelf() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
 
@@ -397,7 +397,7 @@ export default function BlogCheckingEveryShelf() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
     </article>

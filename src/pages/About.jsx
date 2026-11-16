@@ -14,15 +14,15 @@ export default function About() {
         <meta property="og:description" content="The problem with app silos, the LastDB model, and the principles behind owning your whole tool stack." />
         <link rel="canonical" href="https://thelastdb.com/about" />
       </Helmet>
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
       <h1 className="tagline">About LastDB</h1>
       <p className="bold white">
         Why build your tools on a database you own &mdash; instead of renting a silo per tool.
       </p>
       <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Install &rarr;]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <Link to="/#install" className="link-btn">Install &rarr;</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>
         <span className="dim"> &mdash; thesis here; install and apps live on their own pages.</span>
       </p>
 
@@ -35,7 +35,7 @@ export default function About() {
 {`  App A        App B        App C        App D
     |              |            |            |
     v              v            v            v
- `}<span style={{ color: '#fb4934' }}>Notes DB</span>{`    `}<span style={{ color: '#fb4934' }}>Health DB</span>{`    `}<span style={{ color: '#fb4934' }}>Msgs DB</span>{`    `}<span style={{ color: '#fb4934' }}>Finance DB</span>{`
+ `}<span style={{ color: 'var(--warn)' }}>Notes DB</span>{`    `}<span style={{ color: 'var(--warn)' }}>Health DB</span>{`    `}<span style={{ color: 'var(--warn)' }}>Msgs DB</span>{`    `}<span style={{ color: 'var(--warn)' }}>Finance DB</span>{`
   (silo)       (silo)       (silo)       (silo)`}
         </pre>
 
@@ -51,10 +51,10 @@ export default function About() {
 {`  App A     App B     App C     App D     App E
     \\         |         |         |         /
      \\        |         |         |        /
-      `}<span style={{ color: '#fabd2f' }}>{`+----------------------------------------+`}</span>{`
-      `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`          `}<span className="bold white">Your LastDB Database</span>{`          `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
-      `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`       `}<span className="dim">{`local / permanent / yours`}</span>{`        `}<span style={{ color: '#fabd2f' }}>{`|`}</span>{`
-      `}<span style={{ color: '#fabd2f' }}>{`+----------------------------------------+`}</span>
+      `}<span style={{ color: 'var(--amber)' }}>{`+----------------------------------------+`}</span>{`
+      `}<span style={{ color: 'var(--amber)' }}>{`|`}</span>{`          `}<span className="bold white">Your LastDB Database</span>{`          `}<span style={{ color: 'var(--amber)' }}>{`|`}</span>{`
+      `}<span style={{ color: 'var(--amber)' }}>{`|`}</span>{`       `}<span className="dim">{`local / permanent / yours`}</span>{`        `}<span style={{ color: 'var(--amber)' }}>{`|`}</span>{`
+      `}<span style={{ color: 'var(--amber)' }}>{`+----------------------------------------+`}</span>
         </pre>
 
         <p>Applications become <span className="bold white">clients of the user&rsquo;s database</span> rather than owners of the data. That inversion is the whole product thesis: not a platform you join, but a foundation you own &mdash; every tool you use built on it, including the ones you write yourself.</p>
@@ -64,16 +64,16 @@ export default function About() {
         <h2><span className="bold">LAYERS</span></h2>
 
         <pre className="compare-table">
-{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`   Brain · LastSecrets · yours
+{`  `}<span style={{ color: 'var(--ok)' }}>{`Applications`}</span>{`   Brain · LastSecrets · yours
         |
         v
-  `}<span style={{ color: '#83a598' }}>{`LastDB node`}</span>{`     schemas, keyed records, socket API
+  `}<span style={{ color: 'var(--accent)' }}>{`LastDB node`}</span>{`     schemas, keyed records, socket API
         |
         v
-  `}<span style={{ color: '#fb4934' }}>{`Local disk`}</span>{`      your data, on your machine
+  `}<span style={{ color: 'var(--warn)' }}>{`Local disk`}</span>{`      your data, on your machine
         |
         v
-  `}<span style={{ color: '#d3869b' }}>{`Cloud backup`}</span>{`    optional, set up with lastdb backup connect`}
+  `}<span style={{ color: 'var(--violet)' }}>{`Cloud backup`}</span>{`    optional, set up with lastdb backup connect`}
         </pre>
 
         <p>The node runs on your machine. <span className="bold white">Your data stays there unless you turn on cloud backup.</span></p>
@@ -118,10 +118,10 @@ export default function About() {
         <h2><span className="bold">STATUS</span></h2>
         <p>LastDB is <span className="bold white">alpha and in active development</span>. The current release covers the local node, the App Registry, and the apps listed on the Apps page.</p>
         <p>
-          <Link to="/" className="link-btn">[Install on the home page &rarr;]</Link>{'  '}
-          <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
-          <Link to="/developer" className="link-btn">[Developer]</Link>{'  '}
-          <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">[Paper]</a>
+          <Link to="/" className="link-btn">Install on the home page &rarr;</Link>{'  '}
+          <Link to="/apps" className="link-btn">Apps</Link>{'  '}
+          <Link to="/developer" className="link-btn">Developer</Link>{'  '}
+          <a href="/papers/fold_db_paper.pdf" target="_blank" rel="noreferrer" className="link-btn">Paper</a>
         </p>
       </Section>
 

@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
-import AsciiTitle from '../components/AsciiTitle';
 
 const DOC_PAGES = [
   {
@@ -46,16 +45,15 @@ function DocsHeader({ title, description, path }) {
   return (
     <>
       <DocsHelmet title={title} description={description} path={path} />
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
-      <AsciiTitle text="DOCS" />
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
       <h1 className="tagline">{title}</h1>
       <p className="bold white">{description}</p>
       <p className="dim docs-reviewed">Last reviewed: 2026-11-15 against the LastDB source. Product status: alpha.</p>
       <p className="hero-cta">
-        <Link to="/docs" className="link-btn">[Docs index]</Link>{'  '}
-        <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
-        <Link to="/developer" className="link-btn">[Developer]</Link>
+        <Link to="/docs" className="link-btn">Docs index</Link>{'  '}
+        <Link to="/#install" className="link-btn">Install</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>{'  '}
+        <Link to="/developer" className="link-btn">Developer</Link>
       </p>
       <hr className="decorative-rule" aria-hidden="true" />
     </>
@@ -92,7 +90,7 @@ export default function Docs() {
       <Section variant="sage">
         <h2><span className="bold">UNDERSTAND THE SYSTEM</span></h2>
         <p>Explore the layers and their parts with a diagram and plain explanations.</p>
-        <p><a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a></p>
+        <p><a href="/explore/#diagram" className="link-btn">Open the interactive guide &rarr;</a></p>
         <p className="dim">The guide describes source from 16 November 2026. Its 127 parts explain saved sharing requests in Social, reusable circles, file upload cleanup, and backup recovery. Select a part to see its purpose, connections, and limits.</p>
       </Section>
 
@@ -104,7 +102,7 @@ export default function Docs() {
               <p><Label color="yellow">{page.status}</Label></p>
               <h2><Link to={page.path}>{page.title}</Link></h2>
               <p>{page.description}</p>
-              <p><Link to={page.path} className="link-btn">[Open]</Link></p>
+              <p><Link to={page.path} className="link-btn">Open</Link></p>
             </Card>
           ))}
         </div>

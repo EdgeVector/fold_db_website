@@ -24,3 +24,9 @@ Situation: `no-tests-all-repos-20261009`.
 - Remove test requirements from linters and CI.
 - Keep product build, format, lint, syntax, and deploy checks.
 - This rule supersedes prior test, fixture, and mutation-probe requirements.
+
+## One stylesheet owns colour and type (Tom, 2026-11-16)
+
+- `public/site.css` holds every colour and font as CSS variables. Every page loads it first, including the Explore guide under `public/explore/`.
+- Do not set a hex colour, `rgb()`, `hsl()`, or a font family anywhere else. Use `var(--token)`. Add a token to `public/site.css` when none fits.
+- `scripts/check-colours.mjs` enforces this in `.lastgit/ci.sh`. Do not bypass it.

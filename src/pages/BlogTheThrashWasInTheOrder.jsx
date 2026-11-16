@@ -9,7 +9,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -20,109 +20,109 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // Fig 1 — the wrong cycle: download every target, then maybe upload.
 const WRONG_ORDER = `${SVG_OPEN('0 0 660 300')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE SYNC TICK — OLD ORDER</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">ONE SYNC TICK — OLD ORDER</text>
 
-  <rect x="36" y="48" width="100" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="86" y="68" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PERSONAL</text>
-  <text x="86" y="84" text-anchor="middle" fill="#83a598" font-size="10">download · 0 new</text>
+  <rect x="36" y="48" width="100" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="86" y="68" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PERSONAL</text>
+  <text x="86" y="84" text-anchor="middle" fill="var(--accent)" font-size="10">download · 0 new</text>
 
-  <line x1="136" y1="70" x2="168" y2="70" stroke="#928374" stroke-width="1"/>
-  <polygon points="170,70 161,66 161,74" fill="#928374"/>
+  <line x1="136" y1="70" x2="168" y2="70" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="170,70 161,66 161,74" fill="var(--muted)"/>
 
-  <rect x="172" y="40" width="300" height="60" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="322" y="64" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">ORG · ORG · ORG · &hellip; &times; N</text>
-  <text x="322" y="84" text-anchor="middle" fill="#928374" font-size="10">download each before any upload</text>
+  <rect x="172" y="40" width="300" height="60" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="322" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">ORG · ORG · ORG · &hellip; &times; N</text>
+  <text x="322" y="84" text-anchor="middle" fill="var(--muted)" font-size="10">download each before any upload</text>
 
-  <line x1="472" y1="70" x2="520" y2="70" stroke="#504945" stroke-width="1" stroke-dasharray="3 3"/>
-  <rect x="522" y="48" width="100" height="44" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="572" y="68" text-anchor="middle" fill="#504945" font-size="11" letter-spacing="1">UPLOAD</text>
-  <text x="572" y="84" text-anchor="middle" fill="#504945" font-size="10">never reached</text>
+  <line x1="472" y1="70" x2="520" y2="70" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 3"/>
+  <rect x="522" y="48" width="100" height="44" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="572" y="68" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1">UPLOAD</text>
+  <text x="572" y="84" text-anchor="middle" fill="var(--muted)" font-size="10">never reached</text>
 
-  <line x1="36" y1="130" x2="624" y2="130" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="36" y1="130" x2="624" y2="130" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <text x="36" y="160" fill="#928374" font-size="11" letter-spacing="1.5">WHAT STATUS SHOWED</text>
-  <rect x="36" y="176" width="200" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="136" y="204" text-anchor="middle" fill="#ebdbb2" font-size="12">DOWNLOAD = 0</text>
-  <text x="136" y="226" text-anchor="middle" fill="#928374" font-size="10">cursor already at head</text>
+  <text x="36" y="160" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHAT STATUS SHOWED</text>
+  <rect x="36" y="176" width="200" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="136" y="204" text-anchor="middle" fill="var(--ink)" font-size="12">DOWNLOAD = 0</text>
+  <text x="136" y="226" text-anchor="middle" fill="var(--muted)" font-size="10">cursor already at head</text>
 
-  <rect x="260" y="176" width="200" height="70" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="360" y="204" text-anchor="middle" fill="#ebdbb2" font-size="12">PENDING = THOUSANDS</text>
-  <text x="360" y="226" text-anchor="middle" fill="#928374" font-size="10">local work waiting to go up</text>
+  <rect x="260" y="176" width="200" height="70" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="360" y="204" text-anchor="middle" fill="var(--ink)" font-size="12">PENDING = THOUSANDS</text>
+  <text x="360" y="226" text-anchor="middle" fill="var(--muted)" font-size="10">local work waiting to go up</text>
 
-  <rect x="484" y="176" width="140" height="70" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="554" y="204" text-anchor="middle" fill="#83a598" font-size="12">RSS SPIKE</text>
-  <text x="554" y="226" text-anchor="middle" fill="#928374" font-size="10">on org #1</text>
+  <rect x="484" y="176" width="140" height="70" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="554" y="204" text-anchor="middle" fill="var(--accent)" font-size="12">RSS SPIKE</text>
+  <text x="554" y="226" text-anchor="middle" fill="var(--muted)" font-size="10">on org #1</text>
 
-  <text x="330" y="280" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">THE QUEUE LOOKED GUILTY. THE ORDER WAS.</text>
+  <text x="330" y="280" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">THE QUEUE LOOKED GUILTY. THE ORDER WAS.</text>
 </svg>`;
 
 // Fig 2 — personal first.
 const RIGHT_ORDER = `${SVG_OPEN('0 0 660 250')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">ONE SYNC TICK — PERSONAL FIRST</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">ONE SYNC TICK — PERSONAL FIRST</text>
 
-  <rect x="36" y="52" width="120" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="96" y="74" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">1 · PERSONAL</text>
-  <text x="96" y="92" text-anchor="middle" fill="#83a598" font-size="10">download</text>
+  <rect x="36" y="52" width="120" height="52" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="96" y="74" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">1 · PERSONAL</text>
+  <text x="96" y="92" text-anchor="middle" fill="var(--accent)" font-size="10">download</text>
 
-  <line x1="156" y1="78" x2="196" y2="78" stroke="#83a598" stroke-width="1"/>
-  <polygon points="198,78 189,74 189,82" fill="#83a598"/>
-  <rect x="194" y="74" width="4" height="4" fill="#83a598"/>
+  <line x1="156" y1="78" x2="196" y2="78" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="198,78 189,74 189,82" fill="var(--accent)"/>
+  <rect x="194" y="74" width="4" height="4" fill="var(--accent)"/>
 
-  <rect x="200" y="52" width="120" height="52" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="260" y="74" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">2 · UPLOAD</text>
-  <text x="260" y="92" text-anchor="middle" fill="#83a598" font-size="10">bounded batch</text>
+  <rect x="200" y="52" width="120" height="52" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="260" y="74" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">2 · UPLOAD</text>
+  <text x="260" y="92" text-anchor="middle" fill="var(--accent)" font-size="10">bounded batch</text>
 
-  <line x1="320" y1="78" x2="360" y2="78" stroke="#928374" stroke-width="1"/>
-  <polygon points="362,78 353,74 353,82" fill="#928374"/>
+  <line x1="320" y1="78" x2="360" y2="78" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="362,78 353,74 353,82" fill="var(--muted)"/>
 
-  <rect x="364" y="52" width="140" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="434" y="74" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">3 · ONE SCOPED</text>
-  <text x="434" y="92" text-anchor="middle" fill="#928374" font-size="10">optional · capped</text>
+  <rect x="364" y="52" width="140" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="434" y="74" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">3 · ONE SCOPED</text>
+  <text x="434" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">optional · capped</text>
 
-  <rect x="528" y="52" width="96" height="52" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="576" y="74" text-anchor="middle" fill="#504945" font-size="11" letter-spacing="1">REST</text>
-  <text x="576" y="92" text-anchor="middle" fill="#504945" font-size="10">next ticks</text>
+  <rect x="528" y="52" width="96" height="52" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="576" y="74" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1">REST</text>
+  <text x="576" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">next ticks</text>
 
-  <line x1="36" y1="140" x2="36" y2="154" stroke="#928374" stroke-width="1"/>
-  <line x1="320" y1="140" x2="320" y2="154" stroke="#928374" stroke-width="1"/>
-  <line x1="36" y1="147" x2="320" y2="147" stroke="#928374" stroke-width="1"/>
-  <text x="178" y="174" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">PERSONAL CATCH-UP NEVER WAITS ON ORGS</text>
+  <line x1="36" y1="140" x2="36" y2="154" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="320" y1="140" x2="320" y2="154" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="36" y1="147" x2="320" y2="147" stroke="var(--muted)" stroke-width="1"/>
+  <text x="178" y="174" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">PERSONAL CATCH-UP NEVER WAITS ON ORGS</text>
 
-  <line x1="364" y1="140" x2="364" y2="154" stroke="#928374" stroke-width="1"/>
-  <line x1="504" y1="140" x2="504" y2="154" stroke="#928374" stroke-width="1"/>
-  <line x1="364" y1="147" x2="504" y2="147" stroke="#928374" stroke-width="1"/>
-  <text x="434" y="174" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">AT MOST ONE PER TICK</text>
+  <line x1="364" y1="140" x2="364" y2="154" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="504" y1="140" x2="504" y2="154" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="364" y1="147" x2="504" y2="147" stroke="var(--muted)" stroke-width="1"/>
+  <text x="434" y="174" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">AT MOST ONE PER TICK</text>
 
-  <text x="330" y="220" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="0.5">ORDER IS A MEMORY BUDGET</text>
-  <text x="330" y="240" text-anchor="middle" fill="#928374" font-size="11">caps on the wrong phase look like &ldquo;the fix failed&rdquo;</text>
+  <text x="330" y="220" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="0.5">ORDER IS A MEMORY BUDGET</text>
+  <text x="330" y="240" text-anchor="middle" fill="var(--muted)" font-size="11">caps on the wrong phase look like &ldquo;the fix failed&rdquo;</text>
 </svg>`;
 
 // Fig 3 — lived-in registry vs clean test fixture.
 const LIVED_IN = `${SVG_OPEN('0 0 660 240')}
-  <text x="165" y="30" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">CLEAN FIXTURE</text>
-  <rect x="60" y="48" width="210" height="120" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="88" y="72" width="154" height="36" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="165" y="94" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PERSONAL ONLY</text>
-  <text x="165" y="140" text-anchor="middle" fill="#928374" font-size="10">tests pass · no thrash</text>
-  <text x="165" y="158" text-anchor="middle" fill="#928374" font-size="10">never multiplies work</text>
+  <text x="165" y="30" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">CLEAN FIXTURE</text>
+  <rect x="60" y="48" width="210" height="120" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="88" y="72" width="154" height="36" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="165" y="94" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PERSONAL ONLY</text>
+  <text x="165" y="140" text-anchor="middle" fill="var(--muted)" font-size="10">tests pass · no thrash</text>
+  <text x="165" y="158" text-anchor="middle" fill="var(--muted)" font-size="10">never multiplies work</text>
 
-  <line x1="330" y1="40" x2="330" y2="200" stroke="#504945" stroke-width="1" stroke-dasharray="2 4"/>
+  <line x1="330" y1="40" x2="330" y2="200" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
-  <text x="495" y="30" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">LIVED-IN NODE</text>
-  <rect x="390" y="48" width="210" height="120" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="495" y="80" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">PERSONAL</text>
-  <text x="495" y="104" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">+ N SHARED LOGS</text>
-  <text x="495" y="128" text-anchor="middle" fill="#928374" font-size="10">same label · many ids</text>
-  <text x="495" y="148" text-anchor="middle" fill="#928374" font-size="10">stale registrations · real data</text>
+  <text x="495" y="30" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">LIVED-IN NODE</text>
+  <rect x="390" y="48" width="210" height="120" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="495" y="80" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">PERSONAL</text>
+  <text x="495" y="104" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">+ N SHARED LOGS</text>
+  <text x="495" y="128" text-anchor="middle" fill="var(--muted)" font-size="10">same label · many ids</text>
+  <text x="495" y="148" text-anchor="middle" fill="var(--muted)" font-size="10">stale registrations · real data</text>
 
-  <text x="330" y="214" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="0.5">REGISTRY SHAPE IS PART OF THE SYSTEM UNDER TEST</text>
+  <text x="330" y="214" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">REGISTRY SHAPE IS PART OF THE SYSTEM UNDER TEST</text>
 </svg>`;
 
 export default function BlogTheThrashWasInTheOrder() {
@@ -144,7 +144,7 @@ export default function BlogTheThrashWasInTheOrder() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
 
@@ -325,7 +325,7 @@ export default function BlogTheThrashWasInTheOrder() {
 
       <p>
         <Link to="/blog" className="link-btn">
-          [&larr; Blog]
+          &larr; Blog
         </Link>
       </p>
     </article>

@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,111 +21,111 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — the request path. The device blamed "auth"; the 500 came from the sync
 // service timing out while it waited on the object store.
 const PATH = `${SVG_OPEN('0 0 660 248')}
-  <rect x="24" y="40" width="120" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="84" y="64" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">DEVICE</text>
-  <text x="84" y="81" text-anchor="middle" fill="#928374" font-size="10">wants to sync</text>
+  <rect x="24" y="40" width="120" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="84" y="64" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">DEVICE</text>
+  <text x="84" y="81" text-anchor="middle" fill="var(--muted)" font-size="10">wants to sync</text>
 
-  <line x1="144" y1="68" x2="214" y2="68" stroke="#928374" stroke-width="1"/>
-  <polygon points="216,68 207,64 207,72" fill="#928374"/>
+  <line x1="144" y1="68" x2="214" y2="68" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="216,68 207,64 207,72" fill="var(--muted)"/>
 
-  <rect x="216" y="40" width="130" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="281" y="64" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">API GATEWAY</text>
-  <text x="281" y="81" text-anchor="middle" fill="#928374" font-size="10">10s patience</text>
+  <rect x="216" y="40" width="130" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="281" y="64" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">API GATEWAY</text>
+  <text x="281" y="81" text-anchor="middle" fill="var(--muted)" font-size="10">10s patience</text>
 
-  <line x1="346" y1="68" x2="416" y2="68" stroke="#928374" stroke-width="1"/>
-  <polygon points="418,68 409,64 409,72" fill="#928374"/>
+  <line x1="346" y1="68" x2="416" y2="68" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="418,68 409,64 409,72" fill="var(--muted)"/>
 
-  <rect x="418" y="40" width="130" height="56" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="483" y="64" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SYNC SERVICE</text>
-  <text x="483" y="81" text-anchor="middle" fill="#928374" font-size="10">presign · list</text>
+  <rect x="418" y="40" width="130" height="56" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="483" y="64" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">SYNC SERVICE</text>
+  <text x="483" y="81" text-anchor="middle" fill="var(--muted)" font-size="10">presign · list</text>
 
-  <line x1="483" y1="96" x2="483" y2="150" stroke="#928374" stroke-width="1"/>
-  <polygon points="483,152 479,143 487,143" fill="#928374"/>
-  <rect x="406" y="152" width="154" height="56" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="483" y="178" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">OBJECT STORE</text>
-  <text x="483" y="195" text-anchor="middle" fill="#ebdbb2" font-size="10">the log · snapshots</text>
+  <line x1="483" y1="96" x2="483" y2="150" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="483,152 479,143 487,143" fill="var(--muted)"/>
+  <rect x="406" y="152" width="154" height="56" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="483" y="178" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">OBJECT STORE</text>
+  <text x="483" y="195" text-anchor="middle" fill="var(--ink)" font-size="10">the log · snapshots</text>
 
-  <text x="556" y="124" fill="#928374" font-size="10" letter-spacing="1">waits here</text>
-  <line x1="554" y1="120" x2="500" y2="110" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="556" y="124" fill="var(--muted)" font-size="10" letter-spacing="1">waits here</text>
+  <line x1="554" y1="120" x2="500" y2="110" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <path d="M 281 96 L 281 176 L 142 176 L 142 96" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
-  <polygon points="142,96 138,105 146,105" fill="#83a598"/>
-  <text x="212" y="171" text-anchor="middle" fill="#83a598" font-size="11" letter-spacing="1">HTTP 500</text>
-  <text x="212" y="196" text-anchor="middle" fill="#928374" font-size="10">"auth error" — it was neither</text>
+  <path d="M 281 96 L 281 176 L 142 176 L 142 96" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3"/>
+  <polygon points="142,96 138,105 146,105" fill="var(--accent)"/>
+  <text x="212" y="171" text-anchor="middle" fill="var(--accent)" font-size="11" letter-spacing="1">HTTP 500</text>
+  <text x="212" y="196" text-anchor="middle" fill="var(--muted)" font-size="10">"auth error" — it was neither</text>
 </svg>`;
 
 // 2 — the hot-path scan. Every upload asked a one-line question and got a
 // full-bucket scan in reply.
 const SCAN = `${SVG_OPEN('0 0 660 250')}
-  <text x="36" y="40" fill="#928374" font-size="11" letter-spacing="1.5">EVERY UPLOAD ASKS</text>
-  <rect x="36" y="54" width="220" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="146" y="74" text-anchor="middle" fill="#ebdbb2" font-size="12">"is there room?"</text>
-  <text x="146" y="90" text-anchor="middle" fill="#83a598" font-size="10">one cheap lookup — &lt;1ms</text>
+  <text x="36" y="40" fill="var(--muted)" font-size="11" letter-spacing="1.5">EVERY UPLOAD ASKS</text>
+  <rect x="36" y="54" width="220" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="146" y="74" text-anchor="middle" fill="var(--ink)" font-size="12">"is there room?"</text>
+  <text x="146" y="90" text-anchor="middle" fill="var(--accent)" font-size="10">one cheap lookup — &lt;1ms</text>
 
-  <text x="300" y="74" fill="#928374" font-size="11">answered by</text>
+  <text x="300" y="74" fill="var(--muted)" font-size="11">answered by</text>
 
-  <text x="430" y="40" fill="#928374" font-size="11" letter-spacing="1.5">WHAT IT ACTUALLY DID</text>
-  <rect x="430" y="54" width="196" height="120" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="528" y="92" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">SCAN EVERY</text>
-  <text x="528" y="110" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1">OBJECT</text>
-  <text x="528" y="134" text-anchor="middle" fill="#928374" font-size="10">~35,000 of them</text>
-  <text x="528" y="150" text-anchor="middle" fill="#928374" font-size="10">page by page</text>
+  <text x="430" y="40" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHAT IT ACTUALLY DID</text>
+  <rect x="430" y="54" width="196" height="120" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="528" y="92" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">SCAN EVERY</text>
+  <text x="528" y="110" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">OBJECT</text>
+  <text x="528" y="134" text-anchor="middle" fill="var(--muted)" font-size="10">~35,000 of them</text>
+  <text x="528" y="150" text-anchor="middle" fill="var(--muted)" font-size="10">page by page</text>
 
-  <line x1="528" y1="174" x2="528" y2="200" stroke="#928374" stroke-width="1"/>
-  <polygon points="528,202 524,193 532,193" fill="#928374"/>
-  <text x="528" y="222" text-anchor="middle" fill="#83a598" font-size="12" letter-spacing="1">20s &gt; 10s LIMIT — TIMEOUT</text>
+  <line x1="528" y1="174" x2="528" y2="200" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="528,202 524,193 532,193" fill="var(--muted)"/>
+  <text x="528" y="222" text-anchor="middle" fill="var(--accent)" font-size="12" letter-spacing="1">20s &gt; 10s LIMIT — TIMEOUT</text>
 </svg>`;
 
 // 3 — the deploy that didn't. The fix landed in $LATEST; traffic ran a
 // published version behind an alias.
 const ALIAS = `${SVG_OPEN('0 0 660 234')}
-  <text x="40" y="40" fill="#83a598" font-size="11" letter-spacing="1.5">WHERE THE FIX LANDED</text>
-  <rect x="40" y="54" width="200" height="60" fill="none" stroke="#83a598" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="140" y="80" text-anchor="middle" fill="#ebdbb2" font-size="13" letter-spacing="1.5">$LATEST</text>
-  <text x="140" y="98" text-anchor="middle" fill="#928374" font-size="10">updated — and unused</text>
+  <text x="40" y="40" fill="var(--accent)" font-size="11" letter-spacing="1.5">WHERE THE FIX LANDED</text>
+  <rect x="40" y="54" width="200" height="60" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="140" y="80" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1.5">$LATEST</text>
+  <text x="140" y="98" text-anchor="middle" fill="var(--muted)" font-size="10">updated — and unused</text>
 
-  <text x="420" y="40" fill="#928374" font-size="11" letter-spacing="1.5">WHERE TRAFFIC WENT</text>
-  <rect x="420" y="54" width="200" height="60" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="520" y="80" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.2">LIVE (ALIAS)</text>
-  <text x="520" y="98" text-anchor="middle" fill="#928374" font-size="10">&rarr; PUBLISHED VERSION</text>
+  <text x="420" y="40" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHERE TRAFFIC WENT</text>
+  <rect x="420" y="54" width="200" height="60" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="520" y="80" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.2">LIVE (ALIAS)</text>
+  <text x="520" y="98" text-anchor="middle" fill="var(--muted)" font-size="10">&rarr; PUBLISHED VERSION</text>
 
-  <text x="330" y="158" text-anchor="middle" fill="#928374" font-size="11" letter-spacing="1.5">ALL REQUESTS</text>
-  <line x1="330" y1="166" x2="330" y2="190" stroke="#928374" stroke-width="1"/>
-  <polyline points="330,190 520,190 520,116" fill="none" stroke="#928374" stroke-width="1"/>
-  <polygon points="520,116 516,125 524,125" fill="#928374"/>
+  <text x="330" y="158" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="1.5">ALL REQUESTS</text>
+  <line x1="330" y1="166" x2="330" y2="190" stroke="var(--muted)" stroke-width="1"/>
+  <polyline points="330,190 520,190 520,116" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="520,116 516,125 524,125" fill="var(--muted)"/>
 
-  <polyline points="330,190 140,190 140,116" fill="none" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="235" y="210" text-anchor="middle" fill="#504945" font-size="10">no path here</text>
+  <polyline points="330,190 140,190 140,116" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="235" y="210" text-anchor="middle" fill="var(--muted)" font-size="10">no path here</text>
 </svg>`;
 
 // 4 — the log that never shrank. Compaction folds old entries into a snapshot
 // and truncates; the list stays small.
 const COMPACT = `${SVG_OPEN('0 0 660 236')}
-  <text x="36" y="38" fill="#928374" font-size="11" letter-spacing="1.5">WHAT WE HAD</text>
-  <rect x="36" y="50" width="40" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="56" y="98" text-anchor="middle" fill="#928374" font-size="9">1 SNAP</text>
-  <rect x="92" y="50" width="452" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="318" y="72" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">35,000 LOG ENTRIES — NEVER TRUNCATED</text>
-  <line x1="544" y1="67" x2="590" y2="67" stroke="#928374" stroke-width="1"/>
-  <polygon points="592,67 583,63 583,71" fill="#928374"/>
-  <text x="600" y="71" fill="#83a598" font-size="10">list: 20s</text>
+  <text x="36" y="38" fill="var(--muted)" font-size="11" letter-spacing="1.5">WHAT WE HAD</text>
+  <rect x="36" y="50" width="40" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="56" y="98" text-anchor="middle" fill="var(--muted)" font-size="9">1 SNAP</text>
+  <rect x="92" y="50" width="452" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="318" y="72" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">35,000 LOG ENTRIES — NEVER TRUNCATED</text>
+  <line x1="544" y1="67" x2="590" y2="67" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="592,67 583,63 583,71" fill="var(--muted)"/>
+  <text x="600" y="71" fill="var(--accent)" font-size="10">list: 20s</text>
 
-  <text x="36" y="150" fill="#83a598" font-size="11" letter-spacing="1.5">WHAT COMPACTION GIVES</text>
-  <rect x="36" y="162" width="40" height="34" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="56" y="210" text-anchor="middle" fill="#928374" font-size="9">1 SNAP</text>
-  <rect x="92" y="162" width="120" height="34" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="152" y="184" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">RECENT ONLY</text>
-  <line x1="212" y1="179" x2="590" y2="179" stroke="#504945" stroke-width="1" stroke-dasharray="3 4"/>
-  <polygon points="592,179 583,175 583,183" fill="#83a598"/>
-  <text x="600" y="183" fill="#83a598" font-size="10">list: &lt;1s</text>
+  <text x="36" y="150" fill="var(--accent)" font-size="11" letter-spacing="1.5">WHAT COMPACTION GIVES</text>
+  <rect x="36" y="162" width="40" height="34" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="56" y="210" text-anchor="middle" fill="var(--muted)" font-size="9">1 SNAP</text>
+  <rect x="92" y="162" width="120" height="34" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="152" y="184" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">RECENT ONLY</text>
+  <line x1="212" y1="179" x2="590" y2="179" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
+  <polygon points="592,179 583,175 583,183" fill="var(--accent)"/>
+  <text x="600" y="183" fill="var(--accent)" font-size="10">list: &lt;1s</text>
 </svg>`;
 
 export default function BlogAnatomyOfASyncOutage() {
@@ -139,7 +139,7 @@ export default function BlogAnatomyOfASyncOutage() {
         <link rel="canonical" href="https://thelastdb.com/blog/anatomy-of-a-sync-outage" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Anatomy of a Sync Outage</h1>
       <p className="post-meta dim">2026-06-28</p>
@@ -237,7 +237,7 @@ export default function BlogAnatomyOfASyncOutage() {
 
       <p className="dim">More on how we build in the open: <Link to="/blog/building-lastdb-with-agents">our autonomous build loop</Link>, and <Link to="/blog/speedups-we-didnt-write">a week of speedups we didn&rsquo;t write</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

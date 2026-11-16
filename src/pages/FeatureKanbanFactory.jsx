@@ -12,7 +12,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -23,49 +23,49 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche-kf" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
 const SVG_OPEN = (vb) =>
-  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // What crosses the line, and in which direction.
 const TRUST = `${SVG_OPEN('0 0 660 268')}
-  <rect x="30" y="34" width="176" height="60" fill="url(#poche-kf)" stroke="#928374" stroke-width="1"/>
-  <text x="118" y="60" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR BOARD</text>
-  <text x="118" y="78" text-anchor="middle" fill="#928374" font-size="10">kanban cards</text>
+  <rect x="30" y="34" width="176" height="60" fill="url(#poche-kf)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="118" y="60" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR BOARD</text>
+  <text x="118" y="78" text-anchor="middle" fill="var(--muted)" font-size="10">kanban cards</text>
 
-  <rect x="30" y="112" width="176" height="60" fill="url(#poche-kf)" stroke="#928374" stroke-width="1"/>
-  <text x="118" y="138" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR BRAIN</text>
-  <text x="118" y="156" text-anchor="middle" fill="#928374" font-size="10">job heartbeats</text>
+  <rect x="30" y="112" width="176" height="60" fill="url(#poche-kf)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="118" y="138" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR BRAIN</text>
+  <text x="118" y="156" text-anchor="middle" fill="var(--muted)" font-size="10">job heartbeats</text>
 
-  <rect x="30" y="190" width="176" height="60" fill="url(#poche-kf)" stroke="#928374" stroke-width="1"/>
-  <text x="118" y="216" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LOCAL BINARY</text>
-  <text x="118" y="234" text-anchor="middle" fill="#928374" font-size="10">lastdb version</text>
+  <rect x="30" y="190" width="176" height="60" fill="url(#poche-kf)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="118" y="216" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">LOCAL BINARY</text>
+  <text x="118" y="234" text-anchor="middle" fill="var(--muted)" font-size="10">lastdb version</text>
 
-  <line x1="206" y1="64" x2="286" y2="112" stroke="#928374" stroke-width="1"/>
-  <polygon points="286,112 277,105 274,113" fill="#928374"/>
-  <line x1="206" y1="142" x2="286" y2="142" stroke="#928374" stroke-width="1"/>
-  <polygon points="286,142 277,138 277,146" fill="#928374"/>
-  <line x1="206" y1="220" x2="286" y2="172" stroke="#928374" stroke-width="1"/>
-  <polygon points="286,172 277,179 274,171" fill="#928374"/>
-  <text x="246" y="106" text-anchor="middle" fill="#928374" font-size="9">READ</text>
+  <line x1="206" y1="64" x2="286" y2="112" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="286,112 277,105 274,113" fill="var(--muted)"/>
+  <line x1="206" y1="142" x2="286" y2="142" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="286,142 277,138 277,146" fill="var(--muted)"/>
+  <line x1="206" y1="220" x2="286" y2="172" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="286,172 277,179 274,171" fill="var(--muted)"/>
+  <text x="246" y="106" text-anchor="middle" fill="var(--muted)" font-size="9">READ</text>
 
-  <rect x="290" y="106" width="150" height="72" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="365" y="136" text-anchor="middle" fill="#83a598" font-size="12" letter-spacing="1.5">FACTORY</text>
-  <text x="365" y="154" text-anchor="middle" fill="#928374" font-size="10">127.0.0.1:4177</text>
+  <rect x="290" y="106" width="150" height="72" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="365" y="136" text-anchor="middle" fill="var(--accent)" font-size="12" letter-spacing="1.5">FACTORY</text>
+  <text x="365" y="154" text-anchor="middle" fill="var(--muted)" font-size="10">127.0.0.1:4177</text>
 
-  <line x1="440" y1="142" x2="512" y2="142" stroke="#83a598" stroke-width="1"/>
-  <polygon points="512,142 503,138 503,146" fill="#83a598"/>
+  <line x1="440" y1="142" x2="512" y2="142" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="512,142 503,138 503,146" fill="var(--accent)"/>
 
-  <rect x="516" y="106" width="120" height="72" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="576" y="136" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR TAB</text>
-  <text x="576" y="154" text-anchor="middle" fill="#928374" font-size="10">the floor</text>
+  <rect x="516" y="106" width="120" height="72" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="576" y="136" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR TAB</text>
+  <text x="576" y="154" text-anchor="middle" fill="var(--muted)" font-size="10">the floor</text>
 
-  <line x1="290" y1="200" x2="440" y2="200" stroke="#504945" stroke-width="1" stroke-dasharray="3 4"/>
-  <line x1="365" y1="178" x2="365" y2="200" stroke="#504945" stroke-width="1" stroke-dasharray="3 4"/>
-  <text x="365" y="222" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NO WRITES BACK TO THE BOARD</text>
-  <text x="365" y="240" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">NO NETWORK OFF THIS MACHINE</text>
+  <line x1="290" y1="200" x2="440" y2="200" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
+  <line x1="365" y1="178" x2="365" y2="200" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
+  <text x="365" y="222" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">NO WRITES BACK TO THE BOARD</text>
+  <text x="365" y="240" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">NO NETWORK OFF THIS MACHINE</text>
 </svg>`;
 
 const INSTALL = `git clone https://github.com/EdgeVector/kanban-factory ~/kanban-factory
@@ -100,7 +100,7 @@ export default function FeatureKanbanFactory() {
         <link rel="canonical" href="https://thelastdb.com/features/kanban-factory" />
       </Helmet>
 
-      <p><Link to="/features" className="link-btn">[&larr; Feature Blog]</Link></p>
+      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
 
       <h1 className="tagline">Kanban Factory</h1>
       <p className="post-meta">
@@ -117,9 +117,9 @@ export default function FeatureKanbanFactory() {
       </p>
 
       <p className="hero-cta">
-        <a href="#get-it" className="link-btn">[Get it &rarr;]</a>{'  '}
-        <a href="#open-it" className="link-btn">[Open it &rarr;]</a>{'  '}
-        <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="link-btn">[Source]</a>
+        <a href="#get-it" className="link-btn">Get it &rarr;</a>{'  '}
+        <a href="#open-it" className="link-btn">Open it &rarr;</a>{'  '}
+        <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="link-btn">Source</a>
       </p>
 
       <figure style={{ margin: '34px 0', textAlign: 'center' }}>
@@ -129,13 +129,13 @@ export default function FeatureKanbanFactory() {
           style={{
             width: '100%',
             maxWidth: '860px',
-            border: '1px solid #3c3836',
+            border: '1px solid var(--line-soft)',
             borderRadius: '6px',
             display: 'block',
             margin: '0 auto',
           }}
         />
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           Fig. 1 &mdash; the floor, on a real board, mid-shift
         </figcaption>
       </figure>
@@ -320,7 +320,7 @@ export default function FeatureKanbanFactory() {
         <Link to="/apps">Apps catalog</Link>
       </p>
 
-      <p><Link to="/features" className="link-btn">[&larr; Feature Blog]</Link></p>
+      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
     </article>
   );
 }

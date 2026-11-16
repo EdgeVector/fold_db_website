@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,69 +21,69 @@ function ArchFigure({ svg, caption }) {
 // Terminal transcript block (real output, gruvbox).
 function Term({ children }) {
   return (
-    <pre style={{ background: '#282828', border: '1px solid #504945', padding: '12px 14px', margin: '0.9em 0', fontSize: '13px', lineHeight: 1.55, overflowX: 'auto' }}>{children}</pre>
+    <pre style={{ background: 'var(--surface)', border: '1px solid var(--line)', padding: '12px 14px', margin: '0.9em 0', fontSize: '13px', lineHeight: 1.55, overflowX: 'auto' }}>{children}</pre>
   );
 }
 
 const SVG_DEFS = `
   <defs>
     <pattern id="poche-door" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // The flow as it shipped: three processes, one gate, one store.
 const THE_DOOR = `${SVG_OPEN('0 0 660 344')}
-  <rect x="24" y="36" width="140" height="50" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="94" y="57" text-anchor="middle" fill="#ebdbb2" font-size="11.5" letter-spacing="1.5">1 &#183; CHECK</text>
-  <text x="94" y="74" text-anchor="middle" fill="#928374" font-size="9.5">catalog verdicts</text>
-  <rect x="164" y="59" width="4" height="4" fill="#928374"/>
-  <line x1="168" y1="61" x2="222" y2="61" stroke="#928374" stroke-width="1"/>
-  <rect x="222" y="59" width="4" height="4" fill="#928374"/>
-  <rect x="226" y="36" width="140" height="50" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="296" y="57" text-anchor="middle" fill="#ebdbb2" font-size="11.5" letter-spacing="1.5">2 &#183; PUBLISH</text>
-  <text x="296" y="74" text-anchor="middle" fill="#928374" font-size="9.5">reserve &#183; sandbox</text>
-  <rect x="366" y="59" width="4" height="4" fill="#928374"/>
-  <line x1="370" y1="61" x2="424" y2="61" stroke="#928374" stroke-width="1"/>
-  <rect x="424" y="59" width="4" height="4" fill="#928374"/>
-  <rect x="428" y="36" width="208" height="50" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="532" y="57" text-anchor="middle" fill="#ebdbb2" font-size="11.5" letter-spacing="1.5">3 &#183; REGISTER-SCHEMAS</text>
-  <text x="532" y="74" text-anchor="middle" fill="#928374" font-size="9.5">stored identity &#8594; lockfile</text>
+  <rect x="24" y="36" width="140" height="50" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="94" y="57" text-anchor="middle" fill="var(--ink)" font-size="11.5" letter-spacing="1.5">1 &#183; CHECK</text>
+  <text x="94" y="74" text-anchor="middle" fill="var(--muted)" font-size="9.5">catalog verdicts</text>
+  <rect x="164" y="59" width="4" height="4" fill="var(--muted)"/>
+  <line x1="168" y1="61" x2="222" y2="61" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="222" y="59" width="4" height="4" fill="var(--muted)"/>
+  <rect x="226" y="36" width="140" height="50" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="296" y="57" text-anchor="middle" fill="var(--ink)" font-size="11.5" letter-spacing="1.5">2 &#183; PUBLISH</text>
+  <text x="296" y="74" text-anchor="middle" fill="var(--muted)" font-size="9.5">reserve &#183; sandbox</text>
+  <rect x="366" y="59" width="4" height="4" fill="var(--muted)"/>
+  <line x1="370" y1="61" x2="424" y2="61" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="424" y="59" width="4" height="4" fill="var(--muted)"/>
+  <rect x="428" y="36" width="208" height="50" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="532" y="57" text-anchor="middle" fill="var(--ink)" font-size="11.5" letter-spacing="1.5">3 &#183; REGISTER-SCHEMAS</text>
+  <text x="532" y="74" text-anchor="middle" fill="var(--muted)" font-size="9.5">stored identity &#8594; lockfile</text>
 
-  <rect x="530" y="86" width="4" height="4" fill="#83a598"/>
-  <line x1="532" y1="90" x2="532" y2="116" stroke="#83a598" stroke-width="1"/>
-  <line x1="532" y1="116" x2="330" y2="116" stroke="#83a598" stroke-width="1"/>
-  <line x1="330" y1="116" x2="330" y2="134" stroke="#83a598" stroke-width="1"/>
-  <polygon points="330,140 326,131 334,131" fill="#83a598"/>
+  <rect x="530" y="86" width="4" height="4" fill="var(--accent)"/>
+  <line x1="532" y1="90" x2="532" y2="116" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="532" y1="116" x2="330" y2="116" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="330" y1="116" x2="330" y2="134" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="330,140 326,131 334,131" fill="var(--accent)"/>
 
-  <polygon points="330,144 424,186 330,228 236,186" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="330" y="181" text-anchor="middle" fill="#ebdbb2" font-size="11.5" letter-spacing="1.5">4 &#183; PROMOTE</text>
-  <text x="330" y="199" text-anchor="middle" fill="#83a598" font-size="9.5">any novel shape?</text>
+  <polygon points="330,144 424,186 330,228 236,186" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="330" y="181" text-anchor="middle" fill="var(--ink)" font-size="11.5" letter-spacing="1.5">4 &#183; PROMOTE</text>
+  <text x="330" y="199" text-anchor="middle" fill="var(--accent)" font-size="9.5">any novel shape?</text>
 
-  <line x1="236" y1="186" x2="150" y2="186" stroke="#928374" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="144" y="180" text-anchor="end" fill="#928374" font-size="9.5">YES &#8594; rejected,</text>
-  <text x="144" y="194" text-anchor="end" fill="#928374" font-size="9.5">register it first</text>
+  <line x1="236" y1="186" x2="150" y2="186" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="144" y="180" text-anchor="end" fill="var(--muted)" font-size="9.5">YES &#8594; rejected,</text>
+  <text x="144" y="194" text-anchor="end" fill="var(--muted)" font-size="9.5">register it first</text>
 
-  <line x1="330" y1="228" x2="330" y2="246" stroke="#83a598" stroke-width="1"/>
-  <polygon points="330,252 326,243 334,243" fill="#83a598"/>
-  <text x="342" y="244" fill="#928374" font-size="9.5">NO &#8594; live</text>
+  <line x1="330" y1="228" x2="330" y2="246" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="330,252 326,243 334,243" fill="var(--accent)"/>
+  <text x="342" y="244" fill="var(--muted)" font-size="9.5">NO &#8594; live</text>
 
-  <path d="M 224 262 A 106 10 0 0 1 436 262 L 436 306 A 106 10 0 0 1 224 306 Z" fill="url(#poche-door)" stroke="#928374" stroke-width="1"/>
-  <ellipse cx="330" cy="262" rx="106" ry="10" fill="#1d2021" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="288" text-anchor="middle" fill="#ebdbb2" font-size="11.5" letter-spacing="1.5">THE REGISTRY</text>
-  <text x="330" y="302" text-anchor="middle" fill="#928374" font-size="9.5">tier: live</text>
+  <path d="M 224 262 A 106 10 0 0 1 436 262 L 436 306 A 106 10 0 0 1 224 306 Z" fill="url(#poche-door)" stroke="var(--muted)" stroke-width="1"/>
+  <ellipse cx="330" cy="262" rx="106" ry="10" fill="var(--surface)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="288" text-anchor="middle" fill="var(--ink)" font-size="11.5" letter-spacing="1.5">THE REGISTRY</text>
+  <text x="330" y="302" text-anchor="middle" fill="var(--muted)" font-size="9.5">tier: live</text>
 
-  <rect x="96" y="326" width="14" height="10" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="118" y="335" fill="#928374" font-size="9">PROCESS</text>
-  <polygon points="206,325 215,331 206,337 197,331" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="223" y="335" fill="#928374" font-size="9">GATE</text>
-  <path d="M 288 328 A 8 2.5 0 0 1 304 328 L 304 334 A 8 2.5 0 0 1 288 334 Z" fill="url(#poche-door)" stroke="#928374" stroke-width="1"/>
-  <text x="312" y="335" fill="#928374" font-size="9">STORE</text>
-  <line x1="368" y1="331" x2="390" y2="331" stroke="#928374" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="398" y="335" fill="#928374" font-size="9">REJECT PATH</text>
-  <rect x="486" y="326" width="14" height="10" fill="url(#poche-door)" stroke="#928374" stroke-width="1"/>
-  <text x="508" y="335" fill="#928374" font-size="9">POCH&#201; = REAL ROWS</text>
+  <rect x="96" y="326" width="14" height="10" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="118" y="335" fill="var(--muted)" font-size="9">PROCESS</text>
+  <polygon points="206,325 215,331 206,337 197,331" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="223" y="335" fill="var(--muted)" font-size="9">GATE</text>
+  <path d="M 288 328 A 8 2.5 0 0 1 304 328 L 304 334 A 8 2.5 0 0 1 288 334 Z" fill="url(#poche-door)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="312" y="335" fill="var(--muted)" font-size="9">STORE</text>
+  <line x1="368" y1="331" x2="390" y2="331" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="398" y="335" fill="var(--muted)" font-size="9">REJECT PATH</text>
+  <rect x="486" y="326" width="14" height="10" fill="url(#poche-door)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="508" y="335" fill="var(--muted)" font-size="9">POCH&#201; = REAL ROWS</text>
 </svg>`;
 
 export default function BlogDogfoodingTheAppRegistry() {
@@ -97,7 +97,7 @@ export default function BlogDogfoodingTheAppRegistry() {
         <link rel="canonical" href="https://thelastdb.com/blog/dogfooding-the-app-registry" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">Dogfooding the App Registry</h1>
       <p className="post-meta dim">2026-07-17</p>
@@ -186,7 +186,7 @@ promoted: {
 
       <p className="dim">Companion piece: <Link to="/blog/how-an-app-gets-published-on-lastdb">How an App Gets Published on LastDB</Link> for the design; <Link to="/blog/declared-not-registered">Declared, Not Registered</Link> for how schema resolution works under it.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

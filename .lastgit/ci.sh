@@ -8,6 +8,9 @@ export npm_config_cache="${npm_config_cache:-${TMPDIR:-/tmp}/fold-db-website-npm
 echo "== install =="
 npm ci
 
+echo "== colours and fonts live in public/site.css =="
+node scripts/check-colours.mjs
+
 echo "== build =="
 npm run build
 

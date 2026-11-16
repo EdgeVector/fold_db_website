@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Section from '../components/Section';
 import Card from '../components/Card';
-import Label from '../components/Label';
-import ArchFigure from '../components/ArchFigure';
 import CopyBlock from '../components/CopyBlock';
 
 // Paste-facing script: no `#` comment lines.
@@ -21,67 +18,6 @@ rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
 rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
 brew services stop lastdb
 brew uninstall lastdb`;
-
-// Draftsman architecture figure: apps as outline clients, LastDB as poché store.
-const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
-     style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto"
-     font-family="'IBM Plex Mono', monospace">
-  <defs>
-    <pattern id="home-poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
-    </pattern>
-  </defs>
-
-  <text x="40" y="22" fill="#928374" font-size="10" letter-spacing="1.5">APPS — THIN CLIENTS</text>
-
-  <rect x="40" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="100" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">BRAIN</text>
-  <text x="100" y="74" text-anchor="middle" fill="#928374" font-size="10">memory</text>
-
-  <rect x="190" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSECRETS</text>
-  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">credentials</text>
-
-  <rect x="340" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSEEK</text>
-  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">search · coming</text>
-
-  <rect x="490" y="36" width="130" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="555" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR APP</text>
-  <text x="555" y="74" text-anchor="middle" fill="#83a598" font-size="10">same contract</text>
-
-  <line x1="100" y1="88" x2="100" y2="128" stroke="#928374" stroke-width="1"/>
-  <rect x="98" y="86" width="4" height="4" fill="#928374"/>
-  <rect x="98" y="126" width="4" height="4" fill="#928374"/>
-
-  <line x1="250" y1="88" x2="250" y2="128" stroke="#928374" stroke-width="1"/>
-  <rect x="248" y="86" width="4" height="4" fill="#928374"/>
-  <rect x="248" y="126" width="4" height="4" fill="#928374"/>
-
-  <line x1="400" y1="88" x2="400" y2="128" stroke="#928374" stroke-width="1"/>
-  <rect x="398" y="86" width="4" height="4" fill="#928374"/>
-  <rect x="398" y="126" width="4" height="4" fill="#928374"/>
-
-  <line x1="555" y1="88" x2="555" y2="128" stroke="#83a598" stroke-width="1"/>
-  <rect x="553" y="86" width="4" height="4" fill="#83a598"/>
-  <rect x="553" y="126" width="4" height="4" fill="#83a598"/>
-
-  <line x1="100" y1="128" x2="555" y2="128" stroke="#928374" stroke-width="1"/>
-
-  <line x1="330" y1="128" x2="330" y2="168" stroke="#928374" stroke-width="1"/>
-  <rect x="328" y="126" width="4" height="4" fill="#928374"/>
-  <rect x="328" y="166" width="4" height="4" fill="#928374"/>
-  <text x="342" y="152" fill="#928374" font-size="10" letter-spacing="1">SOCKET</text>
-
-  <rect x="130" y="170" width="400" height="72" fill="url(#home-poche)" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="200" text-anchor="middle" fill="#ebdbb2" font-size="14" letter-spacing="2">YOUR LASTDB</text>
-  <text x="330" y="220" text-anchor="middle" fill="#928374" font-size="11">local · yours · one process</text>
-
-  <line x1="130" y1="256" x2="130" y2="270" stroke="#928374" stroke-width="1"/>
-  <line x1="530" y1="256" x2="530" y2="270" stroke="#928374" stroke-width="1"/>
-  <line x1="130" y1="263" x2="530" y2="263" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="288" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">ONE DATABASE — APPS DO NOT OWN THE DATA</text>
-</svg>`;
 
 // The three requests an app sends. Same shapes as the Developer guide; keep them in step.
 const CODE_DECLARE = `curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
@@ -215,253 +151,241 @@ export default function Home() {
       </Helmet>
 
       {/* HERO */}
-      <div className="hero">
-        <p className="dim hero-status">alpha &middot; macOS on Apple Silicon &middot; open source</p>
-        <h1 className="tagline">A local database for the tools you build.</h1>
-        <p className="hero-sub">
-          Your app gets a database on the user&rsquo;s own Mac, with optional encrypted backup and sharing.
-          There is no backend for you to run, and you never hold the user&rsquo;s data.
-        </p>
+      <section className="fg-hero">
+        <div className="fg-eyebrow">A local database &middot; alpha &middot; open source</div>
+        <h1>A local database for the tools you build.</h1>
+        <div className="fg-hero-row">
+          <p>
+            Your app gets a database on the user&rsquo;s own Mac, with optional encrypted backup and sharing.
+            There is no backend for you to run, and you never hold the user&rsquo;s data.
+          </p>
+          <div className="fg-actions">
+            <a href="#install" className="fg-btn fg-btn-primary">Install LastDB</a>
+            <a href="/explore/#diagram" className="fg-btn">See how it connects</a>
+          </div>
+        </div>
+      </section>
 
-        <CopyBlock text={INSTALL_STEP_1} label="Copy" />
-        <p className="dim">
-          Needs Homebrew and Bun. The script installs LastDB, then shows you a plan before it adds any app.{' '}
-          <a href="#install">How the install works</a>.
-        </p>
-
-        <p className="hero-cta">
-          <a href="https://github.com/EdgeVector/lastdb" target="_blank" rel="noreferrer" className="link-btn">[GitHub]</a>{'  '}
-          <Link to="/developer" className="link-btn">[Developer guide]</Link>{'  '}
-          <a href="/explore/#diagram" className="link-btn">[How it works]</a>{'  '}
-          <a href="https://thelastdb.com/llms.txt" className="link-btn">[llms.txt]</a>
-        </p>
+      {/* FIGURE */}
+      <div
+        className="fg-figure"
+        role="img"
+        aria-label="Three apps connect over a Unix socket to one LastDB on the user's Mac. Encrypted cloud backup and sharing by invitation are optional."
+      >
+        <div className="fg-figure-row">
+          <div className="fg-figure-main">
+            <div className="fg-mono-label" style={{ alignSelf: 'flex-start' }}>APPS &mdash; THIN CLIENTS</div>
+            <div className="fg-apps">
+              <div className="fg-app">BRAIN<small>notes</small></div>
+              <div className="fg-app">LASTSECRETS<small>credentials</small></div>
+              <div className="fg-app fg-app-yours">YOUR APP<small>same requests</small></div>
+            </div>
+            <div className="fg-wire" />
+            <div className="fg-mono-label">SOCKET</div>
+            <div className="fg-wire" />
+            <div className="fg-store">
+              <span>YOUR LASTDB</span>
+              <div><small>local &middot; one service &middot; on the user&rsquo;s Mac</small></div>
+            </div>
+            <div className="fg-dimension">ONE DATABASE &mdash; APPS DO NOT OWN THE DATA</div>
+          </div>
+          <div className="fg-figure-side">
+            <div className="fg-optional fg-optional-cloud">
+              <strong>CLOUD &middot; OPT-IN</strong>
+              Encrypted backup, and recovery onto a new Mac.
+            </div>
+            <div className="fg-optional fg-optional-share">
+              <strong>SHARE &middot; BY INVITATION</strong>
+              The user invites another person to a database.
+            </div>
+          </div>
+        </div>
+        <div className="fg-caption">FIG. 1 &mdash; APPS ARE CLIENTS OF ONE LOCAL DATABASE</div>
       </div>
 
-      <hr className="decorative-rule" aria-hidden="true" />
-
-      {/* PROBLEM */}
-      <Section variant="rose" id="problem">
-        <h2><span className="bold">THE PROBLEM</span></h2>
-        <p>
-          An app that stores personal data usually needs a server. You run a database, you write sync,
-          and you hold every user&rsquo;s data in an account that you must protect.
-        </p>
-        <p>
-          The next app does all of it again. The user ends up with one copy of their life in each app, and owns none of them.
-        </p>
-      </Section>
-
-      {/* HOW */}
-      <Section variant="sage" id="how">
-        <h2><span className="bold">HOW LASTDB WORKS</span></h2>
-
-        <ArchFigure
-          svg={MODEL_SVG}
-          caption="Fig. 1 — apps are clients of one local database; the data stays with the user"
-        />
-
-        <div className="card-stack">
-          <Card>
-            <p><Label color="green">1</Label> <span className="bold white">The database runs on the user&rsquo;s Mac.</span></p>
-            <p>LastDB is one background service. Your app reads and writes it over a local Unix socket. Nothing in this step needs a server of yours.</p>
-          </Card>
-          <Card>
-            <p><Label color="green">2</Label> <span className="bold white">Your app declares what it stores.</span></p>
-            <p>A schema names its fields, its primary key, and any alternate keys. Each app keeps its own records. No app owns the database.</p>
-          </Card>
-          <Card>
-            <p><Label color="green">3</Label> <span className="bold white">The user decides what leaves the machine.</span></p>
-            <p>Backup to the cloud is optional and encrypted. Sharing a database with another person is an invitation that the user sends.</p>
-          </Card>
+      {/* 01 PROBLEM */}
+      <section className="fg-section" id="problem">
+        <div className="fg-rail">01 &middot; The problem</div>
+        <div className="fg-body">
+          <h2>Every app rebuilds the same backend.</h2>
+          <div className="fg-two">
+            <p>
+              An app that stores personal data usually needs a server. You run a database, you write sync,
+              and you hold every user&rsquo;s data in an account that you must protect.
+            </p>
+            <p>
+              The next app does all of it again. The user ends up with one copy of their life in each app,
+              and owns none of them.
+            </p>
+          </div>
         </div>
+      </section>
 
-        <p>
-          <a href="/explore/#diagram" className="link-btn">[Open the interactive guide &rarr;]</a>
-          <span className="dim"> &mdash; every part of the system, with its purpose and its limits.</span>
-        </p>
-      </Section>
-
-      {/* CODE */}
-      <Section variant="lavender" id="code">
-        <h2><span className="bold">THREE REQUESTS</span> <span className="dim">declare, write, read</span></h2>
-        <p>
-          Any language that can send HTTP over a Unix socket can use LastDB. These are the real requests, shown with curl.
-        </p>
-
-        <div className="card-stack">
-          <Card>
-            <p><Label color="purple">DECLARE A SCHEMA</Label> <span className="dim">a note, found by id or by tag</span></p>
-            <pre>{CODE_DECLARE}</pre>
-          </Card>
-          <Card>
-            <p><Label color="purple">WRITE A RECORD</Label></p>
-            <pre>{CODE_WRITE}</pre>
-          </Card>
-          <Card>
-            <p><Label color="purple">READ IT BY KEY</Label></p>
-            <pre>{CODE_READ}</pre>
-          </Card>
+      {/* 02 HOW */}
+      <section className="fg-section" id="how">
+        <div className="fg-rail">02 &middot; How it works</div>
+        <div className="fg-body">
+          <h2>Three ideas hold it together.</h2>
+          <ol className="fg-steps">
+            <li>
+              <span className="fg-num">01</span>
+              <div>
+                <h3>The database runs on the user&rsquo;s Mac.</h3>
+                <p>LastDB is one background service. Your app reads and writes it over a local Unix socket. Nothing in this step needs a server of yours.</p>
+              </div>
+            </li>
+            <li>
+              <span className="fg-num">02</span>
+              <div>
+                <h3>Your app declares what it stores.</h3>
+                <p>A schema names its fields, its primary key, and any alternate keys. Each app keeps its own records. No app owns the database.</p>
+              </div>
+            </li>
+            <li>
+              <span className="fg-num">03</span>
+              <div>
+                <h3>The user decides what leaves the machine.</h3>
+                <p>Backup to the cloud is optional and encrypted. Sharing a database with another person is an invitation that the user sends.</p>
+              </div>
+            </li>
+          </ol>
+          <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
+      </section>
 
-        <p>
-          <Link to="/developer" className="link-btn">[Developer guide &rarr;]</Link>
-          <span className="dim"> &mdash; alternate keys, key listing, the command line, and errors.</span>
-        </p>
-      </Section>
-
-      {/* CAPABILITIES */}
-      <Section variant="slate" id="capabilities">
-        <h2><span className="bold">WHAT YOU GET</span></h2>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="blue">DATABASE</Label></p>
-            <p>Records found by key. A read by key stays fast as the data grows, because no read walks a whole schema.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">BACKUP</Label></p>
-            <p>Encrypted cloud backup, and recovery onto a new Mac. It is optional and needs no name or email address.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">SHARING</Label></p>
-            <p>The user invites another person to a database with <span className="bold">lastdb share</span>. The invitation is encrypted for that person.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">APP REGISTRY</Label></p>
-            <p>A signed list of apps. The user installs an app by name, at a commit that was proved with their LastDB release.</p>
-          </Card>
+      {/* 03 REQUESTS */}
+      <section className="fg-section" id="code">
+        <div className="fg-rail">
+          03 &middot; The requests
+          <p>Any language that can send HTTP over a Unix socket can use LastDB. Shown with curl.</p>
         </div>
+        <div className="fg-body">
+          <h2>Declare, write, read.</h2>
+          <div className="fg-code-stack">
+            <div className="fg-code">
+              <div className="fg-code-head">Declare a schema <span>a note, found by id or by tag</span></div>
+              <pre>{CODE_DECLARE}</pre>
+            </div>
+            <div className="fg-code">
+              <div className="fg-code-head">Write a record</div>
+              <pre>{CODE_WRITE}</pre>
+            </div>
+            <div className="fg-code">
+              <div className="fg-code-head">Read it by key</div>
+              <pre>{CODE_READ}</pre>
+            </div>
+          </div>
+          <p className="fg-more"><Link to="/developer">Read the developer guide &rarr;</Link></p>
+        </div>
+      </section>
 
-        <p className="dim">
-          Coming: <span className="bold">LastSeek</span>, semantic search beside the database. It is not in the App Registry yet.
-        </p>
-      </Section>
+      {/* 04 WHAT YOU GET */}
+      <section className="fg-section" id="capabilities">
+        <div className="fg-rail">04 &middot; What you get</div>
+        <div className="fg-body">
+          <h2>The parts an app needs, on the device.</h2>
+          <div className="fg-cards">
+            <div className="fg-cardx fg-c1">
+              <small>01 &middot; ON DEVICE</small>
+              <h3>Database</h3>
+              <p>Records found by key. No read walks a whole schema, so a read stays fast as the data grows.</p>
+            </div>
+            <div className="fg-cardx fg-c2">
+              <small>02 &middot; OPT-IN</small>
+              <h3>Backup</h3>
+              <p>Encrypted cloud backup, and recovery onto a new Mac. No name or email address.</p>
+            </div>
+            <div className="fg-cardx fg-c3">
+              <small>03 &middot; BY INVITATION</small>
+              <h3>Sharing</h3>
+              <p>The user invites another person to a database. The invitation is encrypted for that person.</p>
+            </div>
+            <div className="fg-cardx fg-c4">
+              <small>04 &middot; SIGNED</small>
+              <h3>App Registry</h3>
+              <p>A signed list of apps. The user installs an app by name, at a commit proved with their release.</p>
+            </div>
+          </div>
+          <p className="fg-note">
+            Two starter apps show how it is done: <Link to="/apps">Brain</Link> for notes and decisions,
+            and <Link to="/apps">LastSecrets</Link> for credentials.
+            Coming: LastSeek, semantic search beside the database. It is not in the App Registry yet.
+          </p>
+        </div>
+      </section>
 
       {/* INSTALL */}
-      <Section variant="amber" id="install">
-        <h2><span className="bold">INSTALL</span> <span className="dim">two steps, about five minutes</span></h2>
-
-        <p>
-          <span className="bold white">You need:</span> Apple Silicon, <span className="bold">Homebrew</span>, and{' '}
-          <span className="bold">Bun</span>.
-          The installer checks for all three and stops if one is missing.
-        </p>
-
-        <Card>
+      <section className="fg-band" id="install">
+        <div className="fg-band-text">
+          <small>Install</small>
+          <h2>Two steps, about five minutes.</h2>
           <p>
-            <Label color="yellow">1. INSTALL LASTDB</Label>{' '}
-            <span className="dim">Homebrew package, service, and the plan for the starter apps</span>
-          </p>
-          <CopyBlock text={INSTALL_STEP_1} label="Copy" />
-          <p className="dim">
+            You need Apple Silicon, Homebrew, and Bun. The installer checks for all three and stops if one is missing.
             Read the script first: <a href="/install.sh">install.sh</a>.
-            The first run installs LastDB, then stops at the apps step and prints the install plan.
-            That stop is expected. It ends with <span className="bold">RESULT: CONSENT NEEDED</span>.
-            Running the script again is safe.
           </p>
-        </Card>
-
-        <Card>
-          <p>
-            <Label color="yellow">2. CONSENT TO THE STARTER APPS</Label>{' '}
-            <span className="dim">brain and lastsecrets</span>
-          </p>
-          <CopyBlock text={INSTALL_STEP_2} label="Copy" />
-          <p className="dim">
-            Run this only after you have read the plan from step 1.
-            It ends with <span className="bold">RESULT: PASS</span> when the apps are current and healthy.
-            Then run <span className="bold">brain init</span> to set up Brain.
-          </p>
-        </Card>
-
-        <p className="dim" id="what-it-changes">
-          <span className="bold white">What it changes</span>
-        </p>
-        <ul className="dim hero-facts">
-          <li>Homebrew installs the <span className="bold">lastdb</span> and <span className="bold">lastdbd</span> commands and starts the LastDB service.</li>
-          <li>The App Registry clones each starter app into <span className="bold">~/.local/share/lastdb-apps</span> and links its commands into <span className="bold">~/.local/bin</span>.</li>
-          <li>The first app install adds a background job. It checks the registry every 60 seconds and upgrades the apps on the stable channel. It writes its log under <span className="bold">~/.local/state/lastdb-app-registry</span>.</li>
-          <li>Each app installs its own packages with Bun.</li>
-          <li>It does not edit your shell profile, and it does not install Bun.</li>
-        </ul>
-
-        <div className="grid-2" style={{ marginTop: '1em' }}>
-          <Card>
-            <p><Label color="blue">REMOVE IT</Label> <span className="dim">your data stays</span></p>
-            <CopyBlock text={UNINSTALL_STEPS} label="Copy" />
-            <p className="dim">
-              Your data stays in <span className="bold">~/.lastdb</span>. These steps do not touch it.
-              Delete that folder only if you want to lose the data. This cannot be undone.
-              Command links in <span className="bold">~/.local/bin</span> may remain. Remove them if they point into the apps folder.
+        </div>
+        <div className="fg-band-steps">
+          <div>
+            <h3>1. Install LastDB and review the plan</h3>
+            <CopyBlock text={INSTALL_STEP_1} label="Copy" />
+            <p>
+              The first run installs LastDB, prints the plan for the starter apps, and stops with RESULT: CONSENT NEEDED.
+              That stop is expected.
             </p>
-          </Card>
-          <Card>
-            <p><Label color="blue">DATABASE ONLY</Label></p>
-            <pre>{`brew install edgevector/lastdb/lastdb
+          </div>
+          <div>
+            <h3>2. Consent to the starter apps</h3>
+            <CopyBlock text={`${INSTALL_STEP_2}\nbrain init`} label="Copy" />
+            <p>It ends with RESULT: PASS when the apps are current and healthy.</p>
+          </div>
+        </div>
+      </section>
+
+      <div className="fg-detail">
+        <Card>
+          <h3 id="what-it-changes">What it changes</h3>
+          <ul>
+            <li>Homebrew installs the <code>lastdb</code> and <code>lastdbd</code> commands and starts the LastDB service.</li>
+            <li>The App Registry clones each starter app into <code>~/.local/share/lastdb-apps</code> and links its commands into <code>~/.local/bin</code>.</li>
+            <li>The first app install adds a background job that checks the registry and upgrades the apps on the stable channel.</li>
+            <li>It does not edit your shell profile, and it does not install Bun.</li>
+          </ul>
+        </Card>
+        <Card>
+          <h3>Remove it</h3>
+          <CopyBlock text={UNINSTALL_STEPS} label="Copy" />
+          <p>
+            Your data stays in <code>~/.lastdb</code>. Delete that folder only if you want to lose the data.
+            This cannot be undone.
+          </p>
+        </Card>
+        <Card>
+          <h3>Database only</h3>
+          <pre>{`brew install edgevector/lastdb/lastdb
 brew services start lastdb
-lastdb status
-curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
-            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>. Add apps later with <span className="bold">lastdb app install</span>.</p>
-          </Card>
+lastdb status`}</pre>
+          <p>Add apps later with <code>lastdb app install</code>.</p>
+        </Card>
+      </div>
+
+      {/* 05 QUESTIONS */}
+      <section className="fg-section" id="faq">
+        <div className="fg-rail">05 &middot; Questions</div>
+        <div className="fg-body">
+          <dl className="fg-faq">
+            {FAQ.map((item) => (
+              <div key={item.q}>
+                <dt>{item.q}</dt>
+                <dd>{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="fg-more">
+            <Link to="/about">Why LastDB exists &rarr;</Link>{' '}&nbsp;{' '}
+            <Link to="/blog">How we build it &rarr;</Link>
+          </p>
         </div>
-      </Section>
-
-      {/* STARTER APPS */}
-      <Section variant="lavender" id="apps-teaser">
-        <h2><span className="bold">STARTER APPS</span> <span className="dim">working examples of apps on LastDB</span></h2>
-
-        <p>
-          The installer adds two apps. Both are open source, and both use the same socket requests that your app will.
-        </p>
-
-        <div className="grid-2">
-          <Card>
-            <p><Label color="purple">BRAIN</Label> <span className="dim">notes and decisions</span></p>
-            <p>Long-term memory for you and for your coding agent. Write a decision once, and find it in a later session.</p>
-          </Card>
-          <Card>
-            <p><Label color="purple">LASTSECRETS</Label> <span className="dim">credentials</span></p>
-            <p>Secrets stay in LastDB. Notes, docs, and scripts hold only a <span className="bold">lastsecrets://</span> reference.</p>
-          </Card>
-        </div>
-
-        <p>
-          <Link to="/apps" className="link-btn">[All apps &rarr;]</Link>{'  '}
-          <Link to="/start" className="link-btn">[How to use them &rarr;]</Link>
-        </p>
-      </Section>
-
-      {/* FAQ */}
-      <Section variant="sage" id="faq">
-        <h2><span className="bold">QUESTIONS</span></h2>
-        <dl className="faq">
-          {FAQ.map((item) => (
-            <div key={item.q} className="faq-item">
-              <dt className="bold white">{item.q}</dt>
-              <dd>{item.a}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-
-      {/* READ MORE */}
-      <Section variant="slate" id="next">
-        <h2><span className="bold">READ MORE</span></h2>
-        <div className="grid-2">
-          <Card>
-            <p><Label color="blue">WHY</Label></p>
-            <p>The idea behind LastDB: apps as clients of the user&rsquo;s database, not owners of it.</p>
-            <p><Link to="/about" className="link-btn">[About &rarr;]</Link></p>
-          </Card>
-          <Card>
-            <p><Label color="blue">HOW WE BUILD IT</Label></p>
-            <p>Engineering notes, with measurements: what was slow, what broke, and what we changed.</p>
-            <p><Link to="/blog" className="link-btn">[Dev blog &rarr;]</Link></p>
-          </Card>
-        </div>
-      </Section>
-
-      <hr className="decorative-rule" aria-hidden="true" />
+      </section>
     </>
   );
 }

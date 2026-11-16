@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
-import AsciiTitle from '../components/AsciiTitle';
 
 export default function Start() {
   return (
@@ -15,13 +14,12 @@ export default function Start() {
         <meta property="og:description" content="After install: daily use for you and for your agent." />
         <link rel="canonical" href="https://thelastdb.com/start" />
       </Helmet>
-      <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
-      <AsciiTitle text="USE" />
+      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
       <h1 className="tagline">How to use it</h1>
       <p className="bold white">This page assumes LastDB and the starter apps are installed.</p>
       <p className="hero-cta">
-        <Link to="/#install" className="link-btn">[Not installed? Install &rarr;]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>
+        <Link to="/#install" className="link-btn">Not installed? Install &rarr;</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />
@@ -77,10 +75,10 @@ curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http:
       </Section>
 
       <p className="dim">
-        <Link to="/#install" className="link-btn">[Install]</Link>{'  '}
-        <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
-        <Link to="/about" className="link-btn">[About]</Link>{'  '}
-        <Link to="/developer" className="link-btn">[Developer]</Link>
+        <Link to="/#install" className="link-btn">Install</Link>{'  '}
+        <Link to="/apps" className="link-btn">Apps</Link>{'  '}
+        <Link to="/about" className="link-btn">About</Link>{'  '}
+        <Link to="/developer" className="link-btn">Developer</Link>
       </p>
 
       <hr className="decorative-rule" aria-hidden="true" />

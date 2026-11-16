@@ -6,7 +6,7 @@ export default function ArchFigure({ svg, caption }) {
       {caption && (
         <figcaption
           style={{
-            color: '#928374',
+            color: 'var(--muted)',
             fontSize: '11px',
             letterSpacing: '0.06em',
             marginTop: '10px',

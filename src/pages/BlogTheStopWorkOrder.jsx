@@ -10,7 +10,7 @@ function ArchFigure({ svg, caption }) {
     <figure style={{ margin: '34px 0', textAlign: 'center' }}>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
       {caption && (
-        <figcaption style={{ color: '#928374', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
+        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
           {caption}
         </figcaption>
       )}
@@ -21,146 +21,146 @@ function ArchFigure({ svg, caption }) {
 const SVG_DEFS = `
   <defs>
     <pattern id="poche" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
-const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'IBM Plex Mono', monospace">${SVG_DEFS}`;
+const SVG_OPEN = (vb) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
 
 // 1 — before/after: the kernel was buried inside a fat desktop node; now it stands alone.
 const FOOTPRINT = `${SVG_OPEN('0 0 660 330')}
-  <text x="40" y="40" fill="#928374" font-size="11" letter-spacing="1.5">BEFORE — THE DESKTOP NODE</text>
-  <rect x="40" y="52" width="250" height="196" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="58" y="78" fill="#928374" font-size="10">ingestion &#183; people import</text>
-  <text x="58" y="98" fill="#928374" font-size="10">hosted chat &#183; org surfaces</text>
-  <text x="58" y="118" fill="#928374" font-size="10">transforms &#183; dev server</text>
-  <text x="58" y="138" fill="#928374" font-size="10">social discovery &#183; faces</text>
-  <text x="58" y="158" fill="#928374" font-size="10">desktop ui &#183; dmg installer</text>
-  <rect x="56" y="176" width="218" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="165" y="198" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">THE KERNEL</text>
-  <text x="165" y="215" text-anchor="middle" fill="#928374" font-size="10">buried under everything else</text>
+  <text x="40" y="40" fill="var(--muted)" font-size="11" letter-spacing="1.5">BEFORE — THE DESKTOP NODE</text>
+  <rect x="40" y="52" width="250" height="196" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="58" y="78" fill="var(--muted)" font-size="10">ingestion &#183; people import</text>
+  <text x="58" y="98" fill="var(--muted)" font-size="10">hosted chat &#183; org surfaces</text>
+  <text x="58" y="118" fill="var(--muted)" font-size="10">transforms &#183; dev server</text>
+  <text x="58" y="138" fill="var(--muted)" font-size="10">social discovery &#183; faces</text>
+  <text x="58" y="158" fill="var(--muted)" font-size="10">desktop ui &#183; dmg installer</text>
+  <rect x="56" y="176" width="218" height="52" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="165" y="198" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">THE KERNEL</text>
+  <text x="165" y="215" text-anchor="middle" fill="var(--muted)" font-size="10">buried under everything else</text>
 
-  <line x1="40" y1="262" x2="40" y2="276" stroke="#928374" stroke-width="1"/>
-  <line x1="290" y1="262" x2="290" y2="276" stroke="#928374" stroke-width="1"/>
-  <line x1="40" y1="269" x2="290" y2="269" stroke="#928374" stroke-width="1"/>
-  <text x="165" y="294" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">454,988 LINES OF RUST</text>
+  <line x1="40" y1="262" x2="40" y2="276" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="290" y1="262" x2="290" y2="276" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="40" y1="269" x2="290" y2="269" stroke="var(--muted)" stroke-width="1"/>
+  <text x="165" y="294" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">454,988 LINES OF RUST</text>
 
-  <line x1="310" y1="150" x2="398" y2="150" stroke="#928374" stroke-width="1"/>
-  <polygon points="404,150 395,146 395,154" fill="#928374"/>
-  <text x="357" y="138" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="1">3 DAYS</text>
+  <line x1="310" y1="150" x2="398" y2="150" stroke="var(--muted)" stroke-width="1"/>
+  <polygon points="404,150 395,146 395,154" fill="var(--muted)"/>
+  <text x="357" y="138" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="1">3 DAYS</text>
 
-  <text x="420" y="40" fill="#83a598" font-size="11" letter-spacing="1.5">AFTER — THE MINI</text>
-  <rect x="420" y="52" width="66" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="453" y="76" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">BRAIN</text>
-  <rect x="497" y="52" width="66" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="530" y="76" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">KANBAN</text>
-  <rect x="574" y="52" width="66" height="40" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="607" y="70" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">SITU-</text>
-  <text x="607" y="82" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">ATIONS</text>
+  <text x="420" y="40" fill="var(--accent)" font-size="11" letter-spacing="1.5">AFTER — THE MINI</text>
+  <rect x="420" y="52" width="66" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="453" y="76" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">BRAIN</text>
+  <rect x="497" y="52" width="66" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="530" y="76" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">KANBAN</text>
+  <rect x="574" y="52" width="66" height="40" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="607" y="70" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">SITU-</text>
+  <text x="607" y="82" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">ATIONS</text>
 
-  <line x1="453" y1="92" x2="453" y2="176" stroke="#928374" stroke-width="1"/>
-  <line x1="530" y1="92" x2="530" y2="176" stroke="#928374" stroke-width="1"/>
-  <line x1="607" y1="92" x2="607" y2="176" stroke="#928374" stroke-width="1"/>
-  <rect x="451" y="172" width="4" height="4" fill="#928374"/>
-  <rect x="528" y="172" width="4" height="4" fill="#928374"/>
-  <rect x="605" y="172" width="4" height="4" fill="#928374"/>
-  <text x="446" y="140" fill="#928374" font-size="9" letter-spacing="1" transform="rotate(-90 446 140)">apps</text>
+  <line x1="453" y1="92" x2="453" y2="176" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="530" y1="92" x2="530" y2="176" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="607" y1="92" x2="607" y2="176" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="451" y="172" width="4" height="4" fill="var(--muted)"/>
+  <rect x="528" y="172" width="4" height="4" fill="var(--muted)"/>
+  <rect x="605" y="172" width="4" height="4" fill="var(--muted)"/>
+  <text x="446" y="140" fill="var(--muted)" font-size="9" letter-spacing="1" transform="rotate(-90 446 140)">apps</text>
 
-  <rect x="420" y="176" width="220" height="72" fill="url(#poche)" stroke="#83a598" stroke-width="1"/>
-  <text x="530" y="206" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE KERNEL, ALONE</text>
-  <text x="530" y="226" text-anchor="middle" fill="#928374" font-size="10">storage &#183; index &#183; sync &#183; api</text>
+  <rect x="420" y="176" width="220" height="72" fill="url(#poche)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="530" y="206" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE KERNEL, ALONE</text>
+  <text x="530" y="226" text-anchor="middle" fill="var(--muted)" font-size="10">storage &#183; index &#183; sync &#183; api</text>
 
-  <line x1="420" y1="262" x2="420" y2="276" stroke="#83a598" stroke-width="1"/>
-  <line x1="640" y1="262" x2="640" y2="276" stroke="#83a598" stroke-width="1"/>
-  <line x1="420" y1="269" x2="640" y2="269" stroke="#83a598" stroke-width="1"/>
-  <text x="530" y="294" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">179,030 LINES — &#8722;61%</text>
+  <line x1="420" y1="262" x2="420" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="640" y1="262" x2="640" y2="276" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="420" y1="269" x2="640" y2="269" stroke="var(--accent)" stroke-width="1"/>
+  <text x="530" y="294" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">179,030 LINES — &#8722;61%</text>
 </svg>`;
 
 // 2 — one record, everyone reads it: the situation as the single stop-work order.
 const CONTROLPLANE = `${SVG_OPEN('0 0 660 310')}
-  <rect x="44" y="56" width="96" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="77" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">AGENT</text>
-  <rect x="44" y="106" width="96" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="127" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">AGENT</text>
-  <rect x="44" y="156" width="96" height="34" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="92" y="177" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">AGENT</text>
+  <rect x="44" y="56" width="96" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="77" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">AGENT</text>
+  <rect x="44" y="106" width="96" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="127" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">AGENT</text>
+  <rect x="44" y="156" width="96" height="34" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="92" y="177" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">AGENT</text>
 
-  <polyline points="140,73 190,73 190,123" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="44" y="44" fill="#928374" font-size="9" letter-spacing="0.5">preflight: may i touch this?</text>
-  <line x1="140" y1="123" x2="256" y2="123" stroke="#928374" stroke-width="1"/>
-  <polyline points="140,173 190,173 190,123" fill="none" stroke="#928374" stroke-width="1"/>
-  <rect x="254" y="121" width="4" height="4" fill="#928374"/>
+  <polyline points="140,73 190,73 190,123" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="44" y="44" fill="var(--muted)" font-size="9" letter-spacing="0.5">preflight: may i touch this?</text>
+  <line x1="140" y1="123" x2="256" y2="123" stroke="var(--muted)" stroke-width="1"/>
+  <polyline points="140,173 190,173 190,123" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="254" y="121" width="4" height="4" fill="var(--muted)"/>
 
-  <rect x="258" y="66" width="200" height="110" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="358" y="92" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">THE SITUATION</text>
-  <text x="358" y="112" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="1">P0 &#183; MINI-ONLY CUTOVER</text>
-  <line x1="276" y1="124" x2="440" y2="124" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
-  <text x="358" y="142" text-anchor="middle" fill="#928374" font-size="10">blocked: modify &#183; build</text>
-  <text x="358" y="158" text-anchor="middle" fill="#928374" font-size="10">release &#183; dogfood the node</text>
+  <rect x="258" y="66" width="200" height="110" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="358" y="92" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">THE SITUATION</text>
+  <text x="358" y="112" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="1">P0 &#183; MINI-ONLY CUTOVER</text>
+  <line x1="276" y1="124" x2="440" y2="124" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="358" y="142" text-anchor="middle" fill="var(--muted)" font-size="10">blocked: modify &#183; build</text>
+  <text x="358" y="158" text-anchor="middle" fill="var(--muted)" font-size="10">release &#183; dogfood the node</text>
 
-  <line x1="458" y1="96" x2="500" y2="96" stroke="#928374" stroke-width="1"/>
-  <rect x="456" y="94" width="4" height="4" fill="#928374"/>
-  <rect x="502" y="78" width="120" height="36" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="562" y="94" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">KANBAN</text>
-  <text x="562" y="107" text-anchor="middle" fill="#928374" font-size="9">two phase cards</text>
+  <line x1="458" y1="96" x2="500" y2="96" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="456" y="94" width="4" height="4" fill="var(--muted)"/>
+  <rect x="502" y="78" width="120" height="36" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="562" y="94" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">KANBAN</text>
+  <text x="562" y="107" text-anchor="middle" fill="var(--muted)" font-size="9">two phase cards</text>
 
-  <line x1="458" y1="146" x2="500" y2="146" stroke="#928374" stroke-width="1"/>
-  <rect x="456" y="144" width="4" height="4" fill="#928374"/>
-  <rect x="502" y="128" width="120" height="36" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="562" y="144" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">BRAIN</text>
-  <text x="562" y="157" text-anchor="middle" fill="#928374" font-size="9">the why, durably</text>
+  <line x1="458" y1="146" x2="500" y2="146" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="456" y="144" width="4" height="4" fill="var(--muted)"/>
+  <rect x="502" y="128" width="120" height="36" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="562" y="144" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">BRAIN</text>
+  <text x="562" y="157" text-anchor="middle" fill="var(--muted)" font-size="9">the why, durably</text>
 
-  <rect x="234" y="222" width="248" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="358" y="244" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1.5">RESPONDER ROUTINE</text>
-  <text x="358" y="262" text-anchor="middle" fill="#928374" font-size="10">wakes &#183; verifies &#183; appends the log</text>
-  <line x1="358" y1="176" x2="358" y2="222" stroke="#928374" stroke-width="1"/>
-  <rect x="356" y="176" width="4" height="4" fill="#928374"/>
-  <polygon points="358,182 354,191 362,191" fill="#928374" transform="rotate(180 358 186.5)"/>
-  <text x="368" y="203" fill="#928374" font-size="9" letter-spacing="0.5">every few hours</text>
+  <rect x="234" y="222" width="248" height="52" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="358" y="244" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1.5">RESPONDER ROUTINE</text>
+  <text x="358" y="262" text-anchor="middle" fill="var(--muted)" font-size="10">wakes &#183; verifies &#183; appends the log</text>
+  <line x1="358" y1="176" x2="358" y2="222" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="356" y="176" width="4" height="4" fill="var(--muted)"/>
+  <polygon points="358,182 354,191 362,191" fill="var(--muted)" transform="rotate(180 358 186.5)"/>
+  <text x="368" y="203" fill="var(--muted)" font-size="9" letter-spacing="0.5">every few hours</text>
 </svg>`;
 
 // 3 — two release pipelines: the DMG assembly line vs the Mini tarball.
 const PIPELINES = `${SVG_OPEN('0 0 660 330')}
-  <text x="40" y="40" fill="#928374" font-size="11" letter-spacing="1.5">BEFORE — SHIPPING THE DMG</text>
-  <rect x="40" y="54" width="118" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="99" y="73" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">SIDECARS &#215;2</text>
-  <text x="99" y="88" text-anchor="middle" fill="#928374" font-size="9">90&#8211;100 min each</text>
-  <line x1="158" y1="76" x2="176" y2="76" stroke="#928374" stroke-width="1"/>
-  <rect x="176" y="54" width="108" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="230" y="73" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">BUNDLES &#215;2</text>
-  <text x="230" y="88" text-anchor="middle" fill="#928374" font-size="9">~20 min each</text>
-  <line x1="284" y1="76" x2="302" y2="76" stroke="#928374" stroke-width="1"/>
-  <rect x="302" y="54" width="84" height="44" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="344" y="73" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">SMOKE</text>
-  <text x="344" y="88" text-anchor="middle" fill="#928374" font-size="9">~5 min</text>
-  <line x1="386" y1="76" x2="404" y2="76" stroke="#928374" stroke-width="1"/>
-  <rect x="404" y="54" width="216" height="44" fill="url(#poche)" stroke="#928374" stroke-width="1"/>
-  <text x="512" y="73" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">SIGN &#183; NOTARIZE &#183; STAPLE</text>
-  <text x="512" y="88" text-anchor="middle" fill="#928374" font-size="9">someone else&#8217;s clock</text>
+  <text x="40" y="40" fill="var(--muted)" font-size="11" letter-spacing="1.5">BEFORE — SHIPPING THE DMG</text>
+  <rect x="40" y="54" width="118" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="99" y="73" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">SIDECARS &#215;2</text>
+  <text x="99" y="88" text-anchor="middle" fill="var(--muted)" font-size="9">90&#8211;100 min each</text>
+  <line x1="158" y1="76" x2="176" y2="76" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="176" y="54" width="108" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="230" y="73" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">BUNDLES &#215;2</text>
+  <text x="230" y="88" text-anchor="middle" fill="var(--muted)" font-size="9">~20 min each</text>
+  <line x1="284" y1="76" x2="302" y2="76" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="302" y="54" width="84" height="44" fill="none" stroke="var(--muted)" stroke-width="1"/>
+  <text x="344" y="73" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">SMOKE</text>
+  <text x="344" y="88" text-anchor="middle" fill="var(--muted)" font-size="9">~5 min</text>
+  <line x1="386" y1="76" x2="404" y2="76" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="404" y="54" width="216" height="44" fill="url(#poche)" stroke="var(--muted)" stroke-width="1"/>
+  <text x="512" y="73" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">SIGN &#183; NOTARIZE &#183; STAPLE</text>
+  <text x="512" y="88" text-anchor="middle" fill="var(--muted)" font-size="9">someone else&#8217;s clock</text>
 
-  <line x1="40" y1="116" x2="40" y2="130" stroke="#928374" stroke-width="1"/>
-  <line x1="620" y1="116" x2="620" y2="130" stroke="#928374" stroke-width="1"/>
-  <line x1="40" y1="123" x2="620" y2="123" stroke="#928374" stroke-width="1"/>
-  <text x="330" y="148" text-anchor="middle" fill="#928374" font-size="10" letter-spacing="0.5">~4 HOURS ON A GOOD DAY &#183; FINAL WEEK: ZERO GREEN RELEASE TAGS</text>
+  <line x1="40" y1="116" x2="40" y2="130" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="620" y1="116" x2="620" y2="130" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="40" y1="123" x2="620" y2="123" stroke="var(--muted)" stroke-width="1"/>
+  <text x="330" y="148" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">~4 HOURS ON A GOOD DAY &#183; FINAL WEEK: ZERO GREEN RELEASE TAGS</text>
 
-  <line x1="40" y1="170" x2="620" y2="170" stroke="#504945" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="40" y1="170" x2="620" y2="170" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <text x="40" y="204" fill="#83a598" font-size="11" letter-spacing="1.5">AFTER — SHIPPING THE MINI</text>
-  <rect x="40" y="218" width="150" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="115" y="237" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">BUILD TARBALL</text>
-  <text x="115" y="252" text-anchor="middle" fill="#928374" font-size="9">one binary pair, one arch</text>
-  <line x1="190" y1="240" x2="208" y2="240" stroke="#83a598" stroke-width="1"/>
-  <rect x="208" y="218" width="130" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="273" y="237" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">PUBLISH ASSET</text>
-  <text x="273" y="252" text-anchor="middle" fill="#928374" font-size="9">checksummed</text>
-  <line x1="338" y1="240" x2="356" y2="240" stroke="#83a598" stroke-width="1"/>
-  <rect x="356" y="218" width="150" height="44" fill="none" stroke="#83a598" stroke-width="1"/>
-  <text x="431" y="237" text-anchor="middle" fill="#ebdbb2" font-size="10" letter-spacing="1">FORMULA BUMP</text>
-  <text x="431" y="252" text-anchor="middle" fill="#928374" font-size="9">&#60;30 seconds</text>
+  <text x="40" y="204" fill="var(--accent)" font-size="11" letter-spacing="1.5">AFTER — SHIPPING THE MINI</text>
+  <rect x="40" y="218" width="150" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="115" y="237" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">BUILD TARBALL</text>
+  <text x="115" y="252" text-anchor="middle" fill="var(--muted)" font-size="9">one binary pair, one arch</text>
+  <line x1="190" y1="240" x2="208" y2="240" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="208" y="218" width="130" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="273" y="237" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">PUBLISH ASSET</text>
+  <text x="273" y="252" text-anchor="middle" fill="var(--muted)" font-size="9">checksummed</text>
+  <line x1="338" y1="240" x2="356" y2="240" stroke="var(--accent)" stroke-width="1"/>
+  <rect x="356" y="218" width="150" height="44" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="431" y="237" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="1">FORMULA BUMP</text>
+  <text x="431" y="252" text-anchor="middle" fill="var(--muted)" font-size="9">&#60;30 seconds</text>
 
-  <line x1="40" y1="280" x2="40" y2="294" stroke="#83a598" stroke-width="1"/>
-  <line x1="506" y1="280" x2="506" y2="294" stroke="#83a598" stroke-width="1"/>
-  <line x1="40" y1="287" x2="506" y2="287" stroke="#83a598" stroke-width="1"/>
-  <text x="273" y="312" text-anchor="middle" fill="#83a598" font-size="10" letter-spacing="0.5">~7 MINUTES FROM UPLOAD TO INSTALLABLE</text>
+  <line x1="40" y1="280" x2="40" y2="294" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="506" y1="280" x2="506" y2="294" stroke="var(--accent)" stroke-width="1"/>
+  <line x1="40" y1="287" x2="506" y2="287" stroke="var(--accent)" stroke-width="1"/>
+  <text x="273" y="312" text-anchor="middle" fill="var(--accent)" font-size="10" letter-spacing="0.5">~7 MINUTES FROM UPLOAD TO INSTALLABLE</text>
 </svg>`;
 
 export default function BlogTheStopWorkOrder() {
@@ -174,7 +174,7 @@ export default function BlogTheStopWorkOrder() {
         <link rel="canonical" href="https://thelastdb.com/blog/the-stop-work-order" />
       </Helmet>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
 
       <h1 className="tagline">The Stop-Work Order</h1>
       <p className="post-meta dim">2026-07-13</p>
@@ -234,7 +234,7 @@ export default function BlogTheStopWorkOrder() {
 
       <p className="dim">Built with <Link to="/apps">Brain and Kanban</Link> &mdash; open-source apps on LastDB &mdash; inside our <Link to="/blog/building-lastdb-with-agents">autonomous build loop</Link>.</p>
 
-      <p><Link to="/blog" className="link-btn">[&larr; Blog]</Link></p>
+      <p><Link to="/blog" className="link-btn">&larr; Blog</Link></p>
     </article>
   );
 }

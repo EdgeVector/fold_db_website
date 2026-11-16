@@ -19,7 +19,7 @@ function ArchFigure({ svg, caption }) {
       {caption && (
         <figcaption
           style={{
-            color: '#928374',
+            color: 'var(--muted)',
             fontSize: '11px',
             letterSpacing: '0.06em',
             marginTop: '12px',
@@ -35,11 +35,11 @@ function ArchFigure({ svg, caption }) {
   );
 }
 
-// ink #ebdbb2 · dim #928374 · hatch #504945
+// ink var(--ink) · dim var(--muted) · hatch var(--line)
 const SVG_DEFS = `
   <defs>
     <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#504945" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>`;
 
@@ -48,209 +48,209 @@ const SVG_OPEN = (vb) =>
 
 // Fig 1 — the index: one signed document of proved pairs, key pinned in the binary.
 const THE_INDEX = `${SVG_OPEN('0 0 660 400')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">THE REGISTRY IS ONE SIGNED FILE</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">THE REGISTRY IS ONE SIGNED FILE</text>
 
   <!-- index document (dashed = served from a public host, not yours) -->
-  <polygon points="40,52 600,52 620,72 620,226 40,226" fill="none" stroke="#ebdbb2" stroke-width="1" stroke-dasharray="4 3"/>
-  <polyline points="600,52 600,72 620,72" fill="none" stroke="#ebdbb2" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="56" y="78" fill="#ebdbb2" font-size="12" letter-spacing="1.5">stable.json</text>
-  <text x="56" y="94" fill="#928374" font-size="10">one row = one proved pair</text>
+  <polygon points="40,52 600,52 620,72 620,226 40,226" fill="none" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4 3"/>
+  <polyline points="600,52 600,72 620,72" fill="none" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="56" y="78" fill="var(--ink)" font-size="12" letter-spacing="1.5">stable.json</text>
+  <text x="56" y="94" fill="var(--muted)" font-size="10">one row = one proved pair</text>
 
   <!-- column headers -->
-  <text x="76" y="118" fill="#928374" font-size="9">APP @ COMMIT</text>
-  <text x="300" y="118" fill="#928374" font-size="9">NODE BUILD</text>
-  <text x="420" y="118" fill="#928374" font-size="9">PROOF RUN</text>
+  <text x="76" y="118" fill="var(--muted)" font-size="9">APP @ COMMIT</text>
+  <text x="300" y="118" fill="var(--muted)" font-size="9">NODE BUILD</text>
+  <text x="420" y="118" fill="var(--muted)" font-size="9">PROOF RUN</text>
 
   <!-- rows: hatched squares = real data -->
-  <rect x="56" y="132" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="76" y="142" fill="#ebdbb2" font-size="10">brain @ 1f2d2f46</text>
-  <text x="300" y="142" fill="#ebdbb2" font-size="10">0.23.3-2127</text>
-  <text x="420" y="142" fill="#ebdbb2" font-size="10">llms-smoke-…2635Z</text>
+  <rect x="56" y="132" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="76" y="142" fill="var(--ink)" font-size="10">brain @ 1f2d2f46</text>
+  <text x="300" y="142" fill="var(--ink)" font-size="10">0.23.3-2127</text>
+  <text x="420" y="142" fill="var(--ink)" font-size="10">llms-smoke-…2635Z</text>
 
-  <rect x="56" y="156" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="76" y="166" fill="#ebdbb2" font-size="10">kanban @ 90ef24ad</text>
-  <text x="300" y="166" fill="#ebdbb2" font-size="10">0.23.3-2127</text>
-  <text x="420" y="166" fill="#ebdbb2" font-size="10">llms-smoke-…2635Z</text>
+  <rect x="56" y="156" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="76" y="166" fill="var(--ink)" font-size="10">kanban @ 90ef24ad</text>
+  <text x="300" y="166" fill="var(--ink)" font-size="10">0.23.3-2127</text>
+  <text x="420" y="166" fill="var(--ink)" font-size="10">llms-smoke-…2635Z</text>
 
-  <rect x="56" y="180" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="76" y="190" fill="#ebdbb2" font-size="10">situations @ 923409b1</text>
-  <text x="300" y="190" fill="#ebdbb2" font-size="10">0.23.3-2127</text>
-  <text x="420" y="190" fill="#ebdbb2" font-size="10">llms-smoke-…2635Z</text>
+  <rect x="56" y="180" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="76" y="190" fill="var(--ink)" font-size="10">situations @ 923409b1</text>
+  <text x="300" y="190" fill="var(--ink)" font-size="10">0.23.3-2127</text>
+  <text x="420" y="190" fill="var(--ink)" font-size="10">llms-smoke-…2635Z</text>
 
-  <text x="56" y="214" fill="#928374" font-size="9">9 apps · sha256 of the exact bytes · Ed25519 signature in stable.json.sig</text>
+  <text x="56" y="214" fill="var(--muted)" font-size="9">9 apps · sha256 of the exact bytes · Ed25519 signature in stable.json.sig</text>
 
   <!-- connector: index -> lastdb binary (down) -->
-  <line x1="120" y1="226" x2="120" y2="262" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="120,262 116,253 124,253" fill="#ebdbb2"/>
-  <rect x="118" y="224" width="4" height="4" fill="#ebdbb2"/>
-  <text x="132" y="248" fill="#928374" font-size="9">HTTPS GET</text>
+  <line x1="120" y1="226" x2="120" y2="262" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="120,262 116,253 124,253" fill="var(--ink)"/>
+  <rect x="118" y="224" width="4" height="4" fill="var(--ink)"/>
+  <text x="132" y="248" fill="var(--muted)" font-size="9">HTTPS GET</text>
 
   <!-- the lastdb binary: a process -->
-  <rect x="40" y="264" width="160" height="80" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="120" y="286" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">lastdb</text>
-  <text x="120" y="302" text-anchor="middle" fill="#928374" font-size="10">on your machine</text>
-  <polygon points="120,312 110,330 130,330" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="120" y="360" text-anchor="middle" fill="#928374" font-size="9">VERIFYING KEY, PINNED</text>
+  <rect x="40" y="264" width="160" height="80" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="120" y="286" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">lastdb</text>
+  <text x="120" y="302" text-anchor="middle" fill="var(--muted)" font-size="10">on your machine</text>
+  <polygon points="120,312 110,330 130,330" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="120" y="360" text-anchor="middle" fill="var(--muted)" font-size="9">VERIFYING KEY, PINNED</text>
 
   <!-- what the reader checks -->
-  <text x="232" y="286" fill="#ebdbb2" font-size="10">1. hash the bytes it received</text>
-  <text x="232" y="302" fill="#ebdbb2" font-size="10">2. compare with the .sig payload hash</text>
-  <text x="232" y="318" fill="#ebdbb2" font-size="10">3. verify the Ed25519 signature</text>
-  <text x="232" y="338" fill="#928374" font-size="10">any mismatch refuses the whole file</text>
+  <text x="232" y="286" fill="var(--ink)" font-size="10">1. hash the bytes it received</text>
+  <text x="232" y="302" fill="var(--ink)" font-size="10">2. compare with the .sig payload hash</text>
+  <text x="232" y="318" fill="var(--ink)" font-size="10">3. verify the Ed25519 signature</text>
+  <text x="232" y="338" fill="var(--muted)" font-size="10">any mismatch refuses the whole file</text>
 
   <!-- legend -->
-  <rect x="40" y="380" width="10" height="10" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="58" y="389" fill="#928374" font-size="9">PROVED ROW</text>
-  <line x1="150" y1="385" x2="174" y2="385" stroke="#ebdbb2" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="182" y="389" fill="#928374" font-size="9">PUBLIC HOST, NOT YOURS</text>
-  <polygon points="356,380 350,391 362,391" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="370" y="389" fill="#928374" font-size="9">KEY</text>
+  <rect x="40" y="380" width="10" height="10" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="58" y="389" fill="var(--muted)" font-size="9">PROVED ROW</text>
+  <line x1="150" y1="385" x2="174" y2="385" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="182" y="389" fill="var(--muted)" font-size="9">PUBLIC HOST, NOT YOURS</text>
+  <polygon points="356,380 350,391 362,391" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="370" y="389" fill="var(--muted)" font-size="9">KEY</text>
 </svg>`;
 
 // Fig 2 — resolve: the node build string is the lookup key. Equal or nothing.
 const RESOLVE = `${SVG_OPEN('0 0 660 250')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">INSTALL PICKS A ROW BY EQUALITY, NOT BY MINIMUM</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">INSTALL PICKS A ROW BY EQUALITY, NOT BY MINIMUM</text>
 
   <!-- node build box -->
-  <rect x="40" y="70" width="150" height="70" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="115" y="96" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR NODE</text>
-  <text x="115" y="114" text-anchor="middle" fill="#928374" font-size="10">build 0.23.3-2127</text>
-  <text x="115" y="128" text-anchor="middle" fill="#928374" font-size="9">GET /api/version</text>
+  <rect x="40" y="70" width="150" height="70" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="115" y="96" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1.5">YOUR NODE</text>
+  <text x="115" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">build 0.23.3-2127</text>
+  <text x="115" y="128" text-anchor="middle" fill="var(--muted)" font-size="9">GET /api/version</text>
 
   <!-- connector to diamond -->
-  <line x1="190" y1="105" x2="248" y2="105" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="188" y="103" width="4" height="4" fill="#ebdbb2"/>
-  <rect x="246" y="103" width="4" height="4" fill="#ebdbb2"/>
+  <line x1="190" y1="105" x2="248" y2="105" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="188" y="103" width="4" height="4" fill="var(--ink)"/>
+  <rect x="246" y="103" width="4" height="4" fill="var(--ink)"/>
 
   <!-- decision diamond -->
-  <polygon points="250,105 340,60 430,105 340,150" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="340" y="100" text-anchor="middle" fill="#ebdbb2" font-size="10">A ROW NAMES</text>
-  <text x="340" y="114" text-anchor="middle" fill="#ebdbb2" font-size="10">THIS BUILD?</text>
+  <polygon points="250,105 340,60 430,105 340,150" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="340" y="100" text-anchor="middle" fill="var(--ink)" font-size="10">A ROW NAMES</text>
+  <text x="340" y="114" text-anchor="middle" fill="var(--ink)" font-size="10">THIS BUILD?</text>
 
   <!-- yes branch -->
-  <line x1="430" y1="105" x2="476" y2="105" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="476,105 467,101 467,109" fill="#ebdbb2"/>
-  <rect x="428" y="103" width="4" height="4" fill="#ebdbb2"/>
-  <text x="452" y="96" text-anchor="middle" fill="#928374" font-size="9">YES</text>
+  <line x1="430" y1="105" x2="476" y2="105" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="476,105 467,101 467,109" fill="var(--ink)"/>
+  <rect x="428" y="103" width="4" height="4" fill="var(--ink)"/>
+  <text x="452" y="96" text-anchor="middle" fill="var(--muted)" font-size="9">YES</text>
 
-  <rect x="480" y="70" width="160" height="70" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="478" y="103" width="4" height="4" fill="#ebdbb2"/>
-  <text x="560" y="92" text-anchor="middle" fill="#ebdbb2" font-size="11" letter-spacing="1">CHECKOUT</text>
-  <rect x="500" y="102" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="518" y="112" fill="#928374" font-size="9">newest such row</text>
-  <text x="560" y="130" text-anchor="middle" fill="#928374" font-size="9">+ receipt with proof id</text>
+  <rect x="480" y="70" width="160" height="70" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="478" y="103" width="4" height="4" fill="var(--ink)"/>
+  <text x="560" y="92" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="1">CHECKOUT</text>
+  <rect x="500" y="102" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="518" y="112" fill="var(--muted)" font-size="9">newest such row</text>
+  <text x="560" y="130" text-anchor="middle" fill="var(--muted)" font-size="9">+ receipt with proof id</text>
 
   <!-- no branch (down) -->
-  <polyline points="340,150 340,200 352,200" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="352,200 343,196 343,204" fill="#ebdbb2"/>
-  <rect x="338" y="148" width="4" height="4" fill="#ebdbb2"/>
-  <text x="348" y="180" fill="#928374" font-size="9">NO</text>
+  <polyline points="340,150 340,200 352,200" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="352,200 343,196 343,204" fill="var(--ink)"/>
+  <rect x="338" y="148" width="4" height="4" fill="var(--ink)"/>
+  <text x="348" y="180" fill="var(--muted)" font-size="9">NO</text>
 
-  <rect x="356" y="180" width="284" height="40" fill="none" stroke="#ebdbb2" stroke-width="1" stroke-dasharray="4 3"/>
-  <rect x="354" y="198" width="4" height="4" fill="#ebdbb2"/>
-  <text x="498" y="197" text-anchor="middle" fill="#ebdbb2" font-size="10">STOP. NOTHING INSTALLS.</text>
-  <text x="498" y="211" text-anchor="middle" fill="#928374" font-size="9">the error names the remedy: brew upgrade lastdb</text>
+  <rect x="356" y="180" width="284" height="40" fill="none" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4 3"/>
+  <rect x="354" y="198" width="4" height="4" fill="var(--ink)"/>
+  <text x="498" y="197" text-anchor="middle" fill="var(--ink)" font-size="10">STOP. NOTHING INSTALLS.</text>
+  <text x="498" y="211" text-anchor="middle" fill="var(--muted)" font-size="9">the error names the remedy: brew upgrade lastdb</text>
 
   <!-- footnote -->
-  <text x="40" y="180" fill="#928374" font-size="10">a minimum-version rule fails</text>
-  <text x="40" y="194" fill="#928374" font-size="10">when the node REMOVES a field;</text>
-  <text x="40" y="208" fill="#928374" font-size="10">an equal pair was actually run.</text>
+  <text x="40" y="180" fill="var(--muted)" font-size="10">a minimum-version rule fails</text>
+  <text x="40" y="194" fill="var(--muted)" font-size="10">when the node REMOVES a field;</text>
+  <text x="40" y="208" fill="var(--muted)" font-size="10">an equal pair was actually run.</text>
 </svg>`;
 
 // Fig 3 — who writes the rows: nightly candidate set -> isolated smoke -> next; human -> stable.
 const THE_LOOP = `${SVG_OPEN('0 0 660 320')}
-  <text x="36" y="28" fill="#928374" font-size="11" letter-spacing="1.5">A ROW EXISTS ONLY BECAUSE A FRESH INSTALL OF IT PASSED</text>
+  <text x="36" y="28" fill="var(--muted)" font-size="11" letter-spacing="1.5">A ROW EXISTS ONLY BECAUSE A FRESH INSTALL OF IT PASSED</text>
 
   <!-- stage 1: build node -->
-  <rect x="40" y="60" width="120" height="60" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="100" y="84" text-anchor="middle" fill="#ebdbb2" font-size="10">BUILD NODE</text>
-  <text x="100" y="100" text-anchor="middle" fill="#928374" font-size="9">from main, nightly</text>
+  <rect x="40" y="60" width="120" height="60" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="100" y="84" text-anchor="middle" fill="var(--ink)" font-size="10">BUILD NODE</text>
+  <text x="100" y="100" text-anchor="middle" fill="var(--muted)" font-size="9">from main, nightly</text>
 
-  <line x1="160" y1="90" x2="200" y2="90" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="158" y="88" width="4" height="4" fill="#ebdbb2"/>
-  <rect x="198" y="88" width="4" height="4" fill="#ebdbb2"/>
+  <line x1="160" y1="90" x2="200" y2="90" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="158" y="88" width="4" height="4" fill="var(--ink)"/>
+  <rect x="198" y="88" width="4" height="4" fill="var(--ink)"/>
 
   <!-- stage 2: fix the app set -->
-  <rect x="202" y="60" width="120" height="60" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="262" y="80" text-anchor="middle" fill="#ebdbb2" font-size="10">FIX APP COMMITS</text>
-  <rect x="222" y="92" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="240" y="92" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="258" y="92" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="276" y="92" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="298" y="102" fill="#928374" font-size="9">×9</text>
+  <rect x="202" y="60" width="120" height="60" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="262" y="80" text-anchor="middle" fill="var(--ink)" font-size="10">FIX APP COMMITS</text>
+  <rect x="222" y="92" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="240" y="92" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="258" y="92" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="276" y="92" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="298" y="102" fill="var(--muted)" font-size="9">×9</text>
 
-  <line x1="322" y1="90" x2="362" y2="90" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="320" y="88" width="4" height="4" fill="#ebdbb2"/>
-  <rect x="360" y="88" width="4" height="4" fill="#ebdbb2"/>
+  <line x1="322" y1="90" x2="362" y2="90" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="320" y="88" width="4" height="4" fill="var(--ink)"/>
+  <rect x="360" y="88" width="4" height="4" fill="var(--ink)"/>
 
   <!-- stage 3: isolated install + smoke -->
-  <rect x="364" y="60" width="140" height="60" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="434" y="80" text-anchor="middle" fill="#ebdbb2" font-size="10">FRESH INSTALL</text>
-  <text x="434" y="94" text-anchor="middle" fill="#928374" font-size="9">isolated home, that node,</text>
-  <text x="434" y="108" text-anchor="middle" fill="#928374" font-size="9">those commits · 37 checks</text>
+  <rect x="364" y="60" width="140" height="60" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="434" y="80" text-anchor="middle" fill="var(--ink)" font-size="10">FRESH INSTALL</text>
+  <text x="434" y="94" text-anchor="middle" fill="var(--muted)" font-size="9">isolated home, that node,</text>
+  <text x="434" y="108" text-anchor="middle" fill="var(--muted)" font-size="9">those commits · 37 checks</text>
 
-  <line x1="504" y1="90" x2="544" y2="90" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="502" y="88" width="4" height="4" fill="#ebdbb2"/>
-  <rect x="542" y="88" width="4" height="4" fill="#ebdbb2"/>
+  <line x1="504" y1="90" x2="544" y2="90" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="502" y="88" width="4" height="4" fill="var(--ink)"/>
+  <rect x="542" y="88" width="4" height="4" fill="var(--ink)"/>
 
   <!-- green? diamond -->
-  <polygon points="546,90 584,64 622,90 584,116" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="584" y="94" text-anchor="middle" fill="#ebdbb2" font-size="10">GREEN?</text>
+  <polygon points="546,90 584,64 622,90 584,116" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="584" y="94" text-anchor="middle" fill="var(--ink)" font-size="10">GREEN?</text>
 
   <!-- yes: down to next.json -->
-  <polyline points="584,116 584,160" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="584,160 580,151 588,151" fill="#ebdbb2"/>
-  <rect x="582" y="114" width="4" height="4" fill="#ebdbb2"/>
-  <text x="594" y="140" fill="#928374" font-size="9">YES</text>
+  <polyline points="584,116 584,160" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="584,160 580,151 588,151" fill="var(--ink)"/>
+  <rect x="582" y="114" width="4" height="4" fill="var(--ink)"/>
+  <text x="594" y="140" fill="var(--muted)" font-size="9">YES</text>
 
   <!-- next.json document -->
-  <polygon points="504,164 650,164 650,224 504,224" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <polyline points="636,164 636,178 650,178" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="582" y="162" width="4" height="4" fill="#ebdbb2"/>
-  <text x="520" y="186" fill="#ebdbb2" font-size="11">next.json</text>
-  <rect x="520" y="198" width="12" height="12" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="538" y="208" fill="#928374" font-size="9">rows + proof record</text>
+  <polygon points="504,164 650,164 650,224 504,224" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <polyline points="636,164 636,178 650,178" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="582" y="162" width="4" height="4" fill="var(--ink)"/>
+  <text x="520" y="186" fill="var(--ink)" font-size="11">next.json</text>
+  <rect x="520" y="198" width="12" height="12" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="538" y="208" fill="var(--muted)" font-size="9">rows + proof record</text>
 
   <!-- soak: dimension line -->
-  <line x1="504" y1="248" x2="650" y2="248" stroke="#928374" stroke-width="1"/>
-  <line x1="504" y1="244" x2="504" y2="252" stroke="#928374" stroke-width="1"/>
-  <line x1="650" y1="244" x2="650" y2="252" stroke="#928374" stroke-width="1"/>
-  <text x="577" y="266" text-anchor="middle" fill="#928374" font-size="9">24 H CLEAN SOAK</text>
+  <line x1="504" y1="248" x2="650" y2="248" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="504" y1="244" x2="504" y2="252" stroke="var(--muted)" stroke-width="1"/>
+  <line x1="650" y1="244" x2="650" y2="252" stroke="var(--muted)" stroke-width="1"/>
+  <text x="577" y="266" text-anchor="middle" fill="var(--muted)" font-size="9">24 H CLEAN SOAK</text>
 
   <!-- human: person glyph -->
-  <circle cx="340" cy="192" r="9" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <path d="M 322 224 A 18 18 0 0 1 358 224" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="340" y="246" text-anchor="middle" fill="#ebdbb2" font-size="10">ONE HUMAN</text>
-  <text x="340" y="260" text-anchor="middle" fill="#928374" font-size="9">one command</text>
+  <circle cx="340" cy="192" r="9" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <path d="M 322 224 A 18 18 0 0 1 358 224" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="340" y="246" text-anchor="middle" fill="var(--ink)" font-size="10">ONE HUMAN</text>
+  <text x="340" y="260" text-anchor="middle" fill="var(--muted)" font-size="9">one command</text>
 
   <!-- next -> human -->
-  <line x1="504" y1="194" x2="372" y2="194" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="372,194 381,190 381,198" fill="#ebdbb2"/>
-  <rect x="502" y="192" width="4" height="4" fill="#ebdbb2"/>
+  <line x1="504" y1="194" x2="372" y2="194" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="372,194 381,190 381,198" fill="var(--ink)"/>
+  <rect x="502" y="192" width="4" height="4" fill="var(--ink)"/>
 
   <!-- human -> stable: brew bottle (hexagon) + stable.json (document), together -->
-  <line x1="318" y1="194" x2="230" y2="194" stroke="#ebdbb2" stroke-width="1"/>
-  <polygon points="230,194 239,190 239,198" fill="#ebdbb2"/>
-  <text x="274" y="186" text-anchor="middle" fill="#928374" font-size="9">PUBLISH BOTH</text>
+  <line x1="318" y1="194" x2="230" y2="194" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="230,194 239,190 239,198" fill="var(--ink)"/>
+  <text x="274" y="186" text-anchor="middle" fill="var(--muted)" font-size="9">PUBLISH BOTH</text>
 
-  <polygon points="130,168 190,168 210,194 190,220 130,220 110,194" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <rect x="208" y="192" width="4" height="4" fill="#ebdbb2"/>
-  <text x="160" y="190" text-anchor="middle" fill="#ebdbb2" font-size="10">brew</text>
-  <text x="160" y="204" text-anchor="middle" fill="#928374" font-size="9">node bottle</text>
+  <polygon points="130,168 190,168 210,194 190,220 130,220 110,194" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <rect x="208" y="192" width="4" height="4" fill="var(--ink)"/>
+  <text x="160" y="190" text-anchor="middle" fill="var(--ink)" font-size="10">brew</text>
+  <text x="160" y="204" text-anchor="middle" fill="var(--muted)" font-size="9">node bottle</text>
 
-  <polygon points="40,168 90,168 100,178 100,220 40,220" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <polyline points="90,168 90,178 100,178" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="70" y="190" text-anchor="middle" fill="#ebdbb2" font-size="9">stable</text>
-  <text x="70" y="204" text-anchor="middle" fill="#928374" font-size="9">.json</text>
-  <line x1="100" y1="194" x2="110" y2="194" stroke="#ebdbb2" stroke-width="1"/>
+  <polygon points="40,168 90,168 100,178 100,220 40,220" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <polyline points="90,168 90,178 100,178" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="70" y="190" text-anchor="middle" fill="var(--ink)" font-size="9">stable</text>
+  <text x="70" y="204" text-anchor="middle" fill="var(--muted)" font-size="9">.json</text>
+  <line x1="100" y1="194" x2="110" y2="194" stroke="var(--ink)" stroke-width="1"/>
 
   <!-- legend -->
-  <rect x="40" y="292" width="10" height="10" fill="url(#hatch)" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="58" y="301" fill="#928374" font-size="9">FIXED COMMIT / SEALED BYTES</text>
-  <polygon points="236,291 226,302 246,302" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="254" y="301" fill="#928374" font-size="9">CHECK</text>
-  <polygon points="316,292 326,292 330,297 326,302 316,302 312,297" fill="none" stroke="#ebdbb2" stroke-width="1"/>
-  <text x="338" y="301" fill="#928374" font-size="9">SEALED PARCEL</text>
+  <rect x="40" y="292" width="10" height="10" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="58" y="301" fill="var(--muted)" font-size="9">FIXED COMMIT / SEALED BYTES</text>
+  <polygon points="236,291 226,302 246,302" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="254" y="301" fill="var(--muted)" font-size="9">CHECK</text>
+  <polygon points="316,292 326,292 330,297 326,302 316,302 312,297" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="338" y="301" fill="var(--muted)" font-size="9">SEALED PARCEL</text>
 </svg>`;
 
 export default function BlogTheAppRegistry() {
@@ -271,7 +271,7 @@ export default function BlogTheAppRegistry() {
       </Helmet>
 
       <p>
-        <Link to="/blog" className="link-btn">[&larr; Blog]</Link>
+        <Link to="/blog" className="link-btn">&larr; Blog</Link>
       </p>
 
       <h1 className="tagline">The LastDB App Registry: Install by Proof</h1>
@@ -567,7 +567,7 @@ situations   0.1.0 @ 923409b1a3e9  1 rows  Shared operational posture and prefli
       </p>
 
       <p>
-        <Link to="/blog" className="link-btn">[&larr; Blog]</Link>
+        <Link to="/blog" className="link-btn">&larr; Blog</Link>
       </p>
     </article>
   );
