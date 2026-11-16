@@ -4,7 +4,7 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
-    ["sharing-requests","social-app","open owner review in"],
+    ["sharing-requests","social-app","appear in the Requests view of"],
     ["sharing-requests","social-circles","propose links or direct grants through"],
     ["sharing-requests","named-members","wait for confirmed access from"],
     ["sharing-requests","publisher-intake","leave record checks to"],
