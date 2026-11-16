@@ -64,22 +64,19 @@ export default function About() {
         <h2><span className="bold">LAYERS</span></h2>
 
         <pre className="compare-table">
-{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`  Brain · Kanban · Situations · yours
+{`  `}<span style={{ color: '#b8bb26' }}>{`Applications`}</span>{`   Brain · Search · LastSecrets · yours
         |
         v
-  `}<span style={{ color: '#83a598' }}>{`Shared Structures`}</span>{`    public interfaces, standardized
+  `}<span style={{ color: '#83a598' }}>{`LastDB node`}</span>{`     schemas, keyed records, socket API
         |
         v
-  `}<span style={{ color: '#d3869b' }}>{`Transforms`}</span>{`           local computation, deterministic
+  `}<span style={{ color: '#fb4934' }}>{`Local disk`}</span>{`      your data, on your machine
         |
         v
-  `}<span style={{ color: '#fe8019' }}>{`Vector Embeddings`}</span>{`    semantic index across all data
-        |
-        v
-  `}<span style={{ color: '#fb4934' }}>{`Local Storage`}</span>{`        yours, append-only`}
+  `}<span style={{ color: '#d3869b' }}>{`Cloud backup`}</span>{`    optional, set up with lastdb backup connect`}
         </pre>
 
-        <p>Computation runs locally. <span className="bold white">The data stays yours, on your machine, in one place.</span></p>
+        <p>The node runs on your machine. <span className="bold white">Your data stays there unless you turn on cloud backup.</span></p>
       </Section>
 
       <Section variant="amber" id="principles">
@@ -92,11 +89,11 @@ export default function About() {
           </Card>
           <Card>
             <p><Label color="yellow">BUILD FAST</Label></p>
-            <p>Declare a schema, write a thin client. <span className="bold white">A new tool is an afternoon</span> &mdash; storage, indexing, and search are already there. No accounts, no ceremony.</p>
+            <p>Declare a schema and write a client. The node stores the records and serves reads by key. <span className="bold white">Local use needs no account.</span></p>
           </Card>
           <Card>
-            <p><Label color="yellow">DELIVER SLICES</Label></p>
-            <p>Sharing is a first-class verb: hand a <span className="bold white">curated slice of your database</span> to a person or an app, on your terms &mdash; without giving away the database.</p>
+            <p><Label color="yellow">SHARE ON PURPOSE</Label></p>
+            <p>Sharing is a command group, <span className="bold white">lastdb share</span>. It creates a contact code for your LastDB identity and checks a contact file against a key you trust.</p>
           </Card>
         </div>
       </Section>
@@ -104,34 +101,22 @@ export default function About() {
       <Section variant="sage" id="how-it-works">
         <h2><span className="bold">HOW IT WORKS</span> <span className="dim">short version</span></h2>
 
-        <h2 className="section-subheading"><span className="bold">Shared structures</span></h2>
-        <p>Structures are public and standardized: how data is organized, what you can query, how derived results are produced. Apps can work against any user&rsquo;s database without custom migrations.</p>
+        <h2 className="section-subheading"><span className="bold">Schemas and keys</span></h2>
+        <p>A schema names its fields and its primary key. A record holds one value for each field. A query names a key, either a hash or a hash plus a range.</p>
 
-        <h2 className="section-subheading"><span className="bold">Transforms</span></h2>
-        <p>Deterministic functions attached to structures. Outputs are written back into structures &mdash; so any tool on the stack can build on any other tool&rsquo;s results.</p>
+        <h2 className="section-subheading"><span className="bold">Apps</span></h2>
+        <p>An app is a program that talks to the node over a local Unix socket. Brain and LastSecrets are apps. You can write your own.</p>
 
-        <pre className="compare-table">
-{`  Structure: `}<span className="bold white">{`Messages`}</span>{`
+        <h2 className="section-subheading"><span className="bold">Search</span></h2>
+        <p>The Search app keeps a semantic index beside the node. Brain uses it for ask and search.</p>
 
-    Fields    `}<span className="dim">{`id · sender · recipient · timestamp · body`}</span>{`
-
-    Transforms
-      `}<span style={{ color: '#fe8019' }}>{`inbox`}</span><span className="dim">{`(user_id)`}</span>{`
-      `}<span style={{ color: '#fe8019' }}>{`conversation`}</span><span className="dim">{`(user_a, user_b)`}</span>{`
-      `}<span style={{ color: '#fe8019' }}>{`semantic_search`}</span><span className="dim">{`(query)`}</span>{`
-      `}<span style={{ color: '#fe8019' }}>{`unread_count`}</span><span className="dim">{`(user_id)`}</span>
-        </pre>
-
-        <h2 className="section-subheading"><span className="bold">Semantic index</span></h2>
-        <p>One semantic index across notes, messages, code, and structured records. Search is meaning-based, not stuck to one app&rsquo;s schema.</p>
-
-        <h2 className="section-subheading"><span className="bold">Delivering slices</span></h2>
-        <p>A slice is a curated view of your database &mdash; a board rollup, a project digest, a dataset &mdash; that you deliver to another person or another node. The receiver gets a usable piece of your stack; you keep the source. This is how tools built by one person become useful to another without anyone standing up a platform in between.</p>
+        <h2 className="section-subheading"><span className="bold">Sharing</span></h2>
+        <p>Sharing uses contact codes. A contact file can be checked against a key you already trust, with <span className="bold">lastdb share verify-contact</span>.</p>
       </Section>
 
       <Section variant="slate" id="status">
         <h2><span className="bold">STATUS</span></h2>
-        <p>LastDB is <span className="bold white">experimental and in active development</span>. Early releases focus on local storage, apps on top of that node, semantic search, slice delivery, and the agent workflow we use to build it.</p>
+        <p>LastDB is <span className="bold white">alpha and in active development</span>. The current release covers the local node, the App Registry, and the apps listed on the Apps page.</p>
         <p>
           <Link to="/" className="link-btn">[Install on the home page &rarr;]</Link>{'  '}
           <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}

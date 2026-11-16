@@ -11,34 +11,17 @@ import CopyBlock from '../components/CopyBlock';
 // Default interactive zsh has interactivecomments OFF, so `# 0) …` is executed
 // as shell input → `parse error near ')'` / `command not found: #`.
 // Explanations live in the surrounding prose, not in the copy block.
-const INSTALL_SCRIPT = `curl -fsSL https://bun.sh/install | bash
-export PATH="$HOME/.bun/bin:$HOME/.local/bin:$PATH"
-brew install node
+// Commands are the ones the App Registry CLI lists (lastdb app list / install / status).
+const INSTALL_STEP_1 = `curl -fsSL https://thelastdb.com/install.sh -o install.sh
+sh install.sh`;
 
-test "$(uname -m)" = "arm64" || { echo "LastDB needs macOS Apple Silicon" >&2; exit 1; }
-for tool in brew git bun node npm; do command -v "$tool" >/dev/null || { echo "Missing $tool" >&2; exit 1; }; done
-node --version
-git --version
+const INSTALL_STEP_2 = `sh install.sh --accept-install`;
 
-git clone https://github.com/EdgeVector/last-stack ~/.last-stack
-~/.last-stack/setup
-~/.last-stack/bin/last-stack-install-apps
-
-brew services start lastdb
-lastdb status
-curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-brain init --grant-consent
-kanban init
-situations init
-lastsecrets init
-org init
-search init --quiet
-
-kanban list
-brain concept new hello --title "Hello" --body "my first note"
-brain get hello
-brain ask "first note"
-lastsecrets list`;
+const UNINSTALL_STEPS = `launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry"
+rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
+rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
+brew services stop lastdb
+brew uninstall lastdb`;
 
 // Draftsman architecture figure: apps as outline clients, LastDB as poché store.
 const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
@@ -57,12 +40,12 @@ const MODEL_SVG = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg"
   <text x="100" y="74" text-anchor="middle" fill="#928374" font-size="10">memory</text>
 
   <rect x="190" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">KANBAN</text>
-  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">work board</text>
+  <text x="250" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SEARCH</text>
+  <text x="250" y="74" text-anchor="middle" fill="#928374" font-size="10">find by meaning</text>
 
   <rect x="340" y="36" width="120" height="52" fill="none" stroke="#928374" stroke-width="1"/>
-  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">SITUATIONS</text>
-  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">ops posture</text>
+  <text x="400" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">LASTSECRETS</text>
+  <text x="400" y="74" text-anchor="middle" fill="#928374" font-size="10">credentials</text>
 
   <rect x="490" y="36" width="130" height="52" fill="none" stroke="#83a598" stroke-width="1"/>
   <text x="555" y="58" text-anchor="middle" fill="#ebdbb2" font-size="12" letter-spacing="1.5">YOUR APP</text>
@@ -106,7 +89,7 @@ export default function Home() {
     <>
       <Helmet>
         <title>LastDB - Build for your happiness</title>
-        <meta name="description" content="Build for your happiness. LastDB is the database you build your own tools on — memory, board, ops, agents, and the apps you write. Own the whole stack; deliver slices of it to others." />
+        <meta name="description" content="Build for your happiness. LastDB is the local database you build your own tools on: memory, search, credentials, and the apps you write. Records are found by key. Install apps from the App Registry." />
         <meta property="og:title" content="LastDB - Build for your happiness" />
         <meta property="og:description" content="One local database, every tool yours. Build hard. Build happy. Own your foundation." />
         <meta property="og:type" content="website" />
@@ -145,24 +128,26 @@ export default function Home() {
 
       <AsciiTitle />
       <hr className="decorative-rule" aria-hidden="true" />
-      <h1 className="tagline">Build for your happiness.</h1>
-      <p className="bold white">On a foundation you own.</p>
+      <p className="dim">alpha &middot; macOS &middot; Apple Silicon &middot; no UI</p>
+      <h1 className="tagline">A local database for the tools you build.</h1>
       <p>
-        Software should make a life you want to live in &mdash; not a stack of rented silos you babysit.
-        LastDB is a <span className="bold white">local database all your tools are built on</span>:
-        memory, board, ops gates, agent skills &mdash; and the apps you write yourself.
-        Build hard. Build happy. Keep the substrate &mdash; and deliver slices of it to people you choose.
+        LastDB is one local daemon on your Mac, reached over a Unix socket.
+        Queries need a key. Listing a schema&rsquo;s keys is a separate, paged call.
+        Each record has a primary key and any named alternate keys.
       </p>
-      <p className="dim">
-        Local use needs no account. Optional encrypted cloud backup and multi-device sync (<span className="bold">lastdb --data-dir ~/.lastdb backup connect --env prod</span>) register or connect your local database identity without asking for a name or email, with paid cloud storage managed via <span className="bold">lastdb cloud payment checkout</span>.
-        Alpha &mdash; macOS Apple Silicon, ~5 minutes to install.
-      </p>
+      <p className="bold white">Build for your happiness, on a foundation you own.</p>
       <p className="hero-cta">
         <a href="#install" className="link-btn">[Install &rarr;]</a>{'  '}
         <Link to="/apps" className="link-btn">[Apps]</Link>{'  '}
+        <Link to="/developer" className="link-btn">[Developer]</Link>{'  '}
         <a href="https://thelastdb.com/llms.txt" className="link-btn">[llms.txt]</a>
         <span className="dim"> &mdash; plain-text install for agents</span>
       </p>
+      <ul className="dim hero-facts">
+        <li>Local use needs no account.</li>
+        <li>Cloud backup and multi-device sync are optional.</li>
+        <li>Your apps read and write through the socket. They do not own the data.</li>
+      </ul>
       <hr className="decorative-rule" aria-hidden="true" />
 
       {/* WHAT */}
@@ -175,9 +160,9 @@ export default function Home() {
         </p>
         <p>
           <span className="bold white">LastDB is the room you own.</span> One permanent local database.
-          Apps (Brain, Kanban, Situations, and the ones you write) are tools on that foundation &mdash;
-          not permanent custodians of a copy. The point of the stack is not grind for its own sake;
-          it is building software &mdash; and a practice &mdash; that makes you happy.
+          Apps (Brain, Search, LastSecrets, and the ones you write) are tools on that foundation &mdash;
+          not permanent custodians of a copy. The goal is not grind. It is building software,
+          and a practice, that makes you happy.
         </p>
 
         <ArchFigure
@@ -191,8 +176,8 @@ export default function Home() {
             <p>Your local database. One process on your Mac. Everything else stands on this.</p>
           </Card>
           <Card>
-            <p><Label color="green">YOUR STACK</Label> <span className="dim">the stack</span></p>
-            <p>Memory, board, ops, agents &mdash; and apps you invent. Same data. No per-tool silo.</p>
+            <p><Label color="green">APP REGISTRY</Label> <span className="dim">the way to add apps</span></p>
+            <p>A signed registry of apps. You install the ones you want by name, and they run on your LastDB.</p>
           </Card>
         </div>
       </Section>
@@ -207,45 +192,62 @@ export default function Home() {
 
       {/* GET IT — primary CTA */}
       <Section variant="amber" id="install">
-        <h2><span className="bold">INSTALL</span> <span className="dim">the main call to action</span></h2>
+        <h2><span className="bold">INSTALL</span> <span className="dim">two steps, about five minutes</span></h2>
 
         <p>
-          <span className="bold white">This is how you get started.</span>{' '}
-          Needs <a href="https://brew.sh" target="_blank" rel="noreferrer">Homebrew</a>,{' '}
-          <a href="https://bun.sh" target="_blank" rel="noreferrer">Bun</a>, and Node 18+ with{' '}
-          <span className="bold">npm</span> on Apple Silicon.
-          One installer puts <span className="bold">LastDB</span> and the starter apps on your machine.
+          <span className="bold white">You need:</span> Apple Silicon, <span className="bold">Homebrew</span>,{' '}
+          <span className="bold">Bun</span>, and <span className="bold">npm</span> (from Node).
+          The installer checks for all four and stops if one is missing.
           Prefer plain text? See <a href="https://thelastdb.com/llms.txt">llms.txt</a>.
         </p>
 
         <Card>
           <p>
-            <Label color="yellow">RUN THIS</Label>{' '}
-            <span className="dim">copy once → terminal or agent</span>
+            <Label color="yellow">1. INSTALL LASTDB</Label>{' '}
+            <span className="dim">Homebrew package, service, and the plan for the starter apps</span>
           </p>
-          <p className="dim" style={{ marginBottom: '0.75em' }}>
-            Skip the first line if <span className="bold">bun --version</span> already works;
-            skip the node line if <span className="bold">npm --version</span> already works.
-            Script has no shell comments on purpose &mdash; macOS zsh does not treat{' '}
-            <span className="bold">#</span> as a comment in an interactive paste.
-          </p>
-          <CopyBlock text={INSTALL_SCRIPT} label="Copy" />
+          <CopyBlock text={INSTALL_STEP_1} label="Copy" />
           <p className="dim">
-            If a command is &ldquo;not found,&rdquo; ensure <span className="bold">~/.bun/bin</span> and{' '}
-            <span className="bold">~/.local/bin</span> are on your <span className="bold">PATH</span>{' '}
-            (the Bun installer usually does this; open a new terminal if needed).
-            Health should print <span className="bold">{`{"status":"ok"}`}</span>.
-            The installer ends with <span className="bold">RESULT: PASS</span> or <span className="bold">RESULT: FAIL</span>.
-            Stop when it prints <span className="bold">RESULT: FAIL</span>.
-            <span className="bold"> brain ask</span> may lag a few seconds after create &mdash;{' '}
-            <span className="bold">brain get hello</span> is immediate.
+            Read the script first: <a href="/install.sh">install.sh</a>.
+            The first run installs LastDB, then stops at the apps step and prints the install plan.
+            That stop is expected. It ends with <span className="bold">RESULT: CONSENT NEEDED</span>.
+            Running the script again is safe.
           </p>
         </Card>
 
+        <Card>
+          <p>
+            <Label color="yellow">2. CONSENT TO THE STARTER APPS</Label>{' '}
+            <span className="dim">brain, lastsecrets, and search</span>
+          </p>
+          <CopyBlock text={INSTALL_STEP_2} label="Copy" />
+          <p className="dim">
+            Run this only after you have read the plan from step 1.
+            It ends with <span className="bold">RESULT: PASS</span> when the apps are current and healthy.
+            Then run <span className="bold">brain init</span> to set up Brain.
+          </p>
+        </Card>
+
+        <p className="dim" id="what-it-changes">
+          <span className="bold white">What it changes</span>
+        </p>
+        <ul className="dim hero-facts">
+          <li>Homebrew installs the <span className="bold">lastdb</span> and <span className="bold">lastdbd</span> commands and starts the LastDB service.</li>
+          <li>The App Registry clones each starter app into <span className="bold">~/.local/share/lastdb-apps</span> and links its commands into <span className="bold">~/.local/bin</span>.</li>
+          <li>The first app install adds a background job. It checks the registry every 60 seconds and upgrades the apps on the stable channel. It writes its log under <span className="bold">~/.local/state/lastdb-app-registry</span>.</li>
+          <li>Each app installs its own packages with Bun or npm.</li>
+          <li>It does not edit your shell profile, and it does not install Bun or npm.</li>
+        </ul>
+
         <div className="grid-2" style={{ marginTop: '1em' }}>
           <Card>
-            <p><Label color="blue">WHAT THAT DID</Label></p>
-            <p><span className="bold">brew install</span> LastDB, clone apps under <span className="bold">~/lastdb-apps</span>, link <span className="bold">brain</span> / <span className="bold">kanban</span> / <span className="bold">situations</span> / <span className="bold">lastsecrets</span> / <span className="bold">search</span>, start the daemon, init each app. The installer prints a pass or fail result.</p>
+            <p><Label color="blue">REMOVE IT</Label> <span className="dim">your data stays</span></p>
+            <CopyBlock text={UNINSTALL_STEPS} label="Copy" />
+            <p className="dim">
+              Your data stays in <span className="bold">~/.lastdb</span>. These steps do not touch it.
+              Delete that folder only if you want to lose the data. This cannot be undone.
+              Command links in <span className="bold">~/.local/bin</span> may remain. Remove them if they point into the apps folder.
+            </p>
           </Card>
           <Card>
             <p><Label color="blue">DATABASE ONLY</Label></p>
@@ -253,18 +255,19 @@ export default function Home() {
 brew services start lastdb
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health`}</pre>
-            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>. Add apps later from the same installer with <span className="bold">--no-brew</span>.</p>
+            <p className="dim">Expect <span className="bold">{`{"status":"ok"}`}</span>. Add apps later with <span className="bold">lastdb app install</span>.</p>
           </Card>
         </div>
+
       </Section>
 
       {/* WHAT YOU GET */}
       <Section variant="lavender" id="apps-teaser">
-        <h2><span className="bold">STARTER APPS</span> <span className="dim">what ships with install</span></h2>
+        <h2><span className="bold">APPS</span> <span className="dim">install by name from the App Registry</span></h2>
 
         <p>
-          Not only a database &mdash; a first cut of the stack we use to build LastDB itself with agents.
-          Enough to work happily on day one; yours to extend.
+          Not only a database &mdash; a first set of apps you can install and extend.
+          Install the ones you want. Yours to extend.
         </p>
 
         <div className="grid-2">
@@ -273,20 +276,12 @@ curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http:
             <p>Decisions and designs that outlive any chat. Stop re-explaining yourself every session.</p>
           </Card>
           <Card>
-            <p><Label color="purple">KANBAN</Label> <span className="dim">what&rsquo;s in flight</span></p>
-            <p>Cards for real work. Status on the board; reasoning in Brain.</p>
-          </Card>
-          <Card>
-            <p><Label color="purple">SITUATIONS</Label> <span className="dim">ops calm</span></p>
-            <p>What&rsquo;s true right now before agents touch shared systems &mdash; freezes, preflights, clearance.</p>
+            <p><Label color="purple">SEARCH</Label> <span className="dim">find by meaning</span></p>
+            <p>Semantic search over your records. Ask in plain language and find the record by meaning.</p>
           </Card>
           <Card>
             <p><Label color="purple">LASTSECRETS</Label> <span className="dim">credentials that stay local</span></p>
             <p>Store secrets in LastDB; keep only <span className="bold">lastsecrets://</span> refs in Brain, docs, and scripts.</p>
-          </Card>
-          <Card>
-            <p><Label color="purple">LAST STACK</Label> <span className="dim">agent playbook</span></p>
-            <p>Skills so coding agents file work, drive a PR, and close out &mdash; without wrecking the week.</p>
           </Card>
         </div>
 

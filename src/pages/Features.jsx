@@ -16,7 +16,7 @@ const POSTS = [
     date: '2026-08-05',
     tag: 'DASHBOARD',
     blurb:
-      'A live floor view of your own Kanban board. Cards move when your work actually moves, scheduled jobs show up as a crew with names, and nothing animates unless something really changed. Clone it, run one command, open a browser tab. Read-only against your board.',
+      'A live floor view of your own Kanban board. Cards move as the board changes, and scheduled jobs show up as a crew with names. Clone it, run one command, and open a browser tab. It reads your board and does not move cards. It listens on localhost only.',
   },
 ];
 

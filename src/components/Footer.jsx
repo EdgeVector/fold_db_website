@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { NAV_LINKS } from './Nav';
 
+// Footer links are the nav list, then the utility links that the nav does not carry.
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -7,16 +9,16 @@ export default function Footer() {
         <span className="bold white">LastDB</span>{' '}
         <span className="dim">Build for your happiness. Local foundation under a development stack. Alpha.</span>
       </p>
-      <p>
-        <Link to="/#install">Install</Link>{'  '}
-        <Link to="/apps">Apps</Link>{'  '}
-        <Link to="/start">Use</Link>{'  '}
-        <Link to="/about">About</Link>{'  '}
-        <Link to="/developer">Developer</Link>{'  '}
-        <a href="/explore/#diagram">Explore</a>{'  '}
-        <Link to="/features">Features</Link>{'  '}
-        <Link to="/blog">Dev Blog</Link>{'  '}
-        <a href="https://thelastdb.com/llms.txt">llms.txt</a>{'  '}
+      <p className="footer-links">
+        {NAV_LINKS.map(link => (
+          link.document ? (
+            <a key={link.to} href={link.to}>{link.label}</a>
+          ) : (
+            <Link key={link.to} to={link.to}>{link.label}</Link>
+          )
+        ))}
+        <Link to="/#install">Install</Link>
+        <a href="https://thelastdb.com/llms.txt">llms.txt</a>
         <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">GitHub</a>
       </p>
       <p className="dim">&copy; 2025-2026 LastDB &mdash; Built by Edge Vector</p>

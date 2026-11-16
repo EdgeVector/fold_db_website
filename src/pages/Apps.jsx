@@ -4,176 +4,35 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import Label from '../components/Label';
 
-/**
- * Ranked high → low. Stage is the product signal; pct is only a gut sort key.
- * `shelf: true` = on the LastDB app registry `stable` index: the installer
- * checks it out at the exact commit that was proved with your LastDB build.
- */
-const READINESS_GROUPS = [
+// The starter apps the home-page installer puts on a new machine. Keep this in
+// step with STARTER_APPS in public/install.sh and with `lastdb app list` on the
+// Homebrew stable release.
+const STARTER_APPS = [
   {
-    stage: 'Alpha',
-    labelColor: 'green',
-    stageClass: 'stage-alpha',
-    blurb: 'Install these first — we run them every day.',
-    apps: [
-      {
-        rank: 1,
-        name: 'Brain',
-        cmd: 'brain',
-        pct: 75,
-        shelf: true,
-        note: 'Long-term memory. Public CLI + MCP. Still alpha edges.',
-      },
-      {
-        rank: 2,
-        name: 'LastDB',
-        cmd: 'brew · lastdbd',
-        pct: 70,
-        note: 'The database itself (brew stable 0.23.5). Everything below talks to this process.',
-      },
-      {
-        rank: 3,
-        name: 'Kanban',
-        cmd: 'kanban',
-        pct: 70,
-        shelf: true,
-        note: 'Work board + MCP. Public repo is still named fkanban.',
-      },
-    ],
+    name: 'Brain',
+    cmd: 'brain',
+    what: 'Long-term notes and decisions. Write them once, then find them by name or by meaning.',
   },
   {
-    stage: 'Dogfood',
-    labelColor: 'yellow',
-    stageClass: 'stage-dogfood',
-    blurb: 'In the default installer — more papercuts than Alpha.',
-    apps: [
-      {
-        rank: 4,
-        name: 'Last Stack',
-        cmd: 'installer + skills',
-        pct: 60,
-        note: 'How you install the stack. Agent skills, not a data app.',
-      },
-      {
-        rank: 5,
-        name: 'Situations',
-        cmd: 'situations',
-        pct: 55,
-        shelf: true,
-        note: 'Ops posture for agents. Critical for us; thinner stranger story.',
-      },
-      {
-        rank: 6,
-        name: 'Search',
-        cmd: 'search',
-        pct: 50,
-        shelf: true,
-        note: 'Semantic MiniLM plane outside Mini. brain/kanban prefer it for ask/search. Public MIT.',
-      },
-      {
-        rank: 7,
-        name: 'LastSecrets',
-        cmd: 'lastsecrets',
-        pct: 50,
-        shelf: true,
-        note: 'Public CLI. Store secrets in LastDB; other tools keep lastsecrets:// refs only.',
-      },
-      {
-        rank: 8,
-        name: 'Org',
-        cmd: 'org',
-        pct: 45,
-        shelf: true,
-        note: 'Invite and join an org. Needed for the "join my org" onboarding path.',
-      },
-      {
-        rank: 9,
-        name: 'Dogfood Graph',
-        cmd: 'local web app',
-        pct: 45,
-        shelf: true,
-        note: 'Manual UX evidence tool. Useful, not a polished product.',
-      },
-      {
-        rank: 10,
-        name: 'LastDB Browser',
-        cmd: 'lastdb-browser',
-        pct: 40,
-        shelf: true,
-        note: 'Read-only local UI for schemas, keys, records, and fields over the local socket.',
-      },
-      {
-        rank: 11,
-        name: 'Routines',
-        cmd: 'routines',
-        pct: 35,
-        shelf: true,
-        note: 'Scheduled agent jobs. Installs with the stack; our fleet tooling more than stranger onboarding.',
-      },
-    ],
+    name: 'LastSecrets',
+    cmd: 'lastsecrets',
+    what: 'Credentials kept in your LastDB. Other tools hold only a lastsecrets:// reference.',
   },
   {
-    stage: 'Early',
-    labelColor: 'orange',
-    stageClass: 'stage-early',
-    blurb: 'Real for us — not in the one-command installer. Come back later.',
-    apps: [
-      {
-        rank: 12,
-        name: 'CodeRings',
-        cmd: 'coderings',
-        pct: 25,
-        note: 'Repo size vs claimed complexity. No public install story yet.',
-      },
-      {
-        rank: 13,
-        name: 'Discovery',
-        cmd: '—',
-        pct: 25,
-        note: 'Friends-of-friends discovery. Not a public try path.',
-      },
-    ],
+    name: 'Search',
+    cmd: 'search',
+    what: 'A semantic index beside the database. Brain uses it for ask and search.',
   },
 ];
-
-const STAGE_LEGEND = [
-  { stage: 'Alpha', color: 'green', text: 'Daily drivers. Sharp edges OK — start here.' },
-  { stage: 'Dogfood', color: 'yellow', text: 'Ships in the installer; more papercuts.' },
-  { stage: 'Early', color: 'orange', text: 'Real for us; not in the default installer.' },
-];
-
-function ReadinessRow({ rank, name, cmd, pct, note, stageClass, shelf }) {
-  return (
-    <div className="readiness-row">
-      <span className="readiness-rank" aria-label={`rank ${rank}`}>
-        {String(rank).padStart(2, '0')}
-      </span>
-      <div className="readiness-main">
-        <p className="readiness-title-line">
-          <span className="readiness-name">{name}</span>
-          <span className="readiness-cmd">{cmd}</span>
-          {shelf ? <Label color="blue">ON THE SHELF</Label> : null}
-        </p>
-        <p className="readiness-note">{note}</p>
-      </div>
-      <div className="readiness-meter" title={`Gut readiness ~${pct}% — judgment, not a measured SLA`}>
-        <span className="readiness-pct">~{pct}%</span>
-        <div className={`readiness-bar ${stageClass}`} aria-hidden="true">
-          <span style={{ width: `${pct}%` }} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function Apps() {
   return (
     <>
       <Helmet>
         <title>Apps - LastDB</title>
-        <meta name="description" content="LastDB apps ranked by readiness, with try-it commands for Brain, Kanban, Situations, Search, and LastSecrets." />
+        <meta name="description" content="The apps you can install on LastDB today from the App Registry: Brain, LastSecrets, and Search. Commands to install and try each one." />
         <meta property="og:title" content="Apps - LastDB" />
-        <meta property="og:description" content="What runs on LastDB, how rough each app is, and how to try the main ones." />
+        <meta property="og:description" content="What you can install on LastDB today, and how to try it." />
         <link rel="canonical" href="https://thelastdb.com/apps" />
       </Helmet>
       <p><Link to="/" className="link-btn">[&larr; Home]</Link></p>
@@ -181,11 +40,10 @@ export default function Apps() {
       <h1 className="tagline">Apps on LastDB</h1>
 
       <p className="bold white">
-        LastDB is the foundation. The apps are tools that run on it.
+        LastDB is the database. An app is a program that reads and writes it over the local socket.
       </p>
       <p>
-        How ready is each tool for a stranger? How do you try the main ones?
-        Install the stack from the home page first &mdash; then come back here.
+        This page lists the apps you can install today. The whole product is alpha, on macOS with Apple Silicon.
       </p>
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">[Install on Home &rarr;]</Link>
@@ -193,119 +51,64 @@ export default function Apps() {
 
       <hr className="decorative-rule" aria-hidden="true" />
 
-      {/* 1 — READINESS */}
-      <Section variant="sage" id="readiness">
-        <h2><span className="bold">1 &mdash; HOW READY?</span> <span className="dim">ranked for a first-time user</span></h2>
+      <Section variant="sage" id="registry">
+        <h2><span className="bold">THE APP REGISTRY</span> <span className="dim">how apps get on your machine</span></h2>
 
         <p>
-          Whole product is still <span className="bold">alpha</span> (macOS Apple Silicon).
-          Rank <span className="bold">#01</span> is what we&rsquo;d hand you first; lower ranks are rougher or not in the default installer.
-          Stage labels are the real signal. The <span className="bold">~%</span> bars are only a gut ranking &mdash; not SLAs or failure rates.
+          The App Registry is a signed list of apps. You install an app by name. No account is needed.
         </p>
-
         <p>
-          <span className="bold">ON THE SHELF</span> means the app is on the LastDB app registry:
-          the installer checks it out at the exact commit that was proved with the LastDB build
-          on your machine, not at <span className="bold">main</span>. A row gets there only one way:
-          each night the release loop installs every app at a fixed commit in a fresh home, runs the
-          public install path, and after a 1 hour clean soak publishes that set to brew stable and to
-          the registry together.
+          Each listed app was proved with a specific LastDB release in a fresh home. Install checks out that
+          exact commit, not <span className="bold">main</span>. If no entry is proved with your release, install stops.
         </p>
 
-        <div className="readiness-legend" role="list">
-          {STAGE_LEGEND.map((s) => (
-            <div key={s.stage} className="readiness-legend-item" role="listitem">
-              <Label color={s.color}>{s.stage.toUpperCase()}</Label>
-              <p>{s.text}</p>
-            </div>
-          ))}
-        </div>
+        <pre>{`lastdb app list
+lastdb app install brain
+lastdb app status
+lastdb app upgrade brain
+lastdb app rollback brain`}</pre>
 
-        <div className="readiness-list" aria-label="Apps ranked by public readiness, highest first">
-          {READINESS_GROUPS.map((group) => (
-            <div key={group.stage} className="readiness-group">
-              <div className="readiness-group-head">
-                <Label color={group.labelColor}>{group.stage.toUpperCase()}</Label>
-                <span className="dim">{group.blurb}</span>
-              </div>
-              {group.apps.map((app) => (
-                <ReadinessRow key={app.name} {...app} stageClass={group.stageClass} />
-              ))}
-            </div>
-          ))}
-        </div>
+        <p className="dim">
+          <span className="bold">list</span> shows the apps for your release. The list changes as apps are proved, so trust it over this page.
+          The first <span className="bold">install</span> prints the install plan and stops. Read the plan, then repeat the command with{' '}
+          <span className="bold">--accept-install</span>.
+          The install runs the app&rsquo;s own package step with Bun or npm and links its commands into <span className="bold">~/.local/bin</span>.
+        </p>
+      </Section>
 
-        <div className="readiness-callout">
-          <p>
-            <span className="bold white">First try:</span>{' '}
-            install from the home page, then use <span className="bold">Brain</span> and{' '}
-            <span className="bold">Kanban</span> (and <span className="bold">Situations</span> /{' '}
-            <span className="bold">LastSecrets</span> when you need ops gates or credentials).
-            Ignore Early apps until you&rsquo;re curious.
-          </p>
+      <Section variant="lavender" id="starter">
+        <h2><span className="bold">STARTER APPS</span> <span className="dim">what the installer adds</span></h2>
+
+        <div className="card-stack">
+          {STARTER_APPS.map((app) => (
+            <Card key={app.name}>
+              <p>
+                <Label color="purple">{app.name.toUpperCase()}</Label>{' '}
+                <span className="dim">command: <span className="bold">{app.cmd}</span></span>
+              </p>
+              <p>{app.what}</p>
+            </Card>
+          ))}
         </div>
       </Section>
 
-      {/* 2 — TRY COMMANDS */}
-      <Section variant="lavender" id="try">
-        <h2><span className="bold">2 &mdash; TRY THE MAIN ONES</span> <span className="dim">after install</span></h2>
-
-        <p>
-          After the home-page installer finishes, these CLIs are the ones you actually type.
-          Last Stack was the installer itself; Dogfood Graph is a local web app (see below).
-        </p>
+      <Section variant="amber" id="try">
+        <h2><span className="bold">TRY THEM</span> <span className="dim">after install</span></h2>
 
         <div className="grid-2">
           <Card>
-            <p>
-              <Label color="green">ALPHA</Label>{' '}
-              <Label color="purple">BRAIN</Label>{' '}
-              <span className="dim">memory · <span className="bold">brain</span></span>
-            </p>
-            <p>Long-term notes and decisions. Ask later in plain English.</p>
-            <pre>{`brain concept new caching --title "Cache" --body "chose LRU because …"
-brain ask "what did we decide about caching?"
-brain list --type concept --limit 5`}</pre>
-          </Card>
-
-          <Card>
-            <p>
-              <Label color="green">ALPHA</Label>{' '}
-              <Label color="purple">KANBAN</Label>{' '}
-              <span className="dim">board · <span className="bold">kanban</span></span>
-            </p>
-            <p>What&rsquo;s in flight. Status lives here; reasoning lives in Brain.</p>
-            <pre>{`kanban add ship-login --title "Ship login" --tags auth
-kanban move ship-login doing
-kanban list`}</pre>
-          </Card>
-
-          <Card>
-            <p>
-              <Label color="yellow">DOGFOOD</Label>{' '}
-              <Label color="purple">SITUATIONS</Label>{' '}
-              <span className="dim">ops · <span className="bold">situations</span></span>
-            </p>
-            <p>What&rsquo;s true operationally right now &mdash; freezes, incidents, preflight gates.</p>
-            <pre>{`situations list
-situations preflight --action enable-ci --repo my-org/my-repo`}</pre>
-          </Card>
-
-          <Card>
-            <p>
-              <Label color="yellow">DOGFOOD</Label>{' '}
-              <Label color="purple">LASTSECRETS</Label>{' '}
-              <span className="dim">credentials · <span className="bold">lastsecrets</span></span>
-            </p>
-            <p>
-              Keep raw secrets out of Brain, docs, and chat. Store once; reference with{' '}
-              <span className="bold">lastsecrets://…</span> everywhere else.
-            </p>
+            <p><Label color="purple">BRAIN</Label></p>
+            <pre>{`brain init
+brain concept new caching --title "Cache" --body "chose LRU because the working set is small"
+brain get caching
+brain ask "what did we decide about caching?"`}</pre>
             <p className="dim">
-              Never put the secret value on the command line &mdash; stdin only.
-              <span className="bold"> lastsecrets ref</span> prints a <span className="bold">lastsecrets://…</span> locator;
-              list/search always print <span className="bold">value=&lt;redacted&gt;</span>.
+              <span className="bold">brain get</span> answers at once. <span className="bold">brain ask</span> can lag a few seconds after a new note.
             </p>
+          </Card>
+
+          <Card>
+            <p><Label color="purple">LASTSECRETS</Label></p>
             <pre>{`lastsecrets init
 printf '%s' "$TOKEN" | lastsecrets put my-api-token \\
   --label "My API token" \\
@@ -315,113 +118,34 @@ printf '%s' "$TOKEN" | lastsecrets put my-api-token \\
   --value-stdin
 lastsecrets ref my-api-token
 lastsecrets list`}</pre>
+            <p className="dim">
+              The value goes in on stdin, never on the command line.
+              <span className="bold"> lastsecrets ref</span> prints a <span className="bold">lastsecrets://…</span> reference.
+              <span className="bold"> list</span> always prints <span className="bold">value=&lt;redacted&gt;</span>.
+            </p>
           </Card>
 
           <Card>
-            <p>
-              <Label color="blue">THE SHELF</Label>{' '}
-              <span className="dim">registry · <span className="bold">lastdb app</span></span>
+            <p><Label color="purple">SEARCH</Label></p>
+            <pre>{`search init --quiet`}</pre>
+            <p className="dim">
+              Run this once after install. The index stays on this machine.
             </p>
-            <p>
-              Which apps were proved with your LastDB build, and the exact commit each one installs at.
-              No account, no live service &mdash; one signed index on the Homebrew tap.
-            </p>
-            <pre>{`lastdb app list
-lastdb app install brain
-lastdb app upgrade brain kanban situations`}</pre>
-          </Card>
-
-          <Card>
-            <p><Label color="blue">ALSO IN THE INSTALLER</Label></p>
-            <p>
-              <span className="bold">Dogfood Graph</span> &mdash; local web app for manual product evidence:
-            </p>
-            <pre>{`cd ~/lastdb-apps/dogfood-graph && npm run dev`}</pre>
           </Card>
         </div>
 
         <p className="dim">
-          Day-to-day loop (board + brain + agents):{' '}
-          <Link to="/start" className="link-btn">[How to use it &rarr;]</Link>
+          Daily use: <Link to="/start" className="link-btn">[How to use it &rarr;]</Link>
         </p>
       </Section>
 
-      {/* 3 — MANUAL (advanced) */}
-      <Section variant="slate" id="manual">
-        <h2><span className="bold">3 &mdash; MANUAL INSTALL</span> <span className="dim">advanced · skip if you used Home</span></h2>
-
+      <Section variant="slate" id="yours">
+        <h2><span className="bold">YOUR OWN APP</span></h2>
         <p>
-          Prefer not to use the Last Stack installer? Install the database, then only the apps you want.
-          <span className="bold"> lastdb app install</span> puts the proved commit under{' '}
-          <span className="bold">~/.lastdb/apps/&lt;app&gt;/source</span>; the bun step and the link are yours.
+          Your app uses the same socket as these apps. Declare a schema, then write and read records by key.
         </p>
-        <pre>{`brew install edgevector/lastdb/lastdb
-brew services start lastdb`}</pre>
-
-        <div className="card-stack">
-          <Card>
-            <p><Label color="blue">BRAIN</Label></p>
-            <pre>{`lastdb app install brain
-cd ~/.lastdb/apps/brain/source && bun install && bun link
-brain init --grant-consent`}</pre>
-          </Card>
-          <Card>
-            <p><Label color="blue">KANBAN</Label></p>
-            <pre>{`lastdb app install kanban
-cd ~/.lastdb/apps/kanban/source && bun install && bun run install-cli
-kanban init`}</pre>
-            <p className="dim">Repo name is still <span className="bold">fkanban</span>; the command is <span className="bold">kanban</span>.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">SITUATIONS</Label></p>
-            <pre>{`lastdb app install situations
-cd ~/.lastdb/apps/situations/source && bun install
-ln -snf "$PWD/bin/situations" ~/.local/bin/situations
-situations init`}</pre>
-          </Card>
-          <Card>
-            <p><Label color="blue">LASTSECRETS</Label></p>
-            <pre>{`lastdb app install lastsecrets
-cd ~/.lastdb/apps/lastsecrets/source && bun install && bun link
-lastsecrets init`}</pre>
-            <p className="dim">
-              Public repo:{' '}
-              <a href="https://github.com/EdgeVector/lastsecrets" target="_blank" rel="noreferrer">
-                github.com/EdgeVector/lastsecrets
-              </a>
-              . Retrieve plaintext only at the point of use with{' '}
-              <span className="bold">lastsecrets get &lt;slug&gt;</span>.
-            </p>
-          </Card>
-          <Card>
-            <p><Label color="blue">SEARCH</Label></p>
-            <pre>{`lastdb app install search
-cd ~/.lastdb/apps/search/source && npm ci --omit=dev --no-audit --no-fund
-ln -snf "$PWD/bin/search" ~/.local/bin/search
-search init --quiet`}</pre>
-            <p className="dim">
-              Public MIT repo:{' '}
-              <a href="https://github.com/EdgeVector/search" target="_blank" rel="noreferrer">
-                github.com/EdgeVector/search
-              </a>
-              . Semantic MiniLM plane for{' '}
-              <span className="bold">brain ask/search</span> and{' '}
-              <span className="bold">kanban search</span>. Index is local-only; run{' '}
-              <span className="bold">search init --quiet</span> after install or cloud restore. Use npm for Search so its native runtime setup runs.
-            </p>
-          </Card>
-        </div>
-
         <p className="dim">
-          Unproved <span className="bold">main</span> instead (older <span className="bold">lastdb</span>, or a commit nobody smoked yet):{' '}
-          <span className="bold">git clone https://github.com/EdgeVector/&lt;repo&gt;</span> and the same bun step.
-          The installer does this itself, and says so, when your <span className="bold">lastdb</span> predates 0.23.5.
-        </p>
-
-        <p className="dim">
-          <Link to="/#install" className="link-btn">[Recommended install (home)]</Link>{'  '}
-          <Link to="/start" className="link-btn">[How to use it]</Link>{'  '}
-          <Link to="/about" className="link-btn">[About]</Link>
+          <Link to="/developer" className="link-btn">[Developer guide &rarr;]</Link>
         </p>
       </Section>
 
