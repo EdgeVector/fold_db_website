@@ -364,3 +364,15 @@ a:hover { color: #b8bb26; }
   .nav-links.open { display: flex; }
   .site-nav { position: relative; }
 }
+
+/* home hero */
+.hero { padding: 1.5em 0 0.5em; }
+.hero-status { letter-spacing: 0.04em; margin-bottom: 0.4em; }
+.hero-sub { font-size: 1.15em; max-width: 70ch; margin: 0.6em 0 1.2em; }
+.hero .copy-block { max-width: 70ch; }
+
+/* home questions */
+.faq { margin: 0.5em 0 0; }
+.faq-item { padding: 0.7em 0; border-top: 1px solid #504945; }
+.faq-item:first-child { border-top: 0; }
+.faq dd { margin: 0.25em 0 0; max-width: 80ch; }

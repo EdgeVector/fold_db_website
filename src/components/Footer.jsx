@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="site-footer">
       <p>
         <span className="bold white">LastDB</span>{' '}
-        <span className="dim">Build for your happiness. Local foundation under a development stack. Alpha.</span>
+        <span className="dim">A local database for the tools you build. Open source. Alpha.</span>
       </p>
       <p className="footer-links">
         {NAV_LINKS.map(link => (
@@ -19,7 +19,7 @@ export default function Footer() {
         ))}
         <Link to="/#install">Install</Link>
         <a href="https://thelastdb.com/llms.txt">llms.txt</a>
-        <a href="https://github.com/EdgeVector" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://github.com/EdgeVector/lastdb" target="_blank" rel="noreferrer">GitHub</a>
       </p>
       <p className="dim">&copy; 2025-2026 LastDB &mdash; Built by Edge Vector</p>
     </footer>
