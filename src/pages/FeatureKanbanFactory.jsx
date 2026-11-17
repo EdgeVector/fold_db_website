@@ -1,25 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Section from '../components/Section';
-import Card from '../components/Card';
-import Label from '../components/Label';
 import CopyBlock from '../components/CopyBlock';
+import ArchFigure from '../components/ArchFigure';
 
-// Hand-drawn architectural figure (draftsman style: thin uniform strokes,
-// poché hatch for stored data, mono caps labels, one accent).
-function ArchFigure({ svg, caption }) {
-  return (
-    <figure style={{ margin: '34px 0', textAlign: 'center' }}>
-      <div dangerouslySetInnerHTML={{ __html: svg }} />
-      {caption && (
-        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
-          {caption}
-        </figcaption>
-      )}
-    </figure>
-  );
-}
-
+// Diagram style: thin uniform strokes, hatch for stored data, mono caps labels.
 const SVG_DEFS = `
   <defs>
     <pattern id="poche-kf" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -27,7 +11,7 @@ const SVG_DEFS = `
     </pattern>
   </defs>`;
 const SVG_OPEN = (vb) =>
-  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="'JetBrains Mono', monospace">${SVG_DEFS}`;
+  `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto" font-family="var(--mono)">${SVG_DEFS}`;
 
 // What crosses the line, and in which direction.
 const TRUST = `${SVG_OPEN('0 0 660 268')}
@@ -83,14 +67,32 @@ const UPDATE = `cd ~/kanban-factory
 git pull
 ~/kanban-factory/scripts/install-launchd.sh restart`;
 
+const FLOOR = [
+  ['Top bar', 'Live counts per lane, plus how many cards are in flight, how many hands are holding work, and how many shipped this session. The version chip on the right shows which LastDB build you are running.'],
+  ['Ships per hour', 'Throughput over the last few hours, with 3h, 12h, and 24h rates. It goes flat when nothing reaches Done.'],
+  ['Lanes', 'Backlog, Todo, Doing, Done. Real titles, priority, repo, and any blocked or needs-attention flags. Hover a card for detail. Click it for sparkles.'],
+  ['Hands', 'Who is holding what, right now. If a worker has claimed a card, its chip appears here. Click a hand and the matching card flashes in its lane.'],
+  ['Crew', 'One tile per scheduled job, each with a role: the one that grabs ready work, the one that unblocks the backlog, the one that nurses merges. A tile lights up when its job fires. Hover for the last heartbeat in plain language.'],
+  ['Log', 'A running list of detected board moves and job heartbeats. It is the record of everything that just animated.'],
+];
+
+const KEYS = [
+  ['S', 'Sound on or off'],
+  ['H', 'Factory hum'],
+  ['P', 'Parade'],
+  ['F', 'Theater mode'],
+  ['V', 'LastDB version panel'],
+  ['M', 'Job fleet mode'],
+];
+
 export default function FeatureKanbanFactory() {
   return (
-    <article className="blog-post">
+    <>
       <Helmet>
         <title>Kanban Factory - LastDB Features</title>
         <meta
           name="description"
-          content="Kanban Factory is a live floor view of your own Kanban board. Clone it, run node server.mjs, open http://127.0.0.1:4177. Read-only against your board, nothing leaves your machine."
+          content="Kanban Factory is a live floor view of your own Kanban board, kept in LastDB on your Mac. Clone it, run node server.mjs, open http://127.0.0.1:4177. It only reads your board, and it listens on localhost only."
         />
         <meta property="og:title" content="Kanban Factory" />
         <meta
@@ -100,29 +102,28 @@ export default function FeatureKanbanFactory() {
         <link rel="canonical" href="https://thelastdb.com/features/kanban-factory" />
       </Helmet>
 
-      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
+      {/* HERO */}
+      <section className="fg-hero">
+        <div className="fg-eyebrow">
+          <Link to="/features">Features</Link> &middot; 2026-08-05 &middot; dashboard &middot; macOS
+        </div>
+        <h1>Kanban Factory: <em>a live view of your board.</em></h1>
+        <div className="fg-hero-row">
+          <p>
+            Kanban Factory is a live floor view of the Kanban board you already have.
+            It reads your board every few seconds and animates what changed:
+            a card moves lane, a job picks up work, something reaches Done.
+            It never writes to your board.
+          </p>
+          <div className="fg-actions">
+            <a href="#get-it" className="fg-btn fg-btn-primary">Get it</a>
+            <a href="#open-it" className="fg-btn">Open it</a>
+            <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="fg-btn">Source</a>
+          </div>
+        </div>
+      </section>
 
-      <h1 className="tagline">Kanban Factory</h1>
-      <p className="post-meta">
-        <Label color="green">2026-08-05</Label>{'  '}
-        <Label color="blue">DASHBOARD</Label>{'  '}
-        <Label color="purple">macOS</Label>
-      </p>
-
-      <p className="bold white">
-        Kanban Factory is a live floor view of the Kanban board you already have.
-        It reads your board every few seconds and animates what actually changed
-        &mdash; a card moving lane, a job picking up work, something landing in
-        Done. It never writes to your board.
-      </p>
-
-      <p className="hero-cta">
-        <a href="#get-it" className="link-btn">Get it &rarr;</a>{'  '}
-        <a href="#open-it" className="link-btn">Open it &rarr;</a>{'  '}
-        <a href="https://github.com/EdgeVector/kanban-factory" target="_blank" rel="noreferrer" className="link-btn">Source</a>
-      </p>
-
-      <figure style={{ margin: '34px 0', textAlign: 'center' }}>
+      <figure style={{ margin: '40px 0 0', textAlign: 'center' }}>
         <img
           src="/kanban-factory-board.png"
           alt="The Kanban Factory dashboard: a top bar of board counts and a ships-per-hour chart, four lanes of real cards (backlog, todo, doing, done), a strip of active hands holding cards, a grid of crew tiles for scheduled jobs, and a scrolling activity log."
@@ -135,192 +136,252 @@ export default function FeatureKanbanFactory() {
             margin: '0 auto',
           }}
         />
-        <figcaption style={{ color: 'var(--muted)', fontSize: '11px', letterSpacing: '0.06em', marginTop: '10px', textTransform: 'uppercase' }}>
-          Fig. 1 &mdash; the floor, on a real board, mid-shift
-        </figcaption>
+        <figcaption className="fg-caption">FIG. 1 &mdash; THE FLOOR, ON A REAL BOARD, MID-SHIFT</figcaption>
       </figure>
 
-      <hr className="decorative-rule" aria-hidden="true" />
+      {/* 01 WHAT IT DOES */}
+      <section className="fg-section" id="what-it-does">
+        <div className="fg-rail">01 &middot; What it does</div>
+        <div className="fg-body">
+          <h2>It shows whether anything is happening.</h2>
+          <div className="fg-two">
+            <p>
+              A board tells you what is open. It does not tell you whether anything is happening.
+              The Factory answers the second question: leave it in a tab, and the room reacts when the board moves.
+            </p>
+            <p>
+              Everything on screen is your data. The lanes hold your real cards, with their real titles,
+              priority, repo, and blocked state. The crew tiles are your scheduled jobs, lit up when they last fired.
+              The counts in the top bar come from the same cards that <code>kanban list</code> returns.
+            </p>
+          </div>
+          <ol className="fg-steps">
+            <li>
+              <span className="fg-num">Rule</span>
+              <div>
+                <h3>No fake motion.</h3>
+                <p>
+                  Idle workers bob and belts shimmer. That is atmosphere. But a card only hops when it
+                  really changed lane, and the victory sound only plays when something really reached Done.
+                  A quiet floor means quiet work. You cannot make it look busy without doing something.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-      <h2>What it does</h2>
-      <p>
-        A board tells you what is open. It does not tell you whether anything is
-        <em> happening</em>. The Factory answers the second question: leave it in a
-        tab, and the room reacts when the board moves.
-      </p>
-      <p>
-        Everything on screen is your data. The lanes hold your real cards, with
-        their real titles, priority, repo, and blocked state. The crew tiles are
-        your scheduled jobs, lit up when they last fired. The counts in the top
-        bar are counted from the same cards you would get from{' '}
-        <span className="bold">kanban list</span>.
-      </p>
+      {/* 02 BEFORE YOU START */}
+      <section className="fg-section" id="requirements">
+        <div className="fg-rail">02 &middot; Before you start</div>
+        <div className="fg-body">
+          <h2>Three things to have.</h2>
+          <ol className="fg-steps">
+            <li>
+              <span className="fg-num">01</span>
+              <div>
+                <h3>LastDB and a Kanban board</h3>
+                <p>
+                  The Factory reads an existing board through the <code>kanban</code> command.
+                  If <code>kanban list</code> works in your terminal, you are ready.
+                  The LastDB installer adds the starter apps, Brain and LastSecrets. It does not add Kanban.
+                  To install LastDB itself, start at <Link to="/#install">Install</Link>.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="fg-num">02</span>
+              <div>
+                <h3>Node 18 or newer</h3>
+                <p>
+                  Check with <code>node --version</code>. There is nothing to <code>npm install</code>.
+                  The server has no dependencies.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="fg-num">03</span>
+              <div>
+                <h3>A browser</h3>
+                <p>Any modern one. The page is served from your own machine.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-      <Section variant="sage">
-        <h2><span className="bold">THE RULE: NO FAKE MOTION</span></h2>
-        <p>
-          Idle workers bob and belts shimmer &mdash; that is atmosphere. But a card
-          only hops when it really changed lane, and the victory sound only fires
-          when something really reached Done. A quiet floor means quiet work. You
-          cannot make it look busy without doing something.
-        </p>
-      </Section>
+      {/* 03 GET IT */}
+      <section className="fg-section" id="get-it">
+        <div className="fg-rail">03 &middot; Get it</div>
+        <div className="fg-body">
+          <h2>Clone it and start the server.</h2>
+          <p className="fg-lede">
+            The Factory is a small standalone repository. Clone it anywhere you like.
+            The examples use <code>~/kanban-factory</code>.
+          </p>
+          <div style={{ marginTop: '28px' }}>
+            <CopyBlock text={INSTALL} />
+          </div>
+          <p className="fg-note">
+            The third line starts the server in the foreground and prints the address.
+            <code> POLL_MS</code> sets how often it reads the board again. Four seconds makes it feel live.
+            Without it, the server checks once a minute. Keep the terminal open, or use the
+            LaunchAgent below so it starts at login.
+          </p>
+        </div>
+      </section>
 
-      <h2 id="requirements">Before you start</h2>
-      <div className="card-stack">
-        <Card>
-          <p><Label color="yellow">LASTDB + KANBAN</Label> The Factory reads an existing board. If <span className="bold">kanban list</span> works in your terminal, you are ready. If not, start at <Link to="/#install">Install</Link> and then <Link to="/start">How to use it</Link>.</p>
-        </Card>
-        <Card>
-          <p><Label color="yellow">NODE 18+</Label> Check with <span className="bold">node --version</span>. There is nothing to <span className="bold">npm install</span> &mdash; the server has no dependencies.</p>
-        </Card>
-        <Card>
-          <p><Label color="yellow">A BROWSER</Label> Any modern one. The page is served from your own machine.</p>
-        </Card>
-      </div>
+      {/* 04 OPEN IT */}
+      <section className="fg-section" id="open-it">
+        <div className="fg-rail">04 &middot; Open it</div>
+        <div className="fg-body">
+          <h2>Open one browser tab.</h2>
+          <div className="fg-two">
+            <p>
+              Point a browser at <code>http://127.0.0.1:4177</code>.
+              Your lanes fill within a few seconds.
+            </p>
+            <p>
+              Click the page once. Browsers do not allow sound until you interact with a page,
+              so the first click turns the sounds on. To keep it silent, do not click, or press <code>S</code>.
+            </p>
+          </div>
 
-      <h2 id="get-it">Get it</h2>
-      <p>
-        The Factory is a small standalone repository. Clone it anywhere you like
-        &mdash; the examples below use <span className="bold">~/kanban-factory</span>.
-      </p>
-      <CopyBlock text={INSTALL} />
-      <p>
-        That third line starts the server in the foreground and prints the
-        address. <span className="bold">POLL_MS</span> is how often it re-reads
-        the board &mdash; four seconds makes it feel live; leave it off and it
-        checks once a minute. Keep the terminal open, or read on for the version
-        that starts itself at login.
-      </p>
+          <h3 id="keep-it-running" style={{ marginTop: '40px' }}>Keep it running (macOS)</h3>
+          <p>
+            The bundled installer registers a LaunchAgent, so the Factory comes back after a reboot.
+            It rewrites its paths to match the folder you cloned into.
+          </p>
+          <CopyBlock text={AUTOSTART} />
+          <h3>Later</h3>
+          <CopyBlock text={MANAGE} />
+          <p className="fg-note">
+            Logs go to <code>~/Library/Logs/kanban-factory.out.log</code> and <code>.err.log</code>.
+            The LaunchAgent runs Node from <code>/opt/homebrew/bin/node</code>. If your Node came from
+            somewhere else, the foreground command still works, but the LaunchAgent does not start.
+          </p>
+        </div>
+      </section>
 
-      <h2 id="open-it">Open it</h2>
-      <p>
-        Point a browser at <span className="bold">http://127.0.0.1:4177</span>.
-        You should see your lanes populate within a few seconds.
-      </p>
-      <p>
-        <span className="bold white">Click the page once.</span> Browsers do not
-        allow sound until you interact with a page, so the first click is what
-        unlocks the blips and the ship arpeggio. If you would rather it stayed
-        silent, leave it &mdash; or press <span className="bold">S</span>.
-      </p>
+      {/* 05 READING THE FLOOR */}
+      <section className="fg-section" id="reading-the-floor">
+        <div className="fg-rail">
+          05 &middot; Reading the floor
+          <p>Top to bottom, this is what you are looking at.</p>
+        </div>
+        <div className="fg-body">
+          <h2>Six parts of the page.</h2>
+          <dl className="fg-faq" style={{ marginTop: '28px' }}>
+            {FLOOR.map(([term, text]) => (
+              <div key={term}>
+                <dt>{term}</dt>
+                <dd>{text}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="fg-faq-group">
+            <h3>Keyboard</h3>
+            <dl className="fg-faq">
+              {KEYS.map(([key, text]) => (
+                <div key={key}>
+                  <dt><code>{key}</code></dt>
+                  <dd>{text}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
 
-      <Section variant="amber">
-        <h2><span className="bold">KEEP IT RUNNING (macOS)</span></h2>
-        <p>
-          The bundled installer registers a LaunchAgent so the Factory comes back
-          on its own after a reboot, and rewrites its paths to match wherever you
-          cloned it.
-        </p>
-        <CopyBlock text={AUTOSTART} />
-        <p className="section-subheading"><span className="bold">LATER</span></p>
-        <CopyBlock text={MANAGE} />
-        <p className="dim">
-          Logs land in <span className="bold">~/Library/Logs/kanban-factory.out.log</span> and <span className="bold">.err.log</span>.
-          One caveat worth knowing before you file a bug: the LaunchAgent runs
-          Node from <span className="bold">/opt/homebrew/bin/node</span>. If your
-          Node came from somewhere else, the foreground command above still
-          works &mdash; the agent is the part that will not start.
-        </p>
-      </Section>
+      {/* 06 WHAT IT READS */}
+      <section className="fg-section" id="what-it-reads">
+        <div className="fg-rail">06 &middot; What it reads</div>
+        <div className="fg-body">
+          <h2>What it reads, and what it will not do.</h2>
+          <p className="fg-lede">
+            The Factory is a viewer. On a timer, it runs the same read commands you would type,
+            and serves the result to your own browser.
+          </p>
 
-      <h2>Reading the floor</h2>
-      <p>Top to bottom, this is what you are looking at.</p>
+          <ArchFigure
+            svg={TRUST}
+            caption="Fig. 2 — three reads in, one page out; nothing crosses back"
+          />
 
-      <div className="card-stack">
-        <Card>
-          <p><Label color="blue">TOP BAR</Label> Live counts per lane, plus how many cards are in flight, how many hands are holding work, and how many shipped this session. The version chip on the right shows which LastDB build you are running.</p>
-        </Card>
-        <Card>
-          <p><Label color="blue">SHIPS PER HOUR</Label> Throughput over the last few hours, with 3h / 12h / 24h rates. This is the honest one &mdash; it goes flat when nothing lands.</p>
-        </Card>
-        <Card>
-          <p><Label color="blue">LANES</Label> Backlog, Todo, Doing, Done. Real titles, priority, repo, and any blocked or needs-attention flags. Hover a card for detail; click it for sparkles.</p>
-        </Card>
-        <Card>
-          <p><Label color="blue">HANDS</Label> Who is holding what, right now. If a worker has claimed a card, its chip appears here. Click a hand and the matching card flashes in its lane &mdash; a silly interaction that answers a serious question.</p>
-        </Card>
-        <Card>
-          <p><Label color="blue">CREW</Label> One tile per scheduled job, each with a role: the one that grabs ready work, the one that unblocks the backlog, the one that nurses merges. A tile lights up when its job fires; hover for the last heartbeat in plain language.</p>
-        </Card>
-        <Card>
-          <p><Label color="blue">LOG</Label> A running list of detected board moves and job heartbeats &mdash; the receipts for everything that just animated.</p>
-        </Card>
-      </div>
+          <div className="fg-cards">
+            <div className="fg-cardx fg-c2">
+              <small>READS</small>
+              <p>
+                Your board&rsquo;s cards, the heartbeat note your scheduled jobs write, and your local LastDB version.
+                You can read all three yourself from a terminal.
+              </p>
+            </div>
+            <div className="fg-cardx fg-c3">
+              <small>DOES NOT</small>
+              <p>
+                Move cards, claim work, edit notes, or change anything on your board.
+                It has no account, no telemetry, and no outbound connection.
+              </p>
+            </div>
+            <div className="fg-cardx fg-c4">
+              <small>ONE EXCEPTION</small>
+              <p>
+                If you run a fleet of scheduled jobs, the Fleet chip can switch them between local profiles,
+                for example a low-credit mode. That is the only button on the page that changes anything.
+                It acts on your own machine, and you have to press it.
+              </p>
+            </div>
+          </div>
+          <p className="fg-note">
+            The server binds <code>127.0.0.1</code> only. Nothing on this page is reachable from another machine.
+          </p>
+        </div>
+      </section>
 
-      <p className="section-subheading"><span className="bold">KEYBOARD</span></p>
-      <div className="grid-2">
-        <Card>
-          <p><span className="bold">S</span> sound on/off &middot; <span className="bold">H</span> factory hum</p>
-        </Card>
-        <Card>
-          <p><span className="bold">P</span> parade &middot; <span className="bold">F</span> theater mode</p>
-        </Card>
-        <Card>
-          <p><span className="bold">V</span> LastDB version panel</p>
-        </Card>
-        <Card>
-          <p><span className="bold">M</span> job fleet mode</p>
-        </Card>
-      </div>
+      {/* 07 TROUBLE */}
+      <section className="fg-section" id="trouble">
+        <div className="fg-rail">07 &middot; If it does not come up</div>
+        <div className="fg-body">
+          <h2>Four things to check.</h2>
+          <dl className="fg-faq" style={{ marginTop: '28px' }}>
+            <div>
+              <dt>Empty lanes</dt>
+              <dd>
+                The server needs the <code>kanban</code> command on its PATH. Confirm that <code>kanban list</code> works
+                in the same shell, then restart the server.
+              </dd>
+            </div>
+            <div>
+              <dt>Port already in use</dt>
+              <dd>Something else is on 4177. Start it on another port: <code>PORT=4180 node server.mjs</code>.</dd>
+            </div>
+            <div>
+              <dt>Nothing ever animates</dt>
+              <dd>
+                Check the poll interval. The default is one minute in the foreground.
+                <code> POLL_MS=4000 node server.mjs</code> makes it feel live.
+              </dd>
+            </div>
+            <div>
+              <dt>Is it alive at all?</dt>
+              <dd><code>curl -s http://127.0.0.1:4177/api/health</code> returns the card count it last saw.</dd>
+            </div>
+          </dl>
 
-      <h2>What it reads, and what it will not do</h2>
-      <p>
-        The Factory is a viewer. It shells out to the same read commands you
-        would type, on a timer, and serves the result to your own browser.
-      </p>
+          <h3 id="updating" style={{ marginTop: '40px' }}>Updating</h3>
+          <CopyBlock text={UPDATE} />
 
-      <ArchFigure
-        svg={TRUST}
-        caption="Fig. 2 — three reads in, one page out; nothing crosses back"
-      />
-
-      <div className="card-stack">
-        <Card>
-          <p><Label color="green">READS</Label> Your board&rsquo;s cards, the heartbeat note your scheduled jobs write, and your local LastDB version. All three are things you can read yourself from a terminal.</p>
-        </Card>
-        <Card>
-          <p><Label color="red">DOES NOT</Label> Move cards, claim work, edit notes, or change anything on your board. It has no account, no telemetry, and no outbound connection.</p>
-        </Card>
-        <Card>
-          <p><Label color="orange">ONE EXCEPTION</Label> If you run a fleet of scheduled jobs, the Fleet chip can switch them between local profiles (say, a low-credit mode). That is the only button on the page that changes anything, it is on your own machine, and you have to press it.</p>
-        </Card>
-      </div>
-      <p className="dim">
-        The server binds <span className="bold">127.0.0.1</span> only. Nothing on
-        this page is reachable from another machine, which also means there is
-        nothing to lock down before you open it.
-      </p>
-
-      <h2>If it does not come up</h2>
-      <div className="card-stack">
-        <Card>
-          <p><span className="bold white">Empty lanes.</span> The server needs the <span className="bold">kanban</span> command on its PATH. Confirm <span className="bold">kanban list</span> works in the same shell, then restart the server.</p>
-        </Card>
-        <Card>
-          <p><span className="bold white">Port already in use.</span> Something else is on 4177. Start it elsewhere: <span className="bold">PORT=4180 node server.mjs</span>.</p>
-        </Card>
-        <Card>
-          <p><span className="bold white">Nothing ever animates.</span> Check the poll interval &mdash; the default is a minute in the foreground. <span className="bold">POLL_MS=4000 node server.mjs</span> makes it feel live.</p>
-        </Card>
-        <Card>
-          <p><span className="bold white">Is it alive at all?</span> <span className="bold">curl -s http://127.0.0.1:4177/api/health</span> returns the card count it last saw.</p>
-        </Card>
-      </div>
-
-      <p className="section-subheading"><span className="bold">UPDATING</span></p>
-      <CopyBlock text={UPDATE} />
-
-      <p className="dim">
-        Why we built it, and the design argument behind the no-fake-motion rule:{' '}
-        <Link to="/blog/kanban-factory">The Factory Floor</Link> on the Dev Blog.
-        {' · '}
-        <Link to="/start">How to use LastDB</Link>
-        {' · '}
-        <Link to="/apps">Apps catalog</Link>
-      </p>
-
-      <p><Link to="/features" className="link-btn">&larr; Feature Blog</Link></p>
-    </article>
+          <p className="fg-note">
+            Why we built it, and the argument for the no-fake-motion rule:{' '}
+            <Link to="/blog/kanban-factory">The Factory Floor</Link> on the Dev Blog.
+          </p>
+          <p className="fg-more">
+            <Link to="/features">&larr; Features</Link>{' '}&nbsp;{' '}
+            <Link to="/start">How to use LastDB &rarr;</Link>{' '}&nbsp;{' '}
+            <Link to="/apps">Apps &rarr;</Link>
+          </p>
+        </div>
+      </section>
+    </>
   );
 }

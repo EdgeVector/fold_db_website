@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Card from '../components/Card';
-import Label from '../components/Label';
 
+// Posts are dated writing. Keep every entry, its link, its date, and its order.
 const POSTS = [
   {
     slug: 'the-lastdb-app-registry',
@@ -176,33 +175,56 @@ export default function Blog() {
     <>
       <Helmet>
         <title>Dev Blog - LastDB</title>
-        <meta name="description" content="How we build LastDB: engineering notes on our autonomous, North-Star-steered AI development loop. A local-first database, built in the open." />
+        <meta name="description" content="Engineering notes from the team that builds LastDB: incidents, measurements, design changes, and how we work. Each post is dated and describes LastDB as it was on that date." />
         <meta property="og:title" content="Dev Blog - LastDB" />
-        <meta property="og:description" content="Engineering notes on how we build LastDB with an autonomous agent loop." />
+        <meta property="og:description" content="Dated engineering notes on how LastDB is built: incidents, measurements, and design changes." />
         <link rel="canonical" href="https://thelastdb.com/blog" />
       </Helmet>
 
-      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
+      {/* HERO */}
+      <section className="fg-hero">
+        <div className="fg-eyebrow">Dev Blog &middot; {POSTS.length} posts &middot; newest first</div>
+        <h1>How we <em>build it.</em></h1>
+        <div className="fg-hero-row">
+          <p>
+            Engineering notes from the team that builds LastDB: incidents, measurements,
+            design changes, and how we work. We write them as we go.
+          </p>
+          <div className="fg-actions">
+            <Link to="/" className="fg-btn fg-btn-primary">What LastDB is today</Link>
+            <Link to="/features" className="fg-btn">Features</Link>
+          </div>
+        </div>
+      </section>
 
-      <h1 className="tagline">Dev Blog</h1>
-      <p>Notes on how we build LastDB &mdash; the process, in the open. <span className="dim">(We share how we work, not what&rsquo;s under the hood.)</span></p>
-      <p className="dim">
-        Looking for how to install and use a shipped feature? That&rsquo;s the{' '}
-        <Link to="/features">Feature Blog</Link>.
-      </p>
-
-      <hr className="decorative-rule" aria-hidden="true" />
-
-      <div className="blog-list">
-        {POSTS.map(post => (
-          <Card key={post.slug} className="blog-list-item">
-            <p className="post-meta"><Label color="green">{post.date}</Label></p>
-            <h2><Link to={`/blog/${post.slug}`}>{post.title}</Link></h2>
-            <p>{post.blurb}</p>
-            <p><Link to={`/blog/${post.slug}`} className="link-btn">Read &rarr;</Link></p>
-          </Card>
-        ))}
-      </div>
+      <section className="fg-section" id="posts">
+        <div className="fg-rail">
+          Posts
+          <p>
+            Each post is dated and stays as it was written. It describes LastDB on that date,
+            so names and designs in older posts can differ from the product now.
+            The <Link to="/">home page</Link> is the current description.
+          </p>
+        </div>
+        <div className="fg-body">
+          <h2>Engineering notes.</h2>
+          <ol className="fg-steps">
+            {POSTS.map((post) => (
+              <li key={post.slug}>
+                <span className="fg-num">{post.date}</span>
+                <div>
+                  <h3><Link to={`/blog/${post.slug}`}>{post.title}</Link></h3>
+                  <p>{post.blurb}</p>
+                  <p><Link to={`/blog/${post.slug}`}>Read &rarr;</Link></p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="fg-note">
+            Looking for something you can install and open? See <Link to="/features">Features</Link>.
+          </p>
+        </div>
+      </section>
     </>
   );
 }

@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Section from '../components/Section';
-import Card from '../components/Card';
-import Label from '../components/Label';
+
+function Code({ head, sub, children }) {
+  return (
+    <div className="fg-code">
+      {head && <div className="fg-code-head">{head}{sub && <span>{sub}</span>}</div>}
+      <pre>{children}</pre>
+    </div>
+  );
+}
 
 export default function Developer() {
   return (
@@ -11,74 +17,106 @@ export default function Developer() {
         <title>Developer Guide - LastDB</title>
         <meta name="description" content="Build on LastDB: check the local node, declare a schema, write and read records over the socket, share a database with other people, and publish your app." />
         <meta property="og:title" content="Developer Guide - LastDB" />
-        <meta property="og:description" content="LastDB developer guide: the node, schemas, keys, and the socket requests your app sends." />
+        <meta property="og:description" content="LastDB developer guide: build an app for one person over the local socket, then share a database with other people and publish the app." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
       </Helmet>
-      <p><Link to="/" className="link-btn">&larr; Home</Link></p>
 
-
-      <h1 className="tagline">Developer Guide</h1>
-
-      <p className="bold white">LastDB is in alpha. It runs as <span className="white">one local daemon</span>. Your apps send HTTP requests to it over a Unix socket.</p>
-      <p>Build your app for one person first: steps 1 to 7. Then let people share a database (step 8) and publish the app (step 9).</p>
-
-      <p className="hero-cta">
-        <Link to="/#install" className="link-btn">Install LastDB &rarr;</Link>{'  '}
-        <Link to="/apps" className="link-btn">Apps</Link>
-        <span className="dim"> &mdash; install first if you do not have a node yet.</span>
-      </p>
-
-      <hr className="decorative-rule" aria-hidden="true" />
+      <section className="fg-hero">
+        <div className="fg-eyebrow">Developer guide &middot; alpha &middot; nine steps</div>
+        <h1>Build for one person. <em>Then many.</em></h1>
+        <div className="fg-hero-row">
+          <p>
+            LastDB is in alpha. It runs as one local daemon. Your apps send HTTP requests to it over a Unix socket.
+            Build your app for one person first: steps 1 to 7. Then let people share a database (step 8)
+            and publish the app (step 9).
+          </p>
+          <div className="fg-actions">
+            <Link to="/#install" className="fg-btn fg-btn-primary">Install LastDB</Link>
+            <Link to="/apps" className="fg-btn">Apps</Link>
+          </div>
+        </div>
+        <p className="fg-note">
+          Install first if you do not have a node yet. The install by hand and the node checks are in the{' '}
+          <Link to="/docs">Docs</Link>.
+        </p>
+      </section>
 
       {/* 1. WHAT LASTDB IS */}
-      <Section variant="sage">
-        <h2 id="concepts"><span className="bold">1. WHAT LASTDB IS</span></h2>
-
-        <p>LastDB is a key-value database. You find a record by its key. There is no read that returns everything, except the key listing in step 5.</p>
-
-        <div className="card-stack">
-          <Card>
-            <p><Label color="green">TERMS</Label></p>
-            <p><span className="bold">Daemon:</span> the background process, <span className="bold">lastdbd</span>. It holds the data on this machine.</p>
-            <p><span className="bold">Socket:</span> the file <span className="bold">~/.lastdb/data/folddb.sock</span>. Your requests go to this file. The name is the real file name; it is not a product name.</p>
-            <p><span className="bold">Schema:</span> a named record type. It lists its fields and its keys.</p>
-            <p><span className="bold">Record:</span> one stored value of one schema. It sits at one key.</p>
-            <p><span className="bold">Primary key:</span> the key that finds a record. It has a <span className="bold">hash</span>, the first part of the key. A schema can also use a <span className="bold">range</span>, the second part. This guide uses a hash only.</p>
-            <p><span className="bold">Alternate key:</span> a second named key that finds the same record. You give its value when you write the record.</p>
-            <p><span className="bold">Query:</span> a read. It must name a key. A read with no key is refused.</p>
-          </Card>
+      <section className="fg-section" id="concepts">
+        <div className="fg-rail">
+          01 &middot; What LastDB is
+          <p>Steps 1 to 7 are an app for one person. No account and no network.</p>
         </div>
-      </Section>
+        <div className="fg-body">
+          <h2>Records, found by key.</h2>
+
+          <p className="fg-lede">LastDB is a key-value database. You find a record by its key. There is no read that returns everything, except the key listing in step 5.</p>
+
+          <dl className="fg-faq" style={{ marginTop: 28 }}>
+            <div>
+              <dt>Daemon</dt>
+              <dd>The background process, <code>lastdbd</code>. It holds the data on this machine.</dd>
+            </div>
+            <div>
+              <dt>Socket</dt>
+              <dd>The file <code>~/.lastdb/data/folddb.sock</code>. Your requests go to this file. The name is the real file name; it is not a product name.</dd>
+            </div>
+            <div>
+              <dt>Schema</dt>
+              <dd>A named record type. It lists its fields and its keys.</dd>
+            </div>
+            <div>
+              <dt>Record</dt>
+              <dd>One stored value of one schema. It sits at one key.</dd>
+            </div>
+            <div>
+              <dt>Primary key</dt>
+              <dd>The key that finds a record. It has a <code>hash</code>, the first part of the key. A schema can also use a <code>range</code>, the second part. This guide uses a hash only.</dd>
+            </div>
+            <div>
+              <dt>Alternate key</dt>
+              <dd>A second named key that finds the same record. You give its value when you write the record.</dd>
+            </div>
+            <div>
+              <dt>Query</dt>
+              <dd>A read. It must name a key. A read with no key is refused.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
 
       {/* 2. HEALTH CHECK */}
-      <Section variant="rose">
-        <h2 id="health"><span className="bold">2. CHECK THE NODE</span></h2>
+      <section className="fg-section" id="health">
+        <div className="fg-rail">02 &middot; Check the node</div>
+        <div className="fg-body">
+          <h2>Check the node.</h2>
 
-        <p>Run these two requests. Both use the socket.</p>
+          <p className="fg-lede">Run these two requests. Both use the socket.</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="red">HEALTH AND STATUS</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
-curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</pre>
-            <p className="dim">
-              <span className="bold">/health</span> returns <span className="bold">{`{"status":"ok", ...}`}</span> with the API version and the node instance id.
-              <span className="bold"> /api/status</span> returns a summary of the running node.
+        <div className="fg-code-stack">
+          <div>
+            <Code head="Health and status">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
+curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</Code>
+            <p className="fg-note">
+              <code>/health</code> returns <code>{`{"status":"ok", ...}`}</code> with the API version and the node instance id.
+              <code> /api/status</code> returns a summary of the running node.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
       {/* 3. DECLARE A SCHEMA */}
-      <Section variant="lavender">
-        <h2 id="schema"><span className="bold">3. DECLARE A SCHEMA</span></h2>
+      <section className="fg-section" id="schema">
+        <div className="fg-rail">03 &middot; Declare a schema</div>
+        <div className="fg-body">
+          <h2>Declare a schema.</h2>
 
-        <p>A schema must exist before you write to it. This example declares a <span className="bold">note</span>. Each note has an id, a tag, and a body. The id is the primary key. The tag is an alternate key, so you can find notes by tag.</p>
+          <p className="fg-lede">A schema must exist before you write to it. This example declares a <code>note</code>. Each note has an id, a tag, and a body. The id is the primary key. The tag is an alternate key, so you can find notes by tag.</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="red">POST /api/schemas/declare</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+        <div className="fg-code-stack">
+          <div>
+            <Code head="POST /api/schemas/declare">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   -X POST http://localhost/api/schemas/declare \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -93,27 +131,29 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
       "fields": ["id", "tag", "body"],
       "field_types": { "id": "String", "tag": "String", "body": "String" }
     }
-  }'`}</pre>
-            <p className="dim">
-              <span className="bold">namespace</span> is your app name. It cannot contain a slash.
-              The schema becomes <span className="bold">notes/note</span>. Use that name in the next steps.
+  }'`}</Code>
+            <p className="fg-note">
+              <code>namespace</code> is your app name. It cannot contain a slash.
+              The schema becomes <code>notes/note</code>. Use that name in the next steps.
             </p>
-            <p className="dim">
-              Declaring the same shape again is safe. The reply shows <span className="bold">resolution</span> as <span className="bold">reuse</span> when the schema already exists, and <span className="bold">register</span> when it is new.
+            <p className="fg-note">
+              Declaring the same shape again is safe. The reply shows <code>resolution</code> as <code>reuse</code> when the schema already exists, and <code>register</code> when it is new.
               Changing a field or a key of an installed schema is refused. Declare a new schema name instead.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
       {/* 4. WRITE AND READ */}
-      <Section variant="amber">
-        <h2 id="records"><span className="bold">4. WRITE A RECORD, READ IT BACK</span></h2>
+      <section className="fg-section" id="records">
+        <div className="fg-rail">04 &middot; Write and read</div>
+        <div className="fg-body">
+          <h2>Write a record, read it back.</h2>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="red">POST /api/mutation (WRITE)</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+        <div className="fg-code-stack">
+          <div>
+            <Code head="POST /api/mutation" sub="write">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   -X POST http://localhost/api/mutation \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -124,106 +164,109 @@ curl -s --unix-socket ~/.lastdb/data/folddb.sock http://localhost/api/status`}</
     "alternates": { "by_tag": { "hash": "work", "range": null } },
     "mutation_type": "create",
     "expected": { "type": "absent" }
-  }'`}</pre>
-            <p className="dim">
-              <span className="bold">key_value</span> is the primary key. <span className="bold">alternates</span> gives one value for each named alternate key.
-              Every field in <span className="bold">record</span> must be declared in step 3.
-              <span className="bold"> expected</span> set to <span className="bold">absent</span> means the key must not exist yet.
-              The reply has <span className="bold">ok: true</span> and <span className="bold">success: true</span>.
+  }'`}</Code>
+            <p className="fg-note">
+              <code>key_value</code> is the primary key. <code>alternates</code> gives one value for each named alternate key.
+              Every field in <code>record</code> must be declared in step 3.
+              <code> expected</code> set to <code>absent</code> means the key must not exist yet.
+              The reply has <code>ok: true</code> and <code>success: true</code>.
             </p>
-          </Card>
+          </div>
 
-          <Card>
-            <p><Label color="red">POST /api/query (READ BY PRIMARY KEY)</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+          <div>
+            <Code head="POST /api/query" sub="read by primary key">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
-  -d '{"schema_name":"notes/note","filter":{"HashKey":"n1"}}'`}</pre>
-            <p className="dim">
-              <span className="bold">HashKey</span> selects one record by its primary hash.
-              The reply has <span className="bold">ok: true</span> and a <span className="bold">results</span> list. Each result has a <span className="bold">key</span> and its <span className="bold">fields</span>.
-              A schema with a range uses <span className="bold">HashRangeKey</span> with both <span className="bold">hash</span> and <span className="bold">range</span>.
+  -d '{"schema_name":"notes/note","filter":{"HashKey":"n1"}}'`}</Code>
+            <p className="fg-note">
+              <code>HashKey</code> selects one record by its primary hash.
+              The reply has <code>ok: true</code> and a <code>results</code> list. Each result has a <code>key</code> and its <code>fields</code>.
+              A schema with a range uses <code>HashRangeKey</code> with both <code>hash</code> and <code>range</code>.
             </p>
-          </Card>
+          </div>
 
-          <Card>
-            <p><Label color="red">POST /api/query (READ BY ALTERNATE KEY)</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+          <div>
+            <Code head="POST /api/query" sub="read by alternate key">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   -X POST http://localhost/api/query \\
   -H "Content-Type: application/json" \\
-  -d '{"schema_name":"notes/note","filter":{"HashKey":"work"},"key_name":"by_tag"}'`}</pre>
-            <p className="dim">
-              Add <span className="bold">key_name</span> to read by an alternate key. The <span className="bold">HashKey</span> value is the alternate key value, here the tag.
+  -d '{"schema_name":"notes/note","filter":{"HashKey":"work"},"key_name":"by_tag"}'`}</Code>
+            <p className="fg-note">
+              Add <code>key_name</code> to read by an alternate key. The <code>HashKey</code> value is the alternate key value, here the tag.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
       {/* 5. LIST KEYS */}
-      <Section variant="sage">
-        <h2 id="list"><span className="bold">5. LIST THE KEYS OF A SCHEMA</span></h2>
+      <section className="fg-section" id="list">
+        <div className="fg-rail">05 &middot; List keys</div>
+        <div className="fg-body">
+          <h2>List the keys of a schema.</h2>
 
-        <p>
+          <p className="fg-lede">
           <span className="bold">This is the one whole-schema read.</span> It lists every key of the schema.
           It returns one page at a time, and it does not return the field values. Use it to find keys, then read each record by key in step 4.
         </p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="red">GET /api/list</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  "http://localhost/api/list?schema=notes/note&limit=2"`}</pre>
-            <p className="dim">
-              <span className="bold">limit</span> sets the page size. The default is 100. The maximum is 1000.
-              The reply has <span className="bold">list.keys</span>, <span className="bold">list.has_more</span>, and <span className="bold">list.next_cursor</span>.
+        <div className="fg-code-stack">
+          <div>
+            <Code head="GET /api/list">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  "http://localhost/api/list?schema=notes/note&limit=2"`}</Code>
+            <p className="fg-note">
+              <code>limit</code> sets the page size. The default is 100. The maximum is 1000.
+              The reply has <code>list.keys</code>, <code>list.has_more</code>, and <code>list.next_cursor</code>.
             </p>
-          </Card>
+          </div>
 
-          <Card>
-            <p><Label color="red">NEXT PAGE</Label></p>
-            <pre>{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
-  "http://localhost/api/list?schema=notes/note&limit=2&cursor=CURSOR"`}</pre>
-            <p className="dim">
-              Replace <span className="bold">CURSOR</span> with the <span className="bold">next_cursor</span> value from the last reply, percent-encoded.
-              Stop when <span className="bold">has_more</span> is false.
-              Add <span className="bold">&amp;hash=n1</span> to list only the keys under one hash.
+          <div>
+            <Code head="Next page">{`curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
+  "http://localhost/api/list?schema=notes/note&limit=2&cursor=CURSOR"`}</Code>
+            <p className="fg-note">
+              Replace <code>CURSOR</code> with the <code>next_cursor</code> value from the last reply, percent-encoded.
+              Stop when <code>has_more</code> is false.
+              Add <code>&amp;hash=n1</code> to list only the keys under one hash.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
       {/* 6. CLI EQUIVALENTS */}
-      <Section variant="lavender">
-        <h2 id="cli"><span className="bold">6. CLI EQUIVALENTS</span></h2>
+      <section className="fg-section" id="cli">
+        <div className="fg-rail">06 &middot; Command line</div>
+        <div className="fg-body">
+          <h2>The same reads from the command line.</h2>
 
-        <p>The <span className="bold">lastdb</span> command runs the same reads. Add <span className="bold">--json</span> for the raw reply.</p>
+          <p className="fg-lede">The <code>lastdb</code> command runs the same reads. Add <code>--json</code> for the raw reply.</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="purple">LASTDB</Label></p>
-            <pre>{`lastdb status
+        <div className="fg-code-stack">
+          <div>
+            <Code head="lastdb">{`lastdb status
 lastdb get notes/note --key-hash n1
 lastdb get-keys notes/note --limit 2
-lastdb get-keys notes/note --key-hash work --key-name by_tag`}</pre>
-            <p className="dim">
-              <span className="bold">get</span> reads one record by key. <span className="bold">get-keys</span> lists keys, as step 5 does.
-              <span className="bold"> --key-name</span> needs <span className="bold">--key-hash</span>.
+lastdb get-keys notes/note --key-hash work --key-name by_tag`}</Code>
+            <p className="fg-note">
+              <code>get</code> reads one record by key. <code>get-keys</code> lists keys, as step 5 does.
+              <code> --key-name</code> needs <code>--key-hash</code>.
               Writes go through the socket request in step 4.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
       {/* 7. ERRORS */}
-      <Section variant="rose">
-        <h2 id="errors"><span className="bold">7. ERRORS</span></h2>
+      <section className="fg-section" id="errors">
+        <div className="fg-rail">07 &middot; Errors</div>
+        <div className="fg-body">
+          <h2>Errors name the problem.</h2>
 
-        <p>A failed request returns a 4xx or 5xx status. A 400 from this socket returns a JSON body that names the problem. This example comes from a read with no key:</p>
+          <p className="fg-lede">A failed request returns a 4xx or 5xx status. A 400 from this socket returns a JSON body that names the problem. This example comes from a read with no key:</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="red">400 BAD REQUEST</Label></p>
-            <pre>{`{
+        <div className="fg-code-stack">
+          <div>
+            <Code head="400 Bad Request">{`{
   "ok": false,
   "kind": "full_schema_scan_not_allowed",
   "error": "product apps are keyed-access only; unfiltered schema queries are not supported",
@@ -231,79 +274,91 @@ lastdb get-keys notes/note --key-hash work --key-name by_tag`}</pre>
   "schema_name": "note",
   "schema_id": "notes/note",
   "remediation": { "action": "add_key_filter", "request_key": "filter", "...": "trimmed" }
-}`}</pre>
-            <p className="dim">
-              <span className="bold">kind</span> is the error code. Fix the request and send it again.
-              A malformed mutation or query body returns <span className="bold">kind</span>, <span className="bold">error</span>, and sometimes <span className="bold">key</span> and <span className="bold">try</span>, with a corrected example.
+}`}</Code>
+            <p className="fg-note">
+              <code>kind</code> is the error code. Fix the request and send it again.
+              A malformed mutation or query body returns <code>kind</code>, <code>error</code>, and sometimes <code>key</code> and <code>try</code>, with a corrected example.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
 
       {/* 8. SHARE A DATABASE */}
-      <Section variant="slate">
-        <h2 id="share"><span className="bold">8. SHARE A DATABASE</span></h2>
+      <section className="fg-section" id="share">
+        <div className="fg-rail">
+          08 &middot; Share a database
+          <p>Steps 8 and 9 are for many people. Shown with the lastdb command line.</p>
+        </div>
+        <div className="fg-body">
+          <h2>Share a database.</h2>
 
-        <p>A node holds several named databases. One person, the <span className="bold">publisher</span>, shares a whole database with other people. Data for a different audience goes in a different database.</p>
+          <p className="fg-lede">A node holds several named databases. One person, the <span className="bold">publisher</span>, shares a whole database with other people. Data for a different audience goes in a different database.</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="blue">1 &middot; THE RECIPIENT EXPORTS A CONTACT FILE</Label></p>
-            <pre>{`lastdb share contact --out ben.contact`}</pre>
-            <p className="dim">The recipient sends this file to the publisher. Each side also gives the other their public key over a channel they already trust.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">2 &middot; THE PUBLISHER CREATES A DATABASE AND INVITES</Label></p>
-            <pre>{`lastdb db create family-notes
+        <div className="fg-code-stack">
+          <div>
+            <Code head="1. The recipient exports a contact file">{`lastdb share contact --out ben.contact`}</Code>
+            <p className="fg-note">The recipient sends this file to the publisher. Each side also gives the other their public key over a channel they already trust.</p>
+          </div>
+          <div>
+            <Code head="2. The publisher creates a database and invites">{`lastdb db create family-notes
 lastdb --db family-notes share invite \\
   --recipient ben.contact --recipient-key "$BEN_KEY" \\
-  --out ben.invite`}</pre>
-            <p className="dim">The invitation is encrypted for that one recipient. The read permission in it lasts 24 hours unless you pass <span className="bold">--expires-in-hours</span>.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">3 &middot; THE RECIPIENT ACCEPTS</Label></p>
-            <pre>{`lastdb share accept --publisher "$ANA_KEY" \\
-  --name family-notes ben.invite`}</pre>
-            <p className="dim">The database appears on the recipient&rsquo;s node and stays in step with the publisher&rsquo;s.</p>
-          </Card>
-          <Card>
-            <p><Label color="blue">WHO CAN WRITE</Label></p>
-            <p>Everyone invited can read the whole database. The publisher grants writing with <span className="bold">lastdb share contributors grant</span> and removes it with <span className="bold">lastdb share contributors revoke</span>.</p>
-            <p>A change from another person goes, encrypted, to the publisher&rsquo;s node. That node checks the change against the sharing rules and the schema. It publishes the changes that pass and drops the ones that fail. Your app does not enforce this, so a modified copy of your app cannot get around it.</p>
-            <p className="dim">The cloud between the nodes is a central service. It stores and passes along encrypted bytes that it cannot read. It is not a peer-to-peer network.</p>
-          </Card>
+  --out ben.invite`}</Code>
+            <p className="fg-note">The invitation is encrypted for that one recipient. The read permission in it lasts 24 hours unless you pass <code>--expires-in-hours</code>.</p>
+          </div>
+          <div>
+            <Code head="3. The recipient accepts">{`lastdb share accept --publisher "$ANA_KEY" \\
+  --name family-notes ben.invite`}</Code>
+            <p className="fg-note">The database appears on the recipient&rsquo;s node and stays in step with the publisher&rsquo;s.</p>
+          </div>
         </div>
-      </Section>
+          <h3 style={{ marginTop: 36 }}>Who can write</h3>
+          <div className="fg-two">
+            <p>Everyone invited can read the whole database. The publisher grants writing with <code>lastdb share contributors grant</code> and removes it with <code>lastdb share contributors revoke</code>.</p>
+            <p>A change from another person goes, encrypted, to the publisher&rsquo;s node. That node checks the change against the sharing rules and the schema. It publishes the changes that pass and drops the ones that fail. Your app does not enforce this, so a modified copy of your app cannot get around it.</p>
+          </div>
+          <p className="fg-note">The cloud between the nodes is a central service. It stores and passes along encrypted bytes that it cannot read. It is not a peer-to-peer network.</p>
+        </div>
+      </section>
 
       {/* 9. PUBLISH YOUR APP */}
-      <Section variant="lavender">
-        <h2 id="publish"><span className="bold">9. PUBLISH YOUR APP</span></h2>
+      <section className="fg-section" id="publish">
+        <div className="fg-rail">09 &middot; Publish your app</div>
+        <div className="fg-body">
+          <h2>Publish your app.</h2>
 
-        <p>An app has no server, so there is nothing to deploy. A release is a signed entry in the App Registry.</p>
+          <p className="fg-lede">An app has no server, so there is nothing to deploy. A release is a signed entry in the App Registry.</p>
 
-        <div className="card-stack">
-          <Card>
-            <p><Label color="purple">PUBLISH AND INSTALL</Label></p>
-            <pre>{`lastdb app publish --manifest manifest.json
-lastdb app install your-app`}</pre>
-            <p className="dim">
+        <div className="fg-code-stack">
+          <div>
+            <Code head="Publish and install">{`lastdb app publish --manifest manifest.json
+lastdb app install your-app`}</Code>
+            <p className="fg-note">
               The manifest names the app, its schemas, and the commit to install. Each person installs the app by name, and it runs on their own Mac.
             </p>
-            <p className="dim">
+            <p className="fg-note">
               Publishing needs a paid Exemem subscription. Exemem is the cloud service that LastDB uses for backup and sharing.
               People who use a published app pay nothing to use it. Building and running an app on your own Mac needs no subscription.
             </p>
-          </Card>
+          </div>
         </div>
-      </Section>
+        </div>
+      </section>
 
-      <Section variant="sage">
-        <p>The interactive guide shows the layers, their parts, and their connections. <a href="/explore/#diagram" className="link-btn">Explore the system &rarr;</a></p>
-        <p className="dim">Full catalog of apps: <Link to="/apps">Apps</Link>.</p>
-      </Section>
-
-      <hr className="decorative-rule" aria-hidden="true" />
+      <section className="fg-section" id="next">
+        <div className="fg-rail">Next</div>
+        <div className="fg-body">
+          <h2>Where to go from here.</h2>
+          <p className="fg-lede">The interactive guide shows the layers, their parts, and their connections.</p>
+          <p className="fg-more">
+            <a href="/explore/#diagram">Explore the system &rarr;</a>{' '}&nbsp;{' '}
+            <Link to="/apps">Full catalog of apps &rarr;</Link>{' '}&nbsp;{' '}
+            <Link to="/docs">Install and node health: Docs &rarr;</Link>
+          </p>
+        </div>
+      </section>
     </>
   );
 }

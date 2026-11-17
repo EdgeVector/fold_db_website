@@ -97,7 +97,8 @@ const FAQ = [
       <>
         In a shared database, changes from other people go to the publisher&rsquo;s LastDB, which accepts them in order.
         A change that was made against an older version of a record is discarded, and the app can try again.
-        On one person&rsquo;s own devices, LastDB merges field by field, and the newer write to a field wins.
+        On one person&rsquo;s own devices, the later write to a record wins, and it replaces the whole record.
+        LastDB does not merge field by field.
       </>
     ),
   },
@@ -237,7 +238,7 @@ export default function Home() {
           </p>
           <div className="fg-actions">
             <a href="#install" className="fg-btn fg-btn-primary">Install LastDB</a>
-            <a href="/explore/#diagram" className="fg-btn">See how it connects</a>
+            <a href="/explore/#share" className="fg-btn">See how it connects</a>
           </div>
         </div>
       </section>
