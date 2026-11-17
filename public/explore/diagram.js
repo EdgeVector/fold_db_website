@@ -6,6 +6,7 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["owner-device-sync","record-file-lifetime","temporarily holds the confirmed attachment through"],
     ["sharing-requests","social-app","are reviewed with the commands of"],
     ["sharing-requests","social-circles","propose links or direct grants through"],
     ["sharing-requests","named-members","wait for confirmed access from"],
@@ -400,7 +401,7 @@
     ["named-recovery","file-blob","downloads and verifies referenced bytes for"],
     ["named-recovery","run-encryption","uses the database content key from"],
     ["named-members","share-messages","grants access before sealing"],
-    ["named-members","database","binds each signed member list to"],
+    ["named-members","database","binds each signed member entry to"],
     ["run-encryption","unified-mutation-log","binds encrypted entries and files for"],
     ["named-members","local-approval","supplies confirmed grants to"],
     ["unified-mutation-log","local-approval","delivers encrypted proposals for"],
