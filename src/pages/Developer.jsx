@@ -9,7 +9,7 @@ export default function Developer() {
     <>
       <Helmet>
         <title>Developer Guide - LastDB</title>
-        <meta name="description" content="Build on LastDB: check the local node, declare a schema, then write and read records over the socket." />
+        <meta name="description" content="Build on LastDB: check the local node, declare a schema, write and read records over the socket, share a database with other people, and publish your app." />
         <meta property="og:title" content="Developer Guide - LastDB" />
         <meta property="og:description" content="LastDB developer guide: the node, schemas, keys, and the socket requests your app sends." />
         <link rel="canonical" href="https://thelastdb.com/developer" />
@@ -20,6 +20,7 @@ export default function Developer() {
       <h1 className="tagline">Developer Guide</h1>
 
       <p className="bold white">LastDB is in alpha. It runs as <span className="white">one local daemon</span>. Your apps send HTTP requests to it over a Unix socket.</p>
+      <p>Build your app for one person first: steps 1 to 7. Then let people share a database (step 8) and publish the app (step 9).</p>
 
       <p className="hero-cta">
         <Link to="/#install" className="link-btn">Install LastDB &rarr;</Link>{'  '}
@@ -239,6 +240,63 @@ lastdb get-keys notes/note --key-hash work --key-name by_tag`}</pre>
         </div>
       </Section>
 
+
+      {/* 8. SHARE A DATABASE */}
+      <Section variant="slate">
+        <h2 id="share"><span className="bold">8. SHARE A DATABASE</span></h2>
+
+        <p>A node holds several named databases. One person, the <span className="bold">publisher</span>, shares a whole database with other people. Data for a different audience goes in a different database.</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="blue">1 &middot; THE RECIPIENT EXPORTS A CONTACT FILE</Label></p>
+            <pre>{`lastdb share contact --out ben.contact`}</pre>
+            <p className="dim">The recipient sends this file to the publisher. Each side also gives the other their public key over a channel they already trust.</p>
+          </Card>
+          <Card>
+            <p><Label color="blue">2 &middot; THE PUBLISHER CREATES A DATABASE AND INVITES</Label></p>
+            <pre>{`lastdb db create family-notes
+lastdb --db family-notes share invite \\
+  --recipient ben.contact --recipient-key "$BEN_KEY" \\
+  --out ben.invite`}</pre>
+            <p className="dim">The invitation is encrypted for that one recipient. The read permission in it lasts 24 hours unless you pass <span className="bold">--expires-in-hours</span>.</p>
+          </Card>
+          <Card>
+            <p><Label color="blue">3 &middot; THE RECIPIENT ACCEPTS</Label></p>
+            <pre>{`lastdb share accept --publisher "$ANA_KEY" \\
+  --name family-notes ben.invite`}</pre>
+            <p className="dim">The database appears on the recipient&rsquo;s node and stays in step with the publisher&rsquo;s.</p>
+          </Card>
+          <Card>
+            <p><Label color="blue">WHO CAN WRITE</Label></p>
+            <p>Everyone invited can read the whole database. The publisher grants writing with <span className="bold">lastdb share contributors grant</span> and removes it with <span className="bold">lastdb share contributors revoke</span>.</p>
+            <p>A change from another person goes, encrypted, to the publisher&rsquo;s node. That node checks the change against the sharing rules and the schema. It publishes the changes that pass and drops the ones that fail. Your app does not enforce this, so a modified copy of your app cannot get around it.</p>
+            <p className="dim">The cloud between the nodes is a central service. It stores and passes along encrypted bytes that it cannot read. It is not a peer-to-peer network.</p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* 9. PUBLISH YOUR APP */}
+      <Section variant="lavender">
+        <h2 id="publish"><span className="bold">9. PUBLISH YOUR APP</span></h2>
+
+        <p>An app has no server, so there is nothing to deploy. A release is a signed entry in the App Registry.</p>
+
+        <div className="card-stack">
+          <Card>
+            <p><Label color="purple">PUBLISH AND INSTALL</Label></p>
+            <pre>{`lastdb app publish --manifest manifest.json
+lastdb app install your-app`}</pre>
+            <p className="dim">
+              The manifest names the app, its schemas, and the commit to install. Each person installs the app by name, and it runs on their own Mac.
+            </p>
+            <p className="dim">
+              Publishing needs a paid Exemem subscription. Exemem is the cloud service that LastDB uses for backup and sharing.
+              People who use a published app pay nothing to use it. Building and running an app on your own Mac needs no subscription.
+            </p>
+          </Card>
+        </div>
+      </Section>
 
       <Section variant="sage">
         <p>The interactive guide shows the layers, their parts, and their connections. <a href="/explore/#diagram" className="link-btn">Explore the system &rarr;</a></p>

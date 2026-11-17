@@ -211,6 +211,44 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
 .fg-btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
 
 .fg-figure { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 40px 32px 28px; margin-top: 56px; }
+.fg-hero h1 em { font-style: normal; color: var(--accent); }
+.fg-figure-inline { margin-top: 28px; }
+
+/* Home page picture: a hub that changes into a mesh (components/HubToMesh.jsx). */
+.htm { position: relative; margin-top: 40px; padding: 24px 28px 20px; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; }
+.htm-swap { display: grid; }
+.htm-state { grid-area: 1 / 1; padding-right: 52px; }
+.htm-tag { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.htm-ours .htm-tag { color: var(--accent); }
+.htm-state h2 { margin: 4px 0 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 600; }
+.htm-state p { margin: 6px 0 0; max-width: 720px; font-size: 15.5px; line-height: 1.5; color: var(--sub); }
+.htm-fig { display: block; width: 100%; height: auto; margin-top: 8px; }
+.htm-again { position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--sub); cursor: pointer; display: grid; place-items: center; opacity: 0; }
+.htm-again:hover { color: var(--accent); border-color: var(--accent); }
+.htm-again svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.htm-person { fill: var(--ink); }
+.htm-own { fill: var(--surface); stroke: var(--ink); stroke-width: 1; }
+.htm-hub { stroke: var(--ink); stroke-width: 1.2; }
+.htm-hub-back { fill: var(--surface); }
+.htm-hatch { stroke: var(--line); stroke-width: 1; }
+.htm-spoke { stroke: var(--ink); stroke-width: 0.9; stroke-dasharray: 0.1 4; stroke-linecap: round; }
+.htm-link { stroke: var(--accent); stroke-width: 1.1; }
+.htm-latent { stroke: var(--muted); stroke-width: 0.8; stroke-dasharray: 0.1 4.5; stroke-linecap: round; }
+.htm-orbit { fill: none; stroke: var(--muted); stroke-width: 0.7; stroke-dasharray: 2 5; }
+.htm-note { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; fill: var(--muted); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+
+.htm-narrow .htm-note { font-size: 15px; letter-spacing: 0.08em; }
+.fg-lede { margin: 12px 0 0; max-width: 640px; font-size: 18px; line-height: 1.55; color: var(--sub); }
+.fg-faq-group { margin-top: 36px; }
+.fg-faq-group:first-child { margin-top: 0; }
+.fg-faq-group > h3 { margin: 0; font-family: var(--mono); font-size: 12.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+.fg-points { margin-top: 44px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 40px; }
+.fg-points > div { border-top: 2px solid var(--ink); padding-top: 14px; }
+.fg-points small { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.fg-points h3 { margin: 4px 0 0; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 600; }
+.fg-points p { margin: 8px 0 0; font-size: 16px; line-height: 1.55; color: var(--sub); }
+.fg-points .fg-points-fine { margin-top: 10px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
 .fg-figure-row { display: flex; flex-wrap: wrap; gap: 32px 40px; align-items: stretch; }
 .fg-figure-main { flex: 3 1 480px; min-width: 0; display: flex; flex-direction: column; align-items: center; }
 .fg-figure-side { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; }
@@ -302,6 +340,11 @@ figure img, figure video { max-width: 100%; height: auto; border-radius: 8px; }
   .fg-body > h2, .fg-band-text h2 { font-size: 30px; }
   .fg-section { padding-top: 72px; }
   .fg-figure { padding: 24px 16px 20px; }
+  .htm { padding: 16px 14px; margin-top: 32px; }
+  .htm-more { display: none; }
+  .htm-state p { font-size: 15px; }
+  .htm-state h2 { font-size: 20px; }
+  .fg-points { grid-template-columns: 1fr; gap: 24px; }
   .fg-band { margin-top: 72px; padding: 32px 20px; }
   .fg-app { font-size: 11px; letter-spacing: 0.02em; padding: 12px 4px; }
   .fg-store span { font-size: 13px; letter-spacing: 0.08em; }

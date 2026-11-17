@@ -1,10 +1,13 @@
 # LastDB
 
-> A local database for the tools you build.
+> Massively multi-user apps with no central database.
 >
-> LastDB is one local daemon on your Mac, reached over a Unix socket. Apps read
-> and write it by key. Starter apps install from the App Registry: Brain
-> and LastSecrets. You can write your own app on the same socket.
+> LastDB is one local daemon on each person's Mac (a node), reached over a Unix
+> socket. Apps read and write it by key. A person can share a whole database
+> with other people by invitation; the cloud in between carries end-to-end
+> encrypted bytes and cannot read them. All app code runs on the users' machines.
+> Starter apps install from the App Registry: Brain and LastSecrets. You can
+> write your own app on the same socket and publish it to the registry.
 >
 > Local use needs no account. Optional cloud backup connects your local database
 > with `lastdb backup connect`. Paid cloud storage is set up with `lastdb cloud`.
@@ -182,6 +185,49 @@ Socket: `~/.lastdb/data/folddb.sock` (Unix socket). The file name is historical;
 The developer guide has working requests for each step: declare a schema, write a record,
 read it by primary key, read it by alternate key, and list keys.
 https://thelastdb.com/developer
+
+## Share a database
+
+A node holds several named databases. One person, the publisher, shares a whole
+database with other people. Data for a different audience goes in a different database.
+
+The recipient exports a contact file and sends it to the publisher:
+
+```bash
+lastdb share contact --out ben.contact
+```
+
+The publisher creates a database and writes an invitation that only that recipient can open.
+Each side gets the other's public key over a channel they already trust.
+
+```bash
+lastdb db create family-notes
+lastdb --db family-notes share invite --recipient ben.contact --recipient-key "$BEN_KEY" --out ben.invite
+```
+
+The recipient accepts. The database then appears on their node and stays in step.
+
+```bash
+lastdb share accept --publisher "$ANA_KEY" --name family-notes ben.invite
+```
+
+Everyone invited can read the database. The publisher grants writing with
+`lastdb share contributors grant` and removes it with `lastdb share contributors revoke`.
+A change from another person goes, encrypted, to the publisher's node. That node checks it
+against the sharing rules and the schema before anyone else receives it.
+The cloud is a central service that stores and passes along encrypted bytes. It is not peer-to-peer.
+
+## Publish an app
+
+An app has no server. A release is a signed entry in the App Registry.
+
+```bash
+lastdb app publish --manifest manifest.json
+```
+
+Each person installs the app by name with `lastdb app install <app>`.
+Publishing needs a paid Exemem subscription; Exemem is the cloud service LastDB uses for backup and sharing.
+People who use a published app pay nothing to use it. Building and running an app locally needs no subscription.
 
 ## Key pages
 
