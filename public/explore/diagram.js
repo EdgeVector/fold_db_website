@@ -4,7 +4,7 @@
   const layers=Object.fromEntries(G.layers.map(l=>[l.id,l]));
   const parts=Object.fromEntries(G.layers.flatMap(l=>l.parts.map(p=>[p.id,{...p,layer:l.id}])));
   const edges=[
-    ["sharing-requests","social-app","appear in the Requests view of"],
+    ["sharing-requests","social-app","are reviewed with the commands of"],
     ["sharing-requests","social-circles","propose links or direct grants through"],
     ["sharing-requests","named-members","wait for confirmed access from"],
     ["sharing-requests","publisher-intake","leave record checks to"],
@@ -37,7 +37,6 @@
     ["social-setup","local-schema-declaration","installs missing definitions through"],
     ["social-setup","database-session","opens the same collection through"],
     ["node-status","owner-device-sync","reports separate progress and blocked deliveries for"],
-
     ["social-app","publisher-intake","uses circle schema grants for"],
     ["publisher-intake","named-members","checks current schema grants from"],
     ["publisher-intake","share-messages","gets its inbox public key through"],
@@ -46,7 +45,6 @@
     ["publisher-intake","unified-mutation-log","publishes only accepted changes to"],
     ["guest-record-read","publisher-intake","can submit whole-database proposals to"],
     ["publisher-intake","local-approval","is separate from proposed personal rules in","design"],
-
     ["manual-cloud-connection","initial-backup","requests a starting base through"],
     ["cloud-access","account-payments","checks eligibility managed through"],
     ["socket-workers","named-members","dispatches live member requests for"],
@@ -149,12 +147,11 @@
     ["format-writer","write-order","saves the author clock used by"],
     ["format-writer","local-schema-declaration","validates and saves definitions from"],
     ["format-writer","schema-removal","owns the saved deletion formats for"],
-    ["ci-app-publisher","stable-release","supplies signed entries before"],
-    ["ci-app-publisher","app-publish","consumes checked declarations from"],
-    ["ci-app-publisher","app-registry","publishes permitted entries to"],
-    ["ci-app-publisher","app-compatibility","signs the observed versions for"],
-    ["ci-app-publisher","managed-app-install","has explicit signer trust in"],
-    ["ci-app-publisher","node","uses app-operation evidence from"],
+    ["app-publish","stable-release","supplies signed entries before"],
+    ["app-publish","app-registry","publishes permitted entries to"],
+    ["app-publish","app-compatibility","signs the observed versions for"],
+    ["app-publish","managed-app-install","has explicit signer trust in"],
+    ["app-publish","node","records interface versions reported by"],
     ["record-value","record-file-lifetime","owns its optional file through"],
     ["record-metadata","file-blob","reports the marker for"],
     ["file-blob","record-file-lifetime","has one owner through"],
@@ -199,9 +196,6 @@
     ["local-schema-declaration","schema","checks and loads"],
     ["local-schema-declaration","field","requires a declared type for each"],
     ["local-schema-declaration","registry","works without calling"],
-    ["app-publish","app-registry","supplies publisher-signed entries to"],
-    ["app-publish","node","records interface versions reported by"],
-    ["app-publish","app-compatibility","signs the interface declaration used by"],
     ["app-registry","app-list-cache","keeps verified catalog bytes in"],
     ["app-list-cache","app-compatibility","retains one catalog per API version for"],
     ["query-replies","record-metadata","return one block of"],
@@ -459,7 +453,20 @@
     ["named-members","cloud-access","checks saved account and endpoint with"],
     ["stable-release","restore","qualifies packaged code separately from"],
     ["guaranteed-write","cloud-access","requires a cloud grant through"],
-    ["write-order","unified-mutation-log","distinguishes local revisions from merge order in"]
+    ["write-order","unified-mutation-log","distinguishes local revisions from merge order in"],
+    ["app","app-api","sends batched reads and writes through"],
+    ["app-api","app-session","checks declared access with"],
+    ["app-session","app-access","uses the separate app socket in"],
+    ["managed-app-install","app-session","starts declared apps with"],
+    ["app-publish","app-session","signs the declarations used by"],
+    ["app-session","socket-workers","uses a separate bounded pool in"],
+    ["app-api","conditions","requires every write to satisfy"],
+    ["app-api","local-file-reference","links local paths through"],
+    ["app-api","change-feed","offers the optional changes extension for"],
+    ["change-feed","accepted-writes","stages numbered entries with"],
+    ["change-feed","record-delete","reports deleted keys from"],
+    ["change-feed","restore","changes identity after"],
+    ["change-feed","app","returns keys to refresh for"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(part=>['candidate','unconnected','planned','dev-operation'].includes(part?.status))?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'var(--muted)',fill:'var(--tint-grey)',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
@@ -488,10 +495,11 @@
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
-    {id:'local',title:'Local node & requests',summary:'Run apps, handle requests, and see what the node is doing.',ids:['app','node','app-access','database-session','socket-workers','query-replies','storage-reports','node-status']},
+    {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status']},
+    {id:'requests',title:'App requests & access',summary:'Read, write, follow changes, and understand the two sockets.',ids:['app','app-api','app-session','app-access','database-session','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, with shared vocabulary and optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
-    {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','ci-app-publisher','stable-release']},
+    {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','stable-release']},
     {id:'search',title:'Search',summary:'Keep search outside the database, with an optional inbox for saved changes.',ids:['search-service','search-delivery','search-fields']},
     {id:'cloud',title:'Cloud access',summary:'Authorize backup requests and manage account eligibility.',ids:['cloud-access','account-payments','backup-transport']}
   ];
@@ -580,7 +588,7 @@
   }
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='configured'?'Service opt-in':p.status==='optin'?'Owner opt-in':p.status==='manual'?'Manual · opt-in':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.design?'Source exists · release off':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
-  function sourceLink(p){return p.source?`<a href="https://github.com/EdgeVector/lastdb/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
+  function sourceLink(p){return p.source?`<a href="https://github.com/${p.repository||'EdgeVector/lastdb'}/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
   function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows the inside of one node: one person’s LastDB on their own Mac. Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Recovery uses a checked snapshot and later signed changes. A fresh restore and recovery of a lagging personal device have separate checks. Share is how a publisher gives other people a whole database by invitation. The cloud passes along encrypted changes that it cannot read. Its proposed approval step is marked separately.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Opt-in backup; checked recovery.</strong><p>Dashed lines mark limited or inactive paths. Each part states whether it needs owner permission or service configuration, remains release disabled, is DEV-only, is unconnected source, is unreleased source, or is future design.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.group=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();if(groupsFor(state.area).length)host.querySelector('.service-overview h2').focus();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
