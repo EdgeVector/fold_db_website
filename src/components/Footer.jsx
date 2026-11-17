@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="site-footer">
       <p>
         <span className="bold white">LastDB</span>{' '}
-        <span className="dim">A local database for the tools you build. Open source. Alpha.</span>
+        <span className="dim">Massively multi-user apps with no central database. Open source. Alpha.</span>
       </p>
       <p className="footer-links">
         {NAV_LINKS.map(link => (
