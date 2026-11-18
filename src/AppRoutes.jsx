@@ -18,6 +18,7 @@ import BlogMemoryFirstDiskLater from './pages/BlogMemoryFirstDiskLater';
 import BlogTheAppRegistry from './pages/BlogTheAppRegistry';
 import BlogTheBackupThatWouldntCommit from './pages/BlogTheBackupThatWouldntCommit';
 import BlogRowsThatExpire from './pages/BlogRowsThatExpire';
+import BlogWeDeletedTheMolecules from './pages/BlogWeDeletedTheMolecules';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -50,6 +51,7 @@ export const PRERENDER_PATHS = [
   '/features',
   '/features/kanban-factory',
   '/blog',
+  '/blog/we-deleted-the-molecules',
   '/blog/the-lastdb-app-registry',
   '/blog/rows-that-expire',
   '/blog/the-backup-that-wouldnt-commit',
@@ -96,6 +98,7 @@ export default function AppRoutes() {
       <Route path="/features" element={<Features />} />
       <Route path="/features/kanban-factory" element={<FeatureKanbanFactory />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/we-deleted-the-molecules" element={<BlogWeDeletedTheMolecules />} />
       <Route path="/blog/the-lastdb-app-registry" element={<BlogTheAppRegistry />} />
       <Route path="/blog/rows-that-expire" element={<BlogRowsThatExpire />} />
       <Route path="/blog/the-backup-that-wouldnt-commit" element={<BlogTheBackupThatWouldntCommit />} />

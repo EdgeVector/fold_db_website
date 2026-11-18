@@ -4,6 +4,13 @@ import { Helmet } from 'react-helmet-async';
 // Posts are dated writing. Keep every entry, its link, its date, and its order.
 const POSTS = [
   {
+    slug: 'we-deleted-the-molecules',
+    title: 'We Deleted the Molecules',
+    date: '2026-11-17',
+    blurb:
+      'LastDB used to store one record as about ten keys: an atom per field value, a counter per atom, a tip per field. Now a record is one key. At the switch the database came out 33% to 42% smaller per record, and p95 on cold batch reads and batch writes fell by 70% or more in our local comparison, while warm concurrent reads stayed flat. The CI runs behind every number, where the figures stand today, what we gave up, and everything that does not match.',
+  },
+  {
     slug: 'the-lastdb-app-registry',
     title: 'The LastDB App Registry: Install by Proof',
     date: '2026-09-21',
