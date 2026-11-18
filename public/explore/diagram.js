@@ -280,11 +280,6 @@
     ["disk-cleanup","run-merge","requests work below normal thresholds through"],
     ["disk-cleanup","disk-holds","waits for active reads protected by"],
     ["disk-cleanup","delete-purge","keeps physical cleanup separate from"],
-    ["node","search-delivery","must explicitly enable"],
-    ["search-delivery","search-fields","selects values through"],
-    ["search-delivery","search-service","supplies optional batches to"],
-    ["search-fields","schema","reads field classifications from"],
-    ["search-fields","file-blob","omits keys and file bytes from"],
     ["accepted-writes","memory-budget","releases its private allowance before warm charges in"],
     ["range-protection","run-encryption","protects typed values through"],
     ["node","home-creation","sets up a new node through"],
@@ -323,7 +318,6 @@
     ["run-encryption","disk-root","protects the run file list selected by"],
     ["run-merge","delete-purge","keeps physical marker removal separate from"],
     ["app-compatibility","app","states version needs for"],
-    ["app-compatibility","search-delivery","checks the declared notice format for"],
     ["app-registry","app-compatibility","selects an exact interface through"],
     ["node","app-compatibility","reports supported versions for"],
     ["range-pages","record","can reuse checked range values in"],
@@ -338,7 +332,6 @@
     ["app-access","app","accepts owner-user connections from"],
     ["registry","schema","offers separate advice about"],
     ["app-registry","app","lists signed source commits for"],
-    ["search-service","key","returns candidates for"],
     ["database","schema","selects"],
     ["schema","field","names"],
     ["schema","key","declares"],
@@ -361,7 +354,6 @@
     ["disk-holds","disk-root","keep files selected by"],
     ["space-reservation","accepted-writes","reserves output before"],
     ["ttl","delete-purge","uses the chosen removal operation in"],
-    ["accepted-writes","search-delivery","can send a batch after disk publication through"],
     ["hash-protection","key","protects exact-key representation for"],
     ["range-protection","key","preserves range order for"],
     ["file-encryption","file-blob","protects the bytes of"],
@@ -457,14 +449,14 @@
     ["stable-release","restore","qualifies packaged code separately from"],
     ["write-order","unified-mutation-log","orders private owner changes received through"],
     ["app","app-api","sends batched reads and writes through"],
-    ["app-api","app-session","checks declared access with"],
-    ["app-session","app-access","uses the separate app socket in"],
-    ["managed-app-install","app-session","starts declared apps with"],
-    ["app-publish","app-session","signs the declarations used by"],
-    ["app-session","socket-workers","uses a separate bounded pool in"],
+    ["app-api","app-grant","checks declared access with"],
+    ["app-grant","app-access","uses the separate app socket in"],
+    ["managed-app-install","app-grant","starts declared apps with"],
+    ["app-publish","app-grant","signs the declarations used by"],
+    ["app-grant","socket-workers","uses a separate bounded pool in"],
     ["app-api","conditions","requires every write to satisfy"],
     ["app-api","local-file-reference","links local paths through"],
-    ["app-api","file-blob","places held bytes in the app’s data folder from"],
+    ["app-api","file-blob","returns a local path for"],
     ["app-publish","registry","pushes signed definitions to"],
     ["managed-app-install","registry","fetches missing signed definitions from"],
     ["managed-app-install","local-schema-declaration","places checked definitions through"],
@@ -472,7 +464,8 @@
     ["change-feed","accepted-writes","stages numbered entries with"],
     ["change-feed","record-delete","reports deleted keys from"],
     ["change-feed","restore","changes identity after"],
-    ["change-feed","app","returns keys to refresh for"]
+    ["change-feed","app","returns keys to refresh for"],
+    ["app-api","guest-record-read","reads verified local copies through"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(limited)?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'var(--muted)',fill:'var(--tint-grey)',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
@@ -502,11 +495,10 @@
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status']},
-    {id:'requests',title:'App requests & access',summary:'Read, write, follow changes, and understand the two sockets.',ids:['app','app-api','app-session','app-access','database-session','change-feed']},
+    {id:'requests',title:'App requests & access',summary:'Read, write, follow changes, and understand the two sockets.',ids:['app','app-api','app-grant','app-access','database-session','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','stable-release']},
-    {id:'search',title:'Search',summary:'Keep search outside the database, with an optional inbox for saved changes.',ids:['search-service','search-delivery','search-fields']},
     {id:'cloud',title:'Cloud access',summary:'Authorize backup requests and manage account eligibility.',ids:['cloud-access','account-payments','backup-transport']}
   ];
   const serviceGroupByPart=Object.fromEntries(serviceGroups.flatMap(group=>group.ids.map(id=>[id,group.id])));
