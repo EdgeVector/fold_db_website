@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 125 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 18 November 2026 and covers the current record API, file paths, last-writer-wins attachments, and local sharing approval.
+            The interactive guide has 126 parts. Select a part to see its purpose, its connections, and its limits.
+            It describes source from 18 November 2026 and covers request statistics, schema installation in owned named databases, last-writer-wins attachments, and local sharing approval.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>

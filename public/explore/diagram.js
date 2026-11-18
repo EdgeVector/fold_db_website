@@ -6,6 +6,11 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["node","request-stats","report completed calls through"],
+    ["socket-workers","request-stats","record completed requests in"],
+    ["request-stats","app-api","counts batch items sent through"],
+    ["request-stats","schema","groups read and write items by"],
+    ["local-schema-declaration","database","places schemas in the selected owned"],
     ["owner-device-sync","record-file-lifetime","temporarily holds the confirmed attachment through"],
     ["sharing-requests","social-app","are reviewed with the commands of"],
     ["sharing-requests","social-circles","propose links or direct grants through"],
@@ -492,7 +497,7 @@
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
-    {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status']},
+    {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status','request-stats']},
     {id:'requests',title:'App requests & access',summary:'Read, write, follow changes, and understand the two sockets.',ids:['app','app-api','app-grant','app-access','database-session','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
