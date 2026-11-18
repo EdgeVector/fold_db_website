@@ -19,6 +19,7 @@ import BlogTheAppRegistry from './pages/BlogTheAppRegistry';
 import BlogTheBackupThatWouldntCommit from './pages/BlogTheBackupThatWouldntCommit';
 import BlogRowsThatExpire from './pages/BlogRowsThatExpire';
 import BlogWeDeletedTheMolecules from './pages/BlogWeDeletedTheMolecules';
+import BlogHowSharingWorks from './pages/BlogHowSharingWorks';
 import BlogTheFixWasSubtraction from './pages/BlogTheFixWasSubtraction';
 import BlogReadMeDontRunMe from './pages/BlogReadMeDontRunMe';
 import BlogDeclaredNotRegistered from './pages/BlogDeclaredNotRegistered';
@@ -51,6 +52,7 @@ export const PRERENDER_PATHS = [
   '/features',
   '/features/kanban-factory',
   '/blog',
+  '/blog/how-sharing-works',
   '/blog/we-deleted-the-molecules',
   '/blog/the-lastdb-app-registry',
   '/blog/rows-that-expire',
@@ -98,6 +100,7 @@ export default function AppRoutes() {
       <Route path="/features" element={<Features />} />
       <Route path="/features/kanban-factory" element={<FeatureKanbanFactory />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/how-sharing-works" element={<BlogHowSharingWorks />} />
       <Route path="/blog/we-deleted-the-molecules" element={<BlogWeDeletedTheMolecules />} />
       <Route path="/blog/the-lastdb-app-registry" element={<BlogTheAppRegistry />} />
       <Route path="/blog/rows-that-expire" element={<BlogRowsThatExpire />} />

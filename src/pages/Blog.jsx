@@ -4,6 +4,13 @@ import { Helmet } from 'react-helmet-async';
 // Posts are dated writing. Keep every entry, its link, its date, and its order.
 const POSTS = [
   {
+    slug: 'how-sharing-works',
+    title: 'How Sharing Works: A Log You Write and a Shadow Log They Write',
+    date: '2026-11-18',
+    blurb:
+      'You write to a publisher log that everyone reads. Everyone else writes to a shadow log that only you read, and your own node decides which of their changes to apply. The two logs, what the node checks, the signed member entries, what the cloud can see, and what is still a limit.',
+  },
+  {
     slug: 'we-deleted-the-molecules',
     title: 'We Deleted the Molecules',
     date: '2026-11-17',
