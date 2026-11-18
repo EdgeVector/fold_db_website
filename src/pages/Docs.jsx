@@ -273,7 +273,7 @@ export default function Docs() {
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
             The interactive guide has 125 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 18 November 2026 and covers saved app permissions, received-database reads, last-writer-wins attachments, and local sharing approval.
+            It describes source from 18 November 2026 and covers the current record API, file paths, last-writer-wins attachments, and local sharing approval.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
