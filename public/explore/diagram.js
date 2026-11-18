@@ -6,6 +6,15 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["app","app-databases","manages databases and sharing through"],
+    ["app-databases","app-grant","requires the databases extension from"],
+    ["app-databases","database","lists, creates, or accepts"],
+    ["app-databases","local-schema-declaration","places permitted schemas through"],
+    ["app-databases","named-members","reads and changes sharing settings through"],
+    ["app-databases","share-messages","creates invitations through"],
+    ["app-databases","publisher-intake","submits proposals for"],
+    ["app-databases","submission-status","checks proposal outcomes through"],
+    ["publisher-intake","accepted-stream","recognizes a committed retry in"],
     ["node","request-stats","report completed calls through"],
     ["socket-workers","request-stats","record completed requests in"],
     ["request-stats","app-api","counts batch items sent through"],
@@ -498,7 +507,7 @@
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status','request-stats']},
-    {id:'requests',title:'App requests & access',summary:'Read, write, follow changes, and understand the two sockets.',ids:['app','app-api','app-grant','app-access','database-session','change-feed']},
+    {id:'requests',title:'App requests & access',summary:'Read, write, share, and understand the two sockets.',ids:['app','app-api','app-databases','app-grant','app-access','database-session','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','stable-release']},
