@@ -6,6 +6,29 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["direct-member-write","share-settings","is enabled by"],
+    ["direct-member-write","unified-mutation-log","appends directly to"],
+    ["direct-member-write","guest-record-read","changes the store read by"],
+    ["direct-member-write","named-recovery","settles service order through"],
+    ["direct-member-write","accepted-stream","queues accepted local writes in"],
+    ["direct-member-write","flush","commits locally through"],
+    ["direct-member-write","app-grant","requires app write access from"],
+    ["open-read-link","share-settings","needs anyone-read access from"],
+    ["open-read-link","named-members","allows reading without"],
+    ["open-read-link","share-cache","registers a received store in"],
+    ["open-read-link","named-recovery","downloads a base through"],
+    ["open-read-link","run-encryption","carries a read key for"],
+    ["open-read-link","app-databases","can be issued and accepted through"],
+    ["app-remove","managed-app-install","removes versions placed by"],
+    ["app-remove","app-grant","revokes"],
+    ["app-remove","app-updates","stops automatic reinstall by"],
+    ["app-remove","schema","preserves"],
+    ["app-remove","record","preserves"],
+    ["app-api","direct-member-write","permits received writes through"],
+    ["share-settings","comment-rules","sets"],
+    ["share-settings","open-read-link","permits public reads through"],
+    ["share-settings","direct-member-write","enables"],
+
     ["record","record-authorship","carries database-controlled"],
     ["record-authorship","record-value","is saved atomically in"],
     ["record-authorship","query-replies","is exposed when known in"],
@@ -13,11 +36,11 @@
     ["publisher-intake","record-authorship","sets the authenticated sender in"],
     ["record-authorship","memory-budget","counts toward"],
     ["record-authorship","write-order","keeps the winning writer selected by"],
-    ["share-spec","share-settings","have new protocol choices described by"],
-    ["share-settings","unified-mutation-log","define library admission for"],
+    ["share-spec","share-settings","use the settings in"],
+    ["share-settings","unified-mutation-log","control append and read access to"],
     ["share-settings","named-members","separate read policy from"],
     ["share-settings","local-approval","retain the proposal path through"],
-    ["share-settings","named-recovery","still need node integration with"],
+    ["share-settings","named-recovery","are used by"],
     ["initial-backup","local-file-reference","seals verified bytes from"],
     ["local-file-reference","native-snapshot","can contribute verified bytes to"],
     ["app","app-databases","manages databases and sharing through"],
@@ -50,9 +73,8 @@
     ["publisher-intake","submission-status","reports private results through"],
     ["submission-status","unified-mutation-log","reports publication to"],
     ["guest-record-read","submission-status","can check a proposal through"],
-    ["submission-status","database-session","is available within"],
     ["comment-rules","local-approval","are enforced during"],
-    ["comment-rules","named-members","require current schema grants from"],
+    ["comment-rules","named-members","require active membership from"],
     ["comment-rules","conditions","check the latest version through"],
     ["comment-rules","record-metadata","keep verified origin separate from"],
     ["publisher-intake","record-metadata","preserves publisher source facts in"],
@@ -62,14 +84,13 @@
     ["social-app","social-setup","creates compatible shared collections through"],
     ["social-circles","named-members","combines per-database permissions into"],
     ["social-circles","database","links the same members to"],
-    ["social-circles","local-approval","supply schema grants checked by"],
+    ["social-circles","local-approval","need compatible settings for"],
     ["social-setup","database","creates or verifies one stable"],
     ["social-setup","schema","checks required definitions of"],
     ["social-setup","local-schema-declaration","installs missing definitions through"],
-    ["social-setup","database-session","opens the same collection through"],
     ["node-status","owner-device-sync","reports separate progress and blocked deliveries for"],
-    ["social-app","publisher-intake","uses circle schema grants for"],
-    ["publisher-intake","named-members","checks current schema grants from"],
+    ["social-app","publisher-intake","submits proposals for"],
+    ["publisher-intake","named-members","checks active membership in"],
     ["publisher-intake","share-messages","gets its inbox public key through"],
     ["publisher-intake","conditions","requires a matching record condition from"],
     ["publisher-intake","flush","waits for the accepted commit through"],
@@ -118,14 +139,8 @@
     ["social-app","named-members","reads and updates confirmed access through"],
     ["social-app","share-messages","returns sealed receipts from"],
     ["social-app","share-spec","filters database choices by"],
-    ["social-app","database-session","issues a selected intent through"],
     ["social-app","guest-record-read","opens ready received data through"],
     ["social-app","local-approval","sets the sharing permissions enforced by"],
-    ["database-session","app-access","limits token-bearing requests within"],
-    ["database-session","database","selects exactly one"],
-    ["database-session","app-api","binds each read or write item in"],
-    ["database-session","guest-record-read","allows received data reads through"],
-    ["app","database-session","can send a selected token from"],
     ["app","database","selects an ID or local name from"],
     ["node","share-cache","opens receiver stores through"],
     ["database","guest-record-read","routes registered Share reads through"],
@@ -521,9 +536,9 @@
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
     {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status','request-stats']},
-    {id:'requests',title:'App requests & access',summary:'Read, write, share, and understand the two sockets.',ids:['app','app-api','app-databases','app-grant','app-access','database-session','change-feed']},
+    {id:'requests',title:'App requests & access',summary:'Read, write, share, and understand the two sockets.',ids:['app','app-api','app-databases','app-grant','app-access','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
-    {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-updates','app-rollback']},
+    {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-remove','app-updates','app-rollback']},
     {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','stable-release']},
     {id:'cloud',title:'Cloud access',summary:'Authorize backup requests and manage account eligibility.',ids:['cloud-access','account-payments','backup-transport']}
   ];
@@ -613,7 +628,7 @@
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='configured'?'Implemented · service setup':p.status==='optin'?'Implemented · optional':p.status==='manual'?'Implemented · manual':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.status==='disabled'?'Release disabled':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/${p.repository||'EdgeVector/lastdb'}/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows the inside of one node: one person’s LastDB on their own Mac. Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Recovery uses a checked snapshot and later signed changes. A fresh restore and recovery of a lagging personal device have separate checks. Share is how a publisher gives other people a whole database by invitation. The cloud passes along encrypted changes that it cannot read. The publisher’s LastDB checks proposals against the sharing settings locally before publishing accepted changes.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Cloud is implemented and optional.</strong><p>Connect an account to use cloud backup, sharing, and recovery. Solid lines include implemented paths that need account setup or an explicit action.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows the inside of one node: one person’s LastDB on their own Mac. Apps send requests. A write reaches disk before memory publication and success. Cloud backup is separate from local success. Recovery uses a checked snapshot and later signed changes. A fresh restore and recovery of a lagging personal device have separate checks. Share is how a publisher gives other people a whole database by invitation or read link. The cloud passes along encrypted changes that it cannot read. The publisher’s LastDB checks proposals against the sharing settings locally before publishing accepted changes. Direct mode also lets invited writers publish their changes to the shared log.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Cloud is implemented and optional.</strong><p>Connect an account to use cloud backup, sharing, and recovery. Solid lines include implemented paths that need account setup or an explicit action.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.group=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();if(groupsFor(state.area).length)host.querySelector('.service-overview h2').focus();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function chooseGroup(id){
