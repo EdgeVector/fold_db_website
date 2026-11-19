@@ -6,6 +6,11 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["share-settings","cloud-cutover","wait for"],
+    ["named-members","cloud-cutover","waits for"],
+    ["share-messages","cloud-cutover","wait for"],
+    ["open-read-link","cloud-cutover","waits for"],
+    ["app-databases","cloud-cutover","report readiness from"],
     ["direct-member-write","share-settings","is enabled by"],
     ["direct-member-write","unified-mutation-log","appends directly to"],
     ["direct-member-write","guest-record-read","changes the store read by"],
