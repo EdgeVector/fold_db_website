@@ -194,7 +194,7 @@ export default function BlogHowSharingWorks() {
         The rest of this post is how that works in the code on main, and where it
         goes from here. One note on names: in the code the shadow log is called the inbox, and the log you
         publish is called the publisher log. This post says shadow log and
-        publisher log. The Social app, which sets up sharing for you, gets its
+        publisher log. The People app, which sets up sharing for you, gets its
         own post.
       </p>
 
@@ -238,7 +238,7 @@ export default function BlogHowSharingWorks() {
         database, and a member&rsquo;s node holds both as separate received
         databases. A node can hold at most 32 received shares. LastDB itself
         has no idea what a group is. It knows a database and a list of node
-        keys, and the Social app decides which list of people is linked to
+        keys, and the People app decides which list of people is linked to
         which databases. Data is encrypted on the node before it leaves, and
         Exemem stores ciphertext.
       </p>
@@ -438,7 +438,7 @@ export default function BlogHowSharingWorks() {
             a snapshot is only wired up for personal databases so far.
           </li>
           <li>
-            The Social app, which turns circles of people into these databases
+            The People app, which turns circles of people into these databases
             and grants, is not finished. It gets its own post.
           </li>
         </ul>
