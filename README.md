@@ -124,7 +124,7 @@ Cloud activation and backup progress are separate from local write success.
 Owned and received databases have separate stores. Whole-database sharing keeps
 a published log and a pending proposal log. The publisher validates proposals
 against confirmed permissions and record rules before publishing accepted changes.
-Social manages contacts, reusable circles, and owner-approved sharing requests.
+People manages contacts, reusable circles, and owner-approved sharing requests.
 Personal acceptance settings, medical apps, and finance apps remain proposed
 examples, clearly separated from implemented behavior.
 
