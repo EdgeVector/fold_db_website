@@ -6,6 +6,7 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["social-setup","cloud-cutover","leaves sharing rules pending until"],
     ["direct-member-write","app-databases","reports pending publication through"],
     ["app-databases","accepted-stream","counts received writes waiting in"],
     ["submission-status","direct-member-write","reports proposals separately from"],
@@ -92,12 +93,12 @@
     ["social-app","social-setup","creates compatible shared collections through"],
     ["social-circles","named-members","combines per-database permissions into"],
     ["social-circles","database","links the same members to"],
-    ["social-circles","local-approval","need compatible settings for"],
+    ["social-circles","local-approval","choose members whose proposals pass through"],
     ["social-setup","database","creates or verifies one stable"],
     ["social-setup","schema","checks required definitions of"],
     ["social-setup","local-schema-declaration","installs missing definitions through"],
     ["node-status","owner-device-sync","reports separate progress and blocked deliveries for"],
-    ["social-app","publisher-intake","submits proposals for"],
+    ["social-app","app-databases","manages sharing through"],
     ["publisher-intake","named-members","checks active membership in"],
     ["publisher-intake","share-messages","gets its inbox public key through"],
     ["publisher-intake","conditions","requires a matching record condition from"],
