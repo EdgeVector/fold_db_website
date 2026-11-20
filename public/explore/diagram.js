@@ -389,7 +389,7 @@
         if(narrowLayout){x=i===0?155:20+((i-1)%2)*270;y=i===0?90:265+Math.floor((i-1)/2)*145;}
         else{x=i===0?355:i<=3?30:680;y=i===0?270:110+((i-1)%3)*160;}
       }else{x=30+(i%(narrowLayout?2:3))*(narrowLayout?270:285);y=96+Math.floor(i/(narrowLayout?2:3))*145;}
-      nodes[id]={x,y,w:240,h:102,part:parts[id],outside:parts[id].layer!==state.area};
+      nodes[id]={x,y,w:240,h:Math.max(102,54+wrapped(parts[id].name,18).length*24),part:parts[id],outside:parts[id].layer!==state.area};
     });
     layoutBox={x:0,y:0,w:narrowLayout?550:950,h:selected?(narrowLayout?265+Math.ceil((visible.length-1)/2)*145+65:640):96+Math.ceil(visible.length/(narrowLayout?2:3))*145+65};
     const note=selected?`${shown.length} OF ${connected.length} CONNECTIONS · ALL LISTED IN THE EXPLANATION`:`${area.parts.length} PARTS · SELECT ONE TO SEE ITS CONNECTIONS`;
