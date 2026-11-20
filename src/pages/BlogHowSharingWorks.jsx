@@ -141,6 +141,8 @@ export default function BlogHowSharingWorks() {
       </p>
 
       <h1 className="tagline">How Sharing Works: A Log You Write and a Shadow Log They Write</h1>
+        <p className="fg-note">Implementation update · 20 November 2026: this article describes the earlier two-log design. LastDB now has signed device history and database-wide roles. The old automatic proposal approval and snapshot paths were removed; replacement delivery remains incomplete. <a href="/explore/#share">Read the current guide and limits.</a></p>
+
       <p className="post-meta dim">2026-11-18</p>
 
       <p className="bold white">

@@ -121,17 +121,15 @@ protection, and related services. Format 15 keeps complete records and explicit
 keys. A local write reaches disk before memory publication and acknowledgement.
 Cloud activation and backup progress are separate from local write success.
 
-Owned and received databases have separate stores. Whole-database sharing keeps
-a published log and a pending proposal log. The publisher validates proposals
-against confirmed permissions and record rules before publishing accepted changes.
-People manages contacts, reusable circles, and owner-approved sharing requests.
-Personal acceptance settings, medical apps, and finance apps remain proposed
-examples, clearly separated from implemented behavior.
+The new cloud protocol uses signed device streams, database-wide read/submit/write
+grants, local entry validation, and whole-record last-writer-wins. People manages
+contacts, circles, consent codes, and owner-reviewed access requests.
 
-Recovery uses a verified file base and later signed changes where available.
-Historical DEV results qualify only their recorded operation and revision;
-they do not establish PROD recovery or general cloud-retention qualification.
-LastDB owns retention decisions, while ExeMem performs authorized cloud cleanup.
+Ordinary-write capture, received delivery, attachment transport, bundle loading,
+and automatic publisher incorporation are not connected to the daemon. The restore
+adapter supports a limited hash-record shape. Snapshots and the previous automatic
+per-schema proposal approval loop were removed. The guide labels these boundaries
+explicitly; earlier runtime evidence does not qualify their replacements.
 
 The Disk overview has four steps and expandable details. Apps & services opens
 with six groups; Share has three. One selected part shows a few direct connections,
