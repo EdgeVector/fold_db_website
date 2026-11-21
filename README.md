@@ -127,8 +127,11 @@ contacts, circles, consent codes, and owner-reviewed access requests.
 
 Received shares now pull the publisher device stream recorded in their open token.
 Schema replay and the durable-prefix marker required by fresh receiver reads remain
-missing. Ordinary-write capture, attachment transport, bundle loading, and automatic
-publisher incorporation are not connected to the daemon. The restore
+missing. Owned shareable /v1/write now mirrors hash keys and fields after the local
+commit, before its reply. A mirror error can return 503 after a saved local write.
+The worker uploads owned outboxes before pulls. Range coordinates, alternate
+addresses, and files are absent from the mirror. Attachment transport, bundle
+loading, and automatic publisher incorporation remain incomplete. The restore
 adapter supports a limited hash-record shape. Snapshots and the previous automatic
 per-schema proposal approval loop were removed. The guide labels these boundaries
 explicitly; earlier runtime evidence does not qualify their replacements.
