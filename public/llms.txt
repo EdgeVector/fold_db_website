@@ -20,9 +20,9 @@ Status: alpha. macOS on Apple Silicon only.
 ## Understand LastDB
 
 Interactive system guide: https://thelastdb.com/explore/#diagram
-Explore 123 parts across memory, disk, cloud, sharing, the data model, protection, data lifetime, and services.
+Explore 124 parts across memory, disk, cloud, sharing, the data model, protection, data lifetime, and services.
 Each part explains its purpose, connections, example, and limits.
-It describes source from 20 November 2026 and covers signed grants, publisher-stream pulling for received shares, whole-record last-writer-wins, and the remaining delivery and restore limits.
+It describes source from 21 November 2026 and covers owned-write mirroring, signed grants, publisher-stream pulling, whole-record last-writer-wins, and the remaining delivery and restore limits.
 JavaScript enables the diagram. Public design notes: https://thelastdb.com/explore/sources/design-notes.html
 
 ## Install (macOS Apple Silicon)
