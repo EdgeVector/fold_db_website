@@ -6,7 +6,7 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
-    ["app-api","owned-write-mirror","calls after the local commit"],
+    ["app-api","owned-write-mirror","pass committed owned changes to"],
     ["flush","owned-write-mirror","finishes the local commit before"],
     ["owned-write-mirror","frontier","saves signed entries in"],
     ["owned-write-mirror","local-approval","validates authored entries through"],
