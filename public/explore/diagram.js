@@ -316,7 +316,7 @@
     ["direct-member-write", "app-api", "is not yet connected to"],
     ["local-approval", "publisher-intake", "is distinct from"],
     ["node", "automatic-backup", "starts"],
-    ["node-status", "automatic-backup", "reports errors from"],
+    ["node-status", "automatic-backup", "reports current errors from"],
     ["stable-release", "prod-recovery", "does not establish"],
     ["private-diagnostics", "node-status", "keeps diagnostics separate from"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(limited)?'design':'current')}));
