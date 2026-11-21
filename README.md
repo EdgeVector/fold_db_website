@@ -129,7 +129,9 @@ Received shares now pull the publisher device stream recorded in their open toke
 Schema replay and the durable-prefix marker required by fresh receiver reads remain
 missing. Owned shareable /v1/write now mirrors hash keys and fields after the local
 commit, before its reply. A mirror error can return 503 after a saved local write.
-The worker uploads owned outboxes before pulls. Range coordinates, alternate
+The worker uploads owned outboxes before pulls. History reload restores saved
+pending uploads, so later saves retain unconfirmed entries. Invalid or unreadable
+history files still warn without stopping that reload. Range coordinates, alternate
 addresses, and files are absent from the mirror. Attachment transport, bundle
 loading, and automatic publisher incorporation remain incomplete. The restore
 adapter supports a limited hash-record shape. Snapshots and the previous automatic
