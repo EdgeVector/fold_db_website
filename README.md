@@ -125,8 +125,10 @@ The new cloud protocol uses signed device streams, database-wide read/submit/wri
 grants, local entry validation, and whole-record last-writer-wins. People manages
 contacts, circles, consent codes, and owner-reviewed access requests.
 
-Ordinary-write capture, received delivery, attachment transport, bundle loading,
-and automatic publisher incorporation are not connected to the daemon. The restore
+Received shares now pull the publisher device stream recorded in their open token.
+Schema replay and the durable-prefix marker required by fresh receiver reads remain
+missing. Ordinary-write capture, attachment transport, bundle loading, and automatic
+publisher incorporation are not connected to the daemon. The restore
 adapter supports a limited hash-record shape. Snapshots and the previous automatic
 per-schema proposal approval loop were removed. The guide labels these boundaries
 explicitly; earlier runtime evidence does not qualify their replacements.
