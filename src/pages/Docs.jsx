@@ -273,7 +273,7 @@ export default function Docs() {
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
             The interactive guide has 124 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 21 November 2026 and covers owned-write mirroring, signed grants, publisher-stream pulling, whole-record last-writer-wins, and the remaining delivery and restore limits.
+            It describes source from 21 November 2026 and covers owned-write mirroring, outbox reload, signed grants, publisher-stream pulling, whole-record last-writer-wins, and the remaining delivery and restore limits.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
