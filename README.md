@@ -125,35 +125,35 @@ The new cloud protocol uses signed device streams, database-wide read/submit/wri
 grants, local entry validation, and whole-record last-writer-wins. People manages
 contacts, circles, consent codes, and owner-reviewed access requests.
 
-Received shares pull publisher and member streams. Signed schema entries prepare
-local definitions before record application. A ready listing means the birth is
-held, not that all records arrived. Write members now sign local changes on their
-own device streams. Publishers pull proposals, check schema, the expected history entry, and the
-record’s history creator, then sign incorporations for accepted changes. A member
-can propose a replacement or deletion only for a record it created. Direct Write
-members use the broader write-grant path.
+Received shares pull publisher and member streams. The worker publishes all
+declared schemas in an open owned shareable store after its birth is signed,
+including empty schemas. A ready listing means the birth is held, not that all
+records arrived.
 
-One authored log and a saved upload cursor replace the separate outbox. Uploads
-send batches of 32 until caught up. The worker defaults to the ExeMem address in
-saved credentials; LASTDB_RELAY_URL overrides it. Local record commits and signed
-log appends remain separate saves, so authoring errors can follow a saved record.
+Every member changes a received database through proposals. `/v1/write` is
+refused for every member. The publisher checks current roles and expected
+history entries, then signs acceptance or a not-accepted decision. Submit
+members may create records and change ones they created. Write members may
+propose changes to any record. Role reductions do not undo incorporated records;
+the former cutoff-based undo is removed.
 
-Hash and hash-range keys now travel through signed writes, proposals, and record
-materialization. Local proposal revisions are translated into history entry IDs
-so the publisher can compare across nodes. Both stored author fields follow the
-winning writer, even when the fields are unchanged. History separately retains
-the earliest writer for proposal ownership checks.
+Authored and accepted received entries are saved separately and replayed after
+restart. Each log has a 16 MiB limit. An upload cursor tracks confirmed authored
+entries; batches of 32 drain until caught up. Receive cursors and pending
+dependencies are not saved. LASTDB_RELAY_URL overrides the ExeMem address in
+saved credentials.
 
-Role reductions recompute keys affected by direct member writes beyond their
-device cutoffs. Materialization restores a remaining winner or removes a record
-with none. The entries remain in the signed chain.
+Local record commits and signed log appends remain separate. A signing failure
+attempts to restore history state at the affected keys. Already signed changes
+remain; repair can itself fail. Read before retrying an uncertain result.
 
-Alternate addresses, arbitrary metadata, and file bytes remain absent from the
-record mirror and materializer. Attachments, bundles, and discovery of every
-publisher device remain limited. Restore supports signed schemas and hash or
-hash-range JSON records with winner authorship. Snapshots and the previous
-configurable per-schema approval settings remain removed. Earlier runtime
-evidence does not qualify their replacements.
+Hash and hash-range records carry JSON fields and winning authorship. Local
+proposal revisions translate into history entry IDs. History separately retains
+the earliest writer for Submit-role ownership checks. Alternate addresses,
+arbitrary metadata, attachments, bundles, and discovery of every publisher
+device remain limited. The limited restore adapter has no snapshot fallback.
+The old per-schema approval settings remain removed. Source support does not
+establish a product deployment or primary upgrade.
 
 The Disk overview has four steps and expandable details. Apps & services opens
 with six groups; Share has three. One selected part shows a few direct connections,
