@@ -125,21 +125,24 @@ The new cloud protocol uses signed device streams, database-wide read/submit/wri
 grants, local entry validation, and whole-record last-writer-wins. People manages
 contacts, circles, consent codes, and owner-reviewed access requests.
 
-Received shares pull the publisher stream named in their open token. Signed schema
-entries now prepare their definitions, and reads no longer need the obsolete prefix
-file. A ready listing means the birth entry is held, not that all records arrived.
-Owned shareable writes mirror definitions, hash keys, and fields after committing
-locally. The local commit and signed mirror are separate saves; a mirror error can
-return 503 after the local write. The worker uploads owned and received outboxes.
-Received listings report the last observed pending count and upload attempt.
-Their direct local writes require a held Write role, but ordinary received writes
-still lack a complete signed mirror. Relay refusal retains queued entries.
+Received shares pull publisher and member streams. Signed schema entries prepare
+local definitions before record application. A ready listing means the birth is
+held, not that all records arrived. Write members now sign local changes on their
+own device streams. Publishers pull proposals, check schema and record conditions,
+and sign incorporations for changes they accept.
 
-Range coordinates, alternate addresses, metadata, and files remain absent from the
-record mirror and materializer. Attachment transport, bundle loading, and automatic
-publisher incorporation remain incomplete. Restore uses signed definitions and a
-limited hash-record adapter. Snapshots and the previous per-schema approval loop
-remain removed. Earlier runtime evidence does not qualify their replacements.
+One authored log and a saved upload cursor replace the separate outbox. Uploads
+send batches of 32 until caught up. The worker defaults to the ExeMem address in
+saved credentials; LASTDB_RELAY_URL overrides it. Local record commits and signed
+log appends remain separate saves, so authoring errors can follow a saved record.
+
+Range coordinates, alternate addresses, arbitrary metadata, and files remain
+absent from the record mirror and materializer. Signed authorship is now carried,
+but equal-value materialization skips authorship-only updates. Attachments,
+bundles, and discovery of every publisher device remain limited. Restore uses
+signed definitions and a limited hash-record adapter. Snapshots and the previous
+per-schema approval settings remain removed. Earlier runtime evidence does not
+qualify their replacements.
 
 The Disk overview has four steps and expandable details. Apps & services opens
 with six groups; Share has three. One selected part shows a few direct connections,
