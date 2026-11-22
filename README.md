@@ -128,21 +128,32 @@ contacts, circles, consent codes, and owner-reviewed access requests.
 Received shares pull publisher and member streams. Signed schema entries prepare
 local definitions before record application. A ready listing means the birth is
 held, not that all records arrived. Write members now sign local changes on their
-own device streams. Publishers pull proposals, check schema and record conditions,
-and sign incorporations for changes they accept.
+own device streams. Publishers pull proposals, check schema, the expected history entry, and the
+record’s history creator, then sign incorporations for accepted changes. A member
+can propose a replacement or deletion only for a record it created. Direct Write
+members use the broader write-grant path.
 
 One authored log and a saved upload cursor replace the separate outbox. Uploads
 send batches of 32 until caught up. The worker defaults to the ExeMem address in
 saved credentials; LASTDB_RELAY_URL overrides it. Local record commits and signed
 log appends remain separate saves, so authoring errors can follow a saved record.
 
-Range coordinates, alternate addresses, arbitrary metadata, and files remain
-absent from the record mirror and materializer. Signed authorship is now carried,
-but equal-value materialization skips authorship-only updates. Attachments,
-bundles, and discovery of every publisher device remain limited. Restore uses
-signed definitions and a limited hash-record adapter. Snapshots and the previous
-per-schema approval settings remain removed. Earlier runtime evidence does not
-qualify their replacements.
+Hash and hash-range keys now travel through signed writes, proposals, and record
+materialization. Local proposal revisions are translated into history entry IDs
+so the publisher can compare across nodes. Both stored author fields follow the
+winning writer, even when the fields are unchanged. History separately retains
+the earliest writer for proposal ownership checks.
+
+Role reductions recompute keys affected by direct member writes beyond their
+device cutoffs. Materialization restores a remaining winner or removes a record
+with none. The entries remain in the signed chain.
+
+Alternate addresses, arbitrary metadata, and file bytes remain absent from the
+record mirror and materializer. Attachments, bundles, and discovery of every
+publisher device remain limited. Restore supports signed schemas and hash or
+hash-range JSON records with winner authorship. Snapshots and the previous
+configurable per-schema approval settings remain removed. Earlier runtime
+evidence does not qualify their replacements.
 
 The Disk overview has four steps and expandable details. Apps & services opens
 with six groups; Share has three. One selected part shows a few direct connections,

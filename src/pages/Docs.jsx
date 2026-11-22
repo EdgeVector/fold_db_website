@@ -273,7 +273,7 @@ export default function Docs() {
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
             The interactive guide has 126 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 22 November 2026 and covers the signed log and upload cursor, direct member writes, publisher proposal checks, writer discovery, whole-record last-writer-wins, and the remaining delivery and restore limits.
+            It describes source from 22 November 2026 and covers ranged shared records, proposal ownership and revision checks, permission cutoffs, whole-record last-writer-wins, and the remaining delivery and restore limits.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
