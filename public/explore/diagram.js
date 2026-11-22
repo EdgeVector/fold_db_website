@@ -6,16 +6,16 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
-    ["owned-write-mirror", "signed-schema", "authors before changed record data"],
-    ["signed-schema", "schema", "carries publisher definitions for"],
-    ["signed-schema", "local-approval", "requires publisher authority from"],
-    ["signed-schema", "recovery-chain", "is accepted into"],
-    ["signed-schema", "named-recovery", "supplies definitions to"],
+    ["owned-write-mirror", "signed-schema", "queues"],
+    ["signed-schema", "schema", "carry publisher definitions for"],
+    ["signed-schema", "local-approval", "require publisher authority from"],
+    ["signed-schema", "recovery-chain", "are accepted into"],
+    ["signed-schema", "named-recovery", "supply definitions to"],
     ["restore", "signed-schema", "loads definitions through"],
     ["automatic-backup", "member-publish", "records received upload outcomes in"],
     ["member-publish", "frontier", "reports the last observed pending count of"],
     ["member-publish", "submission-status", "distinguishes relay storage from"],
-    ["app-databases", "member-publish", "exposes for received databases"],
+    ["app-databases", "member-publish", "reports"],
     ["direct-member-write", "member-publish", "does not guarantee an entry appears in"],
     ["named-recovery", "guest-record-read", "supplies saved records for"],
 
