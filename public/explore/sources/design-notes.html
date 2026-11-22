@@ -143,7 +143,7 @@
 <p class="sources">Source: <a href="https://github.com/EdgeVector/lastdb/blob/f2a01543b4674e6d1ee008d62a19b65e78140cb3/lastdb_node/src/bin/lastdb/cloud_cmds/restore.rs">Restore from signed streams</a></p>
 <h3>History recovery checks</h3>
 <p>Restore verifies each signed entry and refuses completion if rejection evidence or pending dependencies remain. It publishes staging only after closing the stores.</p>
-<p>The caller names the streams. There is no automatic complete-device discovery. The adapter supports a limited hash-record shape and no bundle download or attachment restoration. Earlier snapshot evidence does not qualify this path.</p>
+<p>The caller names the streams. There is no automatic complete-device discovery. The adapter supports hash and hash-range JSON records with winner authorship, but no alternate addresses, arbitrary metadata, bundle download, or attachment restoration. Earlier snapshot evidence does not qualify this path.</p>
 <p class="sources">Source: <a href="https://github.com/EdgeVector/lastdb/blob/f2a01543b4674e6d1ee008d62a19b65e78140cb3/signed_history_client/src/restore.rs">History recovery checks</a></p>
 <h3>Recovery identity and connection</h3>
 <p>Recovery derives the owner signing seed from the phrase and writes it into a private staging home. It creates a fresh device ID. The chosen relay URL is used for reconstruction, not saved into that new home.</p>
