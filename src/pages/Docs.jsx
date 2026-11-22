@@ -253,7 +253,7 @@ export default function Docs() {
               <span className="fg-num">02</span>
               <div>
                 <h3><Link to="/developer#share">Share a database.</Link></h3>
-                <p>One person, the publisher, shares a whole database by invitation. Everyone invited can read it. The publisher grants writing by schema and can revoke it. Step 8.</p>
+                <p>One person, the publisher, shares a whole database by invitation. Everyone invited can read it. The publisher grants read, submit, or write roles and decides member proposals locally. Step 8.</p>
               </div>
             </li>
             <li>
@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 126 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 22 November 2026 and covers publisher decisions on member proposals, saved received history, schema publication, whole-record last-writer-wins, and the remaining delivery and restore limits.
+            The interactive guide has 130 parts. Select a part to see its purpose, its connections, and its limits.
+            It describes source from 22 November 2026 and covers sealed personal sync, automatic owner-device discovery, commit-time last-writer-wins, attachment replay, phrase-only restore, and the separate limits of shared databases.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>

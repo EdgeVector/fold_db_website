@@ -28,7 +28,6 @@
     ["signed-schema", "local-approval", "require publisher authority from"],
     ["signed-schema", "recovery-chain", "are accepted into"],
     ["signed-schema", "named-recovery", "supply definitions to"],
-    ["restore", "signed-schema", "loads definitions through"],
     ["automatic-backup", "member-publish", "records received upload outcomes in"],
     ["member-publish", "frontier", "reports the last observed pending count of"],
     ["member-publish", "submission-status", "distinguishes relay storage from"],
@@ -36,8 +35,8 @@
     ["member-write-rules", "member-publish", "have later upload outcomes reported by"],
     ["named-recovery", "guest-record-read", "supplies saved records for"],
 
-    ["app-api","owned-write-mirror","pass committed owned changes to"],
-    ["flush","owned-write-mirror","finishes the local commit before"],
+    ["app-api", "owned-write-mirror", "passes committed shared changes to"],
+    ["flush", "owned-write-mirror", "precedes shared"],
     ["owned-write-mirror","frontier","saves signed entries in"],
     ["owned-write-mirror","local-approval","validates authored entries through"],
     ["owned-write-mirror","automatic-backup","wakes"],
@@ -309,12 +308,9 @@
     ["cloud-cutover", "saved-cloud-credentials", "currently checks only"],
     ["cloud-cutover", "named-members", "is a prerequisite for"],
     ["restore", "restore-checks", "must satisfy"],
-    ["restore", "named-recovery", "writes winners through"],
     ["restore", "restored-account", "prepares"],
     ["restore", "prod-recovery", "has evidence limits in"],
-    ["restore", "recovery-chain", "reads named streams from"],
-    ["restore-checks", "local-approval", "verifies entries with"],
-    ["restore-checks", "frontier", "do not infer complete recovery from"],
+    ["restore", "recovery-chain", "discovers personal streams in"],
     ["named-recovery", "record", "materializes a limited form of"],
     ["named-recovery", "file-blob", "does not yet reconstruct"],
     ["owner-device-sync", "write-order", "depends on"],
@@ -348,14 +344,38 @@
     ["node", "automatic-backup", "starts"],
     ["node-status", "automatic-backup", "reports current errors from"],
     ["stable-release", "prod-recovery", "does not establish"],
-    ["private-diagnostics", "node-status", "keeps diagnostics separate from"]
+    ["private-diagnostics", "node-status", "keeps diagnostics separate from"],
+    ["automatic-backup", "personal-sync", "runs"],
+    ["accepted-stream", "personal-sync", "supplies accepted changes to"],
+    ["personal-sync", "personal-identity", "uses"],
+    ["personal-identity", "database", "identifies the main personal"],
+    ["personal-identity", "sealed-payload", "derives the read key for"],
+    ["personal-sync", "sealed-payload", "seals and opens content through"],
+    ["personal-sync", "personal-progress", "resumes from"],
+    ["personal-sync", "write-order", "applies winners through"],
+    ["personal-sync", "cloud-files", "uploads before entries through"],
+    ["personal-sync", "cloud-destinations", "discovers owner streams from"],
+    ["personal-sync", "byte-backup-client", "uses"],
+    ["personal-progress", "accepted-stream", "retires confirmed entries from"],
+    ["personal-progress", "flush", "commits received record progress with"],
+    ["personal-progress", "restore-checks", "records frozen streams from"],
+    ["restore", "personal-identity", "derives identity through"],
+    ["restore", "personal-sync", "reuses incoming replay from"],
+    ["restore", "cloud-files", "fetches attachments through"],
+    ["restore-checks", "sealed-payload", "opens content with"],
+    ["sealed-payload", "file-encryption", "is separate from local"],
+    ["backup-transport", "sealed-payload", "carries"],
+    ["cloud-files", "file-dependencies", "checks bytes through"],
+    ["app-api", "personal-sync", "wakes"],
+    ["personal-sync", "schema-removal", "replays"],
+    ["personal-progress", "record-file-lifetime", "settles retained baselines for"]
   ].map(([from,to,label,kind])=>({from,to,label,kind:kind||([parts[from],parts[to]].some(limited)?'design':'current')}));
   const meta={
     services:{title:'Apps & services',color:'var(--muted)',fill:'var(--tint-grey)',summary:'Apps ask. The node coordinates.',preview:'App · node · access · registries'},
     model:{title:'The data model',color:'var(--accent)',fill:'var(--tint-blue)',summary:'One structure across the system.',preview:'Schema → key → record → file'},
     memory:{title:'Memory',color:'var(--ok)',fill:'var(--tint-mint)',summary:'Current values and prepared writes.',preview:'Warm set · range pages · holds'},
     disk:{title:'Disk',color:'var(--amber)',fill:'var(--tint-peach)',summary:'Records, files, and durable changes.',preview:'Commit · files · compaction'},
-    cloud:{title:'Cloud',color:'var(--sky)',fill:'var(--tint-sky)',summary:'Signed history; delivery is incomplete.',preview:'Grants · relay · limited restore'},
+    cloud:{title:'Cloud',color:'var(--sky)',fill:'var(--tint-sky)',summary:'Personal sync and sealed recovery.',preview:'Devices · files · shared history'},
     share:{title:'Share',color:'var(--teal)',fill:'var(--tint-teal)',summary:'Signed roles and local validation.',preview:'People · permissions · changes'},
     protection:{title:'Keys & protection',color:'var(--violet)',fill:'var(--tint-lilac)',summary:'Find data and protect its content.',preview:'Key protection · encryption · write order'},
     lifetime:{title:'Life & deletion',color:'var(--warn)',fill:'var(--tint-rose)',summary:'Retain needed bytes; remove data with its owner.',preview:'Record files · expiry · deletion'}
@@ -372,7 +392,7 @@
     {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
-    {title:'Saved changes and home setup',summary:'Retain changes for sync or open a compatible home.',ids:['accepted-stream','alternate-format','home-creation']}
+    {title:'Saved changes and home setup',summary:'Retain changes for sync or open a compatible home.',ids:['accepted-stream','personal-progress','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
@@ -399,7 +419,7 @@
   const overviewBoxes={services:{x:20,y:20,w:360,h:160},model:{x:445,y:20,w:360,h:160},share:{x:870,y:20,w:355,h:160},memory:{x:20,y:330,w:320,h:170},disk:{x:465,y:330,w:320,h:170},cloud:{x:910,y:330,w:315,h:170},protection:{x:65,y:640,w:480,h:160},lifetime:{x:700,y:640,w:480,h:160}};
   const overviewEdges=[
     ['share','cloud','signed entries'],['services','model','uses schemas and keys'],['model','memory','current records'],['model','disk','saved records'],
-    ['memory','disk','save before ack'],['disk','cloud','partial write mirror','design'],
+    ['memory','disk','save before ack'],['disk','cloud','personal write spool'],
     ['protection','memory','checks and protects'],['protection','disk','protects stored content'],
     ['lifetime','disk','record and file removal'],['lifetime','cloud','separate backup rules']
   ];
@@ -470,7 +490,7 @@
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='partial'?'Implemented · partial':p.status==='configured'?'Implemented · service setup':p.status==='optin'?'Implemented · optional':p.status==='manual'?'Implemented · manual':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.status==='disabled'?'Release disabled':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='partial')?' · PARTIAL INTEGRATION':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/${p.repository||'EdgeVector/lastdb'}/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows one person’s LastDB. Apps send keyed requests. A local write reaches disk before memory publication and success. A saved signed log and upload cursor track relay delivery separately. Members propose without changing their local records. The publisher checks current roles and expected history entries, then signs acceptance or refusal. Submit members change their own records; Write members may propose changes to any record. Accepted received history is saved for restart. Readers validate history and choose whole-record winners. Schema replay and received reads are connected. Complete record shapes, attachment delivery, bundle loading, and discovery of every publisher device remain limited. Signed transport does not itself encrypt payloads.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Signed sync has defined limits.</strong><p>Signed history and grant checks are implemented. Dashed connections identify unfinished integration. Account setup alone does not establish complete backup or sharing.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows one person’s LastDB. Apps send keyed requests. A local write reaches disk before success. Personal sync saves captured changes in a durable spool, seals their contents, and sends them to the relay. Other devices discover signed streams and replay records, alternate addresses, and attachments. Shared databases use a separate path: members propose, the publisher checks current roles and record conditions, and accepted changes become published records. Shared record shapes and attachment delivery remain limited.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Implementation and deployment are separate.</strong><p>Personal sync, encryption, and replay are implemented against the reference relay. ExeMem support for the new stream-discovery route is not established here. Dashed connections identify remaining limits. Older records that were never captured are not uploaded automatically.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.group=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();if(groupsFor(state.area).length)host.querySelector('.service-overview h2').focus();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function chooseGroup(id){
