@@ -6,15 +6,18 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["automatic-backup", "signed-schema", "publishes even empty definitions through"],
+    ["owner-device-sync", "frontier", "saves accepted received entries in"],
+    ["owned-write-mirror", "named-recovery", "attempts repair after signing failure through"],
+    ["publisher-intake", "named-recovery", "attempts repair after signing failure through"],
+    ["member-write-rules", "submission-status", "submit and track proposals through"],
     ["publisher-intake", "write-order", "checks the expected entry and creator in"],
     ["submission-status", "write-order", "names the winning entry from"],
     ["named-recovery", "key", "decodes hash and range for"],
     ["named-recovery", "record-authorship", "copies the winning writer into"],
-    ["named-members", "named-recovery", "can restore or remove local records through"],
-    ["named-members", "write-order", "can void direct entries beyond permission cutoffs in"],
-    ["direct-member-write", "frontier", "append signed member entries to"],
+    ["member-write-rules", "frontier", "save signed proposals in"],
     ["automatic-backup", "publisher-intake", "runs"],
-    ["publisher-intake", "frontier", "saves signed incorporations in"],
+    ["publisher-intake", "frontier", "saves signed decisions in"],
     ["publisher-intake", "conditions", "checks proposals against"],
     ["publisher-intake", "record-authorship", "preserves the proposal writer for"],
     ["owner-device-sync", "named-members", "discovers writer keys from"],
@@ -30,7 +33,7 @@
     ["member-publish", "frontier", "reports the last observed pending count of"],
     ["member-publish", "submission-status", "distinguishes relay storage from"],
     ["app-databases", "member-publish", "reports"],
-    ["direct-member-write", "member-publish", "have later upload outcomes reported by"],
+    ["member-write-rules", "member-publish", "have later upload outcomes reported by"],
     ["named-recovery", "guest-record-read", "supplies saved records for"],
 
     ["app-api","owned-write-mirror","pass committed owned changes to"],
@@ -325,7 +328,7 @@
     ["social-app", "app-databases", "calls"],
     ["social-circles", "named-members", "requests signed roles from"],
     ["sharing-requests", "social-circles", "plans access changes through"],
-    ["named-members", "direct-member-write", "can authorize"],
+    ["named-members", "member-write-rules", "can authorize"],
     ["named-members", "submission-status", "can authorize"],
     ["named-members", "frontier", "queue signed entries in"],
     ["named-members", "local-approval", "are checked by"],
@@ -335,12 +338,12 @@
     ["open-read-link", "cloud-cutover", "checks local readiness through"],
     ["share-cache", "guest-record-read", "selects a store for"],
     ["share-cache", "named-recovery", "passes accepted winners to"],
-    ["unified-mutation-log", "direct-member-write", "include"],
+    ["unified-mutation-log", "member-write-rules", "include"],
     ["unified-mutation-log", "publisher-intake", "include proposals checked by"],
-    ["submission-status", "publisher-intake", "does not prove"],
+    ["submission-status", "publisher-intake", "reports a pulled decision from"],
     ["submission-status", "frontier", "saves proposals in"],
-    ["direct-member-write", "write-order", "select winners with"],
-    ["direct-member-write", "app-api", "use the local write gate in"],
+    ["member-write-rules", "publisher-intake", "wait for a signed decision from"],
+    ["member-write-rules", "app-api", "cannot use received writes through"],
     ["local-approval", "publisher-intake", "is distinct from"],
     ["node", "automatic-backup", "starts"],
     ["node-status", "automatic-backup", "reports current errors from"],
@@ -467,7 +470,7 @@
   const partStatus=p=>p.status==='dev-operation'?'DEV only':p.status==='candidate'?'Unreleased source':p.status==='partial'?'Implemented · partial':p.status==='configured'?'Implemented · service setup':p.status==='optin'?'Implemented · optional':p.status==='manual'?'Implemented · manual':p.status==='unconnected'?'Source only · not connected':p.status==='dev'?'DEV only · release off':p.status==='planned'?'Future design':p.status==='disabled'?'Release disabled':'Current source';
   const edgeStatus=e=>[parts[e.from],parts[e.to]].some(p=>p.status==='unconnected')?' · SOURCE ONLY, NOT CONNECTED':[parts[e.from],parts[e.to]].some(p=>p.status==='partial')?' · PARTIAL INTEGRATION':[parts[e.from],parts[e.to]].some(p=>p.status==='dev-operation')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='candidate')?' · UNRELEASED SOURCE':[parts[e.from],parts[e.to]].some(p=>p.status==='planned')?' · FUTURE DESIGN':[parts[e.from],parts[e.to]].some(p=>p.status==='dev')?' · DEV ONLY':[parts[e.from],parts[e.to]].some(p=>p.status==='disabled')?' · RELEASE OFF':[parts[e.from],parts[e.to]].some(p=>p.status==='configured')?' · SERVICE OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='optin')?' · OWNER OPT-IN':[parts[e.from],parts[e.to]].some(p=>p.status==='manual')?' · MANUAL, PERMISSION REQUIRED':' · CONDITIONAL PATH';
   function sourceLink(p){return p.source?`<a href="https://github.com/${p.repository||'EdgeVector/lastdb'}/blob/${p.revision||G.revision}/${esc(p.source)}" target="_blank" rel="noopener noreferrer">Read its source ↗</a>`:`<a href="/explore/sources/design-notes.html" target="_blank" rel="noopener noreferrer">Design notes ↗</a>`;}
-  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows one person’s LastDB. Apps send keyed requests. A local write reaches disk before memory publication and success. A saved signed log and upload cursor track relay delivery separately. Write members sign direct changes. The publisher pulls proposals, checks expected history entries and record creators, and signs accepted changes. Permission cutoffs can undo direct member writes. Readers validate history and choose whole-record winners. Schema replay and received reads are connected. Complete record shapes, attachment delivery, bundle loading, and discovery of every publisher device remain limited. Signed transport does not itself encrypt payloads.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Signed sync has defined limits.</strong><p>Signed history and grant checks are implemented. Dashed connections identify unfinished integration. Account setup alone does not establish complete backup or sharing.</p></div>`}</div>`;return;}
+  function inspect(){const panel=host.querySelector('#diagram-inspector');panel.scrollTop=0;if(!state.selected){const area=state.area==='all'?null:layers[state.area];panel.innerHTML=`<div class="diagram-inspector-top"><span class="eyebrow">${area?'Inside this area':'Start with the connections'}</span><h2>${area?esc(meta[state.area].title):'The whole system.'}</h2><p>${area?esc(area.intro):'This map shows one person’s LastDB. Apps send keyed requests. A local write reaches disk before memory publication and success. A saved signed log and upload cursor track relay delivery separately. Members propose without changing their local records. The publisher checks current roles and expected history entries, then signs acceptance or refusal. Submit members change their own records; Write members may propose changes to any record. Accepted received history is saved for restart. Readers validate history and choose whole-record winners. Schema replay and received reads are connected. Complete record shapes, attachment delivery, bundle loading, and discovery of every publisher device remain limited. Signed transport does not itself encrypt payloads.'}</p></div><div class="diagram-inspector-body"><div class="explain-label">How to explore</div><ol class="diagram-instructions"><li>Select an area to zoom into its parts.</li><li>Select a part to see what it does and why.</li><li>Follow a connection to another part.</li></ol>${area?`<div class="explain-label">Parts in this area</div><div class="diagram-part-menu">${area.parts.map(p=>`<button data-diagram-part="${p.id}">${esc(p.name)} <span>↗</span></button>`).join('')}</div>`:`<div class="diagram-note"><strong>Whole-record storage.</strong><p>Format 15 derives lookup keys when needed and removes an extra file-encryption wrapper. Old dedicated shared homes and portable journals are refused. Registered Shares use separate personal-format homes. A replacement supplies every field and address to keep. An unchanged attachment stays separate.</p></div><div class="diagram-note cloud-note"><strong>Signed sync has defined limits.</strong><p>Signed history and grant checks are implemented. Dashed connections identify unfinished integration. Account setup alone does not establish complete backup or sharing.</p></div>`}</div>`;return;}
     const p=parts[state.selected],connections=edges.filter(e=>e.from===p.id||e.to===p.id);panel.innerHTML=`<div class="diagram-inspector-top" style="background:${meta[p.layer].fill}"><div class="diagram-part-context"><span>${esc(partContext(p))}</span><span>${partStatus(p)}</span></div><h2>${esc(p.name)}</h2><p>${esc(p.what)}</p></div><div class="diagram-inspector-body"><section><div class="explain-label">Why it exists</div><p>${esc(p.why)}</p></section><section class="diagram-example"><div class="explain-label">Example</div><p>${esc(p.example)}</p></section><section><div class="explain-label">Its connections · ${connections.length}</div><div class="diagram-connection-list">${connections.map(e=>{const other=e.from===p.id?e.to:e.from;return `<button data-diagram-part="${other}"><span class="diagram-connection-direction">${e.from===p.id?'OUT →':'← IN'}${e.kind==='design'?edgeStatus(e):''}</span><span><strong>${esc(parts[e.from].name)}</strong> ${esc(e.label)} <strong>${esc(parts[e.to].name)}</strong>.</span><small>${esc(partContext(parts[other]))} · select to follow ↗</small></button>`;}).join('')}</div></section><details class="optional-details"><summary>Limits and source</summary><p>${esc(p.limit)}</p><div class="diagram-source">${sourceLink(p)}</div></details><a class="secondary diagram-full-link" href="#${p.layer}/${p.id}">Open the full explanation →</a></div>`;}
   function chooseArea(id){state.area=layers[id]?id:'all';state.selected=null;state.group=null;state.filter='';const input=host.querySelector('#diagram-search');if(input)input.value='';hideResults();history.replaceState(null,'',`#diagram${state.area==='all'?'':'/'+state.area}`);draw();if(groupsFor(state.area).length)host.querySelector('.service-overview h2').focus();announce(state.area==='all'?'Whole system view':`Inside ${meta[state.area].title}. ${layers[state.area].parts.length} selectable parts.`);}
   function chooseGroup(id){
