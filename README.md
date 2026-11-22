@@ -125,20 +125,21 @@ The new cloud protocol uses signed device streams, database-wide read/submit/wri
 grants, local entry validation, and whole-record last-writer-wins. People manages
 contacts, circles, consent codes, and owner-reviewed access requests.
 
-Received shares now pull the publisher device stream recorded in their open token.
-Schema replay and the durable-prefix marker required by fresh receiver reads remain
-missing. Owned shareable /v1/write now mirrors hash keys and fields after the local
-commit, before its reply. A mirror error can return 503 after a saved local write.
-The worker uploads owned outboxes before pulls. It pulls shareable and received
-databases, skips personal pulls, and clears its top-level error after a successful
-turn. A clear error does not establish complete delivery. History reload restores saved
-pending uploads, so later saves retain unconfirmed entries. Invalid or unreadable
-history files still warn without stopping that reload. Range coordinates, alternate
-addresses, and files are absent from the mirror. Attachment transport, bundle
-loading, and automatic publisher incorporation remain incomplete. The restore
-adapter supports a limited hash-record shape. Snapshots and the previous automatic
-per-schema proposal approval loop were removed. The guide labels these boundaries
-explicitly; earlier runtime evidence does not qualify their replacements.
+Received shares pull the publisher stream named in their open token. Signed schema
+entries now prepare their definitions, and reads no longer need the obsolete prefix
+file. A ready listing means the birth entry is held, not that all records arrived.
+Owned shareable writes mirror definitions, hash keys, and fields after committing
+locally. The local commit and signed mirror are separate saves; a mirror error can
+return 503 after the local write. The worker uploads owned and received outboxes.
+Received listings report the last observed pending count and upload attempt.
+Their direct local writes require a held Write role, but ordinary received writes
+still lack a complete signed mirror. Relay refusal retains queued entries.
+
+Range coordinates, alternate addresses, metadata, and files remain absent from the
+record mirror and materializer. Attachment transport, bundle loading, and automatic
+publisher incorporation remain incomplete. Restore uses signed definitions and a
+limited hash-record adapter. Snapshots and the previous per-schema approval loop
+remain removed. Earlier runtime evidence does not qualify their replacements.
 
 The Disk overview has four steps and expandable details. Apps & services opens
 with six groups; Share has three. One selected part shows a few direct connections,

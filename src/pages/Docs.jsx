@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 124 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 21 November 2026 and covers owned-write mirroring, outbox reload, signed grants, shareable and received-stream pulling, sync status, whole-record last-writer-wins, and the remaining delivery and restore limits.
+            The interactive guide has 126 parts. Select a part to see its purpose, its connections, and its limits.
+            It describes source from 22 November 2026 and covers signed schema replay, received record reads, Write-role checks, member upload status, owned-write mirroring, whole-record last-writer-wins, and the remaining delivery and restore limits.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
