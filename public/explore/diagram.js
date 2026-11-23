@@ -6,6 +6,12 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["personal-snapshot","relay-trim","requests cleanup after publication through"],
+    ["relay-trim","recovery-chain","removes covered personal entries from"],
+    ["relay-trim","cloud-destinations","requests checked removal in"],
+    ["relay-trim","restore","retains checkpoint recovery for"],
+    ["relay-trim","personal-progress","reports missing history through"],
+    ["relay-trim","cloud-files","leaves stored bytes in"],
     ["cloud-files","blob-transfers","sends sealed files through"],
     ["byte-backup-client","blob-transfers","authorizes file transfers through"],
     ["blob-transfers","cloud-destinations","uses upload and download grants from"],
