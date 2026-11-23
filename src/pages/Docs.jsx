@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 130 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 22 November 2026 and covers sealed personal sync, automatic owner-device discovery, commit-time last-writer-wins, attachment replay, phrase-only restore, and the separate limits of shared databases.
+            The interactive guide has 133 parts. Select a part to see its purpose, its connections, and its limits.
+            It describes source from 23 November 2026 and covers sealed personal sync, signed native checkpoints, recovery from snapshots and later entries, whole-record last-writer-wins, and the separate limits of shared databases.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
