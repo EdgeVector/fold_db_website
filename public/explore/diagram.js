@@ -6,6 +6,11 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["cloud-files","blob-transfers","sends sealed files through"],
+    ["byte-backup-client","blob-transfers","authorizes file transfers through"],
+    ["blob-transfers","cloud-destinations","uses upload and download grants from"],
+    ["blob-transfers","backup-transport","keeps byte transfer separate from local commits in"],
+    ["snapshot-status","blob-transfers","reports size refusals from"],
     ["automatic-backup", "signed-schema", "publishes even empty definitions through"],
     ["owner-device-sync", "frontier", "saves accepted received entries in"],
     ["owned-write-mirror", "named-recovery", "attempts repair after signing failure through"],
@@ -377,7 +382,7 @@
     ["snapshot-cut","accepted-stream","provides the starting data before sending"],
     ["personal-snapshot","snapshot-cut","uploads the files from"],
     ["personal-snapshot","recovery-chain","adds a signed checkpoint to"],
-    ["personal-snapshot","byte-backup-client","transfers files through"],
+    ["personal-snapshot","blob-transfers","uploads checkpoint files through"],
     ["personal-snapshot","run-encryption","retains"],
     ["personal-snapshot","snapshot-status","records publication in"],
     ["restore","personal-snapshot","starts from the newest advertised"],
