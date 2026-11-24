@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 138 parts. Select a part to see its purpose, its connections, and its limits.
-            It describes source from 23 November 2026 and covers sealed personal sync, database write leases, a single record change call, background native checkpoints, snapshot-covered log cleanup, verified file transfers, recovery from snapshots and later entries, whole-record last-writer-wins, and the separate limits of shared databases.
+            The interactive guide has 139 parts. Select a part to see its purpose, its connections, and its limits.
+            It describes source from 24 November 2026 and covers sealed personal sync, database write leases, a single record change call, background native checkpoints, snapshot-covered log cleanup, verified file transfers, recovery from snapshots and later entries, commit-time ordering, separate last-writer-wins for fields and files, and the separate limits of shared databases.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>

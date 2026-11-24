@@ -6,6 +6,14 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["accepted-writes","local-sync-stamp","receive their captured order from"],
+    ["local-sync-stamp","accepted-stream","uses the entry position in"],
+    ["local-sync-stamp","flush","is saved before the ack by"],
+    ["local-sync-stamp","personal-identity","uses the writer and device from"],
+    ["local-sync-stamp","write-order","supplies local winners to"],
+    ["personal-sync","local-sync-stamp","compares remote entries against"],
+    ["local-sync-stamp","record-file-lifetime","tracks explicit file changes for"],
+    ["local-sync-stamp","schema-removal","orders captured schema drops from"],
     ["app","record-change","requests one change through"],
     ["app-databases","record-change","routes the change action to"],
     ["record-change","member-write-rules","checks the member path in"],
@@ -399,7 +407,6 @@
     ["cloud-files", "file-dependencies", "checks bytes through"],
     ["app-api", "personal-sync", "wakes"],
     ["personal-sync", "schema-removal", "replays"],
-    ["personal-progress", "record-file-lifetime", "settles retained baselines for"],
     ["automatic-backup","personal-snapshot","publishes"],
     ["snapshot-cut","run-home","pins a consistent view of"],
     ["snapshot-cut","run-blob-home","includes"],
@@ -438,7 +445,7 @@
     {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
     {title:'Make room safely',summary:'Combine old files and keep bytes that readers still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
-    {title:'Saved changes and home setup',summary:'Retain changes for sync or open a compatible home.',ids:['accepted-stream','personal-progress','snapshot-cut','alternate-format','home-creation']}
+    {title:'Saved changes and home setup',summary:'Retain changes for sync or open a compatible home.',ids:['accepted-stream','local-sync-stamp','personal-progress','snapshot-cut','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">Cloud backup happens separately. A local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
