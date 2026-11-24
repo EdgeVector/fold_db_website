@@ -6,6 +6,10 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["write-queue","accepted-stream","checks capacity before admission to"],
+    ["write-queue","memory-budget","charges staged signed bytes against"],
+    ["accepted-stream","memory-budget","charges encrypted copies against"],
+    ["snapshot-commit","accepted-stream","determines interrupted recovery for"],
     ["local-sync-stamp","sealed-payload","encrypts before signing with"],
     ["accepted-stream","cloud-files","holds encrypted bytes for"],
     ["accepted-writes","local-sync-stamp","are signed and ordered through"],
