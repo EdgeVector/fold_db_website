@@ -6,6 +6,23 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["commit-log","logged-memory","publishes flushed changes in"],
+    ["logged-memory","run-lookup","supplies the newest values to"],
+    ["logged-memory","run-seal","freezes changes for"],
+    ["run-seal","run-files","writes the frozen changes into"],
+    ["run-seal","snapshot-commit","publishes the new file list through"],
+    ["run-seal","commit-log","prunes files covered by the new run from"],
+    ["commit-log","run-home","replays newer commits when opening"],
+    ["snapshot-cut","run-seal","settles logged changes through"],
+    ["commit-log","run-encryption","uses the home key from"],
+    ["node-status","commit-log","reports flush timing and pending run bytes from"],
+    ["personal-sync","log-segments","sends personal batches as"],
+    ["log-segments","blob-transfers","transfers segment blobs through"],
+    ["relay-trim","log-segments","removes fully covered"],
+    ["cloud-reclaim","log-segments","keeps blobs still named by"],
+    ["log-segments","restore-checks","passes decoded entries to"],
+    ["log-segments","cloud-usage","counts blob bytes once in"],
+
     ["node-status","accepted-stream","reports native progress from"],
     ["personal-snapshot","cloud-destinations","checks unchanged checkpoint storage in"],
     ["cloud-reclaim","recovery-chain","verifies retained entries from"],
@@ -13,7 +30,7 @@
     ["write-queue","accepted-stream","checks capacity before admission to"],
     ["write-queue","memory-budget","charges staged signed bytes against"],
     ["accepted-stream","memory-budget","charges encrypted copies against"],
-    ["snapshot-commit","accepted-stream","commits record changes atomically with"],
+    ["commit-log","accepted-stream","saves record changes atomically with"],
     ["local-sync-stamp","sealed-payload","encrypts before signing with"],
     ["accepted-stream","cloud-files","holds encrypted bytes for"],
     ["accepted-writes","local-sync-stamp","are signed and ordered through"],
@@ -188,7 +205,7 @@
     ["alternate-keys", "alternate-format", "need a compatible layout checked by"],
     ["alternate-entries", "read-view", "check recorded addresses in one"],
     ["alternate-entries", "record", "point to the primary key of a"],
-    ["alternate-entries", "snapshot-commit", "share the record’s"],
+    ["alternate-entries", "commit-log", "share the record’s commit in"],
     ["alternate-entries", "hash-protection", "use separate key spaces for"],
     ["accepted-writes", "alternate-entries", "update affected"],
     ["delete-purge", "alternate-entries", "remove affected"],
@@ -207,7 +224,7 @@
     ["write-read-reuse", "run-lookup", "reuses exact results from"],
     ["write-read-reuse", "warm-set", "keeps its results separate from"],
     ["write-read-reuse", "memory-budget", "has a separate bounded allowance from"],
-    ["file-delete-recovery", "snapshot-commit", "checks completed record changes from"],
+    ["file-delete-recovery", "commit-log", "checks completed record changes from"],
     ["file-delete-recovery", "disk-root", "checks both saved positions in"],
     ["delete-purge", "file-delete-recovery", "protects file removal through"],
     ["run-merge", "space-reservation", "reserves each output through"],
@@ -239,7 +256,7 @@
     ["range-context", "schema", "captures the declaration from"],
     ["range-context", "read-view", "keeps comparison separate from"],
     ["disk-root", "run-home", "uses an encrypted file list in"],
-    ["run-home", "run-files", "stores records in"],
+    ["run-home", "run-files", "holds sealed records in"],
     ["run-home", "run-lookup", "serves keyed reads through"],
     ["run-home", "run-merge", "combines old files through"],
     ["run-home", "run-encryption", "protects blocks through"],
@@ -255,7 +272,7 @@
     ["node", "app-compatibility", "reports supported versions for"],
     ["range-pages", "record", "can reuse checked range values in"],
     ["accepted-writes", "write-queue", "places complete prepared changes in"],
-    ["write-queue", "snapshot-commit", "shares immediate disk work through"],
+    ["write-queue", "commit-log", "submits a complete commit to"],
     ["app-access", "socket-workers", "checks the connecting OS user before"],
     ["socket-workers", "accepted-writes", "can await disk completion of"],
     ["socket-workers", "write-queue", "releases its worker while a write waits in"],
@@ -281,7 +298,7 @@
     ["key", "range-pages", "sets the hash and range for"],
     ["range-pages", "read-view", "fetch selected values through"],
     ["range-protection", "range-pages", "preserves the order used by"],
-    ["flush", "snapshot-commit", "submits complete changes to"],
+    ["flush", "commit-log", "waits for the ordered append to"],
     ["snapshot-commit", "disk-root", "refuses unsafe locks before publishing"],
     ["space-reservation", "accepted-writes", "reserves output before"],
     ["ttl", "delete-purge", "uses the chosen removal operation in"],
@@ -456,13 +473,13 @@
   const diskSteps=[
     ['format-writer','Prepare the change','Build the complete record and its related updates.'],
     ['write-queue','Queue the work','Ready requests can share one disk commit.'],
-    ['snapshot-commit','Save the state','Save every related change before publishing the new state.'],
+    ['commit-log','Log the change','Append the complete record change and flush it in order.'],
     ['flush','Return success','Publish the saved state in memory, then send the ack.']
   ];
   const diskGroups=[
-    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','run-files','run-values','run-lookup','alternate-entries']},
+    {title:'Read saved data',summary:'Find records by key in a consistent saved view.',ids:['record-home','run-home','disk-root','read-view','logged-memory','run-files','run-values','run-lookup','alternate-entries']},
     {title:'Store large files',summary:'Keep each record’s file bytes in a separate home.',ids:['run-blob-home','file-delete-recovery']},
-    {title:'Make room safely',summary:'Combine old files and keep bytes that readers still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-merge','disk-cleanup']},
+    {title:'Make room safely',summary:'Combine old files and keep bytes that readers still need.',ids:['space-reservation','disk-holds','run-base','stale-byte-count','run-seal','snapshot-commit','run-merge','disk-cleanup']},
     {title:'Saved changes and home setup',summary:'Retain changes for sync or open a compatible home.',ids:['accepted-stream','local-sync-stamp','personal-progress','snapshot-cut','alternate-format','home-creation']}
   ];
   function diskOverview(){return `<section class="disk-overview" aria-label="Disk overview"><header><span class="eyebrow">Disk · the main path</span><h2>Save first. Then return success.</h2><p>A write follows these four steps. Select a step for its explanation.</p></header><ol class="disk-write-path">${diskSteps.map(([id,title,description],i)=>`<li><button data-diagram-part="${id}"><span class="disk-step-number" aria-hidden="true">${i+1}</span><span><strong>${title}</strong><span class="disk-step-description">${description}</span></span><span class="disk-step-open" aria-hidden="true">↗</span></button></li>`).join('')}</ol><p class="disk-backup-note">On macOS, recent acknowledged writes can still be lost in a power cut. Cloud backup happens separately.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${diskGroups.map(group=>`<details><summary><strong>${group.title}</strong><span>${group.summary}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}

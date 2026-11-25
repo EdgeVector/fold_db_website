@@ -272,8 +272,8 @@ export default function Docs() {
         <div className="fg-body">
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
-            The interactive guide has 140 parts. Select a part to see its purpose, its connections, and its limits.
-            Reviewed against source from 25 November 2026. Follow a write through memory and disk, or explore personal cloud recovery and shared-database approval. The guide explains ordered write acknowledgements and their macOS power-loss limit, the atomic personal spool, checked cloud cleanup, and shared writes under signed leases. Fields and the single attachment keep separate last-writer-wins decisions.
+            The interactive guide has 144 parts. Select a part to see its purpose, its connections, and its limits.
+            Reviewed against source from 25 November 2026. Follow a write through memory and disk, or explore personal cloud recovery and shared-database approval. The guide explains ordered write acknowledgements and their macOS power-loss limit, the local commit log and its read layer, the atomic personal spool, relay log segments, checked cloud cleanup, and shared writes under signed leases. Fields and the single attachment keep separate last-writer-wins decisions.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
