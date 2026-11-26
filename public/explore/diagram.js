@@ -122,6 +122,8 @@
     ["node", "request-stats", "report completed calls through"],
     ["socket-workers", "request-stats", "record completed requests in"],
     ["request-stats", "schema", "groups read and write items by"],
+    ["request-stats", "accepted-writes", "reports preparation and staging time for"],
+    ["request-stats", "flush", "reports elapsed commit time through"],
     ["schema-advice", "app-registry", "reads public definitions pinned by"],
     ["app-publish", "account-payments", "can obtain a temporary publishing credential through"],
     ["app", "query-replies", "can check the record after a lost write reply through"],
