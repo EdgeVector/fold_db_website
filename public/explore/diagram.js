@@ -124,6 +124,9 @@
     ["request-stats", "schema", "groups read and write items by"],
     ["request-stats", "accepted-writes", "reports preparation and staging time for"],
     ["request-stats", "flush", "reports elapsed commit time through"],
+    ["node", "request-history", "saves minute samples in"],
+    ["request-stats", "request-history", "supplies interval counts and timings to"],
+    ["commit-log", "request-history", "supplies flush counts and sampled pending bytes to"],
     ["schema-advice", "app-registry", "reads public definitions pinned by"],
     ["app-publish", "account-payments", "can obtain a temporary publishing credential through"],
     ["app", "query-replies", "can check the record after a lost write reply through"],
@@ -488,7 +491,7 @@
   function cloudOverview(){return `<section class="disk-overview cloud-overview" aria-label="Cloud overview"><header><span class="eyebrow">Cloud · choose a task</span><h2 tabindex="-1">Connect, sync, restore, or clean up.</h2><p>Start with what you want to do. Open a detail when you need to understand the machinery.</p></header><ul class="cloud-task-cards">${G.cloudSteps.map(([id,title,description])=>`<li><button data-diagram-part="${id}"><strong>${esc(title)}</strong><span>${esc(description)}</span><small>${esc(parts[id].name)} <b aria-hidden="true">↗</b></small></button></li>`).join('')}</ul><p class="disk-backup-note">Cloud work runs separately from the local write. Local success does not confirm a cloud copy.</p><h3>Explore a detail when you need it</h3><div class="disk-detail-groups">${G.cloudGroups.map(group=>`<details><summary><strong>${esc(group.title)}</strong><span>${esc(group.summary)}</span></summary><div class="diagram-part-menu">${group.ids.map(id=>`<button data-diagram-part="${id}"><span>${esc(parts[id].name)}</span><span aria-hidden="true">↗</span></button>`).join('')}</div></details>`).join('')}</div></section>`;}
   // These are navigation groups, not additional system parts or data-flow edges.
   const serviceGroups=[
-    {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status','request-stats']},
+    {id:'local',title:'Local node',summary:'Handle requests and see what the node is doing.',ids:['node','socket-workers','query-replies','storage-reports','node-status','request-stats','request-history']},
     {id:'requests',title:'App requests & access',summary:'Read, write, share, and understand the two sockets.',ids:['app','app-api','record-change','app-databases','app-grant','app-access','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-remove','app-updates','app-rollback']},
