@@ -6,6 +6,11 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["record-delete","run-seal","can trigger early sealing through"],
+    ["node","fault-reporting","reports code failures through"],
+    ["private-diagnostics","fault-reporting","keeps local output separate from"],
+    ["cloud-access","fault-reporting","reports service faults through"],
+    ["schema-advice","fault-reporting","reports service faults through"],
     ["commit-log","logged-memory","publishes flushed changes in"],
     ["logged-memory","run-lookup","supplies the newest values to"],
     ["logged-memory","run-seal","freezes changes for"],
