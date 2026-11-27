@@ -118,8 +118,8 @@ export default function DocsHowStorageWorks() {
           <div className="fg-two">
             <p>
               <strong>identity.key</strong> is the 32-byte node seed. It never leaves the device. The
-              recovery phrase encodes it. Every key — node key, personal database id, database read
-              keys, run-file keys — derives from it.
+              recovery phrase encodes it. Owned database identities and keys derive from it.
+              Received shares use the read key supplied by their publisher.
             </p>
             <p>
               <strong>data/</strong> is the personal database. Owned siblings live under{' '}
@@ -167,7 +167,8 @@ export default function DocsHowStorageWorks() {
                   files) and is readable immediately. Later a <strong>seal</strong> freezes logged
                   commits into a sorted immutable <strong>run</strong> (<code>.ldrun</code>) and
                   publishes it via <code>CURRENT</code>. Seal threshold = run bytes / 4, clamped
-                  64&nbsp;KiB–8&nbsp;MiB. The memory-layer seal threshold counts 256&nbsp;MiB of encoded log bytes, not total process memory. Blocks are 16&nbsp;KiB.
+                  64&nbsp;KiB–8&nbsp;MiB. The memory-layer seal threshold counts 256&nbsp;MiB of
+                  encoded log bytes, not total process memory. Blocks are 16&nbsp;KiB.
                 </p>
               </div>
             </li>
@@ -236,16 +237,18 @@ export default function DocsHowStorageWorks() {
           </div>
           <div className="fg-two">
             <p>
-              <strong>Sync.</strong> The local write also becomes the next cloud-log entry for this
-              device, sealed and signed in the same commit. Upload sends those bytes; other devices
-              verify the chain and merge by last-writer stamps. Data merges into the shared
-              per-database store; <code>log-sync/&lt;id&gt;/</code> stays per device.
+              <strong>Sync.</strong> A captured personal write also becomes the next cloud-log
+              entry for this device, sealed and signed in the same commit. Upload sends those
+              bytes; other devices verify the chain and merge by last-writer stamps. Each device
+              merges data into its own local database. Shared databases keep separate signed logs
+              under <code>log-sync/&lt;id&gt;/</code>.
             </p>
             <p>
-              <strong>Snapshot.</strong> Seal the commit log, upload store files marked for the
-              snapshot, then publish a signed snapshot entry after the spool has no unacknowledged
-              entries. Ask the relay to trim what that snapshot covers. Restore installs those
-              files and resumes streams after the named heads.
+              <strong>Snapshot.</strong> Wait for the current spool to be acknowledged, seal the
+              commit log, and capture the store files. Upload those files and publish a signed
+              snapshot entry. New writes can continue after capture. Ask the relay to trim what
+              the snapshot covers. Restore installs those files and resumes streams after the
+              named heads.
             </p>
           </div>
         </div>
