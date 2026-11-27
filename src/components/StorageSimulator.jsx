@@ -78,6 +78,8 @@ function emptyStore() {
     commitLogStale: 0,
     commitLogTombs: 0,
     commitLogTombstoneKeyBytes: 0,
+    commitLogTombstoneBytes: 0,
+    commitLogHiddenBytes: 0,
     commitLogCount: 0,
     logKeys: new Set(),
     levels: [[]],
@@ -204,7 +206,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
     const threshold = sealThreshold(runFileBytes(s), scale);
     if (s.commitLogBytes > 0 && (force || s.commitLogBytes >= threshold)) {
       force = false;
-      const stale = Math.min(s.commitLogStale, s.commitLogBytes);
+      const stale = Math.min(s.commitLogStale + s.commitLogTombstoneBytes, s.commitLogBytes);
       const live = Math.max(0, s.commitLogBytes - stale);
       const run = {
         id: `run-${Date.now()}-${guard}`,
@@ -213,6 +215,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         staleBytes: stale,
         tombstones: s.commitLogTombs,
         tombstoneKeyBytes: s.commitLogTombstoneKeyBytes,
+        hiddenBytes: s.commitLogHiddenBytes,
         records: s.commitLogCount,
       };
       if (s.levels.length === 0) s.levels = [[]];
@@ -224,6 +227,8 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         commitLogStale: 0,
         commitLogTombs: 0,
         commitLogTombstoneKeyBytes: 0,
+        commitLogTombstoneBytes: 0,
+        commitLogHiddenBytes: 0,
         commitLogCount: 0,
         logKeys: new Set(),
         fileCount: countFiles(s),
@@ -245,6 +250,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         const staleBytes = inputs.reduce((a, r) => a + r.staleBytes, 0);
         const tombstones = inputs.reduce((a, r) => a + r.tombstones, 0);
         const tombstoneKeyBytes = inputs.reduce((a, r) => a + (r.tombstoneKeyBytes || 0), 0);
+        const hiddenBytes = inputs.reduce((a, r) => a + (r.hiddenBytes || 0), 0);
         const records = inputs.reduce((a, r) => a + r.records, 0);
         const out = {
           id: `merge-${Date.now()}-${level}`,
@@ -253,6 +259,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
           staleBytes,
           tombstones,
           tombstoneKeyBytes,
+          hiddenBytes,
           records,
         };
         const nextLevels = s.levels.map((l, i) => (i === level ? rest : [...l]));
@@ -292,7 +299,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
     const tiered = s.levels.flat();
     const tierBytes = tiered.reduce((a, r) => a + r.liveBytes + r.staleBytes, 0);
     const total = logicalTotal(s) || tierBytes + s.base.reduce((a, r) => a + r.liveBytes + r.staleBytes, 0);
-    const hiddenTier = tiered.reduce((a, r) => a + r.staleBytes, 0);
+    const hiddenTier = tiered.reduce((a, r) => a + (r.hiddenBytes || 0), 0);
     const tombstoneKeyBytes = tiered.reduce((a, r) => a + (r.tombstoneKeyBytes || 0), 0);
     const staleTier = hiddenTier + tombstoneKeyBytes;
     const wantBase =
@@ -348,6 +355,8 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
   let logStale = store.commitLogStale;
   let logTombs = store.commitLogTombs;
   let logTombstoneKeyBytes = store.commitLogTombstoneKeyBytes;
+  let logTombstoneBytes = store.commitLogTombstoneBytes;
+  let logHiddenBytes = store.commitLogHiddenBytes;
   let logCount = store.commitLogCount;
   const recordMap = new Map(store.recordBytes);
   const logKeys = new Set(store.logKeys || []);
@@ -377,9 +386,11 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
         } else {
           // Prior value lives in a sealed run — mark that run stale.
           nextStore = markStaleInRuns(nextStore, prev);
+          logHiddenBytes += prev;
         }
         logTombs += 1;
         logTombstoneKeyBytes += String(key).length;
+        logTombstoneBytes += bytes;
         logKeys.delete(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'delete', key, bytes });
       } else {
@@ -390,6 +401,7 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
           logStale += prev;
         } else {
           nextStore = markStaleInRuns(nextStore, prev);
+          logHiddenBytes += prev;
         }
         logKeys.add(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'update', key, bytes });
@@ -412,6 +424,8 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
     commitLogStale: logStale,
     commitLogTombs: logTombs,
     commitLogTombstoneKeyBytes: logTombstoneKeyBytes,
+    commitLogTombstoneBytes: logTombstoneBytes,
+    commitLogHiddenBytes: logHiddenBytes,
     commitLogCount: logCount,
     logKeys,
     liveBytes: live,
@@ -702,6 +716,7 @@ export default function StorageSimulator() {
       </p>
       <p className="ssim-scale-note">
         This model estimates hidden value bytes from record sizes; LastStore measures hidden bytes by run overlap.
+        The newer run carries that overlap estimate, including values hidden in the base.
         Tombstone-key bytes are tracked separately here.
       </p>
 
