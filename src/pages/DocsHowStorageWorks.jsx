@@ -207,7 +207,7 @@ export default function DocsHowStorageWorks() {
               Instead a delete saves a small marker that hides the old value from later reads.
             </p>
             <p>
-              When these markers hide enough logical data, background work seals them into a run.
+              When these markers are estimated to hide enough logical data, background work seals them into a run.
               A later base merge removes obsolete data. Readers can delay removal of old files.
             </p>
           </div>
