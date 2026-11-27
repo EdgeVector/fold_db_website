@@ -78,6 +78,7 @@ function emptyStore() {
     commitLogStale: 0,
     commitLogTombs: 0,
     commitLogCount: 0,
+    logKeys: new Set(),
     levels: [[]],
     base: [],
     liveBytes: 0,
@@ -86,6 +87,34 @@ function emptyStore() {
     nextKey: 1,
     fileCount: 0,
   };
+}
+
+/** Move `bytes` from live→stale on older sealed runs (newest first), matching tombstone hiding. */
+function markStaleInRuns(store, bytes) {
+  let left = bytes;
+  const levels = store.levels.map((level) => level.map((run) => ({ ...run })));
+  const base = store.base.map((run) => ({ ...run }));
+  for (const level of levels) {
+    for (const run of level) {
+      if (left <= 0) break;
+      const take = Math.min(run.liveBytes, left);
+      if (take <= 0) continue;
+      run.liveBytes -= take;
+      run.staleBytes += take;
+      run.tombstones += 1;
+      left -= take;
+    }
+  }
+  for (const run of base) {
+    if (left <= 0) break;
+    const take = Math.min(run.liveBytes, left);
+    if (take <= 0) continue;
+    run.liveBytes -= take;
+    run.staleBytes += take;
+    run.tombstones += 1;
+    left -= take;
+  }
+  return { ...store, levels, base };
 }
 
 function initialState() {
@@ -161,14 +190,21 @@ function splitBase(bytes, scale, tombstones = 0) {
 }
 
 /** Run compaction / seal steps until quiet. Returns { store, events }. */
-function settle(store, scale, events) {
-  let s = { ...store, levels: store.levels.map((l) => [...l]), base: [...store.base] };
+function settle(store, scale, events, { forceSeal = false } = {}) {
+  let s = {
+    ...store,
+    levels: store.levels.map((l) => l.map((r) => ({ ...r }))),
+    base: store.base.map((r) => ({ ...r })),
+    logKeys: new Set(store.logKeys || []),
+  };
   let ev = events;
   let guard = 0;
+  let force = forceSeal;
 
   while (guard++ < 40) {
     const threshold = sealThreshold(runFileBytes(s), scale);
-    if (s.commitLogBytes >= threshold && s.commitLogBytes > 0) {
+    if (s.commitLogBytes > 0 && (force || s.commitLogBytes >= threshold)) {
+      force = false;
       const stale = Math.min(s.commitLogStale, s.commitLogBytes);
       const live = Math.max(0, s.commitLogBytes - stale);
       const run = {
@@ -188,6 +224,7 @@ function settle(store, scale, events) {
         commitLogStale: 0,
         commitLogTombs: 0,
         commitLogCount: 0,
+        logKeys: new Set(),
         fileCount: countFiles(s),
       };
       ev = pushEvent(
@@ -309,7 +346,9 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
   let logTombs = store.commitLogTombs;
   let logCount = store.commitLogCount;
   const recordMap = new Map(store.recordBytes);
+  const logKeys = new Set(store.logKeys || []);
   let nextKey = store.nextKey;
+  let nextStore = { ...store };
 
   for (let i = 0; i < count; i++) {
     let key;
@@ -322,25 +361,39 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
       }
       key = keys[Math.floor(Math.random() * keys.length)];
       const prev = recordMap.get(key) || bytes;
+      const inLog = logKeys.has(key);
       if (asDelete) {
         stale += prev;
         live = Math.max(0, live - prev);
         recordMap.delete(key);
         bytes = Math.max(64, Math.floor(String(key).length + 8)); // tombstone is small
-        logStale += prev;
+        if (inLog) {
+          // Prior value still only in the unsealed log — hide it there.
+          logStale += prev;
+        } else {
+          // Prior value lives in a sealed run — mark that run stale.
+          nextStore = markStaleInRuns(nextStore, prev);
+        }
         logTombs += 1;
+        logKeys.delete(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'delete', key, bytes });
       } else {
         stale += prev;
         live = live - prev + bytes;
         recordMap.set(key, bytes);
-        logStale += prev;
+        if (inLog) {
+          logStale += prev;
+        } else {
+          nextStore = markStaleInRuns(nextStore, prev);
+        }
+        logKeys.add(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'update', key, bytes });
       }
     } else {
       key = nextKey++;
       recordMap.set(key, bytes);
       live += bytes;
+      logKeys.add(key);
       device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'put', key, bytes });
     }
     logBytes += bytes;
@@ -348,12 +401,13 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
   }
 
   const nextDevices = devices.map((d, i) => (i === activeDevice ? device : d));
-  let nextStore = {
-    ...store,
+  nextStore = {
+    ...nextStore,
     commitLogBytes: logBytes,
     commitLogStale: logStale,
     commitLogTombs: logTombs,
     commitLogCount: logCount,
+    logKeys,
     liveBytes: live,
     staleBytes: stale,
     recordBytes: recordMap,
@@ -417,15 +471,11 @@ function syncDevices(state) {
 
 function takeSnapshot(state) {
   let { store, scale, events, devices, relay } = state;
-  // Snapshot seals the commit log first.
+  // Snapshot seals the commit log first (force seal — do not invent bytes).
   let nextStore = { ...store };
   let nextEvents = events;
   if (nextStore.commitLogBytes > 0) {
-    const forced = {
-      ...nextStore,
-      commitLogBytes: Math.max(nextStore.commitLogBytes, sealThreshold(runFileBytes(nextStore), scale)),
-    };
-    const settled = settle(forced, scale, nextEvents);
+    const settled = settle(nextStore, scale, nextEvents, { forceSeal: true });
     nextStore = settled.store;
     nextEvents = settled.events;
   }
