@@ -11,7 +11,7 @@ const HOME_FIGURE = `<svg viewBox="0 0 660 340" xmlns="http://www.w3.org/2000/sv
   </defs>
 
   <rect x="40" y="28" width="580" height="250" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="56" y="52" fill="var(--ink)" font-size="11" letter-spacing="1">HOME · ONE DATABASE ON DISK</text>
+  <text x="56" y="52" fill="var(--ink)" font-size="11" letter-spacing="1">HOME · ONE LASTSTORE FOLDER</text>
 
   <rect x="60" y="72" width="250" height="56" fill="url(#storage-home-hatch)" stroke="var(--ink)" stroke-width="1"/>
   <text x="185" y="96" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">DESCRIPTOR</text>
@@ -34,38 +34,40 @@ const HOME_FIGURE = `<svg viewBox="0 0 660 340" xmlns="http://www.w3.org/2000/sv
   <line x1="40" y1="298" x2="40" y2="312" stroke="var(--muted)" stroke-width="1"/>
   <line x1="620" y1="298" x2="620" y2="312" stroke="var(--muted)" stroke-width="1"/>
   <line x1="40" y1="305" x2="620" y2="305" stroke="var(--muted)" stroke-width="1"/>
-  <text x="330" y="328" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">FOUR THINGS · NOTHING ELSE IS LIVE DATA</text>
+  <text x="330" y="328" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">THE SEALED RUN SET · RECORD HOMES ALSO KEEP A COMMIT LOG</text>
 </svg>`;
 
-// Write path: commit log → run → durable → CURRENT swap.
-const WRITE_FIGURE = `<svg viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
-  <rect x="24" y="48" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="84" y="76" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">COMMIT</text>
-  <text x="84" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">log</text>
+// Write path: durable log commit first; later seal publishes a run via CURRENT.
+const WRITE_FIGURE = `<svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
+  <rect x="40" y="36" width="160" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="120" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">COMMIT LOG</text>
+  <text x="120" y="82" text-anchor="middle" fill="var(--accent)" font-size="10">durable · readable</text>
 
-  <line x1="144" y1="80" x2="176" y2="80" stroke="var(--ink)" stroke-width="1"/>
-  <polygon points="176,76 186,80 176,84" fill="var(--ink)"/>
+  <line x1="200" y1="68" x2="248" y2="68" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="224" y="58" text-anchor="middle" fill="var(--muted)" font-size="9">later</text>
+  <polygon points="248,64 258,68 248,72" fill="var(--muted)"/>
 
-  <rect x="186" y="48" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="246" y="76" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">SEAL</text>
-  <text x="246" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">new run</text>
+  <rect x="258" y="36" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="318" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">SEAL</text>
+  <text x="318" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">new run</text>
 
-  <line x1="306" y1="80" x2="338" y2="80" stroke="var(--ink)" stroke-width="1"/>
-  <polygon points="338,76 348,80 338,84" fill="var(--ink)"/>
+  <line x1="378" y1="68" x2="410" y2="68" stroke="var(--ink)" stroke-width="1"/>
+  <polygon points="410,64 420,68 410,72" fill="var(--ink)"/>
 
-  <rect x="348" y="48" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="408" y="76" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">DURABLE</text>
-  <text x="408" y="94" text-anchor="middle" fill="var(--muted)" font-size="10">on disk</text>
+  <rect x="420" y="36" width="100" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="470" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">DURABLE</text>
+  <text x="470" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">on disk</text>
 
-  <line x1="468" y1="80" x2="500" y2="80" stroke="var(--accent)" stroke-width="1"/>
-  <polygon points="500,76 510,80 500,84" fill="var(--accent)"/>
+  <line x1="520" y1="68" x2="548" y2="68" stroke="var(--accent)" stroke-width="1"/>
+  <polygon points="548,64 558,68 548,72" fill="var(--accent)"/>
 
-  <rect x="510" y="48" width="126" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
-  <text x="573" y="76" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">CURRENT</text>
-  <text x="573" y="94" text-anchor="middle" fill="var(--accent)" font-size="10">atomic swap</text>
+  <rect x="558" y="36" width="70" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="593" y="64" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">CURRENT</text>
+  <text x="593" y="82" text-anchor="middle" fill="var(--accent)" font-size="9">swap</text>
 
-  <text x="330" y="160" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">READERS SEE WHOLE COMMITS ONLY</text>
-  <text x="330" y="184" text-anchor="middle" fill="var(--muted)" font-size="10">a crash leaves unnamed files · on restart they are deleted · nothing to replay</text>
+  <text x="330" y="140" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">A FLUSHED LOG COMMIT IS LIVE BEFORE THE SEAL</text>
+  <text x="330" y="168" text-anchor="middle" fill="var(--muted)" font-size="10">readers see whole commits · sealed runs advance CURRENT</text>
+  <text x="330" y="196" text-anchor="middle" fill="var(--muted)" font-size="10">unnamed run files are deleted on restart · durable log frames above CURRENT replay</text>
 </svg>`;
 
 export default function DocsHowStorageWorks() {
@@ -75,26 +77,29 @@ export default function DocsHowStorageWorks() {
         title="How storage works"
         path="/docs/how-storage-works"
         heading={<>How LastDB keeps data <em>on disk.</em></>}
-        lede="Each named database lives in a folder called a home. This page is a plain-English walk through that folder: what a run is, how a write becomes durable, how a read finds a key, and why deletes wait for a merge."
-        description="How LastDB stores data on disk: the home folder, immutable runs, encrypted blocks, the write path through CURRENT, lookups, delete markers, and merges."
-        reviewed="Last reviewed 27 November 2026 against the laststore disk format README."
+        lede="On-disk data lives in folders called homes. This page is a plain-English walk through one home: what a run is, how a write becomes durable, how a read finds a key, and why deletes wait for a merge."
+        description="How LastDB stores data on disk: homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, delete markers, and merges."
+        reviewed="Last reviewed 27 November 2026 against the laststore disk format and the Explore design notes for homes and the commit log."
       />
 
       <section className="fg-section" id="home">
         <div className="fg-rail">
           01 &middot; The home
-          <p>One folder per database. Four things live there.</p>
+          <p>One LastStore folder. Four named parts for the sealed set.</p>
         </div>
         <div className="fg-body">
-          <h2>A home holds the live set.</h2>
+          <h2>A home holds a sealed set of runs.</h2>
           <p className="fg-lede">
-            Each database is a directory called a home. Inside it you will find a small descriptor that
-            identifies the home, a <code>LOCK</code> file so only one process writes at a time,{' '}
-            <code>CURRENT</code> (the official list of live data files), and a <code>runs/</code> folder
-            for those files.
+            A home is a directory. Inside it you will find a small descriptor that identifies the home,
+            a <code>LOCK</code> file so only one process writes at a time, <code>CURRENT</code> (the
+            official list of live data files), and a <code>runs/</code> folder for those files.
+          </p>
+          <p className="fg-note">
+            LastDB uses one home for records and another for record files (attachments). The diagram
+            below is one home; both homes share this shape.
           </p>
           <div role="img" aria-label="A home folder contains a descriptor, a LOCK file, CURRENT, and a runs directory.">
-            <ArchFigure svg={HOME_FIGURE} caption="Fig. 1 — The home folder" />
+            <ArchFigure svg={HOME_FIGURE} caption="Fig. 1 — One home folder" />
           </div>
         </div>
       </section>
@@ -126,25 +131,28 @@ export default function DocsHowStorageWorks() {
       <section className="fg-section" id="write">
         <div className="fg-rail">
           03 &middot; Writing
-          <p>Durable first. Visible second.</p>
+          <p>Log first. Seal later.</p>
         </div>
         <div className="fg-body">
-          <h2>Publish only after the bytes land.</h2>
+          <h2>Commits land in a log before a seal.</h2>
           <p className="fg-lede">
-            Changes collect in a commit log, get sealed into a new run, are made durable on disk, and
-            only then get published by atomically swapping in a new <code>CURRENT</code>.
+            On the record home, a write appends a complete commit to an encrypted commit log and flushes
+            it. That commit is durable and readable right away. A later seal freezes those logged
+            commits into a new run, makes the run durable, and only then publishes it by atomically
+            swapping in a new <code>CURRENT</code>.
           </p>
-          <div role="img" aria-label="Write path: commit log, seal a new run, make it durable, then atomically swap CURRENT.">
-            <ArchFigure svg={WRITE_FIGURE} caption="Fig. 2 — The write path" />
+          <div role="img" aria-label="Write path: durable commit log first, then a later seal into a new run and an atomic CURRENT swap.">
+            <ArchFigure svg={WRITE_FIGURE} caption="Fig. 2 — Commit log, then seal" />
           </div>
           <div className="fg-two">
             <p>
-              A reader always sees whole commits. It holds one <code>CURRENT</code> for the length of the
-              read, so it never sees a half-published write.
+              A reader always sees whole commits. Reads consult the logged commits first, then the sealed
+              runs named by <code>CURRENT</code>.
             </p>
             <p>
-              A crash cannot corrupt the live set. On restart, files that <code>CURRENT</code> does not
-              name are deleted. There is nothing to replay.
+              A crash cannot leave a half-published run in the live set. On restart, run files that{' '}
+              <code>CURRENT</code> does not name are deleted. Durable log frames above the sealed frontier
+              are replayed.
             </p>
           </div>
         </div>
@@ -153,23 +161,26 @@ export default function DocsHowStorageWorks() {
       <section className="fg-section" id="read">
         <div className="fg-rail">
           04 &middot; Reading
-          <p>Newest run first. Newest version wins.</p>
+          <p>Log first, then runs newest to oldest.</p>
         </div>
         <div className="fg-body">
-          <h2>Lookups walk runs newest to oldest.</h2>
+          <h2>Lookups check the log, then the runs.</h2>
           <ol className="fg-steps">
             <li>
               <span className="fg-num">01</span>
               <div>
                 <h3>Skip what cannot hold the key.</h3>
-                <p>A bloom filter skips runs that definitely do not hold the key.</p>
+                <p>
+                  After the logged commits, lookups walk sealed runs newest to oldest. A bloom filter
+                  skips runs that definitely do not hold the key.
+                </p>
               </div>
             </li>
             <li>
               <span className="fg-num">02</span>
               <div>
                 <h3>Read two blocks on a hit.</h3>
-                <p>A hit reads one index block and one data block.</p>
+                <p>A hit in a run reads one index block and one data block.</p>
               </div>
             </li>
             <li>
@@ -223,11 +234,12 @@ export default function DocsHowStorageWorks() {
             </p>
           </div>
           <p className="fg-note">
-            Source of truth for the disk format:{' '}
+            Disk format reference:{' '}
             <a href="https://github.com/EdgeVector/lastdb/blob/main/vendor/laststore/README.md">
               laststore README
             </a>
-            . The interactive system guide is in <a href="/explore/#diagram">Explore</a>.
+            . Commit-log and dual-home detail is in the{' '}
+            <a href="/explore/#diagram">Explore</a> guide.
           </p>
           <p className="fg-more">
             <Link to="/developer">Build an app: the developer guide &rarr;</Link>

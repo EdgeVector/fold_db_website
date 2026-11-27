@@ -28,7 +28,7 @@ export const DOC_PAGES = [
     path: '/docs/how-storage-works',
     title: 'How storage works',
     label: 'Storage',
-    description: 'The home folder, immutable runs, encrypted blocks, the write path, lookups, deletes, and merges.',
+    description: 'Homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, deletes, and merges.',
     tone: 'fg-c4',
     group: 'understand',
   },
@@ -287,7 +287,7 @@ export default function Docs() {
             <div className="fg-cardx fg-c4">
               <small>STORAGE</small>
               <h3><Link to="/docs/how-storage-works">How storage works</Link></h3>
-              <p>The home folder, immutable runs, encrypted blocks, the write path, lookups, deletes, and merges.</p>
+              <p>Homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, deletes, and merges.</p>
             </div>
             <div className="fg-cardx fg-c1">
               <small>EXPLORE</small>

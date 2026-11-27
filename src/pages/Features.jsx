@@ -39,7 +39,7 @@ const GROUPS = [
       {
         title: 'Encrypted storage on disk',
         body:
-          'Each database lives in a home folder of immutable runs. Blocks are compressed and encrypted at rest. Writes become visible only after CURRENT swaps.',
+          'Data lives in home folders of immutable runs. Blocks are compressed and encrypted at rest. Record writes land in a commit log first; a later seal publishes a new CURRENT.',
         to: '/docs/how-storage-works',
         link: 'How storage works',
       },
