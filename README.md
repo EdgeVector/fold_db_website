@@ -9,7 +9,7 @@ Marketing site for **LastDB** — the local database you build your own tool sta
 | `/` | What it is + **install** (primary CTA) |
 | `/explore/` | Interactive system guide and layer diagram |
 | `/docs` | Install, daily use, node health |
-| `/docs/how-storage-works` | Plain-English on-disk storage (homes, runs, CURRENT) |
+| `/docs/how-storage-works` | Install layout, records/file stores, LSM + cloud logs, interactive simulator |
 | `/apps` | What each app does |
 | `/start` | Daily loop + agent MCP/skills (after install) |
 | `/about` | Product thesis |
