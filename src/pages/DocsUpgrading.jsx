@@ -282,7 +282,7 @@ export default function DocsUpgrading() {
           </div>
           <p className="fg-note">
             A node that already runs under another service name can be taken over once, without moving any data, with
-            <code> lastdb service adopt --label &lt;name&gt;</code>. Windows is not supported.
+            <code> lastdb service adopt --label &lt;name&gt;</code>. The daemon must be running, and the job keeps its name and home. For a node started with <code>brew services</code>, leave it running and use <code>homebrew.mxcl.lastdb</code>; do not use <code>brew services</code> for LastDB afterwards. Windows is not supported.
           </p>
         </div>
       </section>
