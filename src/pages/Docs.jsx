@@ -25,6 +25,13 @@ export const DOC_PAGES = [
     tone: 'fg-c3',
   },
   {
+    path: '/docs/upgrading',
+    title: 'Upgrading LastDB',
+    label: 'Upgrade',
+    description: 'How LastDB updates itself, the lastdb upgrade command, the auto, channel and window settings, staged rollout, and rollback.',
+    tone: 'fg-c4',
+  },
+  {
     path: '/docs/how-storage-works',
     title: 'How storage works',
     label: 'Storage',
@@ -103,7 +110,7 @@ const INSTALL_SCRIPT_2 = `sh install.sh --accept-install
 brain init`;
 
 const INSTALL_HAND_1 = `brew install edgevector/lastdb/lastdb
-brew services start lastdb
+lastdb service install
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 lastdb app list
@@ -114,7 +121,7 @@ lastdb app status
 brain init`;
 
 const DATABASE_ONLY = `brew install edgevector/lastdb/lastdb
-brew services start lastdb`;
+lastdb service install`;
 
 const HEALTH = `curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
   http://localhost/health`;
@@ -230,7 +237,7 @@ export default function Docs() {
       <section className="fg-section" id="start">
         <div className="fg-rail">01 &middot; Start here</div>
         <div className="fg-body">
-          <h2>Three pages for the person who runs a node.</h2>
+          <h2>Four pages for the person who runs a node.</h2>
           <div className="fg-cards">
             {OPERATE_PAGES.map(page => (
               <div className={`fg-cardx ${page.tone}`} key={page.path}>
@@ -330,7 +337,7 @@ export function DocsInstall() {
         title="Install LastDB"
         path="/docs/install"
         heading="Install LastDB"
-        lede="Install the node and the starter apps on your Mac. You need Apple Silicon, Homebrew, and Bun on your PATH."
+        lede="Install the node and the starter apps on your Mac. You need Apple Silicon and Bun on your PATH."
         description="Install LastDB and the starter apps on macOS with Apple Silicon: the installer script, the same steps by hand, the database on its own, and version checks."
       />
 
@@ -346,7 +353,7 @@ export function DocsInstall() {
             <Code head="2. Consent to the starter apps">{INSTALL_SCRIPT_2}</Code>
           </div>
           <p className="fg-note">
-            The first run installs LastDB, starts the service, prints the install plan for each starter app, and
+            The first run downloads and checks the signed stable release, installs LastDB as a service that updates itself, prints the install plan for each starter app, and
             stops with <code>RESULT: CONSENT NEEDED</code>. That stop is expected. The second run ends with
             <code> RESULT: PASS</code> when the apps are current and healthy. <code>RESULT: FAIL</code> means a
             step failed, and the line above it says which one. Running the script again is safe.
@@ -365,7 +372,7 @@ export function DocsInstall() {
           <p>The blocks have no comment lines, so they paste cleanly into zsh.</p>
         </div>
         <div className="fg-body">
-          <h2>Homebrew, then the App Registry.</h2>
+          <h2>Homebrew, the service, then the App Registry.</h2>
           <div className="fg-code-stack">
             <Code head="Install the node and ask for the apps">{INSTALL_HAND_1}</Code>
             <Code head="Accept the plan" sub="after you read it">{INSTALL_HAND_2}</Code>
@@ -381,7 +388,7 @@ export function DocsInstall() {
             <code> lastdb app upgrade brain</code> moves an existing install to the newest proved commit.
             <code> lastdb app rollback brain</code> returns it to its previous release.
             If no entry is proved with your release, the install stops. Upgrade LastDB with
-            <code> brew upgrade lastdb</code>, or wait for the next proved set.
+            <code> lastdb upgrade</code>, or wait for the next proved set.
           </p>
         </div>
       </section>
@@ -395,7 +402,7 @@ export function DocsInstall() {
           </div>
           <div className="fg-two">
             <p>
-              The Homebrew package ships <code>lastdbd</code>, the daemon, and <code>lastdb</code>, the command line.
+              The release ships <code>lastdbd</code>, the daemon, and <code>lastdb</code>, the command line. <code>lastdb service install</code> runs the daemon as a login service, and LastDB then updates itself (<Link to="/docs/upgrading">Upgrading LastDB</Link>).
               It does not install a desktop app. Add apps later with <code>lastdb app install</code>.
             </p>
             <p>
