@@ -6,6 +6,7 @@ import About from './pages/About';
 import Developer from './pages/Developer';
 import Docs, { DocsDailyLoop, DocsInstall, DocsNodeHealth } from './pages/Docs';
 import DocsHowStorageWorks from './pages/DocsHowStorageWorks';
+import DocsUpgrading from './pages/DocsUpgrading';
 import Blog from './pages/Blog';
 import Features from './pages/Features';
 import FeatureKanbanFactory from './pages/FeatureKanbanFactory';
@@ -50,6 +51,7 @@ export const PRERENDER_PATHS = [
   '/docs/install',
   '/docs/daily-loop',
   '/docs/node-health',
+  '/docs/upgrading',
   '/docs/how-storage-works',
   '/features',
   '/features/kanban-factory',
@@ -98,6 +100,7 @@ export default function AppRoutes() {
       <Route path="/docs/install" element={<DocsInstall />} />
       <Route path="/docs/daily-loop" element={<DocsDailyLoop />} />
       <Route path="/docs/node-health" element={<DocsNodeHealth />} />
+      <Route path="/docs/upgrading" element={<DocsUpgrading />} />
       <Route path="/docs/how-storage-works" element={<DocsHowStorageWorks />} />
       <Route path="/encryption" element={<Navigate to="/" replace />} />
       <Route path="/features" element={<Features />} />

@@ -17,8 +17,9 @@ const INSTALL_STEP_2 = `sh install.sh --accept-install`;
 const UNINSTALL_STEPS = `launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry"
 rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
 rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
-brew services stop lastdb
-brew uninstall lastdb`;
+launchctl bootout "gui/$(id -u)/com.edgevector.lastdbd"
+rm "$HOME/Library/LaunchAgents/com.edgevector.lastdbd.plist"
+rm "$HOME/.local/bin/lastdb"`;
 
 // The write request an app sends. Same shape as the Developer guide; keep them in step.
 const CODE_WRITE = `curl -s --unix-socket ~/.lastdb/data/folddb.sock \\
@@ -516,7 +517,7 @@ export default function Home() {
           <small>Install</small>
           <h2>Two steps, about five minutes.</h2>
           <p>
-            You need Apple Silicon, Homebrew, and Bun. The installer checks for all three and stops if one is missing.
+            You need Apple Silicon and Bun. The installer checks for both and stops if one is missing.
             Read the script first: <a href="/install.sh">install.sh</a>.
           </p>
         </div>
@@ -541,7 +542,7 @@ export default function Home() {
         <Card>
           <h3 id="what-it-changes">What it changes</h3>
           <ul>
-            <li>Homebrew installs the <code>lastdb</code> and <code>lastdbd</code> commands and starts the LastDB service.</li>
+            <li>The installer downloads the signed stable release, checks its hash, and sets LastDB up as a login service that updates itself. See <Link to="/docs/upgrading">Upgrading LastDB</Link>.</li>
             <li>The App Registry clones each starter app into <code>~/.local/share/lastdb-apps</code> and links its commands into <code>~/.local/bin</code>.</li>
             <li>The first app install adds a background job that checks the registry and upgrades the apps on the stable channel.</li>
             <li>It does not edit your shell profile, and it does not install Bun.</li>
@@ -558,7 +559,7 @@ export default function Home() {
         <Card>
           <h3>Database only</h3>
           <pre>{`brew install edgevector/lastdb/lastdb
-brew services start lastdb
+lastdb service install
 lastdb status`}</pre>
           <p>Add apps later with <code>lastdb app install</code>.</p>
         </Card>

@@ -27,7 +27,7 @@ JavaScript enables the diagram. Public design notes: https://thelastdb.com/explo
 
 ## Install (macOS Apple Silicon)
 
-Needs Homebrew and Bun on PATH. The app installs run `bun install`.
+Needs Bun on PATH. The app installs run `bun install`.
 
 Recommended: the installer script. Read it first: https://thelastdb.com/install.sh
 
@@ -36,7 +36,7 @@ curl -fsSL https://thelastdb.com/install.sh -o install.sh
 sh install.sh
 ```
 
-The first run installs LastDB, starts the service, prints the install plan for each starter app, and stops.
+The first run downloads and checks the signed stable release, installs LastDB as a service that updates itself, prints the install plan for each starter app, and stops.
 It ends with `RESULT: CONSENT NEEDED` (exit 3). That stop is expected. Read the plan. Then run:
 
 ```bash
@@ -52,7 +52,7 @@ The same steps by hand. Paste-safe for macOS zsh: the block has no `#` comment l
 
 ```bash
 brew install edgevector/lastdb/lastdb
-brew services start lastdb
+lastdb service install
 lastdb status
 curl --fail --silent --show-error --unix-socket ~/.lastdb/data/folddb.sock http://localhost/health
 lastdb app list
@@ -76,7 +76,7 @@ Never put the phrase in chat, a source file, or a log.
 
 ## What the install changes
 
-- Homebrew installs the `lastdb` and `lastdbd` commands and starts the LastDB service.
+- The installer downloads the signed stable release, checks its sha256, and runs `lastdb service install`. That sets LastDB up as a login service and adds an hourly update check. LastDB then updates itself (see Upgrading LastDB).
 - The App Registry clones each app into `~/.local/share/lastdb-apps/<app>/` and links its commands into `~/.local/bin`.
 - Each app installs its own packages with Bun.
 - On macOS, the first app install adds a LaunchAgent, `com.edgevector.lastdb-app-registry`. It checks the registry every 60 seconds and upgrades the installed apps on the stable channel.
@@ -91,19 +91,69 @@ Your data stays in `~/.lastdb`. These steps do not touch it.
 launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry"
 rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist"
 rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry"
-brew services stop lastdb
-brew uninstall lastdb
+launchctl bootout "gui/$(id -u)/com.edgevector.lastdbd"
+rm "$HOME/Library/LaunchAgents/com.edgevector.lastdbd.plist"
+rm "$HOME/.local/bin/lastdb"
 ```
 
 ## Database only
 
 ```bash
 brew install edgevector/lastdb/lastdb
-brew services start lastdb
+lastdb service install
 ```
 
 The package ships `lastdbd` (the daemon) and `lastdb` (the control CLI).
 Run `lastdb --help` to see the commands for your installed release.
+
+## Upgrading LastDB
+
+Page: https://thelastdb.com/docs/upgrading
+
+After `lastdb service install`, LastDB updates itself. Homebrew and the installer script are two ways to install; both end there.
+`brew upgrade lastdb` only refreshes the installer copy kept by Homebrew. It does not replace the running service.
+
+How it works: LastDB reads a release list signed by LastDB over HTTPS and checks the signature with a public key built into the binary.
+It downloads the new `lastdb` and `lastdbd` into a staging folder, checks their hashes (and Apple signing and notarization on macOS),
+and refuses a release whose home data format differs. It then stops taking writes, sends what it holds to the cloud backup if one is connected,
+stops the daemon cleanly, moves the `~/.lastdb/current` link to the new pair, starts it, verifies it, and watches it for about five minutes.
+If a check fails it returns to the previous pair on its own and will not try that version again by itself.
+
+```bash
+lastdb upgrade --check
+lastdb upgrade
+lastdb upgrade --status
+lastdb upgrade --version <v>
+lastdb upgrade --channel <stable|nightly>
+lastdb upgrade --rollback
+```
+
+- `lastdb upgrade` installs the newest active release that is newer than the running one. By hand it ignores the staged rollout share.
+- `--check` verifies the list and says what would install. `--status` prints the state. `--json` prints JSON.
+- `--version <v>` installs one named active release. `--channel` switches the channel and installs its newest active release.
+- `--rollback` returns to the previous pair and marks the left version rejected. `--clear-rejected <v>` removes the mark.
+- `--accept-backup-behind` continues when the cloud backup is behind. The local data is intact; the accepted cost is an older cloud recovery point. Automatic runs never use it.
+- `--pair <dir>` installs a pair you supply. It has no list entry, so it is never replaced automatically.
+- Exit codes: 0 upgraded or already current, 2 refused before any change, 3 rolled back, 4 needs a person, 5 busy.
+
+Automatic upgrades are set in `~/.lastdb/upgrade/config.toml`:
+
+```toml
+channel = "stable"
+auto = "apply"
+window = "02:00-05:00"
+```
+
+- `auto`: `apply` checks hourly and installs inside the window; `check` records what is available and never installs; `off` does neither.
+- `channel`: `stable` (qualified releases, staged rollout) or `nightly` (daily build, no staged rollout).
+- `window`: the local-time hours when an automatic install may run.
+- The hourly check is part of the app-registry LaunchAgent (`com.edgevector.lastdb-app-registry`).
+
+Staged rollout: a new stable release starts at 10 percent of installs, moves to 50 percent after 24 hours and 100 percent after 48 hours.
+Each install decides its share locally from a random install id that is never sent anywhere. A hand-run upgrade does not wait for the share.
+
+Rollback and withdrawal: the previous pair stays on disk, so going back needs no network. A release the project withdraws is marked in the signed list and is never offered again;
+a fix is a new version. A running withdrawn release is rolled back at the next hourly check when `auto` is `apply`, even outside the window.
 
 ## App Registry
 
@@ -112,7 +162,7 @@ The App Registry is the install path for apps. It is a signed list. No account i
 `lastdb app list` shows the apps proved with your LastDB release. Install checks out the
 exact proved commit, not `main`. Each app is proved in a fresh home before it is listed.
 If no entry is proved with your release, install stops. Upgrade LastDB with
-`brew upgrade lastdb`, or wait for the next proved set.
+`lastdb upgrade`, or wait for the next proved set.
 
 ```bash
 lastdb app list
@@ -170,7 +220,7 @@ Do not install the older Search app on a new machine.
 
 ## Mental model
 
-- **LastDB**: the database. Homebrew service `lastdb`, daemon `lastdbd`.
+- **LastDB**: the database. Login service `com.edgevector.lastdbd` (set up by `lastdb service install`), daemon `lastdbd`.
 - **Schemas and keys**: a schema names its fields, its primary key, and any named alternate keys.
   A query needs a key (a hash, or a hash plus a range). A read with no key is refused.
   `lastdb get-keys` lists the keys of one schema, one page at a time. It does not return field values.
@@ -242,6 +292,7 @@ People who use a published app pay nothing to use it. Building and running an ap
 - https://thelastdb.com/docs/install — install and version checks
 - https://thelastdb.com/docs/daily-loop — Brain and LastSecrets daily use
 - https://thelastdb.com/docs/node-health — node health and socket checks
+- https://thelastdb.com/docs/upgrading — how LastDB updates itself: `lastdb upgrade`, automatic upgrades, rollout, rollback
 - https://thelastdb.com/docs/how-storage-works — how LastDB stores data on disk
 - https://thelastdb.com/blog — engineering writing
 - https://github.com/EdgeVector/lastdb — LastDB source (Apache-2.0)
