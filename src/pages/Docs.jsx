@@ -28,7 +28,7 @@ export const DOC_PAGES = [
     path: '/docs/how-storage-works',
     title: 'How storage works',
     label: 'Storage',
-    description: 'Homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, deletes, and merges.',
+    description: 'One install folder, records store and file store, why the LSM and cloud logs look this way, plus an interactive simulator.',
     tone: 'fg-c4',
     group: 'understand',
   },
@@ -287,7 +287,7 @@ export default function Docs() {
             <div className="fg-cardx fg-c4">
               <small>STORAGE</small>
               <h3><Link to="/docs/how-storage-works">How storage works</Link></h3>
-              <p>Homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, deletes, and merges.</p>
+              <p>One install folder, records store and file store, why the LSM and cloud logs look this way, plus an interactive simulator.</p>
             </div>
             <div className="fg-cardx fg-c1">
               <small>EXPLORE</small>

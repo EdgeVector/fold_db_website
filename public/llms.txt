@@ -242,7 +242,7 @@ People who use a published app pay nothing to use it. Building and running an ap
 - https://thelastdb.com/docs/install — install and version checks
 - https://thelastdb.com/docs/daily-loop — Brain and LastSecrets daily use
 - https://thelastdb.com/docs/node-health — node health and socket checks
-- https://thelastdb.com/docs/how-storage-works — how LastDB stores data on disk
+- https://thelastdb.com/docs/how-storage-works — install layout, records/file stores, LSM + cloud logs, interactive simulator
 - https://thelastdb.com/blog — engineering writing
 - https://github.com/EdgeVector/lastdb — LastDB source (Apache-2.0)
 - https://github.com/EdgeVector/brain — Brain source

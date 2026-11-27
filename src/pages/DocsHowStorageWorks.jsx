@@ -1,73 +1,91 @@
 import { Link } from 'react-router-dom';
 import ArchFigure from '../components/ArchFigure';
+import StorageSimulator from '../components/StorageSimulator';
 import { DocsHeader, RelatedDocs } from './Docs';
 
-// Home folder layout. Hand-authored; colours and type come from site.css.
-const HOME_FIGURE = `<svg viewBox="0 0 660 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
+// One LastDB install folder. Hand-authored; colours and type from site.css.
+const INSTALL_FIGURE = `<svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:720px;display:block;margin:0 auto;font-family:var(--mono)">
   <defs>
-    <pattern id="storage-home-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <pattern id="storage-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
     </pattern>
   </defs>
 
-  <rect x="40" y="28" width="580" height="250" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="56" y="52" fill="var(--ink)" font-size="11" letter-spacing="1">HOME · ONE LASTSTORE FOLDER</text>
+  <rect x="24" y="20" width="672" height="372" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+  <text x="40" y="44" fill="var(--ink)" font-size="12" letter-spacing="1">LASTDB FOLDER · ONE PER INSTALLATION</text>
 
-  <rect x="60" y="72" width="250" height="56" fill="url(#storage-home-hatch)" stroke="var(--ink)" stroke-width="1"/>
-  <text x="185" y="96" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">DESCRIPTOR</text>
-  <text x="185" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">identifies this home</text>
+  <rect x="40" y="60" width="200" height="48" fill="url(#storage-hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="140" y="82" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">identity.key</text>
+  <text x="140" y="98" text-anchor="middle" fill="var(--muted)" font-size="9">seed · never leaves device</text>
 
-  <rect x="330" y="72" width="250" height="56" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="455" y="96" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">LOCK</text>
-  <text x="455" y="114" text-anchor="middle" fill="var(--muted)" font-size="10">one writer at a time</text>
+  <rect x="256" y="60" width="200" height="48" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="356" y="82" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">cloud-credentials</text>
+  <text x="356" y="98" text-anchor="middle" fill="var(--muted)" font-size="9">relay connection</text>
 
-  <rect x="60" y="144" width="250" height="56" fill="none" stroke="var(--accent)" stroke-width="1"/>
-  <text x="185" y="168" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">CURRENT</text>
-  <text x="185" y="186" text-anchor="middle" fill="var(--accent)" font-size="10">official list of live runs</text>
+  <rect x="472" y="60" width="200" height="48" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="572" y="82" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">ops-history/</text>
+  <text x="572" y="98" text-anchor="middle" fill="var(--muted)" font-size="9">local request log</text>
 
-  <rect x="330" y="144" width="250" height="112" fill="url(#storage-home-hatch)" stroke="var(--ink)" stroke-width="1"/>
-  <text x="455" y="176" text-anchor="middle" fill="var(--ink)" font-size="12" letter-spacing="1">RUNS/</text>
-  <text x="455" y="198" text-anchor="middle" fill="var(--muted)" font-size="10">immutable data files</text>
-  <text x="455" y="220" text-anchor="middle" fill="var(--muted)" font-size="10">each written once</text>
-  <text x="455" y="238" text-anchor="middle" fill="var(--muted)" font-size="10">never changed in place</text>
+  <rect x="40" y="128" width="310" height="152" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+  <text x="56" y="150" fill="var(--accent)" font-size="11" letter-spacing="1">data/ · PERSONAL DATABASE</text>
+  <rect x="56" y="164" width="130" height="96" fill="url(#storage-hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="121" y="198" text-anchor="middle" fill="var(--ink)" font-size="11">disk-run/</text>
+  <text x="121" y="216" text-anchor="middle" fill="var(--muted)" font-size="9">records store</text>
+  <text x="121" y="232" text-anchor="middle" fill="var(--muted)" font-size="9">logged</text>
+  <rect x="204" y="164" width="130" height="96" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="269" y="198" text-anchor="middle" fill="var(--ink)" font-size="11">disk-cas/</text>
+  <text x="269" y="216" text-anchor="middle" fill="var(--muted)" font-size="9">file blob store</text>
+  <text x="269" y="232" text-anchor="middle" fill="var(--muted)" font-size="9">unlogged</text>
 
-  <line x1="40" y1="298" x2="40" y2="312" stroke="var(--muted)" stroke-width="1"/>
-  <line x1="620" y1="298" x2="620" y2="312" stroke="var(--muted)" stroke-width="1"/>
-  <line x1="40" y1="305" x2="620" y2="305" stroke="var(--muted)" stroke-width="1"/>
-  <text x="330" y="328" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.5">THE SEALED RUN SET · RECORD HOMES ALSO KEEP A COMMIT LOG</text>
+  <rect x="370" y="128" width="302" height="72" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="386" y="150" fill="var(--ink)" font-size="11" letter-spacing="1">databases/</text>
+  <text x="386" y="172" fill="var(--muted)" font-size="10">registry.json · &lt;id&gt;/data/ siblings</text>
+  <text x="386" y="190" fill="var(--muted)" font-size="10">same records + file stores</text>
+
+  <rect x="370" y="212" width="302" height="68" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="386" y="234" fill="var(--ink)" font-size="11" letter-spacing="1">received-shares-v1/</text>
+  <text x="386" y="256" fill="var(--muted)" font-size="10">&lt;id&gt;/ received share registrations</text>
+
+  <rect x="40" y="300" width="632" height="72" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="56" y="324" fill="var(--ink)" font-size="11" letter-spacing="1">log-sync/&lt;database id&gt;/ · PER-DEVICE SYNC BOOKKEEPING</text>
+  <text x="56" y="346" fill="var(--muted)" font-size="10">birth · snapshot-* · reclaim-* · incoming/ · authored/uploaded/received/proposals</text>
+  <text x="56" y="364" fill="var(--muted)" font-size="10">Data from every device merges into the same store. Only this bookkeeping (and cloud logs) is per device.</text>
 </svg>`;
 
-// Write path: durable log commit first; later seal publishes a run via CURRENT.
-const WRITE_FIGURE = `<svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
-  <rect x="40" y="36" width="160" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
-  <text x="120" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">COMMIT LOG</text>
-  <text x="120" y="82" text-anchor="middle" fill="var(--accent)" font-size="10">durable · readable</text>
+const RECORDS_FIGURE = `<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
+  <defs>
+    <pattern id="storage-run-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect x="30" y="24" width="600" height="200" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+  <text x="46" y="48" fill="var(--ink)" font-size="11" letter-spacing="1">RECORDS STORE · disk-run/</text>
 
-  <line x1="200" y1="68" x2="248" y2="68" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="224" y="58" text-anchor="middle" fill="var(--muted)" font-size="9">later</text>
-  <polygon points="248,64 258,68 248,72" fill="var(--muted)"/>
+  <rect x="46" y="64" width="170" height="56" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="131" y="88" text-anchor="middle" fill="var(--ink)" font-size="11">descriptor</text>
+  <text x="131" y="106" text-anchor="middle" fill="var(--muted)" font-size="9">laststore-run-home-v2</text>
 
-  <rect x="258" y="36" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="318" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">SEAL</text>
-  <text x="318" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">new run</text>
+  <rect x="232" y="64" width="120" height="56" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="292" y="88" text-anchor="middle" fill="var(--ink)" font-size="11">CURRENT</text>
+  <text x="292" y="106" text-anchor="middle" fill="var(--accent)" font-size="9">live run list</text>
 
-  <line x1="378" y1="68" x2="410" y2="68" stroke="var(--ink)" stroke-width="1"/>
-  <polygon points="410,64 420,68 410,72" fill="var(--ink)"/>
+  <rect x="368" y="64" width="240" height="56" fill="url(#storage-run-hatch)" stroke="var(--ink)" stroke-width="1"/>
+  <text x="488" y="88" text-anchor="middle" fill="var(--ink)" font-size="11">runs/*.ldrun</text>
+  <text x="488" y="106" text-anchor="middle" fill="var(--muted)" font-size="9">immutable sorted runs</text>
 
-  <rect x="420" y="36" width="100" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
-  <text x="470" y="64" text-anchor="middle" fill="var(--ink)" font-size="11" letter-spacing="0.5">DURABLE</text>
-  <text x="470" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">on disk</text>
+  <rect x="46" y="136" width="200" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
+  <text x="146" y="162" text-anchor="middle" fill="var(--ink)" font-size="11">commit-log/</text>
+  <text x="146" y="180" text-anchor="middle" fill="var(--muted)" font-size="9">16 MiB files · then seal</text>
 
-  <line x1="520" y1="68" x2="548" y2="68" stroke="var(--accent)" stroke-width="1"/>
-  <polygon points="548,64 558,68 548,72" fill="var(--accent)"/>
+  <rect x="262" y="136" width="120" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="322" y="162" text-anchor="middle" fill="var(--ink)" font-size="11">LOCK</text>
+  <text x="322" y="180" text-anchor="middle" fill="var(--muted)" font-size="9">one writer</text>
 
-  <rect x="558" y="36" width="70" height="64" fill="none" stroke="var(--accent)" stroke-width="1"/>
-  <text x="593" y="64" text-anchor="middle" fill="var(--ink)" font-size="10" letter-spacing="0.5">CURRENT</text>
-  <text x="593" y="82" text-anchor="middle" fill="var(--accent)" font-size="9">swap</text>
+  <rect x="398" y="136" width="210" height="64" fill="none" stroke="var(--ink)" stroke-width="1"/>
+  <text x="503" y="162" text-anchor="middle" fill="var(--ink)" font-size="11">accepted-files/</text>
+  <text x="503" y="180" text-anchor="middle" fill="var(--muted)" font-size="9">not in a snapshot</text>
 
-  <text x="330" y="140" text-anchor="middle" fill="var(--muted)" font-size="11" letter-spacing="0.5">A FLUSHED LOG COMMIT IS LIVE BEFORE THE SEAL</text>
-  <text x="330" y="168" text-anchor="middle" fill="var(--muted)" font-size="10">readers see whole commits · sealed runs advance CURRENT</text>
-  <text x="330" y="196" text-anchor="middle" fill="var(--muted)" font-size="10">unnamed run files are deleted on restart · durable log frames above CURRENT replay</text>
+  <text x="330" y="252" text-anchor="middle" fill="var(--muted)" font-size="10" letter-spacing="0.4">PLUS local-file-refs.json · app-grants.json BESIDE THE TWO STORES</text>
 </svg>`;
 
 export default function DocsHowStorageWorks() {
@@ -76,171 +94,212 @@ export default function DocsHowStorageWorks() {
       <DocsHeader
         title="How storage works"
         path="/docs/how-storage-works"
-        heading={<>How LastDB keeps data <em>on disk.</em></>}
-        lede="On-disk data lives in folders called homes. This page is a plain-English walk through one home: what a run is, how a write becomes durable, how a read finds a key, and why deletes wait for a merge."
-        description="How LastDB stores data on disk: homes, immutable runs, encrypted blocks, the commit log and CURRENT write path, lookups, delete markers, and merges."
-        reviewed="Last reviewed 27 November 2026 against the laststore disk format and the Explore design notes for homes and the commit log."
+        heading={<>How LastDB lays out <em>one install</em> on disk.</>}
+        lede="One folder per installation. Databases inside it. Each database is a records store plus a file blob store. This page explains the picture, why it looks like that, how writes and sync move through it, and lets you poke a scaled simulator."
+        description="How LastDB storage works: one install folder, records store and file store, LSM seals and merges, cloud logs, snapshots, and an interactive simulator."
+        reviewed="Last reviewed 27 November 2026 against lastdb docs/home-format.md and vendor/laststore (seal, commit_log, compaction, writer)."
       />
 
-      <section className="fg-section" id="home">
+      <section className="fg-section" id="picture">
         <div className="fg-rail">
-          01 &middot; The home
-          <p>One LastStore folder. Four named parts for the sealed set.</p>
+          01 &middot; The picture
+          <p>One folder. Databases inside. Two stores each.</p>
         </div>
         <div className="fg-body">
-          <h2>A home holds a sealed set of runs.</h2>
+          <h2>One install folder holds every database.</h2>
           <p className="fg-lede">
-            A home is a directory. Inside it you will find a small descriptor that identifies the home,
-            a <code>LOCK</code> file so only one process writes at a time, <code>CURRENT</code> (the
-            official list of live data files), and a <code>runs/</code> folder for those files.
+            LastDB is not “one folder per device identity in the cloud.” On a machine you get one
+            installation folder. Inside it: the node seed, relay credentials, your personal database,
+            any sibling databases you own, shares you received, and per-database sync bookkeeping.
           </p>
+          <div role="img" aria-label="LastDB install folder with identity, databases, personal data stores, and log-sync.">
+            <ArchFigure svg={INSTALL_FIGURE} caption="Fig. 1 — One LastDB folder per installation" />
+          </div>
+          <div className="fg-two">
+            <p>
+              <strong>identity.key</strong> is the 32-byte node seed. It never leaves the device. The
+              recovery phrase encodes it. Every key — node key, personal database id, database read
+              keys, run-file keys — derives from it.
+            </p>
+            <p>
+              <strong>data/</strong> is the personal database. Owned siblings live under{' '}
+              <code>databases/&lt;id&gt;/data/</code>. Received shares live under{' '}
+              <code>received-shares-v1/&lt;id&gt;/</code>. The registry lists owned databases.
+            </p>
+          </div>
+          <p className="fg-lede fg-lede-follow">
+            Each database has two stores: a <strong>records store</strong> (<code>disk-run/</code>,
+            opened logged) and a <strong>file blob store</strong> (<code>disk-cas/</code>, unlogged,
+            content-addressed on the relay by SHA-256 of stored bytes). Small sidecars sit beside
+            them: <code>local-file-refs.json</code>, <code>app-grants.json</code>.
+          </p>
+          <div role="img" aria-label="Records store contents: descriptor, CURRENT, runs, commit-log, LOCK, accepted-files.">
+            <ArchFigure svg={RECORDS_FIGURE} caption="Fig. 2 — Records store (disk-run/)" />
+          </div>
           <p className="fg-note">
-            LastDB uses one home for records and another for record files (attachments). The diagram
-            below is one home; both homes share this shape.
+            One rule about sync: <strong>rows in the store travel in a snapshot; files beside the
+            store do not.</strong> So <code>commit-log/</code> and <code>accepted-files/</code> are
+            sealed or cleared before a snapshot; <code>log-sync/</code> stays outside it.
           </p>
-          <div role="img" aria-label="A home folder contains a descriptor, a LOCK file, CURRENT, and a runs directory.">
-            <ArchFigure svg={HOME_FIGURE} caption="Fig. 1 — One home folder" />
-          </div>
         </div>
       </section>
 
-      <section className="fg-section" id="run">
+      <section className="fg-section" id="why">
         <div className="fg-rail">
-          02 &middot; A run
-          <p>One file of records, written once.</p>
+          02 &middot; Why this layout
+          <p>What it is optimized for.</p>
         </div>
         <div className="fg-body">
-          <h2>Runs are immutable.</h2>
+          <h2>Built for fast local writes and cheap, verifiable sync.</h2>
           <p className="fg-lede">
-            A run is one file of records sorted by key. It is written once and never changed. Each record
-            is a key plus a value, or a key plus a delete marker.
+            The layout is an LSM-style records engine plus per-device signed cloud logs that merge into
+            one store. Terms below are defined once.
           </p>
-          <div className="fg-two">
-            <p>
-              The file is split into blocks. Each block is compressed with zstd when that makes it
-              smaller, then encrypted with AES-256-GCM using a key derived from the home&rsquo;s key.
-            </p>
-            <p>
-              Everything is encrypted at rest, block by block. A reader that does not hold the home key
-              cannot read the records.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="fg-section" id="write">
-        <div className="fg-rail">
-          03 &middot; Writing
-          <p>Log first. Seal later.</p>
-        </div>
-        <div className="fg-body">
-          <h2>Commits land in a log before a seal.</h2>
-          <p className="fg-lede">
-            On the record home, a write appends a complete commit to an encrypted commit log and flushes
-            it. That commit is durable and readable right away. A later seal freezes those logged
-            commits into a new run, makes the run durable, and only then publishes it by atomically
-            swapping in a new <code>CURRENT</code>.
-          </p>
-          <div role="img" aria-label="Write path: durable commit log first, then a later seal into a new run and an atomic CURRENT swap.">
-            <ArchFigure svg={WRITE_FIGURE} caption="Fig. 2 — Commit log, then seal" />
-          </div>
-          <div className="fg-two">
-            <p>
-              A reader always sees whole commits. Reads consult the logged commits first, then the sealed
-              runs named by <code>CURRENT</code>.
-            </p>
-            <p>
-              A crash cannot leave a half-published run in the live set. On restart, run files that{' '}
-              <code>CURRENT</code> does not name are deleted. Durable log frames above the sealed frontier
-              are replayed.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="fg-section" id="read">
-        <div className="fg-rail">
-          04 &middot; Reading
-          <p>Log first, then runs newest to oldest.</p>
-        </div>
-        <div className="fg-body">
-          <h2>Lookups check the log, then the runs.</h2>
           <ol className="fg-steps">
             <li>
               <span className="fg-num">01</span>
               <div>
-                <h3>Skip what cannot hold the key.</h3>
+                <h3>Fast local writes</h3>
                 <p>
-                  After the logged commits, lookups walk sealed runs newest to oldest. A bloom filter
-                  skips runs that definitely do not hold the key.
+                  A write appends an encrypted frame to the <strong>commit log</strong> (16&nbsp;MiB
+                  files) and is readable immediately. Later a <strong>seal</strong> freezes logged
+                  commits into a sorted immutable <strong>run</strong> (<code>.ldrun</code>) and
+                  publishes it via <code>CURRENT</code>. Seal threshold = run bytes / 4, clamped
+                  64&nbsp;KiB–8&nbsp;MiB. Memory layer capped at 256&nbsp;MiB. Blocks are 16&nbsp;KiB.
                 </p>
               </div>
             </li>
             <li>
               <span className="fg-num">02</span>
               <div>
-                <h3>Read two blocks on a hit.</h3>
-                <p>A hit in a run reads one index block and one data block.</p>
+                <h3>Cheap snapshots and backups</h3>
+                <p>
+                  Runs are immutable, so a <strong>snapshot</strong> is “upload the files the relay
+                  does not already hold, plus a signed entry naming stream heads.” Afterward the
+                  publisher asks the relay to drop covered cloud-log entries and older snapshots.
+                </p>
               </div>
             </li>
             <li>
               <span className="fg-num">03</span>
               <div>
-                <h3>Newest version wins.</h3>
-                <p>If the newest version is a delete marker, the record is gone.</p>
+                <h3>Untrusted, replaceable relay</h3>
+                <p>
+                  Each device appends sealed, signed entries to its own hash chain — the{' '}
+                  <strong>cloud log</strong> (the spool / outbox). Entries are sealed once with the
+                  database key at rest and uploaded as-is. The relay is untrusted storage: one
+                  snapshot plus the cloud-log entries after it. Every device verifies and merges
+                  deterministically.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="fg-num">04</span>
+              <div>
+                <h3>Deletes that reclaim space</h3>
+                <p>
+                  Deletes write <strong>tombstones</strong>. Eight runs fold into one (
+                  <code>MERGE_WIDTH</code> 8, up to 64 inputs). The base splits into ~64 pieces
+                  (256&nbsp;KiB–1&nbsp;GiB, target bytes/64). A base fold runs when the tier above
+                  exceeds 1/16 of total and &gt;1&nbsp;MiB, or stale bytes exceed 1/8 (64&nbsp;KiB
+                  floor). Tombstones drop when folded into the base. Up to 32 levels.
+                </p>
               </div>
             </li>
           </ol>
         </div>
       </section>
 
-      <section className="fg-section" id="deletes">
+      <section className="fg-section" id="walkthrough">
         <div className="fg-rail">
-          05 &middot; Deletes
-          <p>A marker now. Reclaim later.</p>
+          03 &middot; Walk-through
+          <p>Writes, deletes, sync, snapshots.</p>
         </div>
         <div className="fg-body">
-          <h2>Deletes are not instant on disk.</h2>
+          <h2>Follow one change from disk to relay.</h2>
           <div className="fg-two">
             <p>
-              Runs are never edited in place, so removing one record would mean rewriting a whole file.
-              Instead a delete saves a small marker that hides the old value from later reads.
+              <strong>Write.</strong> Append to the commit log; readers see the whole commit. When
+              the log crosses the seal threshold, commits become a sorted run and{' '}
+              <code>CURRENT</code> swaps in. The file blob store skips the log: each commit writes a
+              run directly.
             </p>
             <p>
-              When these markers are estimated to hide enough logical data, background work seals them into a run.
-              A later base merge removes obsolete data. Readers can delay removal of old files.
+              <strong>Delete.</strong> A tombstone hides the old value. Space returns when merges and
+              a base fold drop obsolete data — not when the delete API returns.
+            </p>
+          </div>
+          <div className="fg-two">
+            <p>
+              <strong>Sync.</strong> The local write also becomes the next cloud-log entry for this
+              device, sealed and signed in the same commit. Upload sends those bytes; other devices
+              verify the chain and merge by last-writer stamps. Data merges into the shared
+              per-database store; <code>log-sync/&lt;id&gt;/</code> stays per device.
+            </p>
+            <p>
+              <strong>Snapshot.</strong> Seal the commit log, upload store files marked for the
+              snapshot, publish a signed snapshot entry. Ask the relay to trim what that snapshot
+              covers. Restore installs those files and resumes streams after the named heads.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="fg-section" id="merge">
+      <section className="fg-section" id="simulator">
         <div className="fg-rail">
-          06 &middot; Merging
-          <p>Eight into one. Space first.</p>
+          04 &middot; Simulator
+          <p>Poke seals, merges, sync, and trim.</p>
         </div>
         <div className="fg-body">
-          <h2>Merges reclaim deleted and replaced data.</h2>
+          <h2>Watch the store and the cloud logs move.</h2>
           <p className="fg-lede">
-            Eight runs of a level merge into one, keeping only the newest version of each key.
+            Add records, burst writes, update and delete, add a second device, then Sync or Snapshot.
+            Thresholds shrink with the speed control so effects show quickly; the captions always
+            name the real constants from laststore.
           </p>
+          <StorageSimulator />
+        </div>
+      </section>
+
+      <section className="fg-section" id="novel">
+        <div className="fg-rail">
+          05 &middot; Is this novel?
+          <p>Mostly no. The combination is unusual.</p>
+        </div>
+        <div className="fg-body">
+          <h2>Familiar pieces, one personal-database packaging.</h2>
           <div className="fg-two">
             <p>
-              Base compaction becomes eligible when obsolete data exceeds both 64&nbsp;KiB and
-              one eighth of the logical bytes in the runs. Those bytes are counted before compression.
+              <strong>LSM trees</strong> — LevelDB, RocksDB, Cassandra. Base pieces are close to
+              RocksDB tiered / universal compaction.
             </p>
             <p>
-              Merges reserve disk space before writing. If space is insufficient, they preserve the
-              previous saved state and leave the work for later.
+              <strong>Per-device signed append-only chains</strong> merged deterministically —
+              Secure Scuttlebutt, Automerge / local-first, Git.
+            </p>
+          </div>
+          <div className="fg-two">
+            <p>
+              <strong>Snapshot + log with trimming</strong> — Postgres base backup + WAL, Litestream.
+            </p>
+            <p>
+              <strong>Untrusted relay with end-to-end sealing</strong> — Signal, 1Password, Keybase.
             </p>
           </div>
           <p className="fg-note">
-            Disk format reference:{' '}
+            What is less common is all of it in one personal database with an open, replaceable relay
+            protocol. Closest relatives: Scuttlebutt and Ink &amp; Switch local-first research.
+          </p>
+          <p className="fg-note">
+            Disk engine:{' '}
             <a href="https://github.com/EdgeVector/lastdb/blob/main/vendor/laststore/README.md">
               laststore README
             </a>
-            . Commit-log and dual-home detail is in the{' '}
-            <a href="/explore/#diagram">Explore</a> guide.
+            . Install layout:{' '}
+            <a href="https://github.com/EdgeVector/lastdb/blob/main/docs/home-format.md">
+              home-format.md
+            </a>
+            .
           </p>
           <p className="fg-more">
             <Link to="/developer">Build an app: the developer guide &rarr;</Link>
@@ -248,7 +307,7 @@ export default function DocsHowStorageWorks() {
         </div>
       </section>
 
-      <RelatedDocs currentPath="/docs/how-storage-works" number="07" />
+      <RelatedDocs currentPath="/docs/how-storage-works" number="06" />
     </>
   );
 }
