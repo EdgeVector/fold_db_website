@@ -36,6 +36,13 @@ const GROUPS = [
         to: '/developer#schema',
         link: 'Declare a schema',
       },
+      {
+        title: 'Encrypted storage on disk',
+        body:
+          'Each database lives in a home folder of immutable runs. Blocks are compressed and encrypted at rest. Writes become visible only after CURRENT swaps.',
+        to: '/docs/how-storage-works',
+        link: 'How storage works',
+      },
     ],
   },
   {

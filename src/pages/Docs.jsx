@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import ArchFigure from '../components/ArchFigure';
 
-const DOC_PAGES = [
+export const DOC_PAGES = [
   {
     path: '/docs/install',
     title: 'Install LastDB',
@@ -24,7 +24,17 @@ const DOC_PAGES = [
     description: 'The health check, the status command, and when a restart is the right step.',
     tone: 'fg-c3',
   },
+  {
+    path: '/docs/how-storage-works',
+    title: 'How storage works',
+    label: 'Storage',
+    description: 'The home folder, immutable runs, encrypted blocks, the write path, lookups, deletes, and merges.',
+    tone: 'fg-c4',
+    group: 'understand',
+  },
 ];
+
+const OPERATE_PAGES = DOC_PAGES.filter(page => page.group !== 'understand');
 
 // One node, several named databases. Hand-authored; colours and type come from site.css.
 const NODE_FIGURE = `<svg viewBox="0 0 660 436" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:660px;display:block;margin:0 auto;font-family:var(--mono)">
@@ -151,7 +161,7 @@ function DocsHelmet({ title, description, path = '/docs' }) {
   );
 }
 
-function DocsHeader({ title, heading, lede, description, path }) {
+export function DocsHeader({ title, heading, lede, description, path, reviewed }) {
   const index = path === '/docs';
   return (
     <>
@@ -170,13 +180,15 @@ function DocsHeader({ title, heading, lede, description, path }) {
             <Link to="/developer" className="fg-btn">Developer guide</Link>
           </div>
         </div>
-        <p className="fg-note">Last reviewed 16 November 2026 against the installed command line.</p>
+        <p className="fg-note">
+          {reviewed || 'Last reviewed 16 November 2026 against the installed command line.'}
+        </p>
       </section>
     </>
   );
 }
 
-function RelatedDocs({ currentPath, number }) {
+export function RelatedDocs({ currentPath, number }) {
   const related = DOC_PAGES.filter(page => page.path !== currentPath);
   return (
     <section className="fg-section">
@@ -220,7 +232,7 @@ export default function Docs() {
         <div className="fg-body">
           <h2>Three pages for the person who runs a node.</h2>
           <div className="fg-cards">
-            {DOC_PAGES.map(page => (
+            {OPERATE_PAGES.map(page => (
               <div className={`fg-cardx ${page.tone}`} key={page.path}>
                 <small>{page.label.toUpperCase()}</small>
                 <h3><Link to={page.path}>{page.title}</Link></h3>
@@ -270,10 +282,21 @@ export default function Docs() {
       <section className="fg-section" id="understand">
         <div className="fg-rail">03 &middot; Understand the system</div>
         <div className="fg-body">
-          <h2>The layers and their parts, in one diagram.</h2>
-          <p className="fg-lede">
-            The interactive guide has 145 parts. Select a part to see its purpose, its connections, and its limits.
-            Reviewed against source from 26 November 2026. Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement from relay storage, and verified snapshots from later cleanup. It also explains last-writer-wins, attachment limits, and what the recovery checks prove.
+          <h2>How it is built, and how it keeps bytes.</h2>
+          <div className="fg-cards">
+            <div className="fg-cardx fg-c4">
+              <small>STORAGE</small>
+              <h3><Link to="/docs/how-storage-works">How storage works</Link></h3>
+              <p>The home folder, immutable runs, encrypted blocks, the write path, lookups, deletes, and merges.</p>
+            </div>
+            <div className="fg-cardx fg-c1">
+              <small>EXPLORE</small>
+              <h3><a href="/explore/#diagram">Interactive system guide</a></h3>
+              <p>145 parts. Select a part to see its purpose, its connections, and its limits. Reviewed against source from 26 November 2026.</p>
+            </div>
+          </div>
+          <p className="fg-lede" style={{ marginTop: 28 }}>
+            Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement from relay storage, and verified snapshots from later cleanup. It also explains last-writer-wins, attachment limits, and what the recovery checks prove.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
