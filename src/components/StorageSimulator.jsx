@@ -90,8 +90,10 @@ function emptyStore() {
 
 function initialState() {
   return {
-    scale: 64,
-    recordBytes: 4 << 10,
+    // 16× keeps the 1 MiB base-fold floor large enough that L0 can reach MERGE_WIDTH 8
+    // before a base fold, so seals → 8-into-1 merges are visible. 64× folds too early.
+    scale: 16,
+    recordBytes: 1 << 10,
     burst: 8,
     activeDevice: 0,
     devices: [emptyDevice('Device A')],
@@ -100,7 +102,7 @@ function initialState() {
     events: [
       {
         id: 'boot',
-        text: 'Simulator ready. Writes append to the commit log; seals and merges follow the real laststore rules at a chosen scale.',
+        text: 'Simulator ready. Writes fill the commit log; at the default 16× scale you should see seals, then 8→1 merges, before a base fold. Real constants stay labeled in captions.',
       },
     ],
   };
@@ -594,14 +596,18 @@ export default function StorageSimulator() {
           className="ssim-btn"
           disabled={devices.length >= 2}
           onClick={() =>
-            setState((s) => ({
-              ...s,
-              devices: [...s.devices, emptyDevice('Device B')],
-              events: pushEvent(
-                s.events,
-                'Device B added. Both devices write into the same per-database store; each keeps its own cloud log. Only sync bookkeeping is per device.',
-              ),
-            }))
+            setState((s) => {
+              const devicesNext = [...s.devices, emptyDevice('Device B')];
+              return {
+                ...s,
+                devices: devicesNext,
+                activeDevice: devicesNext.length - 1,
+                events: pushEvent(
+                  s.events,
+                  'Device B added and selected. Both devices write into the same per-database store; each keeps its own cloud log. Only sync bookkeeping is per device.',
+                ),
+              };
+            })
           }
         >
           Add device B
@@ -681,7 +687,14 @@ export default function StorageSimulator() {
             {store.base.length === 0 ? (
               <span className="ssim-empty">no base pieces yet</span>
             ) : (
-              store.base.map((run) => <RunBar key={run.id} run={run} maxBytes={maxRun} kind="base" />)
+              <>
+                {store.base.slice(0, 12).map((run) => (
+                  <RunBar key={run.id} run={run} maxBytes={maxRun} kind="base" />
+                ))}
+                {store.base.length > 12 && (
+                  <span className="ssim-empty">+{store.base.length - 12} more pieces</span>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -705,6 +718,9 @@ export default function StorageSimulator() {
                     <li className="ssim-empty">no entries yet</li>
                   ) : (
                     <>
+                      {d.cloudLog.length > 6 && (
+                        <li className="ssim-empty">… {d.cloudLog.length - 6} earlier</li>
+                      )}
                       {d.cloudLog.slice(-6).map((e) => (
                         <li key={e.id}>
                           #{e.seq} {e.kind} · {fmtBytes(e.bytes)}
@@ -715,6 +731,9 @@ export default function StorageSimulator() {
                           pending {e.kind} · {fmtBytes(e.bytes)}
                         </li>
                       ))}
+                      {d.pending.length > 3 && (
+                        <li className="ssim-pending">… {d.pending.length - 3} more pending</li>
+                      )}
                     </>
                   )}
                 </ol>
@@ -727,8 +746,8 @@ export default function StorageSimulator() {
           <h3 id={`${formId}-relay`}>Relay (untrusted)</h3>
           {relay.snapshot ? (
             <p className="ssim-meta">
-              Snapshot <code>{relay.snapshot.id.slice(-6)}</code> · {relay.snapshot.runFiles} run file
-              {relay.snapshot.runFiles === 1 ? '' : 's'} · heads{' '}
+              Snapshot <code>snap-…{relay.snapshot.id.slice(-4)}</code> · {fmtBytes(relay.snapshot.liveBytes)} live ·{' '}
+              {relay.snapshot.runFiles} run file{relay.snapshot.runFiles === 1 ? '' : 's'} · heads{' '}
               {relay.snapshot.heads.map((h) => `${h.device}@${h.seq}`).join(', ')}
             </p>
           ) : (
@@ -738,11 +757,16 @@ export default function StorageSimulator() {
             {relay.entries.length === 0 ? (
               <li className="ssim-empty">no cloud-log entries on relay</li>
             ) : (
-              relay.entries.slice(-8).map((e) => (
-                <li key={e.id}>
-                  {e.device} #{e.seq} {e.kind}
-                </li>
-              ))
+              <>
+                {relay.entries.length > 8 && (
+                  <li className="ssim-empty">… {relay.entries.length - 8} earlier on relay</li>
+                )}
+                {relay.entries.slice(-8).map((e) => (
+                  <li key={e.id}>
+                    {e.device} #{e.seq} {e.kind}
+                  </li>
+                ))}
+              </>
             )}
           </ol>
           <p className="ssim-meta">Trimmed over time: {relay.trimmed}</p>
