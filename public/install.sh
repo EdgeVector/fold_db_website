@@ -27,7 +27,7 @@
 #
 # Updates:
 #   After the install, LastDB updates itself. See "lastdb upgrade --help" and
-#   https://thelastdb.com/upgrading. Re-running this script does not upgrade LastDB.
+#   https://thelastdb.com/docs/upgrading. Re-running this script does not upgrade LastDB.
 #
 # Homebrew is a second way to install:
 #       brew install edgevector/lastdb/lastdb
@@ -73,7 +73,7 @@ then installs the starter apps (brain, lastsecrets).
   -h, --help         show this text
 
 After the install, LastDB updates itself: see "lastdb upgrade --help" and
-https://thelastdb.com/upgrading.
+https://thelastdb.com/docs/upgrading.
 
 Homebrew is a second way to install:
     brew install edgevector/lastdb/lastdb
@@ -196,7 +196,7 @@ else
     INSTALLED=0
     # Never put a second service next to a LastDB that someone else set up.
     if node_healthy; then
-        fail "A LastDB node is already running at $SOCKET, and it does not run from $LASTDB_DIR/current. This script will not install a second one. To let it update itself, run: lastdb service adopt --label <its service label>. See https://thelastdb.com/upgrading."
+        fail "A LastDB node is already running at $SOCKET, and it does not run from $LASTDB_DIR/current. This script will not install a second one. To let it update itself, run: lastdb service adopt --label <its service label>. See https://thelastdb.com/docs/upgrading."
     fi
     if command -v brew >/dev/null 2>&1 && brew list --versions lastdb >/dev/null 2>&1; then
         fail "Homebrew already installed LastDB. Run: lastdb service install   (if the brew service is running: lastdb service adopt --label homebrew.mxcl.lastdb). Then run this script again to add the apps."
