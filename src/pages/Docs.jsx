@@ -273,7 +273,7 @@ export default function Docs() {
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
             The interactive guide has 145 parts. Select a part to see its purpose, its connections, and its limits.
-            Reviewed against source from 26 November 2026. Follow a write through memory and disk, or explore personal cloud recovery and shared-database approval. The guide explains ordered write acknowledgements and their macOS power-loss limit, the local commit log and its read layer, the atomic personal spool, relay log segments, write phase timings and saved request history, interrupted-upload accounting, checked cloud cleanup, and shared writes under signed leases. Fields and the single attachment keep separate last-writer-wins decisions.
+            Reviewed against source from 26 November 2026. Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement, relay storage, and recovery evidence. It also explains last-writer-wins, attachment limits, relay revision reporting, and release gates.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
