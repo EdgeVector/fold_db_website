@@ -6,6 +6,15 @@
   // Optional account setup is not unfinished work. Only explicit availability limits use dashes.
   const limited=p=>['candidate','partial','unconnected','planned','dev-operation','dev','disabled'].includes(p?.status);
   const edges=[
+    ["stable-release","node-release-lists","qualifies releases for"],
+    ["node-release-lists","node-updater","supplies verified candidates to"],
+    ["node-updater","node-service-ownership","requires an owned service from"],
+    ["node-updater","node","switches and checks"],
+    ["node-updater","automatic-backup","checks saved progress before stopping"],
+    ["node-updater","flush","waits for prepared work through"],
+    ["node-updater","app-compatibility","checks the supported API for"],
+    ["node-service-ownership","app-updates","shares macOS polling with"],
+    ["node-service-ownership","node","owns the service running"],
     ["record-delete","run-seal","can trigger early sealing through"],
     ["node","fault-reporting","reports code failures through"],
     ["private-diagnostics","fault-reporting","keeps local output separate from"],
@@ -509,7 +518,8 @@
     {id:'requests',title:'App requests & access',summary:'Read, write, share, and understand the two sockets.',ids:['app','app-api','record-change','app-databases','app-grant','app-access','change-feed']},
     {id:'schemas',title:'Schema definitions',summary:'Define fields and keys, retrieve published definitions, and get optional advice.',ids:['registry','canonical-vocabulary','schema-advice','local-schema-declaration']},
     {id:'install',title:'App installation & updates',summary:'Choose a compatible app, install it, and manage its versions.',ids:['app-registry','app-compatibility','app-list-cache','managed-app-install','app-remove','app-updates','app-rollback']},
-    {id:'publish',title:'App publishing & releases',summary:'Check and sign releases before offering them to app owners.',ids:['app-publish-rules','app-publish','stable-release']},
+    {id:'publish',title:'App publishing',summary:'Check and sign apps before offering them to owners.',ids:['app-publish-rules','app-publish']},
+    {id:'node-updates',title:'LastDB updates',summary:'Qualify releases and safely switch the owned node service.',ids:['stable-release','node-release-lists','node-updater','node-service-ownership']},
     {id:'cloud',title:'Cloud access',summary:'Authorize backup requests and manage account eligibility.',ids:['cloud-access','account-payments','backup-transport']}
   ];
   const serviceGroupByPart=Object.fromEntries(serviceGroups.flatMap(group=>group.ids.map(id=>[id,group.id])));
