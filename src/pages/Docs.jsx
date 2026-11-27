@@ -273,7 +273,7 @@ export default function Docs() {
           <h2>The layers and their parts, in one diagram.</h2>
           <p className="fg-lede">
             The interactive guide has 145 parts. Select a part to see its purpose, its connections, and its limits.
-            Reviewed against source from 26 November 2026. Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement, relay storage, and recovery evidence. It also explains last-writer-wins, attachment limits, relay revision reporting, and release gates.
+            Reviewed against source from 26 November 2026. Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement from relay storage, and verified snapshots from later cleanup. It also explains last-writer-wins, attachment limits, and what the recovery checks prove.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
