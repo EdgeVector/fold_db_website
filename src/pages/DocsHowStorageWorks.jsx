@@ -204,11 +204,11 @@ export default function DocsHowStorageWorks() {
           <div className="fg-two">
             <p>
               Runs are never edited in place, so removing one record would mean rewriting a whole file.
-              Instead a delete writes a tiny marker instantly.
+              Instead a delete saves a small marker that hides the old value from later reads.
             </p>
             <p>
-              A background merge later rewrites files once and drops everything deleted in one sweep.
-              That is what keeps writes fast and crash-safe.
+              When these markers are estimated to hide enough logical data, background work seals them into a run.
+              A later base merge removes obsolete data. Readers can delay removal of old files.
             </p>
           </div>
         </div>
@@ -226,11 +226,12 @@ export default function DocsHowStorageWorks() {
           </p>
           <div className="fg-two">
             <p>
-              Deleted and replaced data gets reclaimed once it passes one eighth of the home, with a
-              64&nbsp;KiB minimum.
+              Base compaction becomes eligible when obsolete data exceeds both 64&nbsp;KiB and
+              one eighth of the logical bytes in the runs. Those bytes are counted before compression.
             </p>
             <p>
-              Merges reserve free disk space before writing, so they never run the disk out mid-merge.
+              Merges reserve disk space before writing. If space is insufficient, they preserve the
+              previous saved state and leave the work for later.
             </p>
           </div>
           <p className="fg-note">

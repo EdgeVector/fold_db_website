@@ -292,7 +292,7 @@ export default function Docs() {
             <div className="fg-cardx fg-c1">
               <small>EXPLORE</small>
               <h3><a href="/explore/#diagram">Interactive system guide</a></h3>
-              <p>145 parts. Select a part to see its purpose, its connections, and its limits. Reviewed against source from 26 November 2026.</p>
+              <p>146 parts. Select a part to see its purpose, its connections, and its limits. Reviewed against source from 27 November 2026.</p>
             </div>
           </div>
           <p className="fg-lede" style={{ marginTop: 28 }}>
