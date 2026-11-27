@@ -77,6 +77,9 @@ function emptyStore() {
     commitLogBytes: 0,
     commitLogStale: 0,
     commitLogTombs: 0,
+    commitLogTombstoneKeyBytes: 0,
+    commitLogTombstoneBytes: 0,
+    commitLogHiddenBytes: 0,
     commitLogCount: 0,
     logKeys: new Set(),
     levels: [[]],
@@ -89,7 +92,7 @@ function emptyStore() {
   };
 }
 
-/** Move `bytes` from live→stale on older sealed runs (newest first), matching tombstone hiding. */
+/** Estimate the bytes hidden in older runs by a newer write. */
 function markStaleInRuns(store, bytes) {
   let left = bytes;
   const levels = store.levels.map((level) => level.map((run) => ({ ...run })));
@@ -101,7 +104,6 @@ function markStaleInRuns(store, bytes) {
       if (take <= 0) continue;
       run.liveBytes -= take;
       run.staleBytes += take;
-      run.tombstones += 1;
       left -= take;
     }
   }
@@ -111,7 +113,6 @@ function markStaleInRuns(store, bytes) {
     if (take <= 0) continue;
     run.liveBytes -= take;
     run.staleBytes += take;
-    run.tombstones += 1;
     left -= take;
   }
   return { ...store, levels, base };
@@ -205,7 +206,7 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
     const threshold = sealThreshold(runFileBytes(s), scale);
     if (s.commitLogBytes > 0 && (force || s.commitLogBytes >= threshold)) {
       force = false;
-      const stale = Math.min(s.commitLogStale, s.commitLogBytes);
+      const stale = Math.min(s.commitLogStale + s.commitLogTombstoneBytes, s.commitLogBytes);
       const live = Math.max(0, s.commitLogBytes - stale);
       const run = {
         id: `run-${Date.now()}-${guard}`,
@@ -213,6 +214,8 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         liveBytes: live,
         staleBytes: stale,
         tombstones: s.commitLogTombs,
+        tombstoneKeyBytes: s.commitLogTombstoneKeyBytes,
+        hiddenBytes: s.commitLogHiddenBytes,
         records: s.commitLogCount,
       };
       if (s.levels.length === 0) s.levels = [[]];
@@ -223,6 +226,9 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         commitLogBytes: 0,
         commitLogStale: 0,
         commitLogTombs: 0,
+        commitLogTombstoneKeyBytes: 0,
+        commitLogTombstoneBytes: 0,
+        commitLogHiddenBytes: 0,
         commitLogCount: 0,
         logKeys: new Set(),
         fileCount: countFiles(s),
@@ -243,6 +249,8 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
         const liveBytes = inputs.reduce((a, r) => a + r.liveBytes, 0);
         const staleBytes = inputs.reduce((a, r) => a + r.staleBytes, 0);
         const tombstones = inputs.reduce((a, r) => a + r.tombstones, 0);
+        const tombstoneKeyBytes = inputs.reduce((a, r) => a + (r.tombstoneKeyBytes || 0), 0);
+        const hiddenBytes = inputs.reduce((a, r) => a + (r.hiddenBytes || 0), 0);
         const records = inputs.reduce((a, r) => a + r.records, 0);
         const out = {
           id: `merge-${Date.now()}-${level}`,
@@ -250,6 +258,8 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
           liveBytes,
           staleBytes,
           tombstones,
+          tombstoneKeyBytes,
+          hiddenBytes,
           records,
         };
         const nextLevels = s.levels.map((l, i) => (i === level ? rest : [...l]));
@@ -289,17 +299,17 @@ function settle(store, scale, events, { forceSeal = false } = {}) {
     const tiered = s.levels.flat();
     const tierBytes = tiered.reduce((a, r) => a + r.liveBytes + r.staleBytes, 0);
     const total = logicalTotal(s) || tierBytes + s.base.reduce((a, r) => a + r.liveBytes + r.staleBytes, 0);
-    const staleTier = tiered.reduce((a, r) => a + r.staleBytes, 0) + s.staleBytes * 0; // store-level stale tracked separately
-    const staleAll =
-      staleTier + s.base.reduce((a, r) => a + r.staleBytes, 0) + (s.staleBytes > 0 ? Math.min(s.staleBytes, total) : 0);
+    const hiddenTier = tiered.reduce((a, r) => a + (r.hiddenBytes || 0), 0);
+    const tombstoneKeyBytes = tiered.reduce((a, r) => a + (r.tombstoneKeyBytes || 0), 0);
+    const staleTier = hiddenTier + tombstoneKeyBytes;
     const wantBase =
       tiered.length > 0 &&
-      (tierOver(tierBytes, Math.max(total, 1), scale) || reclaimReady(staleAll, Math.max(total, 1), scale));
+      (tierOver(tierBytes, Math.max(total, 1), scale) || reclaimReady(staleTier, Math.max(total, 1), scale));
 
     if (wantBase) {
       const inputs = tiered.slice(0, REAL.MAX_MERGE_INPUTS);
-      const reason = reclaimReady(staleAll, Math.max(total, 1), scale)
-        ? `stale ${fmtBytes(staleAll)} exceeded 1/${REAL.STALE_SHARE} of ${fmtBytes(Math.max(total, 1))} (floor ${fmtBytes(scaled(REAL.STALE_FLOOR, scale))}; real floor ${fmtBytes(REAL.STALE_FLOOR)})`
+      const reason = reclaimReady(staleTier, Math.max(total, 1), scale)
+        ? `tiered hidden bytes plus tombstone-key bytes (${fmtBytes(staleTier)}) exceeded 1/${REAL.STALE_SHARE} of ${fmtBytes(Math.max(total, 1))} (floor ${fmtBytes(scaled(REAL.STALE_FLOOR, scale))}; real floor ${fmtBytes(REAL.STALE_FLOOR)})`
         : `tiered ${fmtBytes(tierBytes)} exceeded 1/${REAL.TIER_SHARE} of ${fmtBytes(Math.max(total, 1))} and the ${fmtBytes(scaled(REAL.TIER_MIN, scale))} floor (real floor ${fmtBytes(REAL.TIER_MIN)})`;
 
       let live = inputs.reduce((a, r) => a + r.liveBytes, 0) + s.base.reduce((a, r) => a + r.liveBytes, 0);
@@ -344,6 +354,9 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
   let logBytes = store.commitLogBytes;
   let logStale = store.commitLogStale;
   let logTombs = store.commitLogTombs;
+  let logTombstoneKeyBytes = store.commitLogTombstoneKeyBytes;
+  let logTombstoneBytes = store.commitLogTombstoneBytes;
+  let logHiddenBytes = store.commitLogHiddenBytes;
   let logCount = store.commitLogCount;
   const recordMap = new Map(store.recordBytes);
   const logKeys = new Set(store.logKeys || []);
@@ -373,8 +386,11 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
         } else {
           // Prior value lives in a sealed run — mark that run stale.
           nextStore = markStaleInRuns(nextStore, prev);
+          logHiddenBytes += prev;
         }
         logTombs += 1;
+        logTombstoneKeyBytes += String(key).length;
+        logTombstoneBytes += bytes;
         logKeys.delete(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'delete', key, bytes });
       } else {
@@ -385,6 +401,7 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
           logStale += prev;
         } else {
           nextStore = markStaleInRuns(nextStore, prev);
+          logHiddenBytes += prev;
         }
         logKeys.add(key);
         device.pending.push({ seq: device.seq + device.pending.length + 1, kind: 'update', key, bytes });
@@ -406,6 +423,9 @@ function applyWrites(state, count, asDelete = false, asUpdate = false) {
     commitLogBytes: logBytes,
     commitLogStale: logStale,
     commitLogTombs: logTombs,
+    commitLogTombstoneKeyBytes: logTombstoneKeyBytes,
+    commitLogTombstoneBytes: logTombstoneBytes,
+    commitLogHiddenBytes: logHiddenBytes,
     commitLogCount: logCount,
     logKeys,
     liveBytes: live,
@@ -471,6 +491,12 @@ function syncDevices(state) {
 
 function takeSnapshot(state) {
   let { store, scale, events, devices, relay } = state;
+  if (devices.some((device) => device.pending.length > 0)) {
+    return {
+      ...state,
+      events: pushEvent(events, 'Snapshot unavailable: sync every pending spool entry first.'),
+    };
+  }
   // Snapshot seals the commit log first (force seal — do not invent bytes).
   let nextStore = { ...store };
   let nextEvents = events;
@@ -654,7 +680,7 @@ export default function StorageSimulator() {
                 activeDevice: devicesNext.length - 1,
                 events: pushEvent(
                   s.events,
-                  'Device B added and selected. Both devices write into the same per-database store; each keeps its own cloud log. Only sync bookkeeping is per device.',
+                  'Device B added and selected. This demo combines both devices’ local store activity in one view; each keeps its own cloud log. Only sync bookkeeping is per device.',
                 ),
               };
             })
@@ -665,7 +691,12 @@ export default function StorageSimulator() {
         <button type="button" className="ssim-btn" onClick={() => setState((s) => syncDevices(s))}>
           Sync
         </button>
-        <button type="button" className="ssim-btn" onClick={() => setState((s) => takeSnapshot(s))}>
+        <button
+          type="button"
+          className="ssim-btn"
+          disabled={devices.some((device) => device.pending.length > 0)}
+          onClick={() => setState((s) => takeSnapshot(s))}
+        >
           Snapshot
         </button>
         <button type="button" className="ssim-btn ssim-btn-quiet" onClick={() => setState(initialState())}>
@@ -673,11 +704,20 @@ export default function StorageSimulator() {
         </button>
       </div>
 
+      {devices.some((device) => device.pending.length > 0) && (
+        <p className="ssim-scale-note">Sync pending spool entries before you publish a snapshot.</p>
+      )}
+
       <p className="ssim-scale-note">
         Scaled seal threshold now: <strong>{fmtBytes(stats.threshold)}</strong>. Real rule:{' '}
         <code>run_bytes / 4</code> clamped {fmtBytes(REAL.SEAL_MIN)}–{fmtBytes(REAL.SEAL_MAX)}. Commit-log files are{' '}
-        {fmtBytes(REAL.COMMIT_LOG_FILE)}; blocks {fmtBytes(REAL.BLOCK)}; memory cap {fmtBytes(REAL.MAX_MEMORY)}; MERGE_WIDTH{' '}
+        {fmtBytes(REAL.COMMIT_LOG_FILE)}; blocks {fmtBytes(REAL.BLOCK)}; encoded-log seal threshold {fmtBytes(REAL.MAX_MEMORY)}; MERGE_WIDTH{' '}
         {REAL.MERGE_WIDTH}; MAX_LEVELS {REAL.MAX_LEVELS}.
+      </p>
+      <p className="ssim-scale-note">
+        This model estimates hidden value bytes from record sizes; LastStore measures hidden bytes by run overlap.
+        The newer run carries that overlap estimate, including values hidden in the base.
+        Tombstone-key bytes are tracked separately here.
       </p>
 
       <div className="ssim-grid">

@@ -118,8 +118,8 @@ export default function DocsHowStorageWorks() {
           <div className="fg-two">
             <p>
               <strong>identity.key</strong> is the 32-byte node seed. It never leaves the device. The
-              recovery phrase encodes it. Every key — node key, personal database id, database read
-              keys, run-file keys — derives from it.
+              recovery phrase encodes it. Owned database identities and keys derive from it.
+              Received shares use the read key supplied by their publisher.
             </p>
             <p>
               <strong>data/</strong> is the personal database. Owned siblings live under{' '}
@@ -137,9 +137,11 @@ export default function DocsHowStorageWorks() {
             <ArchFigure svg={RECORDS_FIGURE} caption="Fig. 2 — Records store (disk-run/)" />
           </div>
           <p className="fg-note">
-            One rule about sync: <strong>rows in the store travel in a snapshot; files beside the
-            store do not.</strong> So <code>commit-log/</code> and <code>accepted-files/</code> are
-            sealed or cleared before a snapshot; <code>log-sync/</code> stays outside it.
+            One rule about sync: <strong>store rows travel in a snapshot; side files do not.</strong>{' '}
+            Before a snapshot, <code>commit-log/</code> is sealed into runs and <code>CURRENT</code>.
+            The snapshot waits until every spool entry is acknowledged. <code>accepted-files/</code>{' '}
+            never enters the snapshot; LastDB retires each file after its spool entry is acknowledged.
+            {' '}<code>log-sync/</code> also stays outside.
           </p>
         </div>
       </section>
@@ -165,7 +167,8 @@ export default function DocsHowStorageWorks() {
                   files) and is readable immediately. Later a <strong>seal</strong> freezes logged
                   commits into a sorted immutable <strong>run</strong> (<code>.ldrun</code>) and
                   publishes it via <code>CURRENT</code>. Seal threshold = run bytes / 4, clamped
-                  64&nbsp;KiB–8&nbsp;MiB. Memory layer capped at 256&nbsp;MiB. Blocks are 16&nbsp;KiB.
+                  64&nbsp;KiB–8&nbsp;MiB. The memory-layer seal threshold counts 256&nbsp;MiB of
+                  encoded log bytes, not total process memory. Blocks are 16&nbsp;KiB.
                 </p>
               </div>
             </li>
@@ -198,11 +201,13 @@ export default function DocsHowStorageWorks() {
               <div>
                 <h3>Deletes that reclaim space</h3>
                 <p>
-                  Deletes write <strong>tombstones</strong>. Eight runs fold into one (
+                  Deletes write <strong>tombstones</strong>. Cleanup first seals any unsealed
+                  commits. Eight runs fold into one (
                   <code>MERGE_WIDTH</code> 8, up to 64 inputs). The base splits into ~64 pieces
                   (256&nbsp;KiB–1&nbsp;GiB, target bytes/64). A base fold runs when the tier above
-                  exceeds 1/16 of total and &gt;1&nbsp;MiB, or stale bytes exceed 1/8 (64&nbsp;KiB
-                  floor). Tombstones drop when folded into the base. Up to 32 levels.
+                  exceeds 1/16 of total and &gt;1&nbsp;MiB, or hidden value bytes plus tombstone-key
+                  bytes in tiered runs exceed 1/8 of total, above a 64&nbsp;KiB floor. Tombstones
+                  drop when folded into the base. Up to 32 levels.
                 </p>
               </div>
             </li>
@@ -225,21 +230,25 @@ export default function DocsHowStorageWorks() {
               run directly.
             </p>
             <p>
-              <strong>Delete.</strong> A tombstone hides the old value. Space returns when merges and
-              a base fold drop obsolete data — not when the delete API returns.
+              <strong>Delete.</strong> A tombstone hides the old value. Cleanup first seals
+              unsealed commits, then later merge and base-fold steps drop obsolete data. Space does
+              not return when the delete API returns.
             </p>
           </div>
           <div className="fg-two">
             <p>
-              <strong>Sync.</strong> The local write also becomes the next cloud-log entry for this
-              device, sealed and signed in the same commit. Upload sends those bytes; other devices
-              verify the chain and merge by last-writer stamps. Data merges into the shared
-              per-database store; <code>log-sync/&lt;id&gt;/</code> stays per device.
+              <strong>Sync.</strong> A captured personal write also becomes the next cloud-log
+              entry for this device, sealed and signed in the same commit. Upload sends those
+              bytes; other devices verify the chain and merge by last-writer stamps. Each device
+              merges data into its own local database. Shared databases keep separate signed logs
+              under <code>log-sync/&lt;id&gt;/</code>.
             </p>
             <p>
-              <strong>Snapshot.</strong> Seal the commit log, upload store files marked for the
-              snapshot, publish a signed snapshot entry. Ask the relay to trim what that snapshot
-              covers. Restore installs those files and resumes streams after the named heads.
+              <strong>Snapshot.</strong> Wait for the current spool to be acknowledged, seal the
+              commit log, and capture the store files. Upload those files and publish a signed
+              snapshot entry. New writes can continue after capture. Ask the relay to trim what
+              the snapshot covers. Restore installs those files and resumes streams after the
+              named heads.
             </p>
           </div>
         </div>
@@ -292,11 +301,11 @@ export default function DocsHowStorageWorks() {
           </p>
           <p className="fg-note">
             Disk engine:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/main/vendor/laststore/README.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/2d8149ed3d8baf3dcd81b19255909b71c03178e5/vendor/laststore/README.md">
               laststore README
             </a>
             . Install layout:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/main/docs/home-format.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/2d8149ed3d8baf3dcd81b19255909b71c03178e5/docs/home-format.md">
               home-format.md
             </a>
             .
