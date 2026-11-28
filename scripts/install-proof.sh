@@ -93,7 +93,7 @@ lastdb --version > "$OUT/version.txt" 2>&1 || true
 row "installed release" "info" "$(head -n 1 "$OUT/version.txt")"
 
 # 3. What the site says the install changes.
-for cmd in lastdb lastdbd brain lastsecrets; do
+for cmd in lastdb brain lastsecrets; do
     if command -v "$cmd" >/dev/null 2>&1; then
         row "command on PATH: $cmd" "pass" "$(command -v "$cmd")"
     else
@@ -101,6 +101,12 @@ for cmd in lastdb lastdbd brain lastsecrets; do
         failures=$((failures + 1))
     fi
 done
+if [ -x "$HOME/.lastdb/current/lastdbd" ]; then
+    row "daemon in current" "pass" "~/.lastdb/current/lastdbd"
+else
+    row "daemon in current" "FAIL" "~/.lastdb/current/lastdbd missing"
+    failures=$((failures + 1))
+fi
 if [ -d "$HOME/.local/share/lastdb-apps/brain" ]; then
     row "apps folder" "pass" "~/.local/share/lastdb-apps/brain exists"
 else
@@ -179,8 +185,11 @@ remove_it() {
     launchctl bootout "gui/$(id -u)/com.edgevector.lastdb-app-registry" &&
         rm "$HOME/Library/LaunchAgents/com.edgevector.lastdb-app-registry.plist" &&
         rm -rf "$HOME/.local/share/lastdb-apps" "$HOME/.local/state/lastdb-app-registry" &&
-        brew services stop lastdb &&
-        brew uninstall lastdb
+        launchctl bootout "gui/$(id -u)/com.edgevector.lastdbd" &&
+        rm "$HOME/Library/LaunchAgents/com.edgevector.lastdbd.plist" &&
+        rm "$HOME/.local/bin/lastdb" &&
+        rm -rf "$HOME/.lastdb/programs" "$HOME/.lastdb/upgrade" &&
+        rm "$HOME/.lastdb/current" "$HOME/.lastdb/previous"
 }
 step "remove it" 0 "" -- remove_it
 if [ -d "$HOME/.lastdb" ]; then
