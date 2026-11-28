@@ -301,11 +301,11 @@ export default function DocsHowStorageWorks() {
           </p>
           <p className="fg-note">
             Disk engine:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/e48adf3fa5f8ea619d08b4ca21876fb49d1960aa/vendor/laststore/README.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/b6e7233138b8b5c7afa5c719ed409f259969de92/vendor/laststore/README.md">
               laststore README
             </a>
             . Install layout:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/e48adf3fa5f8ea619d08b4ca21876fb49d1960aa/docs/home-format.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/b6e7233138b8b5c7afa5c719ed409f259969de92/docs/home-format.md">
               home-format.md
             </a>
             .
