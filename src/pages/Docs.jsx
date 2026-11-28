@@ -296,7 +296,7 @@ export default function Docs() {
             </div>
           </div>
           <p className="fg-lede" style={{ marginTop: 28 }}>
-            Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement from relay storage, and verified snapshots from later cleanup. It also explains last-writer-wins, attachment limits, and what the recovery checks prove.
+            Follow a write through memory and disk, explore personal cloud recovery, or see how shared changes are encrypted and approved locally. The guide separates local acknowledgement from relay storage, and verified snapshots from later cleanup. It also explains personal and shared last-writer-wins, shared file delivery, independent blob and inline attachments, and the remaining proposal limits.
           </p>
           <p className="fg-more"><a href="/explore/#diagram">Open the interactive guide &rarr;</a></p>
         </div>
