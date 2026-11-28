@@ -22,7 +22,7 @@ Status: alpha. macOS on Apple Silicon only.
 Interactive system guide: https://thelastdb.com/explore/#diagram
 Explore 149 parts across memory, disk, cloud, sharing, the data model, protection, data lifetime, and services.
 Each part explains its purpose, connections, example, and limits.
-It describes source from 27 November 2026, including tombstone-triggered sealing, private fault reporting, sharing approval, whole-record last-writer-wins, and the remaining delivery and restore limits.
+It describes source from 28 November 2026, including manifest-based schema installation, offline schema advice, sharing approval, whole-record last-writer-wins, and the remaining delivery and restore limits.
 JavaScript enables the diagram. Public design notes: https://thelastdb.com/explore/sources/design-notes.html
 
 ## Install (macOS Apple Silicon)

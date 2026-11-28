@@ -97,7 +97,7 @@ export default function DocsHowStorageWorks() {
         heading={<>How LastDB lays out <em>one install</em> on disk.</>}
         lede="One folder per installation. Databases inside it. Each database is a records store plus a file blob store. This page explains the picture, why it looks like that, how writes and sync move through it, and lets you poke a scaled simulator."
         description="How LastDB storage works: one install folder, records store and file store, LSM seals and merges, cloud logs, snapshots, and an interactive simulator."
-        reviewed="Last reviewed 27 November 2026 against lastdb docs/home-format.md and vendor/laststore (seal, commit_log, compaction, writer)."
+        reviewed="Last reviewed 28 November 2026 against lastdb docs/home-format.md and vendor/laststore (seal, commit_log, compaction, writer)."
       />
 
       <section className="fg-section" id="picture">
@@ -301,11 +301,11 @@ export default function DocsHowStorageWorks() {
           </p>
           <p className="fg-note">
             Disk engine:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/2d8149ed3d8baf3dcd81b19255909b71c03178e5/vendor/laststore/README.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/e48adf3fa5f8ea619d08b4ca21876fb49d1960aa/vendor/laststore/README.md">
               laststore README
             </a>
             . Install layout:{' '}
-            <a href="https://github.com/EdgeVector/lastdb/blob/2d8149ed3d8baf3dcd81b19255909b71c03178e5/docs/home-format.md">
+            <a href="https://github.com/EdgeVector/lastdb/blob/e48adf3fa5f8ea619d08b4ca21876fb49d1960aa/docs/home-format.md">
               home-format.md
             </a>
             .
